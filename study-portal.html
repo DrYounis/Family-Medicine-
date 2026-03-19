@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Younis Master Study Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #2563eb; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --accent: #059669; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid var(--primary); padding-bottom: 20px; position: sticky; top: 0; background: var(--bg); z-index: 100; }
+        .category-tab { display: inline-block; padding: 4px 12px; background: #e2e8f0; color: #475569; border-radius: 6px; font-size: 0.8em; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
+        .question-card { background: var(--card); border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-left: 5px solid var(--primary); }
+        .question-text { font-weight: 600; font-size: 1.1em; margin-bottom: 15px; }
+        .answer-box { background: #f0fdf4; color: var(--accent); padding: 15px; border-radius: 8px; font-weight: 700; margin-top: 10px; display: none; border: 1px solid #bbf7d0; }
+        .btn { cursor: pointer; background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; transition: 0.2s; }
+        .btn-sec { background: #e2e8f0; color: #1e293b; border: none; padding: 5px 15px; border-radius: 5px; font-size: 0.8em; margin-top: 10px; }
+        @media print { .btn, .btn-sec { display: none; } .answer-box { display: block !important; } .question-card { break-inside: avoid; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Dr. Younis Board Review 2026</h1>
+        <p>Total Questions: <span id="qcount"></span> | Updated: March 18, 2026</p>
+        <button onclick="toggleAllAnswers()" class="btn">Toggle Study Mode (Show All Answers)</button>
+    </header>
+
+    <div id="quiz-container"></div>
+</div>
+
+<script>
+    const questionBank = [
+        // OB/GYN
+        { cat: "OB/GYN", q: "Initial management for 44yo with irregular vaginal bleeding?", a: "Endometrial biopsy" },
+        { cat: "OB/GYN", q: "Best contraceptive for 29yo female with PCOS/Acne wanting pregnancy in 12 months?", a: "Combined Oral Contraceptive Pill (COCP)" },
+        { cat: "OB/GYN", q: "True statement regarding PCOS?", a: "Associated with acanthosis nigricans" },
+        { cat: "OB/GYN", q: "Next investigation for 47yo with HMB (Heavy Menstrual Bleeding) and clots?", a: "Outpatient hysteroscopy" },
+        { cat: "OB/GYN", q: "Unsuitable contraceptive for overweight woman with family history of DVT?", a: "Combined hormonal contraception patch" },
+        { cat: "OB/GYN", q: "First-line for stress and urge incontinence in 45yo woman?", a: "Supervised pelvic floor exercises and bladder retraining (6-8 weeks)" },
+        { cat: "OB/GYN", q: "Additional calories required daily during pregnancy?", a: "300 calories" },
+        { cat: "OB/GYN", q: "First-line therapy for primary dysmenorrhea?", a: "NSAIDs (Nonsteroidal anti-inflammatory drugs)" },
+        { cat: "OB/GYN", q: "Sports contraindicated in pregnancy?", a: "Contact or high-risk sports" },
+        { cat: "OB/GYN", q: "OTC medication generally avoided in pregnancy?", a: "Aspirin" },
+        { cat: "OB/GYN", q: "Antibiotic protocol for C-section?", a: "Preoperative antibiotic within 1 hour of start of surgery" },
+        { cat: "OB/GYN", q: "True statement about infertility evaluation?", a: "First step is evaluation of male factor with sperm analysis" },
+        { cat: "OB/GYN", q: "38yo woman, 8 months amenorrhea, high FSH/LH, bleeding only after Estrogen+Progestin?", a: "Premature ovarian failure" },
+        { cat: "OB/GYN", q: "Post-mastectomy 50yo with fractures and osteoporosis?", a: "Alendronate 10 mg daily (morning)" },
+
+        // PEDIATRICS
+        { cat: "Pediatrics", q: "Milestone requiring referral to a pediatrician?", a: "Child does not walk by 18 months" },
+        { cat: "Pediatrics", q: "Growth red flag for 18-month-old male?", a: "Mid upper arm circumference (MUAC) below 115 mm" },
+        { cat: "Pediatrics", q: "Hypoglycemia (54 mg/dl) in 10yo T1DM, sugar is 60 after 15g glucose. Next?", a: "Give another 15g carbohydrate and recheck in 15 mins" },
+        { cat: "Pediatrics", q: "12yo obese boy, leg pain at night only, no limp.", a: "Growing pains" },
+        { cat: "Pediatrics", q: "5yo boy shorter than peers, bone age = chronological age.", a: "Genetic short stature" },
+        { cat: "Pediatrics", q: "20-month-old, barky cough, fever 38.2, occasional stridor.", a: "Oral dexamethasone" },
+        { cat: "Pediatrics", q: "18-month-old, agonizing ear pain, Temp 40C, history of cold.", a: "Paracetamol and Amoxicillin for 5 days (follow up 2 days)" },
+        { cat: "Pediatrics", q: "Asthma in 13yo not controlled on low-dose ICS and SABA.", a: "Add Salmeterol (LABA)" },
+        { cat: "Pediatrics", q: "4yo girl with nighttime anal itching (Pinworms).", a: "Albendazole 400 mg once, repeat in 2 weeks" },
+        { cat: "Pediatrics", q: "7yo girl, nocturnal enuresis not improved with alarm.", a: "Desmopressin" },
+        { cat: "Pediatrics", q: "7yo boy, school difficulty, inattention, fidgeting (ADHD).", a: "Stimulant medication" },
+        { cat: "Pediatrics", q: "Heinz bodies and anemia after co-trimoxazole in 4yo.", a: "G6PD assay" },
+        { cat: "Pediatrics", q: "16yo girl, lip-smacking, hand movements, no memory of actions.", a: "Complex partial seizures" },
+
+        // ETHICS
+        { cat: "Ethics", q: "Patient requests inappropriate amphetamines for weight loss.", a: "Patient must respect physician autonomy/decision" },
+        { cat: "Ethics", q: "Patient wants to quit smoking 'sometime in the future'. Stage?", a: "Contemplation" },
+        { cat: "Ethics", q: "Ignoring a colleague's prescription error violates:", a: "Commitment to improving quality of care" },
+        { cat: "Ethics", q: "Primary purpose of referral to a specialist?", a: "To improve the quality of health care provided" },
+        { cat: "Ethics", q: "Pregnant woman refuses life-saving treatment while competent.", a: "She has the right to refuse if competent" },
+        { cat: "Ethics", q: "Delivering bad news to patient with a companion.", a: "Honor patient preference relating to privacy" },
+        { cat: "Ethics", q: "Patient wants to see a specific specialist heard on radio.", a: "Empathize and refer to requested specialist" },
+        { cat: "Ethics", q: "Important step before patient leaves after serious diagnosis?", a: "Follow-up plan and provide hope" },
+
+        // INTERNAL MEDICINE / ER / PSYCH
+        { cat: "Internal Med", q: "Likely cause of pancreatitis (pain radiating to back)?", a: "Biliary tract disease" },
+        { cat: "Internal Med", q: "Decreases likelihood that chest pain is cardiac?", a: "Pain is worse with inspiration" },
+        { cat: "Internal Med", q: "80yo, crampy LLQ pain, low-grade fever.", a: "Constipation" },
+        { cat: "Internal Med", q: "Expected result for chronic dyspepsia workup?", a: "No cause is likely to be identified" },
+        { cat: "Internal Med", q: "Cause of death from broken gas line.", a: "Carbon monoxide" },
+        { cat: "Internal Med", q: "Treatment for sea sting with punctuate lesions?", a: "Vinegar" },
+        { cat: "Internal Med", q: "Pruritic papules in clusters after hotel stay.", a: "Bedbugs" },
+        { cat: "Internal Med", q: "Initial investigation for fainting spells (arrhythmia)?", a: "ECG" },
+        { cat: "Internal Med", q: "Dizziness, hearing loss, ringing, and facial numbness.", a: "Acoustic neuroma" },
+        { cat: "Internal Med", q: "Sign of Peripheral (labyrinth) origin vertigo?", a: "Violent symptoms after a latent period (Hallpike maneuver)" },
+        { cat: "Psychiatry", q: "Therapy for Panic attacks with fear of being 'locked in'?", a: "Cognitive-behavioral therapy (CBT)" },
+        { cat: "Psychiatry", q: "Long history of multiple pains/GI distress + conviction of parasites.", a: "Somatization disorder" },
+        { cat: "Psychiatry", q: "Depressed mood/low energy for 3 years, still functioning.", a: "Dysthymia" },
+        { cat: "Psychiatry", q: "Fear of elevators since childhood.", a: "Specific phobia" },
+        { cat: "MSK", q: "Lateral hip pain not responding to meds/PT.", a: "Gluteus medius tendon tear" },
+        { cat: "MSK", q: "Foot pain, normal X-ray, tender midfoot after fall.", a: "Non-weight bearing status + CT/MRI" },
+        { cat: "MSK", q: "Shortened, externally rotated leg after fall in elderly.", a: "Radiography of hip and pelvis" },
+        { cat: "Respiratory", q: "Former smoker, dyspnea, FEV1/FVC = 0.6.", a: "COPD" },
+        { cat: "Internal Med", q: "Most effective smoking cessation method?", a: "Varenicline plus nicotine gum" },
+        { cat: "Internal Med", q: "Bloody diarrhea and severe lower abdominal pain in elderly.", a: "Ischemic colitis" },
+        { cat: "Internal Med", q: "Shingles vaccine for 65yo (live vaccine 8yrs ago)?", a: "Two doses of recombinant zoster vaccine (Shingrix)" }
+    ];
+
+    function renderQuiz() {
+        document.getElementById('qcount').innerText = questionBank.length;
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = questionBank.map((item, index) => `
+            <div class="question-card">
+                <span class="category-tab">${item.cat}</span>
+                <div class="question-text">Q${index + 1}: ${item.q}</div>
+                <button class="btn-sec" onclick="toggleAnswer(${index})">Show/Hide Answer</button>
+                <div id="ans-${index}" class="answer-box"><strong>Answer:</strong> ${item.a}</div>
+            </div>
+        `).join('');
+    }
+
+    function toggleAnswer(id) {
+        const ans = document.getElementById(`ans-${id}`);
+        ans.style.display = (ans.style.display === 'block') ? 'none' : 'block';
+    }
+
+    function toggleAllAnswers() {
+        const boxes = document.querySelectorAll('.answer-box');
+        const isHidden = boxes[0].style.display !== 'block';
+        boxes.forEach(box => box.style.display = isHidden ? 'block' : 'none');
+    }
+
+    renderQuiz();
+</script>
+
+</body>
+</html>
