@@ -104,8 +104,22 @@ All pages are interconnected:
 
 | Date | Change | Files Modified |
 |------|--------|----------------|
+| March 20, 2026 | Added JVP Examination OSCE Card (Card 05) | `osce.html` |
 | March 20, 2026 | Added Arabic Role Play page | `roleplay_arabic.html` (new), `index.html`, `osce.html` |
 | March 20, 2026 | Mobile enhancement for OSCE cards | `osce.html` (responsive CSS) |
+
+---
+
+## 📸 OSCE Cards Available
+
+| Card | Topic | Category |
+|------|-------|----------|
+| 00 | GERD Case — Role Player Info | Role Player |
+| 01 | GERD — History Taking & Management | GERD |
+| 02 | Cranial Nerve Examination | Clinical Skills |
+| 03 | Pediatric COVID-19 — History & Management | Pediatrics |
+| 04 | Renal/Ureteric Stone — History & Management | Internal Med |
+| 05 | Jugular Venous Pressure (JVP) — Examination | Internal Med |
 
 ---
 
