@@ -6,67 +6,119 @@
     <title>معلومات ممثل الدور - حالة GERD</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
             font-family: 'Cairo', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
-        
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
+
+        .container { max-width: 900px; margin: 0 auto; }
+
+        /* Top nav bar */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
-        
+
+        .back-link {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 10px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+        .back-link:hover { background: #667eea; color: white; transform: translateY(-1px); }
+
+        .print-btn {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            font-size: 1em;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            transition: all 0.2s ease;
+        }
+        .print-btn:hover { background: #667eea; color: white; transform: translateY(-1px); }
+
+        /* Header */
         .header {
             background: white;
             border-radius: 15px;
             padding: 25px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             text-align: center;
         }
-        
-        .university-info {
-            color: #1a5276;
-            margin-bottom: 15px;
-        }
-        
-        .university-info h2 {
-            font-size: 1.3em;
-            margin-bottom: 5px;
-        }
-        
-        .university-info p {
-            font-size: 0.95em;
-            color: #555;
-        }
-        
+
+        .university-info { color: #1a5276; margin-bottom: 15px; }
+        .university-info h2 { font-size: 1.3em; margin-bottom: 5px; }
+        .university-info p { font-size: 0.95em; color: #555; }
+
         .main-title {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 20px;
+            padding: 18px;
             border-radius: 10px;
-            font-size: 1.8em;
+            font-size: 1.7em;
             font-weight: 700;
             margin-top: 15px;
         }
-        
+
+        /* Progress pill */
+        .progress-bar {
+            background: white;
+            border-radius: 12px;
+            padding: 12px 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .progress-label { font-weight: 600; color: #555; font-size: 0.9em; }
+        .progress-track {
+            flex: 1;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            min-width: 100px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.4s ease;
+        }
+        .progress-count { font-weight: 700; color: #667eea; font-size: 0.9em; white-space: nowrap; }
+
+        /* Main card */
         .card {
             background: white;
             border-radius: 15px;
             padding: 30px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
-        
+
+        /* Patient info */
         .patient-info {
             background: #e8f4f8;
             border-right: 5px solid #3498db;
@@ -74,69 +126,108 @@
             border-radius: 10px;
             margin-bottom: 20px;
         }
-        
-        .patient-info h3 {
-            color: #1a5276;
-            margin-bottom: 15px;
-            font-size: 1.4em;
-        }
-        
+        .patient-info h3 { color: #1a5276; margin-bottom: 15px; font-size: 1.4em; }
+
         .info-row {
             display: flex;
             justify-content: space-between;
             padding: 10px 0;
             border-bottom: 1px solid #ddd;
         }
-        
-        .info-row:last-child {
-            border-bottom: none;
+        .info-row:last-child { border-bottom: none; }
+        .info-label { font-weight: 600; color: #555; }
+        .info-value { color: #2c3e50; font-weight: 600; }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border-right: 4px solid #f39c12;
+            margin: 15px 0;
         }
-        
-        .info-label {
-            font-weight: 600;
-            color: #555;
-        }
-        
-        .info-value {
-            color: #2c3e50;
-            font-weight: 600;
-        }
-        
-        .section {
-            margin-bottom: 25px;
-        }
-        
-        .section-title {
+        .highlight p { color: #856404; font-weight: 600; }
+
+        /* Collapsible sections */
+        .section { margin-bottom: 16px; }
+
+        .section-toggle {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 1.2em;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
             font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: none;
+            width: 100%;
+            text-align: right;
+            font-family: 'Cairo', sans-serif;
+            transition: opacity 0.15s;
+            user-select: none;
         }
-        
-        .section-title.warning {
+        .section-toggle:hover { opacity: 0.92; }
+        .section-toggle.warning {
             background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
         }
-        
-        .section-title.success {
+        .section-toggle.success {
             background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
         }
-        
+
+        .toggle-icon {
+            font-size: 0.85em;
+            transition: transform 0.2s ease;
+            margin-right: auto;
+            margin-left: 12px;
+            flex-shrink: 0;
+        }
+        .toggle-icon.open { transform: rotate(180deg); }
+
+        .section-body {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.35s ease, opacity 0.25s ease;
+            opacity: 0;
+        }
+        .section-body.open {
+            max-height: 2000px;
+            opacity: 1;
+        }
+
+        .section-body-inner {
+            padding-top: 12px;
+        }
+
+        /* Warning box inside collapsible */
+        .warning-note {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 10px 16px;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: #991b1b;
+            font-weight: 600;
+        }
+
         ul {
             list-style: none;
             padding-right: 20px;
         }
-        
+
         ul li {
             position: relative;
-            padding: 12px 0;
+            padding: 10px 0;
             line-height: 1.8;
             color: #2c3e50;
             font-size: 1.05em;
+            border-bottom: 1px solid #f0f0f0;
         }
-        
+        ul li:last-child { border-bottom: none; }
+
         ul li::before {
             content: "•";
             color: #667eea;
@@ -146,63 +237,44 @@
             right: -20px;
             top: 8px;
         }
-        
-        .warning-section ul li::before {
-            color: #e74c3c;
-        }
-        
-        .success-section ul li::before {
-            color: #27ae60;
-        }
-        
-        .highlight {
-            background: #fff3cd;
-            padding: 15px;
-            border-radius: 8px;
-            border-right: 4px solid #f39c12;
-            margin: 15px 0;
-        }
-        
-        .highlight p {
-            color: #856404;
-            font-weight: 600;
-        }
-        
-        .back-link {
+
+        .warning-section ul li::before { color: #e74c3c; }
+        .success-section ul li::before { color: #27ae60; }
+
+        /* Reviewed checkmark */
+        .reviewed-badge {
             display: inline-block;
-            background: white;
-            color: #667eea;
-            padding: 12px 30px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        .back-link:hover {
-            background: #667eea;
+            background: #7c3aed;
             color: white;
-            transform: translateY(-2px);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 700;
+            margin-top: 8px;
         }
-        
+
         @media (max-width: 768px) {
-            .info-row {
-                flex-direction: column;
-                gap: 5px;
-            }
-            
-            .main-title {
-                font-size: 1.4em;
-            }
+            .info-row { flex-direction: column; gap: 4px; }
+            .main-title { font-size: 1.3em; }
+            .top-nav { flex-direction: column; align-items: flex-start; }
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .top-nav, .progress-bar { display: none; }
+            .section-toggle { cursor: default; }
+            .section-body { max-height: none !important; opacity: 1 !important; }
+            .card, .header { box-shadow: none; border: 1px solid #ddd; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="index.html" class="back-link">← العودة للصفحة الرئيسية</a>
-        
+        <div class="top-nav">
+            <a href="index.html" class="back-link">← العودة للصفحة الرئيسية</a>
+            <button class="print-btn" onclick="window.print()">🖨 طباعة</button>
+        </div>
+
         <div class="header">
             <div class="university-info">
                 <h2>Suez Canal University - Faculty of Medicine</h2>
@@ -211,8 +283,18 @@
             </div>
             <div class="main-title">معلومات ممثل الدور</div>
         </div>
-        
+
+        <!-- Progress tracker -->
+        <div class="progress-bar" id="progress-bar">
+            <span class="progress-label">تقدم المراجعة:</span>
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+            </div>
+            <span class="progress-count" id="progress-count">0 / 4</span>
+        </div>
+
         <div class="card">
+            <!-- Patient Info — always visible -->
             <div class="patient-info">
                 <h3>📋 بيانات المريضة</h3>
                 <div class="info-row">
@@ -236,51 +318,116 @@
                     <span class="info-value">لا تدخن</span>
                 </div>
             </div>
-            
+
             <div class="highlight">
                 <p>🩺 الشكوى الرئيسية: حرقة في نصف الصدر من حوالي  شهور</p>
             </div>
-            
+
+            <!-- Section 1: Opening -->
             <div class="section">
-                <div class="section-title">💬 إذا طلب منك الحديث أكثر عن مشكلتك، سوف تقولين:</div>
-                <ul>
-                    <li>أنت عندك حموضة بفم المعدة وحرقة في نصف صدرك من ستة أشهر.</li>
-                    <li>في البداية كانت الحموضة وحرقة في الصدر بعد الوجبات الدسمة ممكن مرة أو مرتين في الأسبوع.</li>
-                    <li>خلال الشهر الماضي، والأعراض تحدث يومياً.</li>
-                    <li>أنت بقى لك شهرين ماشية على علاج وصفه لك دكتور.</li>
-                    <li>الحرقة في الصدر ده كان بيجيلك زمان مع الحمل فقط.</li>
-                </ul>
+                <button class="section-toggle" onclick="toggleSection(0)">
+                    <span>💬 إذا طلب منك الحديث أكثر عن مشكلتك، سوف تقولين:</span>
+                    <span class="toggle-icon" id="icon-0">▼</span>
+                </button>
+                <div class="section-body" id="body-0">
+                    <div class="section-body-inner">
+                        <ul>
+                            <li>أنت عندك حموضة بفم المعدة وحرقة في نصف صدرك من ستة أشهر.</li>
+                            <li>في البداية كانت الحموضة وحرقة في الصدر بعد الوجبات الدسمة ممكن مرة أو مرتين في الأسبوع.</li>
+                            <li>خلال الشهر الماضي، والأعراض تحدث يومياً.</li>
+                            <li>أنت بقى لك شهرين ماشية على علاج وصفه لك دكتور.</li>
+                            <li>الحرقة في الصدر ده كان بيجيلك زمان مع الحمل فقط.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            
+
+            <!-- Section 2: Warning (hidden by default — roleplay practice) -->
             <div class="section warning-section">
-                <div class="section-title warning">⚠️ لا تعطي المعلومات التالية مالم يتم سؤالك عن:</div>
-                <ul>
-                    <li>أنت لا تحبي الأكلات الحارقة وشرب المياه الغازية غير منتظم و لكن قهوة الصباح دى أساسى و الأكل السريع ممكن من وقت للتانى.</li>
-                    <li>الأعراض بتتزاداد سواء مع النشاط أو النفس، ولكن في كثير من الأحيان تسوء عند الانحناء أو الاستلقاء، وحرقة الصدر يكون بعض الأحيان مصحوبا بطعم الحموضة في الفم.</li>
-                    <li>أنت أحيانا بيحكي لما تنامي على ظهرك أو تميلي للأمام.</li>
-                    <li>أنت لا تعاني من اي أمراض أو مشاكل اخري مثل صعوبة البلع، والغثيان، والتقيؤ، آلام في البطن، ومفيش اسهال ولا امساك، ولا يوجد تغيير في لون البراز، ولا دم أحمر مع البراز، أو فقدان الوزن.</li>
-                    <li>أنت توصف لك فوار راني وجسترازول ٠ مرة واحدة في اليوم دواء كده ٤ كبسولة في علبة بلاستك غطاها جامد، كان بريح قبل ذلك كويس لكن حاليا يعمل علي تخفيف الأعراض مؤقتا.</li>
-                    <li>أنت بتاخدي العلاج قبل الأكل بنصف ساعة وكل يوم.</li>
-                    <li>المشكلة لم تؤثر على نومك ولا شغلك والحمد لله ومزاجك كويس.</li>
-                </ul>
+                <button class="section-toggle warning" onclick="toggleSection(1)">
+                    <span>⚠️ لا تعطي المعلومات التالية مالم يتم سؤالك عن:</span>
+                    <span class="toggle-icon" id="icon-1">▼</span>
+                </button>
+                <div class="section-body" id="body-1">
+                    <div class="section-body-inner">
+                        <div class="warning-note">⚠️ هذه المعلومات للممثل فقط — لا تذكرها إلا إذا سأل الطالب بشكل مباشر</div>
+                        <ul>
+                            <li>أنت لا تحبي الأكلات الحارقة وشرب المياه الغازية غير منتظم و لكن قهوة الصباح دى أساسى و الأكل السريع ممكن من وقت للتانى.</li>
+                            <li>الأعراض بتتزاداد سواء مع النشاط أو النفس، ولكن في كثير من الأحيان تسوء عند الانحناء أو الاستلقاء، وحرقة الصدر يكون بعض الأحيان مصحوبا بطعم الحموضة في الفم.</li>
+                            <li>أنت أحيانا بيحكي لما تنامي على ظهرك أو تميلي للأمام.</li>
+                            <li>أنت لا تعاني من اي أمراض أو مشاكل اخري مثل صعوبة البلع، والغثيان، والتقيؤ، آلام في البطن، ومفيش اسهال ولا امساك، ولا يوجد تغيير في لون البراز، ولا دم أحمر مع البراز، أو فقدان الوزن.</li>
+                            <li>أنت توصف لك فوار راني وجسترازول ٠ مرة واحدة في اليوم دواء كده ٤ كبسولة في علبة بلاستك غطاها جامد، كان بريح قبل ذلك كويس لكن حاليا يعمل علي تخفيف الأعراض مؤقتا.</li>
+                            <li>أنت بتاخدي العلاج قبل الأكل بنصف ساعة وكل يوم.</li>
+                            <li>المشكلة لم تؤثر على نومك ولا شغلك والحمد لله ومزاجك كويس.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            
+
+            <!-- Section 3: Past Medical History -->
             <div class="section success-section">
-                <div class="section-title success">📝 التاريخ المرضي السابق والدوائي:</div>
-                <ul>
-                    <li>أنت ماعندكيش أي تاريخ مرضي لأمراض مزمنة مثل الضغط العالي أو السكر أو حساسية الصدر أو التهاب شعبي مزمن أو أمراض بالكبد أو أورام.</li>
-                    <li>أنت لم تأخذي أدوية قبل كده لفترات طويلة.</li>
-                    <li>أنت ماعملتيش عمليات قبل كده.</li>
-                </ul>
+                <button class="section-toggle success" onclick="toggleSection(2)">
+                    <span>📝 التاريخ المرضي السابق والدوائي:</span>
+                    <span class="toggle-icon" id="icon-2">▼</span>
+                </button>
+                <div class="section-body" id="body-2">
+                    <div class="section-body-inner">
+                        <ul>
+                            <li>أنت ماعندكيش أي تاريخ مرضي لأمراض مزمنة مثل الضغط العالي أو السكر أو حساسية الصدر أو التهاب شعبي مزمن أو أمراض بالكبد أو أورام.</li>
+                            <li>أنت لم تأخذي أدوية قبل كده لفترات طويلة.</li>
+                            <li>أنت ماعملتيش عمليات قبل كده.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            
+
+            <!-- Section 4: Family History -->
             <div class="section success-section">
-                <div class="section-title success">👨‍👩👧 التاريخ العائلي:</div>
-                <ul>
-                    <li>أنت ماعندكيش أي تاريخ عائلي مرضي لأمراض مزمنة مثل الضغط العالي أو السكر أو حساسية الصدر أو التهاب شعبي مزمن أو أمراض بالكبد أو أورام.</li>
-                </ul>
+                <button class="section-toggle success" onclick="toggleSection(3)">
+                    <span>👨‍👩👧 التاريخ العائلي:</span>
+                    <span class="toggle-icon" id="icon-3">▼</span>
+                </button>
+                <div class="section-body" id="body-3">
+                    <div class="section-body-inner">
+                        <ul>
+                            <li>أنت ماعندكيش أي تاريخ عائلي مرضي لأمراض مزمنة مثل الضغط العالي أو السكر أو حساسية الصدر أو التهاب شعبي مزمن أو أمراض بالكبد أو أورام.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
+
+    <script>
+        const totalSections = 4;
+        const opened = new Set();
+
+        // Open section 0 by default (opening statement is always visible)
+        toggleSection(0);
+
+        function toggleSection(index) {
+            const body = document.getElementById(`body-${index}`);
+            const icon = document.getElementById(`icon-${index}`);
+
+            if (body.classList.contains('open')) {
+                body.classList.remove('open');
+                icon.classList.remove('open');
+                opened.delete(index);
+            } else {
+                body.classList.add('open');
+                icon.classList.add('open');
+                opened.add(index);
+            }
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const count = opened.size;
+            const pct = Math.round((count / totalSections) * 100);
+            document.getElementById('progress-fill').style.width = pct + '%';
+            document.getElementById('progress-count').textContent = count + ' / ' + totalSections;
+        }
+    </script>
 </body>
 </html>
