@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نهج GERD للطبيب — الأسئلة بالعربي</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+
+        :root {
+            --purple: #7c3aed;
+            --purple-light: #ede9fe;
+            --purple-border: #ddd6fe;
+            --green: #059669;
+            --green-light: #f0fdf4;
+            --green-border: #bbf7d0;
+            --red: #dc2626;
+            --red-light: #fef2f2;
+            --red-border: #fecaca;
+            --blue: #2563eb;
+            --blue-light: #eff6ff;
+            --blue-border: #bfdbfe;
+            --orange: #d97706;
+            --orange-light: #fffbeb;
+            --orange-border: #fde68a;
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        /* Scroll progress */
+        #scroll-progress {
+            position: fixed; top: 0; right: 0; left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--purple), var(--blue));
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.1s;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 28px 24px 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(102,126,234,0.4);
+        }
+
+        .header h1 {
+            font-size: 1.6em;
+            font-weight: 900;
+            margin-bottom: 4px;
+        }
+
+        .header p { font-size: 0.9em; opacity: 0.88; margin-bottom: 14px; }
+
+        .mode-tabs {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .mode-tab {
+            padding: 7px 18px;
+            border-radius: 20px;
+            border: 2px solid rgba(255,255,255,0.5);
+            background: transparent;
+            color: white;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 0.88em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .mode-tab:hover { background: rgba(255,255,255,0.15); }
+        .mode-tab.active { background: white; color: #7c3aed; border-color: white; }
+
+        /* Progress bar */
+        .progress-wrap {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .progress-label { font-size: 0.85em; font-weight: 700; color: var(--muted); white-space: nowrap; }
+        .progress-track {
+            flex: 1;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--purple), var(--green));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        .progress-count { font-size: 0.85em; font-weight: 700; color: var(--purple); white-space: nowrap; }
+
+        /* Main layout */
+        .container { max-width: 860px; margin: 0 auto; padding: 20px 16px 80px; }
+
+        /* Steps */
+        .step-card {
+            background: var(--card);
+            border-radius: 14px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1.5px solid var(--border);
+            overflow: hidden;
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+        .step-card.done { border-color: var(--green); }
+        .step-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+
+        .step-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 18px 20px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.15s;
+        }
+        .step-header:hover { background: #fafafa; }
+
+        .step-num {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900;
+            font-size: 0.95em;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .step-title-wrap { flex: 1; }
+        .step-tag {
+            font-size: 0.72em;
+            font-weight: 700;
+            padding: 2px 9px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 4px;
+            letter-spacing: 0.03em;
+        }
+        .step-title {
+            font-weight: 700;
+            font-size: 1.05em;
+            line-height: 1.4;
+        }
+
+        .step-toggle {
+            font-size: 1em;
+            flex-shrink: 0;
+            transition: transform 0.25s;
+            color: var(--muted);
+            margin-top: 6px;
+        }
+        .step-toggle.open { transform: rotate(180deg); }
+
+        /* Step body */
+        .step-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        .step-body.open { max-height: 3000px; }
+
+        .step-body-inner {
+            padding: 0 20px 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Sections inside step */
+        .subsection {
+            margin-top: 18px;
+        }
+
+        .subsection-title {
+            font-size: 0.82em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .subsection-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* Arabic phrase box */
+        .phrase-box {
+            background: var(--purple-light);
+            border: 1.5px solid var(--purple-border);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+        }
+
+        .phrase-box .phrase-label {
+            font-size: 0.78em;
+            font-weight: 700;
+            color: var(--purple);
+            margin-bottom: 6px;
+        }
+
+        .phrase-box .phrase-text {
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #3b0764;
+            line-height: 1.8;
+        }
+
+        /* Clinical info box */
+        .info-box {
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+        }
+        .info-box.green { background: var(--green-light); border: 1.5px solid var(--green-border); }
+        .info-box.red { background: var(--red-light); border: 1.5px solid var(--red-border); }
+        .info-box.blue { background: var(--blue-light); border: 1.5px solid var(--blue-border); }
+        .info-box.orange { background: var(--orange-light); border: 1.5px solid var(--orange-border); }
+
+        .info-box .box-title {
+            font-size: 0.82em;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .info-box.green .box-title { color: var(--green); }
+        .info-box.red .box-title { color: var(--red); }
+        .info-box.blue .box-title { color: var(--blue); }
+        .info-box.orange .box-title { color: var(--orange); }
+
+        .info-box ul { padding-right: 18px; }
+        .info-box ul li {
+            font-size: 0.95em;
+            padding: 3px 0;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+        /* Done button */
+        .done-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 18px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 2px solid var(--green);
+            background: var(--green-light);
+            color: var(--green);
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            justify-content: center;
+        }
+        .done-btn:hover { background: var(--green); color: white; }
+        .done-btn.active { background: var(--green); color: white; }
+
+        /* Practice mode */
+        #practice-mode { display: none; }
+        #practice-mode.active { display: block; }
+        #reference-mode { display: block; }
+        #reference-mode.hidden { display: none; }
+
+        .practice-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 32px 28px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .practice-step-indicator {
+            font-size: 0.85em;
+            color: var(--muted);
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .practice-tag {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.82em;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .practice-title {
+            font-size: 1.4em;
+            font-weight: 900;
+            margin-bottom: 24px;
+            line-height: 1.4;
+        }
+
+        .practice-reveal-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 10px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 1.05em;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 4px 16px rgba(102,126,234,0.4);
+        }
+        .practice-reveal-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(102,126,234,0.5); }
+        .practice-reveal-btn:active { transform: scale(0.97); }
+
+        .practice-content {
+            display: none;
+            text-align: right;
+            margin-top: 24px;
+            animation: fadeUp 0.3s ease;
+        }
+        .practice-content.visible { display: block; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .practice-nav {
+            display: flex;
+            gap: 10px;
+            margin-top: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: 2px solid var(--purple);
+        }
+        .nav-btn.primary { background: var(--purple); color: white; }
+        .nav-btn.primary:hover { background: #6d28d9; }
+        .nav-btn.secondary { background: transparent; color: var(--purple); }
+        .nav-btn.secondary:hover { background: var(--purple-light); }
+
+        /* Scroll to top */
+        #scroll-top {
+            position: fixed;
+            bottom: 24px;
+            left: 20px;
+            background: var(--purple);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(124,58,237,0.4);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 200;
+        }
+        #scroll-top.visible { opacity: 1; }
+
+        /* Back nav */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 16px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .back-link {
+            color: var(--purple);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .back-link:hover { text-decoration: underline; }
+
+        .print-btn {
+            background: transparent;
+            border: 1.5px solid var(--border);
+            color: var(--muted);
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.85em;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .print-btn:hover { border-color: var(--purple); color: var(--purple); }
+
+        @media print {
+            #scroll-progress, #scroll-top, .mode-tabs, .top-nav,
+            .done-btn, .practice-nav, .progress-wrap { display: none !important; }
+            .step-body { max-height: none !important; }
+            .step-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+            body { background: white; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+
+<!-- Top nav -->
+<div class="top-nav">
+    <a href="osce.html" class="back-link">← OSCE Flashcards</a>
+    <button class="print-btn" onclick="window.print()">🖨 طباعة</button>
+</div>
+
+<!-- Header -->
+<div class="header">
+    <h1>🩺 نهج GERD للطبيب</h1>
+    <p>الأسئلة والعبارات بالعربي لكل نقطة في الـ OSCE</p>
+    <div class="mode-tabs">
+        <button class="mode-tab active" onclick="setMode('reference')">📖 مرجع شامل</button>
+        <button class="mode-tab" onclick="setMode('practice')">🎯 وضع التدريب</button>
+    </div>
+</div>
+
+<!-- Progress bar -->
+<div class="progress-wrap">
+    <span class="progress-label">تقدمك:</span>
+    <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <span class="progress-count" id="progress-count">0 / 9</span>
+</div>
+
+<!-- ═══════════════════════════════════════
+     REFERENCE MODE
+═══════════════════════════════════════ -->
+<div id="reference-mode">
+<div class="container">
+
+    <!-- STEP 1 -->
+    <div class="step-card" id="step-0">
+        <div class="step-header" onclick="toggleStep(0)">
+            <div class="step-num" style="background:#ede9fe;color:#7c3aed;">1</div>
+            <div class="step-title-wrap">
+                <div class="step-tag" style="background:#ede9fe;color:#7c3aed;">التشخيص التفريقي</div>
+                <div class="step-title">تفريق GERD عن أسباب أخرى للحرقة</div>
+            </div>
+            <div class="step-toggle" id="toggle-0">▼</div>
+        </div>
+        <div class="step-body" id="body-0">
+        <div class="step-body-inner">
+
+            <div class="subsection">
+                <div class="subsection-title">اسأل المريض</div>
+                <div class="phrase-box">
+                    <div class="phrase-label">📍 وصف الألم</div>
+                    <div class="phrase-text">
+                        "الحرقة دي فين بالظبط؟ في المعدة ولا بترتفع لفوق للصدر؟"<br>
+                        "الوجع ده حرقة ولا ضغط ولا غاز؟"<br>
+                        "هل بيجيلك طعم حمض في بقك أو ارتداد أكل؟"<br>
+                        "الحرقة بتتحسن لما تقف أو تاخد مضاد حموضة؟"
+                    </div>
+                </div>
+                <div class="phrase-box">
+                    <div class="phrase-label">📍 استبعاد قرحة المعدة</div>
+                    <div class="phrase-text">
+                        "الألم بيجيك لما تبقي جعانة؟ بيتحسن بعد الأكل؟"<br>
+                        "فيه ألم في أول البطن فوق السرة؟"
+                    </div>
+                </div>
+                <div class="phrase-box">
+                    <div class="phrase-label">📍 استبعاد ألم القلب</div>
+                    <div class="phrase-text">
+                        "الألم بيضرب في إيدك الشمال أو كتفك؟"<br>
+                        "بيجيلك مع المجهود أو الضغط النفسي؟"<br>
+                        "بتعرقي معاه أو بتحسي بضيق في التنفس؟"
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-title">الفرق السريري</div>
+                <div class="two-col">
+                    <div class="info-box green">
+                        <div class="box-title">✅ GERD — المميزات</div>
+                        <ul>
+                            <li>حرقة تصعد للصدر أو الحلق</li>
+                            <li>ارتداد حمض في الفم</li>
+                            <li>تزيد مع الاستلقاء والانحناء</li>
+                            <li>تتحسن مع المضاد الحموضة ووقفة</li>
+                        </ul>
+                    </div>
+                    <div class="info-box orange">
+                        <div class="box-title">⚠️ قرحة المعدة</div>
+                        <ul>
+                            <li>ألم في الشرستون تحت القص</li>
+                            <li>بيتحسن بعد الأكل (DU)</li>
+                            <li>بيتحسن بالصوم (GU)</li>
+                            <li>إيقاع دوري وموسمي</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <button class="done-btn" id="done-0" onclick="markDone(0)">✓ انتهيت من الخطوة دي</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step-card" id="step-1">
+        <div class="step-header" onclick="toggleStep(1)">
+            <div class="step-num" style="background:#f0fdf4;color:#059669;">2</div>
+            <div class="step-title-wrap">
+                <div class="step-tag" style="background:#f0fdf4;color:#059669;">عوامل التفاقم</div>
+                <div class="step-title">السؤال عن العوامل المُزيِّدة للحرقة</div>
+            </div>
+            <div class="step-toggle" id="toggle-1">▼</div>
+        </div>
+        <div class="step-body" id="body-1">
+        <div class="step-body-inner">
+
+            <div class="subsection">
+                <div class="subsection-title">اسأل المريض</div>
+                <div class="phrase-box">
+                    <div class="phrase-label">🍽️ العادات الغذائية</div>
+                    <div class="phrase-text">
+                        "إيه اللي بيزود الحرقة عندك؟"<br>
+                        "هل بتتزيد بعد الأكل الدسم أو الدهني؟"<br>
+                        "بتشربي قهوة أو شاي كتير؟ بيأثر على الحرقة؟"<br>
+                        "بتاكلي أكل حريف؟ بتشربي مياه غازية؟"<br>
+                        "بتاكلي شوكولاتة؟ بتشربي كحول؟"
+                    </div>
+                </div>
+                <div class="phrase-box">
+                    <div class="phrase-label">🛏️ الوضعية والنوم</div>
+                    <div class="phrase-text">
+                        "بتتزيد الحرقة لما بتنامي على ظهرك أو على جنبك الأيمن؟"<br>
+                        "بتنامي بعد الأكل بفترة قصيرة؟"<br>
+                        "بتتزيد لما بتنحني للأمام؟"<br>
+                        "رأسك بيكون عالي في السرير؟"
+                    </div>
+                </div>
+                <div class="phrase-box">
+                    <div class="phrase-label">⚖️ عوامل أخرى</div>
+                    <div class="phrase-text">
+                        "هل لاحظتي إن وزنك زاد؟"<br>
+                        "بتلبسي هدوم ضيقة في البطن؟"<br>
+                        "بتمارسي رياضة؟ بيأثر على الحرقة؟"<br>
+                        "بتاخدي أي أدوية مسكنات مثل البروفين أو الديكلوفيناك؟"<br>
+                        "بتدخني؟"
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-title">العوامل الشائعة (للحفظ)</div>
+                <div class="two-col">
+                    <div class="info-box red">
+                        <div class="box-title">❌ عوامل تزيد GERD</div>
+                        <ul>
+                            <li>الأكل الدهني والمقلي</li>
+                            <li>الشوكولاتة والنعناع</li>
+                            <li>القهوة والمياه الغازية</li>
+                            <li>الكحول والتدخين</li>
+                            <li>الاستلقاء مباشرة بعد الأكل</li>
+                            <li>الانحناء والجهد البدني</li>
+                            <li>الملابس الضيقة</li>
+                            <li>الوزن الزائد</li>
+                            <li>NSAIDs والكالسيوم channel blockers</li>
+                        </ul>
+                    </div>
+                    <div class="info-box green">
+                        <div class="box-title">✅ عوامل تحسّن GERD</div>
+                        <ul>
+                            <li>الوقوف والمشي بعد الأكل</li>
+                            <li>وجبات صغيرة ومتكررة</li>
+                            <li>تجنب الأكل قبل النوم بـ 3 ساعات</li>
+                            <li>رفع رأس السرير</li>
+                            <li>النوم على الجنب الأيسر</li>
+                            <li>إنقاص الوزن</li>
+                            <li>مضاد الحموضة والـ PPI</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <button class="done-btn" id="done-1" onclick="markDone(1)">✓ انتهيت من الخطوة دي</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step-card" id="step-2">
+        <div class="step-header" onclick="toggleStep(2)">
+            <div class="step-num" style="background:#fef2f2;color:#dc2626;">3</div>
+            <div class="step-title-wrap">
+                <div class="step-tag" style="background:#fef2f2;color:#dc2626;">العلامات التحذيرية</div>
+                <div class="step-title">تقييم العلامات الخطرة والعروض غير النمطية</div>
+            </div>
+            <div class="step-toggle" id="toggle-2">▼</div>
+        </div>
+        <div class="step-body" id="body-2">
+        <div class="step-body-inner">
+
+            <div class="subsection">
+                <div class="subsection-title">علامات الخطر — اسأل عنها كلها (ALARM)</div>
+                <div class="phrase-box">
+                    <div class="phrase-label">🚨 أسئلة الـ Red Flags بالعربي</div>
+                    <div class="phrase-text">
+                        "هل فيه صعوبة في البلع؟ الأكل بيتعلق في بلعومك؟" — <strong>Dysphagia</strong><br><br>
+                        "هل بيوجعك لما تبلعي؟" — <strong>Odynophagia</strong><br><br>
+                        "هل لاحظتي نقص في وزنك من غير ما تعملي حاجة؟" — <strong>Weight loss</strong><br><br>
+                        "هل شفتي دم مع القيء أو البراز؟ البراز اتغير لونه لأسود؟" — <strong>GI Bleeding</strong><br><br>
+                        "هل عندك فقر دم؟ بتتعبي بسرعة؟ وشك شاحب؟" — <strong>Anaemia</strong><br><br>
+                        "هل بتتقيئي بكميات كبيرة؟ أو ترجعي الأكل؟" — <strong>Vomiting</strong><br><br>
+                        "كام عمرك؟ هل في ناس في عيلتك عندها أورام في المعدة؟" — <strong>Age &gt;55 / FH</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-title">العروض غير النمطية لـ GERD</div>
+                <div class="phrase-box">
+                    <div class="phrase-label">💬 اسأل كمان عن</div>
+                    <div class="phrase-text">
+                        "هل عندك سعال مزمن جاف من غير سبب واضح؟" — <strong>Chronic cough</strong><br><br>
+                        "هل صوتك بيتغير أو بيكون أجش خصوصاً الصبح؟" — <strong>Laryngitis</strong><br><br>
+                        "هل عندك حساسية صدر أو تضيق في التنفس؟" — <strong>Asthma-like</strong><br><br>
+                        "هل دكتور الأسنان قالك إن أسنانك فيها تآكل؟" — <strong>Dental erosion</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box red">
+                <div class="box-title">🚨 لو كان فيه أي Red Flag — حول فوراً للتنظير</div>
+                <ul>
+                    <li>لو مفيش Red Flags → استمر في العلاج الدوائي التجريبي</li>
+                    <li>لو السن فوق 55 وعنده أعراض جديدة → منظار</li>
+                    <li>لو فيه تاريخ عائلي لأورام GI → منظار</li>
+                </ul>
+            </div>
+
+            <button class="done-btn" id="done-2" onclick="markDone(2)">✓ انتهيت من الخطوة دي</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step-card" id="step-3">
+        <div class="step-header" onclick="toggleStep(3)">
+            <div class="step-num" style="background:#eff6ff;color:#2563eb;">4</div>
+            <div class="step-title-wrap">
+                <div class="step-tag" style="background:#eff6ff;color:#2563eb;">قرار العلاج</div>
+                <div class="step-title">تحديد استمرار العلاج الدوائي بدون منظار</div>
+            </div>
+            <div class="step-toggle" id="toggle-3">▼</div>
+        </div>
+        <div class="step-body" id="body-3">
+        <div class="step-body-inner">
+
+            <div class="subsection">
+                <div class="subsection-title">قول للمريض</div>
+                <div class="phrase-box">
+                    <div class="phrase-label">💬 شرح القرار</div>
+                    <div class="phrase-text">
+                        "بناءً على كلامك وإنه مفيش علامات خطيرة، هنكمّل مع العلاج الدوائي دلوقتي."<br><br>
+                        "مش محتاجة منظار في الوقت ده، لأن الأعراض عندك مناسبة لـ GERD وردّت على العلاج."<br><br>
+                        "هنراجع مع بعض بعد 4 إلى 8 أسابيع ونشوف إذا كان العلاج شغّال كويس."<br><br>
+                        "لو في أي وقت لاقيتي صعوبة في البلع أو نزول دم، تيجي فوراً."
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-title">متى نحتاج المنظار؟</div>
+                <div class="two-col">
+                    <div class="info-box red">
+                        <div class="box-title">🔴 محتاج منظار إذا</div>
+                        <ul>
+                            <li>أي Red Flag موجود</li>
+                            <li>العمر فوق 55 وجديد</li>
+                            <li>فشل علاج PPI 8 أسابيع</li>
+                            <li>أعراض رجعت بعد وقف العلاج</li>
+                            <li>تاريخ عائلي لسرطان المعدة</li>
+                        </ul>
+                    </div>
+                    <div class="info-box green">
+                        <div class="box-title">🟢 استمر في العلاج إذا</div>
+                        <ul>
+                            <li>لا يوجد Red Flags</li>
+                            <li>أعراض نمطية لـ GERD</li>
+                            <li>استجابة للـ PPI</li>
+                            <li>المريض أصغر من 55 سنة</li>
+                            <li>أعراض متقطعة أو طفيفة</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <button class="done-btn" id="done-3" onclick="markDone(3)">✓ انتهيت من الخطوة دي</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="step-card" id="step-4">
+        <div class="step-header" onclick="toggleStep(4)">
+            <div class="step-num" style="background:#fdf4ff;color:#a21caf;">5</div>
+            <div class="step-title-wrap">
+                <div class="step-tag" style="background:#fdf4ff;color:#a21caf;">ICE — الأفكار والمخاوف والتوقعات</div>
+                <div class="step-title">استكشاف ما يدور في ذهن المريض</div>
+            </div>
+            <div class="step-toggle" id="toggle-4">▼</div>
+        </div>
+        <div class="step-body" id="body-4">
+        <div class="step-body-inner">
+
+            <div class="subsection">
+                <div class="subsection-title">أسئلة الـ ICE بالعربي</div>
+                <div class="phrase-box">
+                    <div class="phrase-label">💡 Ideas — الأفكار</div>
+                    <div class="phrase-text">
+                        "إيه رأيك إيه اللي سبّب الحرقة دي؟"<br>
+                        "هل اتكلمتي مع حد عن الأعراض دي؟ قالوا لك إيه؟"<br>
+                        "هل بتفكري إن في مشكلة تانية سببت الألم ده؟"
+                    </div>
+                </div>
+                <div class="phrase-box">
+                    <div class="phrase-label">😟 Concerns — المخاوف</div>
+                    <div class="phrase-text">
+                        "إيه اللي بيقلقك في الموضوع ده؟"<br>
+                        "هل في حاجة بتخوفك من الأعراض دي؟"<br>
+                        "هل خطر في بالك إنها ممكن تكون حاجة خطيرة؟"
+                    </div>
+                </div>
+                <div class="phrase-box">
+                    <div class="phrase-label">🎯 Expectations — التوقعات</div>
+                    <div class="phrase-text">
+                        "إيه اللي توقعتيه من زيارتك النهارده؟"<br>
+                        "هل كنتي عاوزة نعمل تحاليل معينة أو منظار؟"<br>
+                        "في حاجة تانية حابة تعرفيها أو تسأل عنها؟"
+                    </div>
+                </div>
+                <div class="phrase-box">
+                    <div class="phrase-label">💬 الرد على المخاوف</div>
+                    <div class="phrase-text">
+                        "أنا فاهم قلقك، وده طبيعي جداً."<br>
+                        "الأعراض دي شائعة جداً، والحمد لله مفيش حاجة تخوفنا دلوقتي."<br>
+                        "هنتابع مع بعض وأي تغيير في الأعراض هنتصرف فوراً."
+                    </div>
+                </div>
+            </div>
+
+            <button class="done-btn" id="done-4" onclick="markDone(4)">✓ انتهيت من الخطوة دي</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- STEP 6 -->
+    <div class="step-card" id="step-5">
+        <div class="step-header" onclick="toggleStep(5)">
+            <div class="step-num" style="background:#f0fdf4;color:#059669;">6</div>
+            <div class="step-title-wrap">
+                <div class="step-tag" style="background:#f0fdf4;color:#059669;">التثقيف الصحي</div>
+                <div class="step-title">شرح الحالة وتعديل نمط الحياة</div>
+            </div>
+            <div class="step-toggle" id="toggle-5">▼</div>
+        </div>
+        <div class="step-body" id="body-5">
+        <div class="step-body-inner">
+
+            <div class="subsection">
+                <div class="subsection-title">اشرح للمريض</div>
+                <div class="phrase-box">
+                    <div class="phrase-label">💬 شرح الحالة ببساطة</div>
+                    <div class="phrase-text">
+                        "المشكلة عندك اسمها ارتداد المريء أو GERD — وده معناه إن الحموضة في المعدة بتطلع لفوق للمريء."<br><br>
+                        "السبب إن الصمام اللي بين المعدة والمريء بيبقى أسترخى أكتر من اللازم فبيسمح للحمض يطلع."<br><br>
+                        "الحالة دي شائعة جداً وبتتحكم فيها كويس بتغيير العادات والعلاج."
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-title">نصائح تعديل نمط الحياة</div>
+                <div class="phrase-box">
+                    <div class="phrase-label">🍽️ الأكل والشرب</div>
+                    <div class="phrase-text">
+                        "اتجنبي الأكل الدهني والمقلي والحريف والشوكولاتة."<br>
+                        "قللي القهوة والشاي والمياه الغازية قدر الإمكان."<br>
+                        "اتجنبي الأكل قبل النوم بـ 3 ساعات على الأقل."<br>
+                        "اتجنبي الوجبات الكبيرة — أحسن تاكلي كميات صغيرة كتير."
+                    </div>
+                </div>
+                <div class="phrase-box">
+                    <div class="phrase-label">🛏️ النوم والوضعية</div>
+                    <div class="phrase-text">
+                        "ارفعي الرأس في السرير بـ 15-20 سم — ممكن تحطي وسادة تانية."<br>
+                        "حاولي تنامي على جنبك الأيسر — ده بيقلل الارتداد."<br>
+                        "اتجنبي الانحناء لفترات طويلة بعد الأكل."
+                    </div>
+                </div>
+                <div class="phrase-box">
+                    <div class="phrase-label">⚖️ عوامل أخرى</div>
+                    <div class="phrase-text">
+                        "لو وزنك زايد، إنقاص الوزن هيساعد كتير."<br>
+                        "اتجنبي الملابس الضيقة على البطن."<br>
+                        "لو بتدخني، التدخين بيزود الحموضة — قدر الإمكان وقفي."<br>
+                        "اتجنبي مسكنات الألم مثل البروفين والديكلوفيناك."
+                    </div>
+                </div>
+            </div>
+
+            <button class="done-btn" id="done-5" onclick="markDone(5)">✓ انتهيت من الخطوة دي</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- STEP 7 -->
+    <div class="step-card" id="step-6">
+        <div class="step-header" onclick="toggleStep(6)">
+            <div class="step-num" style="background:#fffbeb;color:#d97706;">7</div>
+            <div class="step-title-wrap">
+                <div class="step-tag" style="background:#fffbeb;color:#d97706;">الدواء</div>
+                <div class="step-title">مراجعة الأدوية وشرح الـ PPI</div>
+            </div>
+            <div class="step-toggle" id="toggle-6">▼</div>
+        </div>
+        <div class="step-body" id="body-6">
+        <div class="step-body-inner">
+
+            <div class="subsection">
+                <div class="subsection-title">اشرح للمريض</div>
+                <div class="phrase-box">
+                    <div class="phrase-label">💊 شرح الـ PPI</div>
+                    <div class="phrase-text">
+                        "الدواء اللي عندك اسمه مثبط مضخة البروتون — بيقلل الحموضة اللي المعدة بتفرزها."<br><br>
+                        "لازم تاخديه قبل الأكل بـ 30 دقيقة عشان يشتغل صح — ده مهم جداً."<br><br>
+                        "الدواء ده بياخد أيام أو أسبوع عشان تحسي بفرق كامل — استمري عليه."<br><br>
+                        "لا توقفيه من غير ما تتكلمي معايا، حتى لو حسيتي بتحسن."<br><br>
+                        "الكورس عادةً من 4 لـ 8 أسابيع على الأقل."
+                    </div>
+                </div>
+                <div class="phrase-box">
+                    <div class="phrase-label">⚠️ مراجعة الأدوية الحالية</div>
+                    <div class="phrase-text">
+                        "الجرعة اللي عندك مناسبة — خليها زي ما هي."<br>
+                        "لو محتاجة رانيتيدين (H2 blocker) كـ backup ممكن نضيفه."<br>
+                        "اتجنبي أي مسكن ألم من غير ما تسأليني — ممكن يزود الحموضة."
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-title">أنواع الـ PPI الشائعة</div>
+                <div class="info-box blue">
+                    <div class="box-title">💊 الأدوية</div>
+                    <ul>
+                        <li>Pantoprazole (Controloc) 20-40mg — قبل الأكل بـ 30 دقيقة</li>
+                        <li>Omeprazole (Omez/Losec) 20-40mg — قبل الأكل بـ 30 دقيقة</li>
+                        <li>Esomeprazole (Nexium) 20-40mg — قبل الأكل بـ 30 دقيقة</li>
+                        <li>Rabeprazole (Pariet) 20mg — قبل الأكل بـ 30 دقيقة</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="done-btn" id="done-6" onclick="markDone(6)">✓ انتهيت من الخطوة دي</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- STEP 8 -->
+    <div class="step-card" id="step-7">
+        <div class="step-header" onclick="toggleStep(7)">
+            <div class="step-num" style="background:#fef2f2;color:#dc2626;">8</div>
+            <div class="step-title-wrap">
+                <div class="step-tag" style="background:#fef2f2;color:#dc2626;">التحويل للمنظار</div>
+                <div class="step-title">تحويل المريض للتنظير مع الشرح</div>
+            </div>
+            <div class="step-toggle" id="toggle-7">▼</div>
+        </div>
+        <div class="step-body" id="body-7">
+        <div class="step-body-inner">
+
+            <div class="subsection">
+                <div class="subsection-title">اشرح التحويل للمريض</div>
+                <div class="phrase-box">
+                    <div class="phrase-label">💬 عبارات التحويل للمنظار</div>
+                    <div class="phrase-text">
+                        "هنعملك منظار للمعدة — ده إجراء بسيط ومش مؤلم، بنخدرك خفيف وندخل كاميرا صغيرة."<br><br>
+                        "المنظار هيخلينا نشوف جدار المريء والمعدة بشكل مباشر ونتأكد إن مفيش أي مشكلة تانية."<br><br>
+                        "ده مش معناه إن في حاجة خطيرة — بس هيطمّن من كل حاجة."<br><br>
+                        "هتاخدي موعد وهتصومي من الليل — الإجراء بياخد من 10 لـ 15 دقيقة بس."
+                    </div>
+                </div>
+                <div class="phrase-box">
+                    <div class="phrase-label">💬 لو المريض خايف</div>
+                    <div class="phrase-text">
+                        "مفيش داعي للقلق — المنظار إجراء روتيني ومش مؤلم."<br>
+                        "هتحسي بضغط بسيط بس مش ألم، والتخدير الخفيف هيريّحك."<br>
+                        "كتير من الناس عملوه وكان أسهل من توقعهم."
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box orange">
+                <div class="box-title">⚠️ تعليمات قبل المنظار</div>
+                <ul>
+                    <li>صيام كامل من منتصف الليل قبل الإجراء</li>
+                    <li>يمكن شرب ماء بدون سكر حتى 4 ساعات قبل</li>
+                    <li>إحضار حد معاه عشان يرجع معاه البيت</li>
+                    <li>إيقاف مسيلات الدم لو موجودة (بعد استشارة)</li>
+                </ul>
+            </div>
+
+            <button class="done-btn" id="done-7" onclick="markDone(7)">✓ انتهيت من الخطوة دي</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- STEP 9 -->
+    <div class="step-card" id="step-8">
+        <div class="step-header" onclick="toggleStep(8)">
+            <div class="step-num" style="background:#f0fdf4;color:#059669;">9</div>
+            <div class="step-title-wrap">
+                <div class="step-tag" style="background:#f0fdf4;color:#059669;">المتابعة</div>
+                <div class="step-title">إبلاغ المريض بموعد المراجعة</div>
+            </div>
+            <div class="step-toggle" id="toggle-8">▼</div>
+        </div>
+        <div class="step-body" id="body-8">
+        <div class="step-body-inner">
+
+            <div class="subsection">
+                <div class="subsection-title">قول للمريض</div>
+                <div class="phrase-box">
+                    <div class="phrase-label">📅 موعد المتابعة</div>
+                    <div class="phrase-text">
+                        "هنشوفك تاني بعد 4 إلى 8 أسابيع — نتأكد إن العلاج شغّال كويس."<br><br>
+                        "لو في أي وقت الأعراض اتحسنت تماماً قبل الموعد، ما زلنا محتاجين نكمل العلاج."<br><br>
+                        "لو الأعراض اشتدت أو ظهر عندك أعراض جديدة — تيجي في أي وقت مش لازم تستني الموعد."
+                    </div>
+                </div>
+                <div class="phrase-box">
+                    <div class="phrase-label">🚨 علامات تستدعي المجيء فوراً</div>
+                    <div class="phrase-text">
+                        "لو حصل أي حاجة من دول — تيجي فوراً أو تروحي طوارئ:"<br><br>
+                        "صعوبة في البلع 🔴 | قيء بدم 🔴 | براز أسود 🔴 | نقص وزن مفاجئ 🔴 | ألم شديد جداً 🔴"
+                    </div>
+                </div>
+                <div class="phrase-box">
+                    <div class="phrase-label">💬 ختام المقابلة</div>
+                    <div class="phrase-text">
+                        "هل في أي سؤال تاني عندك دلوقتي؟"<br>
+                        "أنا موجود لو احتجتي حاجة."<br>
+                        "ربنا يشفيك وتحسي بتحسن سريع إن شاء الله."
+                    </div>
+                </div>
+            </div>
+
+            <button class="done-btn" id="done-8" onclick="markDone(8)">✓ انتهيت من الخطوة دي</button>
+        </div>
+        </div>
+    </div>
+
+</div><!-- end container -->
+</div><!-- end reference-mode -->
+
+
+<!-- ═══════════════════════════════════════
+     PRACTICE MODE
+═══════════════════════════════════════ -->
+<div id="practice-mode">
+<div class="container">
+    <div class="practice-card" id="practice-card">
+        <div class="practice-step-indicator" id="practice-indicator">خطوة 1 من 9</div>
+        <div class="practice-tag" id="practice-tag"></div>
+        <div class="practice-title" id="practice-title"></div>
+        <button class="practice-reveal-btn" onclick="revealPractice()">👁 اضغط لإظهار الأسئلة</button>
+        <div class="practice-content" id="practice-content"></div>
+        <div class="practice-nav">
+            <button class="nav-btn secondary" onclick="prevPractice()" id="prev-btn">→ السابق</button>
+            <button class="nav-btn primary" onclick="nextPractice()" id="next-btn">← التالي</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="للأعلى">↑</button>
+
+<script>
+    const steps = [
+        {
+            num: 1, tag: "التشخيص التفريقي", tagColor: "#ede9fe", tagText: "#7c3aed",
+            title: "كيف تفرّق GERD عن أسباب أخرى للحرقة؟",
+            phrases: [
+                "الحرقة دي فين بالظبط؟ بترتفع لفوق للصدر؟",
+                "هل بيجيلك طعم حمض في بقك؟",
+                "الحرقة بتتحسن لما تقف أو تاخد مضاد حموضة؟",
+                "الألم بيجيلك مع الجوع ويتحسن بعد الأكل؟ — (قرحة)",
+                "الألم بيضرب في إيدك الشمال؟ بيجيلك مع المجهود؟ — (قلب)"
+            ]
+        },
+        {
+            num: 2, tag: "عوامل التفاقم", tagColor: "#f0fdf4", tagText: "#059669",
+            title: "ما هي عوامل التفاقم التي تسأل عنها؟",
+            phrases: [
+                "إيه اللي بيزود الحرقة عندك؟",
+                "هل بتتزيد بعد الأكل الدسم أو الدهني؟",
+                "بتتزيد لما بتنامي على ظهرك أو بتنحني للأمام؟",
+                "بتشربي قهوة أو مياه غازية؟ بيأثر على الحرقة؟",
+                "بتاخدي أي مسكنات مثل البروفين؟",
+                "بتدخني؟ ووزنك تغير؟"
+            ]
+        },
+        {
+            num: 3, tag: "العلامات الخطرة", tagColor: "#fef2f2", tagText: "#dc2626",
+            title: "ما هي أسئلة الـ Red Flags؟",
+            phrases: [
+                "هل فيه صعوبة في البلع؟ الأكل بيتعلق في بلعومك؟",
+                "هل لاحظتي نقص في وزنك من غير سبب؟",
+                "هل شفتي دم مع القيء أو البراز أسود؟",
+                "هل عندك فقر دم؟ بتتعبي بسرعة؟",
+                "عندك سعال مزمن جاف؟ أو صوتك بيتغير الصبح؟",
+                "في ناس في عيلتك عندها أورام في المعدة؟"
+            ]
+        },
+        {
+            num: 4, tag: "قرار العلاج", tagColor: "#eff6ff", tagText: "#2563eb",
+            title: "كيف تشرح قرار الاستمرار في العلاج بدون منظار؟",
+            phrases: [
+                "بناءً على كلامك ومفيش علامات خطيرة، هنكمل مع العلاج.",
+                "مش محتاجة منظار في الوقت ده — الأعراض مناسبة لـ GERD.",
+                "هنراجع مع بعض بعد 4 إلى 8 أسابيع.",
+                "لو حسيتي بصعوبة في البلع أو نزول دم — تيجي فوراً."
+            ]
+        },
+        {
+            num: 5, tag: "ICE", tagColor: "#fdf4ff", tagText: "#a21caf",
+            title: "ما هي أسئلة الـ ICE ؟",
+            phrases: [
+                "Ideas: إيه رأيك إيه اللي سبّب الحرقة دي؟",
+                "Concerns: إيه اللي بيقلقك في الموضوع ده؟",
+                "Concerns: هل خطر في بالك إنها ممكن تكون خطيرة؟",
+                "Expectations: إيه اللي توقعتيه من زيارتك النهارده؟",
+                "الرد: أنا فاهم قلقك — الحمد لله مفيش حاجة تخوفنا دلوقتي."
+            ]
+        },
+        {
+            num: 6, tag: "التثقيف الصحي", tagColor: "#f0fdf4", tagText: "#059669",
+            title: "ما هي نصائح تعديل نمط الحياة؟",
+            phrases: [
+                "اتجنبي الأكل الدهني والمقلي والحريف والشوكولاتة والقهوة.",
+                "اتجنبي الأكل قبل النوم بـ 3 ساعات على الأقل.",
+                "ارفعي الرأس في السرير بـ 15-20 سم.",
+                "حاولي تنامي على جنبك الأيسر.",
+                "لو وزنك زايد — إنقاص الوزن هيساعد كتير.",
+                "اتجنبي الملابس الضيقة على البطن."
+            ]
+        },
+        {
+            num: 7, tag: "الدواء", tagColor: "#fffbeb", tagText: "#d97706",
+            title: "كيف تشرح الـ PPI للمريض؟",
+            phrases: [
+                "الدواء بيقلل الحموضة اللي المعدة بتفرزها.",
+                "لازم تاخديه قبل الأكل بـ 30 دقيقة — ده مهم جداً.",
+                "الكورس من 4 لـ 8 أسابيع على الأقل — لا توقفيه لوحدك.",
+                "اتجنبي أي مسكن ألم من غير ما تسأليني."
+            ]
+        },
+        {
+            num: 8, tag: "التحويل للمنظار", tagColor: "#fef2f2", tagText: "#dc2626",
+            title: "كيف تشرح التحويل للمنظار للمريض؟",
+            phrases: [
+                "هنعملك منظار — ده إجراء بسيط ومش مؤلم، بنخدرك خفيف.",
+                "المنظار هيخلينا نشوف المريء والمعدة مباشرة.",
+                "ده مش معناه إن في حاجة خطيرة — بس هيطمّن من كل حاجة.",
+                "هتصومي من الليل — الإجراء بياخد من 10 لـ 15 دقيقة بس."
+            ]
+        },
+        {
+            num: 9, tag: "المتابعة", tagColor: "#f0fdf4", tagText: "#059669",
+            title: "كيف تختم المقابلة وتحدد موعد المتابعة؟",
+            phrases: [
+                "هنشوفك تاني بعد 4 إلى 8 أسابيع.",
+                "لو الأعراض اشتدت أو ظهر أعراض جديدة — تيجي في أي وقت.",
+                "تيجي فوراً لو: صعوبة بلع، قيء بدم، براز أسود، نقص وزن.",
+                "هل في أي سؤال تانى عندك دلوقتي؟",
+                "ربنا يشفيك وتحسي بتحسن سريع إن شاء الله."
+            ]
+        }
+    ];
+
+    let practiceIndex = 0;
+    const done = new Set();
+
+    // ── Reference mode ──────────────────────────────
+    function toggleStep(index) {
+        const body = document.getElementById(`body-${index}`);
+        const toggle = document.getElementById(`toggle-${index}`);
+        const isOpen = body.classList.contains('open');
+        body.classList.toggle('open', !isOpen);
+        toggle.classList.toggle('open', !isOpen);
+    }
+
+    function markDone(index) {
+        done.add(index);
+        const btn = document.getElementById(`done-${index}`);
+        const card = document.getElementById(`step-${index}`);
+        btn.textContent = '✓ تم';
+        btn.classList.add('active');
+        card.classList.add('done');
+        updateProgress();
+    }
+
+    function updateProgress() {
+        const pct = Math.round((done.size / 9) * 100);
+        document.getElementById('progress-fill').style.width = pct + '%';
+        document.getElementById('progress-count').textContent = done.size + ' / 9';
+    }
+
+    // ── Practice mode ─────────────────────────────
+    function renderPractice() {
+        const s = steps[practiceIndex];
+        document.getElementById('practice-indicator').textContent = `خطوة ${s.num} من ${steps.length}`;
+        document.getElementById('practice-tag').textContent = s.tag;
+        document.getElementById('practice-tag').style.background = s.tagColor;
+        document.getElementById('practice-tag').style.color = s.tagText;
+        document.getElementById('practice-title').textContent = s.title;
+        document.getElementById('practice-content').classList.remove('visible');
+
+        const phrases = s.phrases.map(p =>
+            `<div class="phrase-box" style="margin-bottom:8px;">
+                <div class="phrase-text" style="font-size:0.98em;">${p}</div>
+            </div>`
+        ).join('');
+        document.getElementById('practice-content').innerHTML = phrases;
+
+        document.getElementById('prev-btn').style.opacity = practiceIndex === 0 ? '0.3' : '1';
+        document.getElementById('next-btn').textContent = practiceIndex === steps.length - 1 ? '✓ انتهيت' : '← التالي';
+    }
+
+    function revealPractice() {
+        document.getElementById('practice-content').classList.add('visible');
+    }
+
+    function nextPractice() {
+        if (practiceIndex < steps.length - 1) {
+            practiceIndex++;
+            renderPractice();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    function prevPractice() {
+        if (practiceIndex > 0) {
+            practiceIndex--;
+            renderPractice();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    // ── Mode switch ──────────────────────────────
+    function setMode(mode) {
+        const refMode = document.getElementById('reference-mode');
+        const practMode = document.getElementById('practice-mode');
+        document.querySelectorAll('.mode-tab').forEach((t, i) => {
+            t.classList.toggle('active', (i === 0 && mode === 'reference') || (i === 1 && mode === 'practice'));
+        });
+        if (mode === 'reference') {
+            refMode.classList.remove('hidden');
+            practMode.classList.remove('active');
+        } else {
+            refMode.classList.add('hidden');
+            practMode.classList.add('active');
+            practiceIndex = 0;
+            renderPractice();
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Scroll progress
+    window.addEventListener('scroll', () => {
+        const doc = document.documentElement;
+        const scrolled = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+        document.getElementById('scroll-progress').style.width = scrolled + '%';
+        document.getElementById('scroll-top').classList.toggle('visible', doc.scrollTop > 300);
+    });
+
+    // Init
+    updateProgress();
+    renderPractice();
+</script>
+
+</body>
+</html>
