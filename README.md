@@ -13,6 +13,7 @@
 ├── index.html                   # Main MCQs Practice Page
 ├── osce.html                    # OSCE Flashcards (Good/Poor Performance)
 ├── roleplay_arabic.html         # Arabic Role Play Script (GERD Case)
+├── resources.html               # JVP Examination Resources (Images from Big Book)
 ├── OSCE_content.txt             # Raw OSCE flashcards content (English)
 ├── OSCE_Flashcards (1).docx     # Original OSCE flashcards document
 └── arabic script GERD.jpg       # Original Arabic role play script image
@@ -25,8 +26,9 @@
 | File | Purpose | Key Features |
 |------|---------|--------------|
 | `index.html` | MCQs Board Review | 50+ questions across OB/GYN, Pediatrics, Ethics, Internal Med, etc. |
-| `osce.html` | OSCE Flashcards | Checklists with Good vs Poor performance columns |
+| `osce.html` | OSCE Flashcards | Checklists with Good vs Poor performance columns + Procedure Steps |
 | `roleplay_arabic.html` | Arabic Role Play | GERD case role player instructions (RTL Arabic) |
+| `resources.html` | JVP Resources | Educational images from medical textbooks with interpretation guide |
 
 ---
 
@@ -104,6 +106,7 @@ All pages are interconnected:
 
 | Date | Change | Files Modified |
 |------|--------|----------------|
+| March 20, 2026 | Added JVP Resources page with images | `resources.html` (new), `index.html`, `osce.html`, `README.md` |
 | March 20, 2026 | Added Procedure Steps to OSCE cards | `osce.html` |
 | March 20, 2026 | Added JVP Examination OSCE Card (Card 05) | `osce.html` |
 | March 20, 2026 | Added Arabic Role Play page | `roleplay_arabic.html` (new), `index.html`, `osce.html` |

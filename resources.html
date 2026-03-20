@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JVP Examination Resources - Dr. Younis Master Study Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --accent: #059669;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 20px;
+            background: var(--bg);
+        }
+        
+        h1 { color: var(--primary); margin-bottom: 10px; }
+        .subtitle { color: #64748b; font-size: 0.95em; }
+        
+        .nav-links {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .nav-links a {
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        
+        .nav-links a:hover { background: #1d4ed8; }
+        
+        .resource-section {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            color: var(--primary);
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .resource-card {
+            background: #f8fafc;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        
+        .resource-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .resource-card .caption {
+            padding: 15px;
+            font-size: 0.9em;
+            color: #475569;
+        }
+        
+        .resource-card .caption strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.05em;
+        }
+        
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        
+        .info-box h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .info-box ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .info-box li {
+            margin-bottom: 6px;
+            color: #334155;
+        }
+        
+        .highlight {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .highlight strong {
+            color: #92400e;
+        }
+        
+        @media (max-width: 768px) {
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+            .section-title {
+                font-size: 1.2em;
+            }
+        }
+        
+        @media print {
+            .nav-links { display: none; }
+            .resource-card { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🫀 JVP Examination Resources</h1>
+        <p class="subtitle">Suez Canal University · Faculty of Medicine · Family Medicine Department</p>
+        <p class="subtitle">Credit-Hour Masters of Family Medicine and Community Health</p>
+        
+        <div class="nav-links">
+            <a href="index.html">📝 MCQs Practice</a>
+            <a href="osce.html">🏥 OSCE Flashcards</a>
+            <a href="roleplay_arabic.html">📜 Arabic Role Play</a>
+        </div>
+    </header>
+
+    <div class="resource-section">
+        <h2 class="section-title">📚 JVP Examination - Educational Resources</h2>
+        
+        <div class="info-box">
+            <h3>🎯 Learning Objectives</h3>
+            <p>By the end of this session, you should be able to:</p>
+            <ul>
+                <li>Understand the anatomy of jugular veins and their relation to the right atrium</li>
+                <li>Correctly position the patient for JVP examination</li>
+                <li>Identify and measure the jugular venous pulsation</li>
+                <li>Interpret JVP waveform abnormalities (a, c, x, v, y waves)</li>
+                <li>Recognize clinical significance of elevated or decreased JVP</li>
+                <li>Check for Kussmaul sign and other special findings</li>
+            </ul>
+        </div>
+
+        <div class="highlight">
+            <strong>📌 Clinical Pearl:</strong>
+            The JVP is the best bedside indicator of right atrial pressure and volume status. Normal JVP = 6-8 cm H2O (measured from sternal angle + 5 cm).
+        </div>
+    </div>
+
+    <div class="resource-section">
+        <h2 class="section-title">📖 JVP Waveform & Anatomy</h2>
+        
+        <div class="resource-grid">
+            <div class="resource-card">
+                <img src="2aeee800-c212-492a-8be4-ae47ba1bb303.JPG" alt="JVP Waveform Diagram">
+                <div class="caption">
+                    <strong>📊 JVP Waveform Components</strong>
+                    The biphasic waveform showing a, c, v waves and x, y descents. Each component corresponds to specific cardiac events.
+                </div>
+            </div>
+
+            <div class="resource-card">
+                <img src="96e50d56-11c5-4187-943b-b6c0f44e09a5.JPG" alt="Jugular Vein Anatomy">
+                <div class="caption">
+                    <strong>🫀 Jugular Vein Anatomy</strong>
+                    Internal and external jugular veins showing their path from the brain to the right atrium via the superior vena cava.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="resource-section">
+        <h2 class="section-title">📏 Measurement Technique</h2>
+        
+        <div class="resource-grid">
+            <div class="resource-card">
+                <img src="e261a1f1-1a9e-4b48-b2b6-10d24c4c1405.JPG" alt="JVP Measurement Method">
+                <div class="caption">
+                    <strong>📐 How to Measure JVP</strong>
+                    Measure vertical distance from sternal angle to top of jugular pulsation, then add 5 cm for right atrium depth.
+                </div>
+            </div>
+
+            <div class="resource-card">
+                <img src="eac52c6e-f03f-46f7-bbf4-0cdd82a532fd.JPG" alt="JVP Clinical Procedure">
+                <div class="caption">
+                    <strong>👨‍️ Non-Invasive Procedure</strong>
+                    Patient positioned at 45°, head turned left, using metric ruler to estimate vertical height of pulsation.
+                </div>
+            </div>
+
+            <div class="resource-card">
+                <img src="a1fdb0c3-74a6-43c5-96be-498d43c102c1.JPG" alt="JVP Normal Values">
+                <div class="caption">
+                    <strong>✅ Normal JVP Values</strong>
+                    Normal = 6-8 cm H2O | &lt;5 cm = hypovolemia | &gt;9 cm = elevated (heart failure, fluid overload)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="resource-section">
+        <h2 class="section-title">📋 Clinical Scenario</h2>
+        
+        <div class="resource-card" style="max-width: 600px;">
+            <img src="50f50625-f7b3-468d-9be5-bb9c7cdd036a.JPG" alt="JVP OSCE Scenario">
+            <div class="caption">
+                <strong>🏥 OSCE Station Instructions</strong>
+                42-year-old male with chronic cough follow-up. Assess JVP. Explain steps loudly to assessor during examination.
+            </div>
+        </div>
+    </div>
+
+    <div class="resource-section">
+        <h2 class="section-title">🔍 JVP Interpretation Guide</h2>
+        
+        <div class="info-box" style="background: #fef2f2; border-left-color: #dc2626;">
+            <h3 style="color: #dc2626;">⚠️ Causes of Elevated JVP</h3>
+            <ul>
+                <li><strong>Right heart failure</strong> - most common cause</li>
+                <li><strong>Fluid overload</strong> - excess fluid intake or kidney failure</li>
+                <li><strong>Tricuspid regurgitation</strong> - causes massive v wave</li>
+                <li><strong>Complete heart block</strong> - cannon a waves</li>
+                <li><strong>Superior vena caval obstruction</strong> - elevated without pulsation</li>
+                <li><strong>Atrial fibrillation</strong> - no a wave</li>
+            </ul>
+        </div>
+
+        <div class="info-box" style="background: #f0fdf4; border-left-color: #16a34a;">
+            <h3 style="color: #16a34a;">✅ JVP Waveform Abnormalities</h3>
+            <ul>
+                <li><strong>Cannon a-waves:</strong> AV dissociation (third-degree heart block)</li>
+                <li><strong>Large v waves:</strong> Tricuspid regurgitation</li>
+                <li><strong>Absent a waves:</strong> Atrial fibrillation</li>
+                <li><strong>Kussmaul sign:</strong> Paradoxical JVP rise on inspiration (constrictive pericarditis)</li>
+                <li><strong>Friedreich's sign:</strong> Exaggerated x descent (constrictive pericarditis)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="resource-section">
+        <h2 class="section-title">📝 Quick Reference</h2>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+            <thead>
+                <tr style="background: #f1f5f9;">
+                    <th style="padding: 12px; text-align: left; border: 1px solid #e2e8f0;">Wave/Descent</th>
+                    <th style="padding: 12px; text-align: left; border: 1px solid #e2e8f0;">Cause</th>
+                    <th style="padding: 12px; text-align: left; border: 1px solid #e2e8f0;">Clinical Significance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 12px; border: 1px solid #e2e8f0;"><strong>a wave</strong></td>
+                    <td style="padding: 12px; border: 1px solid #e2e8f0;">Atrial contraction</td>
+                    <td style="padding: 12px; border: 1px solid #e2e8f0;">Absent in AF, large in stenosis</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; border: 1px solid #e2e8f0;"><strong>c wave</strong></td>
+                    <td style="padding: 12px; border: 1px solid #e2e8f0;">Tricuspid valve bulging</td>
+                    <td style="padding: 12px; border: 1px solid #e2e8f0;">Usually not visible</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; border: 1px solid #e2e8f0;"><strong>x descent</strong></td>
+                    <td style="padding: 12px; border: 1px solid #e2e8f0;">Atrial relaxation</td>
+                    <td style="padding: 12px; border: 1px solid #e2e8f0;">Prominent in tamponade</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; border: 1px solid #e2e8f0;"><strong>v wave</strong></td>
+                    <td style="padding: 12px; border: 1px solid #e2e8f0;">Venous filling</td>
+                    <td style="padding: 12px; border: 1px solid #e2e8f0;">Large in tricuspid regurgitation</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; border: 1px solid #e2e8f0;"><strong>y descent</strong></td>
+                    <td style="padding: 12px; border: 1px solid #e2e8f0;">Ventricular filling</td>
+                    <td style="padding: 12px; border: 1px solid #e2e8f0;">Slow in tamponade/stenosis</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <footer style="text-align: center; padding: 30px; color: #64748b; font-size: 0.9em;">
+        <p>Dr. Younis Board Review 2026 | Family Medicine Department | Suez Canal University</p>
+        <p>Resources from Medical Textbooks | For Educational Purposes</p>
+    </footer>
+</div>
+
+</body>
+</html>
