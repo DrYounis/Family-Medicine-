@@ -4,36 +4,374 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dr. Younis Master Study Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #2563eb; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --accent: #059669; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; margin: 0; padding: 20px; }
-        .container { max-width: 900px; margin: 0 auto; }
-        header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid var(--primary); padding-bottom: 20px; position: sticky; top: 0; background: var(--bg); z-index: 100; }
-        .category-tab { display: inline-block; padding: 4px 12px; background: #e2e8f0; color: #475569; border-radius: 6px; font-size: 0.8em; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
-        .question-card { background: var(--card); border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-left: 5px solid var(--primary); }
-        .question-text { font-weight: 600; font-size: 1.1em; margin-bottom: 15px; }
-        .answer-box { background: #f0fdf4; color: var(--accent); padding: 15px; border-radius: 8px; font-weight: 700; margin-top: 10px; display: none; border: 1px solid #bbf7d0; }
-        .btn { cursor: pointer; background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; transition: 0.2s; }
-        .btn-sec { background: #e2e8f0; color: #1e293b; border: none; padding: 5px 15px; border-radius: 5px; font-size: 0.8em; margin-top: 10px; }
-        @media print { .btn, .btn-sec { display: none; } .answer-box { display: block !important; } .question-card { break-inside: avoid; } }
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --accent: #059669;
+            --accent-bg: #f0fdf4;
+            --accent-border: #bbf7d0;
+            --border: #e2e8f0;
+            --reviewed: #7c3aed;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Scroll progress bar */
+        #scroll-progress {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            width: 0%;
+            background: var(--primary);
+            z-index: 9999;
+            transition: width 0.1s linear;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 20px 20px 60px; }
+
+        header {
+            text-align: center;
+            margin-bottom: 0;
+            border-bottom: 2px solid var(--primary);
+            padding: 20px 20px 16px;
+            position: sticky;
+            top: 0;
+            background: var(--bg);
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        header h1 { margin: 0 0 4px; font-size: 1.5em; }
+        header p { margin: 0 0 12px; color: var(--text-muted); font-size: 0.9em; }
+
+        .nav-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .nav-row a {
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: opacity 0.15s;
+        }
+        .nav-row a:hover { opacity: 0.85; }
+
+        .controls-row {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            cursor: pointer;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.88em;
+            transition: background 0.15s, transform 0.1s;
+            font-family: inherit;
+        }
+        .btn:hover { background: var(--primary-dark); }
+        .btn:active { transform: scale(0.97); }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+        }
+        .btn-outline:hover { background: var(--primary); color: white; }
+
+        /* Search */
+        .search-wrap {
+            margin: 16px 0 8px;
+            display: flex;
+            gap: 8px;
+        }
+
+        #search-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95em;
+            outline: none;
+            transition: border-color 0.15s;
+            background: var(--card);
+        }
+        #search-input:focus { border-color: var(--primary); }
+
+        /* Category filters */
+        .filter-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .filter-btn {
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1.5px solid var(--border);
+            background: var(--card);
+            color: var(--text-muted);
+            font-size: 0.82em;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+        .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Stats bar */
+        .stats-bar {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 0.88em;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+
+        .stat-pill {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .stat-pill .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+        }
+        .dot-revealed { background: var(--accent); }
+        .dot-reviewed { background: var(--reviewed); }
+
+        /* Progress bar under stats */
+        .progress-track {
+            height: 5px;
+            background: var(--border);
+            border-radius: 3px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 3px;
+            transition: width 0.4s ease;
+        }
+
+        /* Question cards */
+        .question-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 22px 24px;
+            margin-bottom: 14px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+            border-left: 4px solid var(--primary);
+            transition: box-shadow 0.2s, border-color 0.2s;
+            cursor: pointer;
+        }
+        .question-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .question-card.is-reviewed { border-left-color: var(--reviewed); }
+        .question-card.is-revealed { border-left-color: var(--accent); }
+
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .card-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+        .category-tab {
+            display: inline-block;
+            padding: 3px 10px;
+            background: #e2e8f0;
+            color: #475569;
+            border-radius: 6px;
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .q-number {
+            font-size: 0.78em;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .reviewed-badge {
+            font-size: 0.75em;
+            color: var(--reviewed);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .question-text {
+            font-weight: 600;
+            font-size: 1.05em;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .card-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+        .btn-sec {
+            background: #f1f5f9;
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.82em;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s;
+        }
+        .btn-sec:hover { background: var(--border); }
+
+        .btn-review {
+            background: #f5f3ff;
+            color: var(--reviewed);
+            border: 1px solid #ddd6fe;
+        }
+        .btn-review:hover { background: #ede9fe; }
+        .btn-review.done { background: var(--reviewed); color: white; border-color: var(--reviewed); }
+
+        .answer-box {
+            background: var(--accent-bg);
+            color: #166534;
+            padding: 14px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 12px;
+            border: 1px solid var(--accent-border);
+            display: none;
+            animation: fadeSlideIn 0.2s ease;
+        }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        .no-results p { font-size: 1.1em; }
+
+        /* Scroll to top */
+        #scroll-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 200;
+        }
+        #scroll-top.visible { opacity: 1; }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.2em; }
+            .question-card { padding: 16px 16px; }
+        }
+
+        @media print {
+            #scroll-progress, #scroll-top, .controls-row, .filter-row,
+            .search-wrap, .stats-bar, .progress-track { display: none; }
+            .btn, .btn-sec { display: none; }
+            .answer-box { display: block !important; }
+            .question-card { break-inside: avoid; box-shadow: none; border-left: 3px solid #ccc; }
+        }
     </style>
 </head>
 <body>
+
+<div id="scroll-progress"></div>
 
 <div class="container">
     <header>
         <h1>Dr. Younis Board Review 2026</h1>
         <p>Total Questions: <span id="qcount"></span> | Updated: March 19, 2026</p>
-        <div style="margin-bottom: 15px;">
-            <a href="osce.html" style="background: #059669; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; margin-right: 10px;">🏥 OSCE Flashcards</a>
-            <a href="roleplay_arabic.html" style="background: #7c3aed; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600;">📜 Arabic Role Play</a>
+        <div class="nav-row">
+            <a href="osce.html" style="background:#059669;color:white;">🏥 OSCE Flashcards</a>
+            <a href="roleplay_arabic.html" style="background:#7c3aed;color:white;">📜 Arabic Role Play</a>
         </div>
-        <button onclick="toggleAllAnswers()" class="btn">Toggle Study Mode (Show All Answers)</button>
+        <div class="controls-row">
+            <button onclick="toggleAllAnswers()" class="btn" id="toggle-all-btn">Show All Answers</button>
+            <button onclick="resetSession()" class="btn btn-outline">Reset Session</button>
+        </div>
     </header>
 
-    <div id="quiz-container"></div>
+    <div style="padding-top: 16px;">
+        <div class="search-wrap">
+            <input type="text" id="search-input" placeholder="Search questions…" oninput="applyFilters()" />
+        </div>
+
+        <div class="filter-row" id="filter-row"></div>
+
+        <div class="stats-bar">
+            <div class="stat-pill"><span class="dot dot-revealed"></span> Revealed: <strong id="stat-revealed">0</strong></div>
+            <div class="stat-pill"><span class="dot dot-reviewed"></span> Reviewed: <strong id="stat-reviewed">0</strong></div>
+            <div class="stat-pill">Showing: <strong id="stat-showing">0</strong></div>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+
+        <div id="quiz-container"></div>
+        <div id="no-results" class="no-results" style="display:none;">
+            <p>No questions match your search.</p>
+        </div>
+    </div>
 </div>
+
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
 
 <script>
     const questionBank = [
@@ -114,30 +452,173 @@
         { cat: "Ethics", q: "Effective auditor should possess combination of skills. Most important?", a: "Communicate clearly" }
     ];
 
+    // Session state
+    const revealed = new Set();
+    const reviewed = new Set();
+    let activeCategory = 'All';
+    let allAnswersShown = false;
+    let filteredIndices = [];
+
+    function getCategories() {
+        const cats = ['All', ...new Set(questionBank.map(q => q.cat))];
+        return cats;
+    }
+
+    function buildFilters() {
+        const row = document.getElementById('filter-row');
+        getCategories().forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = 'filter-btn' + (cat === 'All' ? ' active' : '');
+            btn.textContent = cat;
+            btn.onclick = () => {
+                activeCategory = cat;
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                applyFilters();
+            };
+            row.appendChild(btn);
+        });
+    }
+
+    function applyFilters() {
+        const query = document.getElementById('search-input').value.toLowerCase().trim();
+        filteredIndices = questionBank
+            .map((item, i) => ({ item, i }))
+            .filter(({ item }) => {
+                const catMatch = activeCategory === 'All' || item.cat === activeCategory;
+                const searchMatch = !query || item.q.toLowerCase().includes(query) || item.a.toLowerCase().includes(query);
+                return catMatch && searchMatch;
+            })
+            .map(({ i }) => i);
+
+        renderQuiz();
+    }
+
     function renderQuiz() {
         document.getElementById('qcount').innerText = questionBank.length;
         const container = document.getElementById('quiz-container');
-        container.innerHTML = questionBank.map((item, index) => `
-            <div class="question-card">
-                <span class="category-tab">${item.cat}</span>
-                <div class="question-text">Q${index + 1}: ${item.q}</div>
-                <button class="btn-sec" onclick="toggleAnswer(${index})">Show/Hide Answer</button>
-                <div id="ans-${index}" class="answer-box"><strong>Answer:</strong> ${item.a}</div>
-            </div>
-        `).join('');
+        const noResults = document.getElementById('no-results');
+
+        if (filteredIndices.length === 0) {
+            container.innerHTML = '';
+            noResults.style.display = 'block';
+            updateStats();
+            return;
+        }
+
+        noResults.style.display = 'none';
+        container.innerHTML = filteredIndices.map(index => {
+            const item = questionBank[index];
+            const isRev = reviewed.has(index);
+            const isRevd = revealed.has(index);
+            return `
+                <div class="question-card${isRev ? ' is-reviewed' : (isRevd ? ' is-revealed' : '')}"
+                     id="card-${index}" onclick="handleCardClick(event, ${index})">
+                    <div class="card-top">
+                        <div class="card-meta">
+                            <span class="category-tab">${item.cat}</span>
+                            <span class="q-number">Q${index + 1}</span>
+                        </div>
+                        ${isRev ? '<span class="reviewed-badge">✓ Reviewed</span>' : ''}
+                    </div>
+                    <div class="question-text">${item.q}</div>
+                    <div class="card-actions" onclick="event.stopPropagation()">
+                        <button class="btn-sec" onclick="toggleAnswer(${index})">Show / Hide Answer</button>
+                        <button class="btn-sec btn-review${isRev ? ' done' : ''}" onclick="toggleReview(${index})">
+                            ${isRev ? '✓ Reviewed' : 'Mark as Reviewed'}
+                        </button>
+                    </div>
+                    <div id="ans-${index}" class="answer-box" style="display:${isRevd ? 'block' : 'none'}">
+                        <strong>Answer:</strong> ${item.a}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        updateStats();
+    }
+
+    function handleCardClick(e, index) {
+        if (e.target.tagName === 'BUTTON') return;
+        toggleAnswer(index);
     }
 
     function toggleAnswer(id) {
         const ans = document.getElementById(`ans-${id}`);
-        ans.style.display = (ans.style.display === 'block') ? 'none' : 'block';
+        const isVisible = ans.style.display === 'block';
+        ans.style.display = isVisible ? 'none' : 'block';
+        if (!isVisible) revealed.add(id); else revealed.delete(id);
+        updateCardClass(id);
+        updateStats();
+    }
+
+    function toggleReview(id) {
+        if (reviewed.has(id)) reviewed.delete(id);
+        else reviewed.add(id);
+        applyFilters();
+    }
+
+    function updateCardClass(id) {
+        const card = document.getElementById(`card-${id}`);
+        if (!card) return;
+        card.classList.toggle('is-revealed', revealed.has(id) && !reviewed.has(id));
+        card.classList.toggle('is-reviewed', reviewed.has(id));
     }
 
     function toggleAllAnswers() {
-        const boxes = document.querySelectorAll('.answer-box');
-        const isHidden = boxes[0].style.display !== 'block';
-        boxes.forEach(box => box.style.display = isHidden ? 'block' : 'none');
+        allAnswersShown = !allAnswersShown;
+        filteredIndices.forEach(id => {
+            const ans = document.getElementById(`ans-${id}`);
+            if (ans) {
+                ans.style.display = allAnswersShown ? 'block' : 'none';
+                if (allAnswersShown) revealed.add(id); else revealed.delete(id);
+            }
+        });
+        document.getElementById('toggle-all-btn').textContent = allAnswersShown ? 'Hide All Answers' : 'Show All Answers';
+        updateStats();
     }
 
+    function resetSession() {
+        revealed.clear();
+        reviewed.clear();
+        allAnswersShown = false;
+        document.getElementById('toggle-all-btn').textContent = 'Show All Answers';
+        document.getElementById('search-input').value = '';
+        activeCategory = 'All';
+        document.querySelectorAll('.filter-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
+        filteredIndices = questionBank.map((_, i) => i);
+        renderQuiz();
+    }
+
+    function updateStats() {
+        const revealedCount = filteredIndices.filter(i => revealed.has(i)).length;
+        const reviewedCount = filteredIndices.filter(i => reviewed.has(i)).length;
+        document.getElementById('stat-revealed').textContent = revealedCount;
+        document.getElementById('stat-reviewed').textContent = reviewedCount;
+        document.getElementById('stat-showing').textContent = filteredIndices.length;
+
+        const pct = filteredIndices.length > 0 ? Math.round((reviewedCount / filteredIndices.length) * 100) : 0;
+        document.getElementById('progress-fill').style.width = pct + '%';
+    }
+
+    // Scroll progress bar
+    window.addEventListener('scroll', () => {
+        const doc = document.documentElement;
+        const scrolled = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+        document.getElementById('scroll-progress').style.width = scrolled + '%';
+        document.getElementById('scroll-top').classList.toggle('visible', doc.scrollTop > 300);
+    });
+
+    // Keyboard shortcut: Space to toggle focused card (accessibility)
+    document.addEventListener('keydown', e => {
+        if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+            e.preventDefault();
+        }
+    });
+
+    // Init
+    buildFilters();
+    filteredIndices = questionBank.map((_, i) => i);
     renderQuiz();
 </script>
 
