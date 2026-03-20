@@ -443,6 +443,22 @@
             type: "checklist",
             cardNum: "02",
             q: "Cranial Nerve Examination",
+            steps: [
+                "👋 Introduction: Greet patient, confirm identity, explain procedure, obtain consent",
+                "🧼 Hand Hygiene: Perform hand rub before examination",
+                "🪑 Position: Sit facing the patient at eye level",
+                "👁️ CN I (Olfactory): Ask about sense of smell (not routinely tested)",
+                "👁️ CN II (Optic): Test visual acuity, visual fields by confrontation, fundoscopy",
+                "👁️ CN III, IV, VI (Oculomotor, Trochlear, Abducens): Check pupil size/reactivity, eye movements, ptosis",
+                "👁️ CN V (Trigeminal): Test facial sensation, corneal reflex, muscles of mastication (clench teeth)",
+                "🙂 CN VII (Facial): Observe facial symmetry, ask to smile/frown/puff cheeks/close eyes tightly",
+                "👂 CN VIII (Vestibulocochlear): Test hearing (whisper test/Rinne/Weber)",
+                "🗣️ CN IX, X (Glossopharyngeal, Vagus): Observe palate elevation, gag reflex, voice quality",
+                "🔄 CN XI (Accessory): Test sternocleidomastoid and trapezius strength (shrug shoulders, turn head)",
+                "👅 CN XII (Hypoglossal): Observe tongue at rest and movement (stick out, move side to side)",
+                "📝 Document: Record findings for each cranial nerve",
+                "🧼 Hand Hygiene: Perform hand rub after examination"
+            ],
             good: [
                 "Builds rapport and uses appropriate communication skills",
                 "Takes permission to conduct facial examination",
@@ -526,6 +542,23 @@
             type: "checklist",
             cardNum: "05",
             q: "Jugular Venous Pressure (JVP) — Examination",
+            steps: [
+                "👋 Introduction: Greet patient, confirm identity, explain procedure, obtain consent",
+                "🧼 Hand Hygiene: Perform hand rub before examination",
+                "🛏️ Position Patient: Lay patient at 45-degree angle (use adjustable bed or pillows)",
+                "🔄 Head Position: Ask patient to turn head 10-20 degrees to the LEFT",
+                "👀 Expose Area: Ensure patient's chest and neck are adequately exposed (maintain dignity)",
+                "🔍 Locate Pulsation: Identify internal jugular vein pulsation between sternocleidomastoid muscle heads (or external jugular if internal not visible)",
+                "🦴 Find Sternal Angle: Palpate for the sternal angle (Angle of Louis) - bony ridge ~2 inches below top of sternum",
+                "📏 Measure Vertical Distance: Hold metric ruler vertically at sternal angle, measure height to top of jugular pulsation in cm",
+                "➕ Add 5 cm: Add 5 cm to measurement (represents sternal angle to right atrium depth)",
+                "📊 Calculate Total JVP: Total = ruler measurement + 5 cm",
+                "✅ Interpret: Normal = 6-8 cm H2O | <5 cm = hypovolemia | >9 cm = elevated (heart failure, fluid overload)",
+                "🌊 Observe Waveform: Look for a, c, v waves and x, y descents if visible",
+                "💨 Check Kussmaul Sign: Observe if JVP rises on inspiration (paradoxical)",
+                "🧼 Hand Hygiene: Perform hand rub after examination",
+                "📝 Document: Record findings including JVP height, waveform abnormalities, and clinical interpretation"
+            ],
             good: [
                 "Builds rapport and explains the procedure to the patient",
                 "Takes permission to conduct neck/chest examination",
@@ -655,10 +688,20 @@
                             <button class="btn-sec" onclick="toggleBoth(${index})">
                                 Show Both
                             </button>
+                            ${item.steps ? `<button class="btn-sec" style="background: #f0fdf4; color: #166534;" onclick="toggleSteps(${index})">
+                                📋 Procedure Steps
+                            </button>` : ''}
                             <button class="btn-sec btn-review${isRev ? ' done' : ''}" onclick="toggleReview(${index})">
                                 ${isRev ? '✓ Reviewed' : 'Mark as Reviewed'}
                             </button>
                         </div>
+                        ${item.steps && (visibility[index] === 'steps' || visibility[index] === 'both' || visibility[index] === 'good' || visibility[index] === 'poor') ? `
+                        <div class="col-panel" style="background: #f0f9ff; border: 1px solid #bae6fd; margin-bottom: 12px;">
+                            <h4 style="color: #0369a1; margin: 0 0 8px;">📋 PROCEDURE STEPS — What to Do</h4>
+                            <ol style="margin: 0; padding-left: 20px;">
+                                ${item.steps.map(step => `<li style="padding: 4px 0; line-height: 1.5; color: var(--text);">${step}</li>`).join('')}
+                            </ol>
+                        </div>` : ''}
                         ${showGood ? `
                         <div class="col-panel good">
                             <h4>✅ GOOD PERFORMANCE</h4>
@@ -703,6 +746,13 @@
     function toggleBoth(index) {
         const cur = visibility[index] || 'none';
         visibility[index] = cur === 'both' ? 'none' : 'both';
+        renderQuiz();
+        scrollToCard(index);
+    }
+
+    function toggleSteps(index) {
+        const cur = visibility[index] || 'none';
+        visibility[index] = cur === 'steps' ? 'none' : 'steps';
         renderQuiz();
         scrollToCard(index);
     }

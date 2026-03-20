@@ -104,6 +104,7 @@ All pages are interconnected:
 
 | Date | Change | Files Modified |
 |------|--------|----------------|
+| March 20, 2026 | Added Procedure Steps to OSCE cards | `osce.html` |
 | March 20, 2026 | Added JVP Examination OSCE Card (Card 05) | `osce.html` |
 | March 20, 2026 | Added Arabic Role Play page | `roleplay_arabic.html` (new), `index.html`, `osce.html` |
 | March 20, 2026 | Mobile enhancement for OSCE cards | `osce.html` (responsive CSS) |
