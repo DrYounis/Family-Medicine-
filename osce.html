@@ -4,45 +4,357 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dr. Younis OSCE Study Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #2563eb; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --accent: #059669; --roleplay: #dc2626; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; margin: 0; padding: 20px; }
-        .container { max-width: 1000px; margin: 0 auto; }
-        header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid var(--primary); padding-bottom: 20px; position: sticky; top: 0; background: var(--bg); z-index: 100; }
-        .nav-links { margin-top: 15px; }
-        .nav-links a { margin: 0 10px; padding: 8px 16px; background: var(--primary); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; }
-        .nav-links a:hover { background: #1d4ed8; }
-        .category-tab { display: inline-block; padding: 4px 12px; background: #e2e8f0; color: #475569; border-radius: 6px; font-size: 0.8em; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
-        .roleplay-tab { background: #fecaca; color: #991b1b; }
-        .checklist-card { background: var(--card); border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-left: 5px solid var(--primary); }
-        .checklist-card.roleplay { border-left-color: var(--roleplay); }
-        .question-text { font-weight: 600; font-size: 1.1em; margin-bottom: 15px; }
-        .answer-box { background: #f0fdf4; color: var(--accent); padding: 15px; border-radius: 8px; font-weight: 700; margin-top: 10px; display: none; border: 1px solid #bbf7d0; }
-        .roleplay-box { background: #fef2f2; color: #991b1b; padding: 15px; border-radius: 8px; margin-top: 10px; display: none; border: 1px solid #fecaca; }
-        .checklist-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .checklist-table th, .checklist-table td { padding: 10px; text-align: left; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
-        .checklist-table th { background: #f1f5f9; font-weight: 600; }
-        .good-col { color: var(--accent); }
-        .poor-col { color: #dc2626; }
-        .good-col ul, .poor-col ul { margin: 0; padding-right: 20px; }
-        @media (max-width: 768px) {
-            .checklist-table, .checklist-table tbody, .checklist-table tr, .checklist-table td { display: block; }
-            .checklist-table thead { display: none; }
-            .checklist-table tr { margin-bottom: 15px; }
-            .checklist-table td { padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 10px; }
-            .checklist-table td:first-child { background: #f0fdf4; border-color: #bbf7d0; }
-            .checklist-table td:last-child { background: #fef2f2; border-color: #fecaca; }
-            .good-col::before { content: "✅ GOOD PERFORMANCE"; display: block; font-weight: 700; margin-bottom: 10px; color: var(--accent); }
-            .poor-col::before { content: "❌ POOR PERFORMANCE"; display: block; font-weight: 700; margin-bottom: 10px; color: #dc2626; }
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --accent: #059669;
+            --accent-bg: #f0fdf4;
+            --accent-border: #bbf7d0;
+            --roleplay: #dc2626;
+            --roleplay-bg: #fef2f2;
+            --roleplay-border: #fecaca;
+            --reviewed: #7c3aed;
+            --border: #e2e8f0;
         }
-        .btn { cursor: pointer; background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; transition: 0.2s; }
-        .btn-sec { background: #e2e8f0; color: #1e293b; border: none; padding: 5px 15px; border-radius: 5px; font-size: 0.8em; margin-top: 10px; margin-right: 5px; }
-        .btn-roleplay { background: #dc2626; color: white; }
-        @media print { .btn, .btn-sec { display: none; } .answer-box, .roleplay-box { display: block !important; } .checklist-card { break-inside: avoid; } }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        #scroll-progress {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            width: 0%;
+            background: var(--primary);
+            z-index: 9999;
+            transition: width 0.1s linear;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px 20px 60px; }
+
+        header {
+            text-align: center;
+            margin-bottom: 0;
+            border-bottom: 2px solid var(--primary);
+            padding: 18px 20px 14px;
+            position: sticky;
+            top: 0;
+            background: var(--bg);
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        header h1 { margin: 0 0 2px; font-size: 1.45em; }
+        header p { margin: 0; color: var(--text-muted); font-size: 0.85em; }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 12px 0 10px;
+        }
+
+        .nav-links a {
+            margin: 0;
+            padding: 7px 14px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.88em;
+            transition: background 0.15s;
+        }
+        .nav-links a:hover { background: var(--primary-dark); }
+
+        .controls-row {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            cursor: pointer;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.88em;
+            transition: background 0.15s, transform 0.1s;
+            font-family: inherit;
+        }
+        .btn:hover { background: var(--primary-dark); }
+        .btn:active { transform: scale(0.97); }
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+        }
+        .btn-outline:hover { background: var(--primary); color: white; }
+
+        /* Filter row */
+        .filter-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin: 16px 0 10px;
+        }
+
+        .filter-btn {
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1.5px solid var(--border);
+            background: var(--card);
+            color: var(--text-muted);
+            font-size: 0.82em;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+        .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Stats */
+        .stats-bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 0.88em;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+        .stat-pill {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .stat-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot-reviewed { background: var(--reviewed); }
+
+        .progress-track {
+            height: 5px;
+            background: var(--border);
+            border-radius: 3px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 3px;
+            transition: width 0.4s ease;
+        }
+
+        /* Cards */
+        .checklist-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 22px 24px;
+            margin-bottom: 14px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+            border-left: 4px solid var(--primary);
+            transition: box-shadow 0.2s;
+        }
+        .checklist-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .checklist-card.roleplay { border-left-color: var(--roleplay); }
+        .checklist-card.is-reviewed { border-left-color: var(--reviewed); }
+
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .card-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+        .category-tab {
+            display: inline-block;
+            padding: 3px 10px;
+            background: #e2e8f0;
+            color: #475569;
+            border-radius: 6px;
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .roleplay-tab { background: var(--roleplay-border); color: #991b1b; }
+
+        .reviewed-badge {
+            font-size: 0.75em;
+            color: var(--reviewed);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .question-text {
+            font-weight: 600;
+            font-size: 1.05em;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .card-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+
+        .btn-sec {
+            background: #f1f5f9;
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.82em;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s;
+        }
+        .btn-sec:hover { background: var(--border); }
+
+        .btn-good { color: var(--accent); border-color: var(--accent-border); background: var(--accent-bg); }
+        .btn-good:hover { background: #dcfce7; }
+        .btn-good.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+        .btn-poor { color: var(--roleplay); border-color: var(--roleplay-border); background: var(--roleplay-bg); }
+        .btn-poor:hover { background: #fee2e2; }
+        .btn-poor.active { background: var(--roleplay); color: white; border-color: var(--roleplay); }
+
+        .btn-roleplay-show { background: var(--roleplay-bg); color: var(--roleplay); border-color: var(--roleplay-border); }
+        .btn-roleplay-show:hover { background: #fee2e2; }
+
+        .btn-review {
+            background: #f5f3ff;
+            color: var(--reviewed);
+            border: 1px solid #ddd6fe;
+        }
+        .btn-review:hover { background: #ede9fe; }
+        .btn-review.done { background: var(--reviewed); color: white; border-color: var(--reviewed); }
+
+        /* Collapsible sections */
+        .collapsible-section {
+            margin-top: 12px;
+            animation: fadeSlideIn 0.2s ease;
+        }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Self-test mode: show good OR poor independently */
+        .checklist-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            font-size: 0.94em;
+        }
+        .checklist-table th, .checklist-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        .checklist-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            border-bottom: 2px solid var(--border);
+        }
+        .good-col { color: #166534; }
+        .poor-col { color: #991b1b; }
+        .good-col ul, .poor-col ul { margin: 0; padding-left: 18px; }
+        .good-col li, .poor-col li { padding: 4px 0; line-height: 1.5; }
+
+        .col-panel {
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-top: 10px;
+            animation: fadeSlideIn 0.2s ease;
+        }
+        .col-panel.good { background: var(--accent-bg); border: 1px solid var(--accent-border); }
+        .col-panel.poor { background: var(--roleplay-bg); border: 1px solid var(--roleplay-border); }
+        .col-panel h4 { margin: 0 0 8px; font-size: 0.88em; font-weight: 700; letter-spacing: 0.03em; }
+        .col-panel.good h4 { color: var(--accent); }
+        .col-panel.poor h4 { color: var(--roleplay); }
+        .col-panel ul { margin: 0; padding-left: 18px; }
+        .col-panel li { padding: 3px 0; line-height: 1.5; color: var(--text); font-size: 0.95em; }
+
+        /* Roleplay box */
+        .roleplay-box {
+            background: var(--roleplay-bg);
+            border: 1px solid var(--roleplay-border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+            animation: fadeSlideIn 0.2s ease;
+        }
+        .roleplay-box p { margin: 0 0 6px; }
+        .roleplay-box ul { padding-left: 18px; margin: 8px 0 0; }
+        .roleplay-box li { padding: 3px 0; line-height: 1.5; font-size: 0.95em; }
+        .roleplay-box hr { border: none; border-top: 1px solid var(--roleplay-border); margin: 12px 0; }
+
+        /* Scroll top */
+        #scroll-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 200;
+        }
+        #scroll-top.visible { opacity: 1; }
+
+        @media (max-width: 768px) {
+            .checklist-table { display: none; } /* use panels on mobile always */
+            .col-panel { display: block !important; }
+        }
+
+        @media print {
+            #scroll-progress, #scroll-top, .controls-row, .filter-row,
+            .stats-bar, .progress-track, .card-actions { display: none; }
+            .collapsible-section { display: block !important; }
+            .col-panel { display: block !important; }
+            .checklist-card { break-inside: avoid; box-shadow: none; }
+        }
     </style>
 </head>
 <body>
+
+<div id="scroll-progress"></div>
 
 <div class="container">
     <header>
@@ -52,21 +364,37 @@
         <div class="nav-links">
             <a href="index.html">← MCQs Practice</a>
             <a href="roleplay_arabic.html">📜 Arabic Role Play</a>
-            <a href="#" onclick="toggleAllAnswers(); return false;">Show All Answers</a>
+        </div>
+        <div class="controls-row">
+            <button class="btn" onclick="expandAll()">Expand All</button>
+            <button class="btn btn-outline" onclick="collapseAll()">Collapse All</button>
+            <button class="btn btn-outline" onclick="resetSession()">Reset Session</button>
         </div>
     </header>
 
-    <div id="quiz-container"></div>
+    <div style="padding-top: 16px;">
+        <div class="filter-row" id="filter-row"></div>
+
+        <div class="stats-bar">
+            <div class="stat-pill"><span class="dot dot-reviewed"></span> Reviewed: <strong id="stat-reviewed">0</strong></div>
+            <div class="stat-pill">Showing: <strong id="stat-showing">0</strong></div>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+
+        <div id="quiz-container"></div>
+    </div>
 </div>
+
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
 
 <script>
     const questionBank = [
         // ROLE PLAYER CARDS
-        { 
-            cat: "Role Player", 
+        {
+            cat: "Role Player",
             type: "roleplay",
             cardNum: "00",
-            q: "GERD Case — Role Player Information", 
+            q: "GERD Case — Role Player Information",
             patientName: "Ibtisam Muhammad Ahmed",
             age: "45 years old",
             background: "Math teacher, married, 2 daughters (18 & 16 yrs), non-smoker",
@@ -193,82 +521,207 @@
         }
     ];
 
+    const reviewed = new Set();
+    // Per-card visibility state: 'none' | 'good' | 'poor' | 'both' | 'roleplay'
+    const visibility = {};
+    let activeCategory = 'All';
+    let filteredIndices = [];
+
+    function getCategories() {
+        return ['All', ...new Set(questionBank.map(q => q.cat))];
+    }
+
+    function buildFilters() {
+        const row = document.getElementById('filter-row');
+        getCategories().forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = 'filter-btn' + (cat === 'All' ? ' active' : '');
+            btn.textContent = cat;
+            btn.onclick = () => {
+                activeCategory = cat;
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                applyFilters();
+            };
+            row.appendChild(btn);
+        });
+    }
+
+    function applyFilters() {
+        filteredIndices = questionBank
+            .map((item, i) => i)
+            .filter(i => activeCategory === 'All' || questionBank[i].cat === activeCategory);
+        renderQuiz();
+    }
+
     function renderQuiz() {
         document.getElementById('qcount').innerText = questionBank.length;
         const container = document.getElementById('quiz-container');
-        container.innerHTML = questionBank.map((item, index) => {
+
+        container.innerHTML = filteredIndices.map(index => {
+            const item = questionBank[index];
+            const isRev = reviewed.has(index);
+            const vis = visibility[index] || 'none';
+
             if (item.type === 'roleplay') {
+                const open = vis === 'roleplay';
                 return `
-                    <div class="checklist-card roleplay">
-                        <span class="category-tab roleplay-tab">🎭 Role Player Card ${item.cardNum}</span>
+                    <div class="checklist-card roleplay${isRev ? ' is-reviewed' : ''}" id="card-${index}">
+                        <div class="card-top">
+                            <div class="card-meta">
+                                <span class="category-tab roleplay-tab">🎭 Role Player Card ${item.cardNum}</span>
+                            </div>
+                            ${isRev ? '<span class="reviewed-badge">✓ Reviewed</span>' : ''}
+                        </div>
                         <div class="question-text">${item.q}</div>
-                        <button class="btn-sec btn-roleplay" onclick="toggleRoleplay(${index})">Show Patient Info</button>
-                        <div id="role-${index}" class="roleplay-box">
+                        <div class="card-actions">
+                            <button class="btn-sec btn-roleplay-show" onclick="toggleRoleplay(${index})">
+                                ${open ? 'Hide Patient Info' : 'Show Patient Info'}
+                            </button>
+                            <button class="btn-sec btn-review${isRev ? ' done' : ''}" onclick="toggleReview(${index})">
+                                ${isRev ? '✓ Reviewed' : 'Mark as Reviewed'}
+                            </button>
+                        </div>
+                        ${open ? `
+                        <div class="roleplay-box">
                             <p><strong>Patient Name:</strong> ${item.patientName}</p>
                             <p><strong>Age:</strong> ${item.age}</p>
                             <p><strong>Background:</strong> ${item.background}</p>
                             <p><strong>Chief Complaint:</strong> ${item.chiefComplaint}</p>
-                            <hr style="border: 1px solid #fecaca; margin: 15px 0;">
+                            <hr>
                             <p><strong>Key History Points (reveal only if asked):</strong></p>
-                            <ul>
-                                ${item.history.map(point => `<li>${point}</li>`).join('')}
-                            </ul>
-                        </div>
+                            <ul>${item.history.map(pt => `<li>${pt}</li>`).join('')}</ul>
+                        </div>` : ''}
                     </div>
                 `;
-            } else if (item.type === 'checklist') {
+            } else {
+                const showGood = vis === 'good' || vis === 'both';
+                const showPoor = vis === 'poor' || vis === 'both';
                 return `
-                    <div class="checklist-card">
-                        <span class="category-tab">${item.cat} · Card ${item.cardNum}</span>
-                        <div class="question-text">${item.q}</div>
-                        <button class="btn-sec" onclick="toggleChecklist(${index})">Show Checklist</button>
-                        <div id="check-${index}" class="answer-box" style="display:none;">
-                            <table class="checklist-table">
-                                <thead>
-                                    <tr>
-                                        <th class="good-col">✅ GOOD PERFORMANCE</th>
-                                        <th class="poor-col">❌ POOR PERFORMANCE</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <ul>
-                                                ${item.good.map(point => `<li>${point}</li>`).join('')}
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            <ul>
-                                                ${item.poor.map(point => `<li>${point}</li>`).join('')}
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div class="checklist-card${isRev ? ' is-reviewed' : ''}" id="card-${index}">
+                        <div class="card-top">
+                            <div class="card-meta">
+                                <span class="category-tab">${item.cat} · Card ${item.cardNum}</span>
+                            </div>
+                            ${isRev ? '<span class="reviewed-badge">✓ Reviewed</span>' : ''}
                         </div>
+                        <div class="question-text">${item.q}</div>
+                        <div class="card-actions">
+                            <button class="btn-sec btn-good${showGood ? ' active' : ''}" onclick="toggleCol(${index}, 'good')">
+                                ✅ Good Performance
+                            </button>
+                            <button class="btn-sec btn-poor${showPoor ? ' active' : ''}" onclick="toggleCol(${index}, 'poor')">
+                                ❌ Poor Performance
+                            </button>
+                            <button class="btn-sec" onclick="toggleBoth(${index})">
+                                Show Both
+                            </button>
+                            <button class="btn-sec btn-review${isRev ? ' done' : ''}" onclick="toggleReview(${index})">
+                                ${isRev ? '✓ Reviewed' : 'Mark as Reviewed'}
+                            </button>
+                        </div>
+                        ${showGood ? `
+                        <div class="col-panel good">
+                            <h4>✅ GOOD PERFORMANCE</h4>
+                            <ul>${item.good.map(pt => `<li>${pt}</li>`).join('')}</ul>
+                        </div>` : ''}
+                        ${showPoor ? `
+                        <div class="col-panel poor">
+                            <h4>❌ POOR PERFORMANCE</h4>
+                            <ul>${item.poor.map(pt => `<li>${pt}</li>`).join('')}</ul>
+                        </div>` : ''}
                     </div>
                 `;
             }
         }).join('');
+
+        updateStats();
     }
 
-    function toggleRoleplay(id) {
-        const box = document.getElementById(`role-${id}`);
-        box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+    function toggleRoleplay(index) {
+        visibility[index] = visibility[index] === 'roleplay' ? 'none' : 'roleplay';
+        renderQuiz();
+        scrollToCard(index);
     }
 
-    function toggleChecklist(id) {
-        const box = document.getElementById(`check-${id}`);
-        box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+    function toggleCol(index, col) {
+        const cur = visibility[index] || 'none';
+        if (col === 'good') {
+            if (cur === 'good') visibility[index] = 'none';
+            else if (cur === 'poor') visibility[index] = 'both';
+            else if (cur === 'both') visibility[index] = 'poor';
+            else visibility[index] = 'good';
+        } else {
+            if (cur === 'poor') visibility[index] = 'none';
+            else if (cur === 'good') visibility[index] = 'both';
+            else if (cur === 'both') visibility[index] = 'good';
+            else visibility[index] = 'poor';
+        }
+        renderQuiz();
+        scrollToCard(index);
     }
 
-    function toggleAllAnswers() {
-        const roleplayBoxes = document.querySelectorAll('.roleplay-box');
-        const checklistBoxes = document.querySelectorAll('.answer-box');
-        roleplayBoxes.forEach(box => box.style.display = 'block');
-        checklistBoxes.forEach(box => box.style.display = 'block');
+    function toggleBoth(index) {
+        const cur = visibility[index] || 'none';
+        visibility[index] = cur === 'both' ? 'none' : 'both';
+        renderQuiz();
+        scrollToCard(index);
     }
 
+    function scrollToCard(index) {
+        requestAnimationFrame(() => {
+            const card = document.getElementById(`card-${index}`);
+            if (card) {
+                const top = card.getBoundingClientRect().top + window.scrollY - 120;
+                window.scrollTo({ top, behavior: 'smooth' });
+            }
+        });
+    }
+
+    function toggleReview(index) {
+        if (reviewed.has(index)) reviewed.delete(index);
+        else reviewed.add(index);
+        renderQuiz();
+    }
+
+    function expandAll() {
+        filteredIndices.forEach(i => {
+            const item = questionBank[i];
+            visibility[i] = item.type === 'roleplay' ? 'roleplay' : 'both';
+        });
+        renderQuiz();
+    }
+
+    function collapseAll() {
+        filteredIndices.forEach(i => { visibility[i] = 'none'; });
+        renderQuiz();
+    }
+
+    function resetSession() {
+        reviewed.clear();
+        Object.keys(visibility).forEach(k => delete visibility[k]);
+        activeCategory = 'All';
+        document.querySelectorAll('.filter-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
+        applyFilters();
+    }
+
+    function updateStats() {
+        const reviewedCount = filteredIndices.filter(i => reviewed.has(i)).length;
+        document.getElementById('stat-reviewed').textContent = reviewedCount;
+        document.getElementById('stat-showing').textContent = filteredIndices.length;
+        const pct = filteredIndices.length > 0 ? Math.round((reviewedCount / filteredIndices.length) * 100) : 0;
+        document.getElementById('progress-fill').style.width = pct + '%';
+    }
+
+    window.addEventListener('scroll', () => {
+        const doc = document.documentElement;
+        const scrolled = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+        document.getElementById('scroll-progress').style.width = scrolled + '%';
+        document.getElementById('scroll-top').classList.toggle('visible', doc.scrollTop > 300);
+    });
+
+    buildFilters();
+    filteredIndices = questionBank.map((_, i) => i);
     renderQuiz();
 </script>
 
