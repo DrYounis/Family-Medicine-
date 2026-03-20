@@ -21,10 +21,21 @@
         .answer-box { background: #f0fdf4; color: var(--accent); padding: 15px; border-radius: 8px; font-weight: 700; margin-top: 10px; display: none; border: 1px solid #bbf7d0; }
         .roleplay-box { background: #fef2f2; color: #991b1b; padding: 15px; border-radius: 8px; margin-top: 10px; display: none; border: 1px solid #fecaca; }
         .checklist-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .checklist-table th, .checklist-table td { padding: 10px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        .checklist-table th, .checklist-table td { padding: 10px; text-align: left; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
         .checklist-table th { background: #f1f5f9; font-weight: 600; }
         .good-col { color: var(--accent); }
         .poor-col { color: #dc2626; }
+        .good-col ul, .poor-col ul { margin: 0; padding-right: 20px; }
+        @media (max-width: 768px) {
+            .checklist-table, .checklist-table tbody, .checklist-table tr, .checklist-table td { display: block; }
+            .checklist-table thead { display: none; }
+            .checklist-table tr { margin-bottom: 15px; }
+            .checklist-table td { padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 10px; }
+            .checklist-table td:first-child { background: #f0fdf4; border-color: #bbf7d0; }
+            .checklist-table td:last-child { background: #fef2f2; border-color: #fecaca; }
+            .good-col::before { content: "✅ GOOD PERFORMANCE"; display: block; font-weight: 700; margin-bottom: 10px; color: var(--accent); }
+            .poor-col::before { content: "❌ POOR PERFORMANCE"; display: block; font-weight: 700; margin-bottom: 10px; color: #dc2626; }
+        }
         .btn { cursor: pointer; background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; transition: 0.2s; }
         .btn-sec { background: #e2e8f0; color: #1e293b; border: none; padding: 5px 15px; border-radius: 5px; font-size: 0.8em; margin-top: 10px; margin-right: 5px; }
         .btn-roleplay { background: #dc2626; color: white; }
@@ -40,6 +51,7 @@
         <p>Total Cards: <span id="qcount"></span> | Updated: March 19, 2026</p>
         <div class="nav-links">
             <a href="index.html">← MCQs Practice</a>
+            <a href="roleplay_arabic.html">📜 Arabic Role Play</a>
             <a href="#" onclick="toggleAllAnswers(); return false;">Show All Answers</a>
         </div>
     </header>

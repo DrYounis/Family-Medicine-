@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معلومات ممثل الدور - حالة GERD</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        
+        .university-info {
+            color: #1a5276;
+            margin-bottom: 15px;
+        }
+        
+        .university-info h2 {
+            font-size: 1.3em;
+            margin-bottom: 5px;
+        }
+        
+        .university-info p {
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .main-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-top: 15px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .patient-info {
+            background: #e8f4f8;
+            border-right: 5px solid #3498db;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .patient-info h3 {
+            color: #1a5276;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .info-value {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .section-title.warning {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+        
+        .section-title.success {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        }
+        
+        ul {
+            list-style: none;
+            padding-right: 20px;
+        }
+        
+        ul li {
+            position: relative;
+            padding: 12px 0;
+            line-height: 1.8;
+            color: #2c3e50;
+            font-size: 1.05em;
+        }
+        
+        ul li::before {
+            content: "•";
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.5em;
+            position: absolute;
+            right: -20px;
+            top: 8px;
+        }
+        
+        .warning-section ul li::before {
+            color: #e74c3c;
+        }
+        
+        .success-section ul li::before {
+            color: #27ae60;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border-right: 4px solid #f39c12;
+            margin: 15px 0;
+        }
+        
+        .highlight p {
+            color: #856404;
+            font-weight: 600;
+        }
+        
+        .back-link {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .back-link:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .info-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .main-title {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← العودة للصفحة الرئيسية</a>
+        
+        <div class="header">
+            <div class="university-info">
+                <h2>Suez Canal University - Faculty of Medicine</h2>
+                <p>Family Medicine Department</p>
+                <p>Credit-Hour Masters of Family Medicine and Community Health</p>
+            </div>
+            <div class="main-title">معلومات ممثل الدور</div>
+        </div>
+        
+        <div class="card">
+            <div class="patient-info">
+                <h3>📋 بيانات المريضة</h3>
+                <div class="info-row">
+                    <span class="info-label">الاسم:</span>
+                    <span class="info-value">ابتسام محمد أحمد</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">السن:</span>
+                    <span class="info-value">٤٥ سنة</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">الوظيفة:</span>
+                    <span class="info-value">مدرسة رياضيات</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">الحالة الاجتماعية:</span>
+                    <span class="info-value">متزوجة، عندها بنتين (١٨ و ١٦ سنة)</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">التدخين:</span>
+                    <span class="info-value">لا تدخن</span>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <p>🩺 الشكوى الرئيسية: حرقة في نصف الصدر من حوالي  شهور</p>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">💬 إذا طلب منك الحديث أكثر عن مشكلتك، سوف تقولين:</div>
+                <ul>
+                    <li>أنت عندك حموضة بفم المعدة وحرقة في نصف صدرك من ستة أشهر.</li>
+                    <li>في البداية كانت الحموضة وحرقة في الصدر بعد الوجبات الدسمة ممكن مرة أو مرتين في الأسبوع.</li>
+                    <li>خلال الشهر الماضي، والأعراض تحدث يومياً.</li>
+                    <li>أنت بقى لك شهرين ماشية على علاج وصفه لك دكتور.</li>
+                    <li>الحرقة في الصدر ده كان بيجيلك زمان مع الحمل فقط.</li>
+                </ul>
+            </div>
+            
+            <div class="section warning-section">
+                <div class="section-title warning">⚠️ لا تعطي المعلومات التالية مالم يتم سؤالك عن:</div>
+                <ul>
+                    <li>أنت لا تحبي الأكلات الحارقة وشرب المياه الغازية غير منتظم و لكن قهوة الصباح دى أساسى و الأكل السريع ممكن من وقت للتانى.</li>
+                    <li>الأعراض بتتزاداد سواء مع النشاط أو النفس، ولكن في كثير من الأحيان تسوء عند الانحناء أو الاستلقاء، وحرقة الصدر يكون بعض الأحيان مصحوبا بطعم الحموضة في الفم.</li>
+                    <li>أنت أحيانا بيحكي لما تنامي على ظهرك أو تميلي للأمام.</li>
+                    <li>أنت لا تعاني من اي أمراض أو مشاكل اخري مثل صعوبة البلع، والغثيان، والتقيؤ، آلام في البطن، ومفيش اسهال ولا امساك، ولا يوجد تغيير في لون البراز، ولا دم أحمر مع البراز، أو فقدان الوزن.</li>
+                    <li>أنت توصف لك فوار راني وجسترازول ٠ مرة واحدة في اليوم دواء كده ٤ كبسولة في علبة بلاستك غطاها جامد، كان بريح قبل ذلك كويس لكن حاليا يعمل علي تخفيف الأعراض مؤقتا.</li>
+                    <li>أنت بتاخدي العلاج قبل الأكل بنصف ساعة وكل يوم.</li>
+                    <li>المشكلة لم تؤثر على نومك ولا شغلك والحمد لله ومزاجك كويس.</li>
+                </ul>
+            </div>
+            
+            <div class="section success-section">
+                <div class="section-title success">📝 التاريخ المرضي السابق والدوائي:</div>
+                <ul>
+                    <li>أنت ماعندكيش أي تاريخ مرضي لأمراض مزمنة مثل الضغط العالي أو السكر أو حساسية الصدر أو التهاب شعبي مزمن أو أمراض بالكبد أو أورام.</li>
+                    <li>أنت لم تأخذي أدوية قبل كده لفترات طويلة.</li>
+                    <li>أنت ماعملتيش عمليات قبل كده.</li>
+                </ul>
+            </div>
+            
+            <div class="section success-section">
+                <div class="section-title success">👨‍👩👧 التاريخ العائلي:</div>
+                <ul>
+                    <li>أنت ماعندكيش أي تاريخ عائلي مرضي لأمراض مزمنة مثل الضغط العالي أو السكر أو حساسية الصدر أو التهاب شعبي مزمن أو أمراض بالكبد أو أورام.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
