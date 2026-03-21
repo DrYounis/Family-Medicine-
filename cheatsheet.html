@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Cheat Sheet — Family Medicine Masters</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+        :root {
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+
+        /* Scroll progress */
+        #sp { position: fixed; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg,#7c3aed,#0d9488,#d97706); width: 0%; z-index: 9999; }
+
+        /* Top nav */
+        .top-nav { background: #0f172a; color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; position: sticky; top: 0; z-index: 100; }
+        .top-nav h2 { font-size: 0.9em; font-weight: 800; letter-spacing: 0.04em; }
+        .top-nav-links { display: flex; gap: 6px; flex-wrap: wrap; }
+        .top-nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.75em; font-weight: 600; padding: 4px 10px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.15s; }
+        .top-nav-links a:hover { background: rgba(255,255,255,0.1); color: white; }
+        .print-btn { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.8); font-family: 'Inter',sans-serif; font-size: 0.75em; font-weight: 700; padding: 5px 14px; border-radius: 6px; cursor: pointer; }
+        .print-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+
+        /* Filter tabs */
+        .filter-bar { background: white; border-bottom: 2px solid var(--border); padding: 10px 20px; display: flex; gap: 6px; flex-wrap: wrap; overflow-x: auto; }
+        .filter-tab { padding: 5px 14px; border-radius: 20px; font-weight: 700; font-size: 0.78em; cursor: pointer; border: 2px solid var(--border); background: white; color: var(--muted); white-space: nowrap; transition: all 0.15s; }
+        .filter-tab:hover { border-color: #7c3aed; color: #7c3aed; }
+        .filter-tab.active { background: #7c3aed; border-color: #7c3aed; color: white; }
+
+        /* Layout */
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px 16px 80px; }
+        .section { margin-bottom: 32px; }
+        .section-title {
+            font-size: 0.7em; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--muted); margin-bottom: 12px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .section-title::after { content: ''; flex: 1; height: 2px; background: var(--border); }
+        .section-title .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+        /* Card grid */
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+        .card-grid.wide { grid-template-columns: 1fr; }
+        .card-grid.two { grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); }
+
+        /* Cheat card */
+        .cc {
+            background: var(--card);
+            border-radius: 12px;
+            border: 1.5px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .cc-head {
+            padding: 10px 14px 8px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .cc-head h3 { font-size: 0.85em; font-weight: 800; }
+        .cc-body { padding: 10px 14px 14px; }
+
+        /* Mnemonic block */
+        .mn {
+            background: linear-gradient(135deg,#f5f3ff,#ede9fe);
+            border: 1.5px solid #c4b5fd;
+            border-radius: 10px;
+            padding: 10px 13px;
+            margin-bottom: 10px;
+        }
+        .mn-label { font-size: 0.68em; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #6d28d9; margin-bottom: 6px; }
+        .mn-word { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+        .ml { background: #7c3aed; color: white; border-radius: 6px; padding: 4px 10px; font-size: 0.9em; font-weight: 900; min-width: 30px; text-align: center; }
+        .mi { display: flex; gap: 8px; padding: 3px 0; border-bottom: 1px solid #ddd6fe; font-size: 0.88em; }
+        .mi:last-child { border-bottom: none; }
+        .mk { color: #7c3aed; font-weight: 800; min-width: 16px; }
+
+        /* Key-value list */
+        .kv-list { list-style: none; }
+        .kv-list li { display: flex; gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--border); font-size: 0.88em; line-height: 1.5; }
+        .kv-list li:last-child { border-bottom: none; }
+        .kv-label { font-weight: 700; min-width: 130px; flex-shrink: 0; color: var(--muted); font-size: 0.9em; }
+        .kv-val { color: var(--text); }
+
+        /* Comparison table */
+        .comp-table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
+        .comp-table th { background: #1e293b; color: white; padding: 7px 10px; text-align: left; font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.04em; }
+        .comp-table th:first-child { border-radius: 6px 0 0 0; }
+        .comp-table th:last-child { border-radius: 0 6px 0 0; }
+        .comp-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .comp-table tr:last-child td { border-bottom: none; }
+        .comp-table tr:hover td { background: #f8fafc; }
+
+        /* Pill tags */
+        .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+        .tag { padding: 3px 9px; border-radius: 12px; font-size: 0.75em; font-weight: 700; }
+
+        /* Color themes per section */
+        .theme-purple .cc-head { background: #f5f3ff; border-bottom: 2px solid #ddd6fe; }
+        .theme-purple .cc-head h3 { color: #6d28d9; }
+        .theme-purple .section-title .dot { background: #7c3aed; }
+
+        .theme-teal .cc-head { background: #f0fdfa; border-bottom: 2px solid #99f6e4; }
+        .theme-teal .cc-head h3 { color: #0d9488; }
+        .theme-teal .section-title .dot { background: #0d9488; }
+
+        .theme-blue .cc-head { background: #eff6ff; border-bottom: 2px solid #bfdbfe; }
+        .theme-blue .cc-head h3 { color: #1d4ed8; }
+        .theme-blue .section-title .dot { background: #1d4ed8; }
+
+        .theme-red .cc-head { background: #fef2f2; border-bottom: 2px solid #fecaca; }
+        .theme-red .cc-head h3 { color: #dc2626; }
+        .theme-red .section-title .dot { background: #dc2626; }
+
+        .theme-green .cc-head { background: #f0fdf4; border-bottom: 2px solid #bbf7d0; }
+        .theme-green .cc-head h3 { color: #16a34a; }
+        .theme-green .section-title .dot { background: #16a34a; }
+
+        .theme-amber .cc-head { background: #fffbeb; border-bottom: 2px solid #fde68a; }
+        .theme-amber .cc-head h3 { color: #d97706; }
+        .theme-amber .section-title .dot { background: #d97706; }
+
+        .theme-pink .cc-head { background: #fdf4ff; border-bottom: 2px solid #e9d5ff; }
+        .theme-pink .cc-head h3 { color: #a21caf; }
+        .theme-pink .section-title .dot { background: #a21caf; }
+
+        .theme-slate .cc-head { background: #f8fafc; border-bottom: 2px solid #e2e8f0; }
+        .theme-slate .cc-head h3 { color: #475569; }
+        .theme-slate .section-title .dot { background: #475569; }
+
+        /* Alert box inline */
+        .alert { border-radius: 8px; padding: 8px 12px; margin-top: 8px; font-size: 0.85em; line-height: 1.5; }
+        .alert-red { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; }
+        .alert-green { background: #f0fdf4; border: 1px solid #bbf7d0; color: #16a34a; }
+        .alert-amber { background: #fffbeb; border: 1px solid #fde68a; color: #d97706; }
+        .alert-blue { background: #eff6ff; border: 1px solid #bfdbfe; color: #1d4ed8; }
+        .alert-purple { background: #f5f3ff; border: 1px solid #ddd6fe; color: #7c3aed; }
+
+        /* Scroll top */
+        #st { position: fixed; bottom: 24px; right: 20px; background: #7c3aed; color: white; border: none; border-radius: 50%; width: 42px; height: 42px; font-size: 1.1em; cursor: pointer; box-shadow: 0 4px 14px rgba(124,58,237,0.4); opacity: 0; transition: opacity 0.3s; z-index: 200; }
+        #st.v { opacity: 1; }
+
+        /* Hidden section */
+        .section.hidden { display: none; }
+
+        @media print {
+            #sp, #st, .top-nav, .filter-bar, .print-btn { display: none !important; }
+            body { background: white; font-size: 11px; }
+            .cc { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+            .section { break-inside: avoid; }
+        }
+        @media (max-width: 600px) {
+            .card-grid { grid-template-columns: 1fr; }
+            .card-grid.two { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="sp"></div>
+
+<!-- Top nav -->
+<div class="top-nav">
+    <h2>📚 Family Medicine Masters — Master Cheat Sheet</h2>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <div class="top-nav-links">
+            <a href="index.html">MCQs</a>
+            <a href="osce.html">OSCE</a>
+            <a href="jvp_examination.html">JVP</a>
+            <a href="gerd_approach_arabic.html">GERD</a>
+        </div>
+        <button class="print-btn" onclick="window.print()">🖨 Print All</button>
+    </div>
+</div>
+
+<!-- Filter tabs -->
+<div class="filter-bar">
+    <button class="filter-tab active" onclick="filterSection('all')">All Topics</button>
+    <button class="filter-tab" onclick="filterSection('communication')">Communication</button>
+    <button class="filter-tab" onclick="filterSection('jvp')">JVP</button>
+    <button class="filter-tab" onclick="filterSection('gerd')">GERD</button>
+    <button class="filter-tab" onclick="filterSection('cardiology')">Cardiology</button>
+    <button class="filter-tab" onclick="filterSection('respiratory')">Respiratory</button>
+    <button class="filter-tab" onclick="filterSection('msk')">MSK</button>
+    <button class="filter-tab" onclick="filterSection('pediatrics')">Pediatrics</button>
+    <button class="filter-tab" onclick="filterSection('dermatology')">Dermatology</button>
+    <button class="filter-tab" onclick="filterSection('internal')">Internal Med</button>
+    <button class="filter-tab" onclick="filterSection('emergency')">Emergency</button>
+    <button class="filter-tab" onclick="filterSection('prevention')">Prevention</button>
+    <button class="filter-tab" onclick="filterSection('ethics')">Ethics</button>
+</div>
+
+<div class="container">
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- COMMUNICATION & CONSULTATION MODELS -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-section="communication">
+    <div class="section-title theme-purple"><div class="dot" style="background:#7c3aed;"></div>Communication & Consultation Models</div>
+    <div class="card-grid two">
+
+        <div class="cc theme-purple">
+            <div class="cc-head"><h3>🗣 Consultation Models</h3></div>
+            <div class="cc-body">
+                <ul class="kv-list">
+                    <li><span class="kv-label">Byme & Long</span><span class="kv-val">Doctor-centred → patient-centred continuum; 6 phases of consultation</span></li>
+                    <li><span class="kv-label">Calgary-Cambridge</span><span class="kv-val">Structured guide; parallel tasks — gathering info + building relationship simultaneously</span></li>
+                    <li><span class="kv-label">Pendleton's</span><span class="kv-val">Patient is an expert; consultation = <strong>meeting between 2 experts</strong></span></li>
+                    <li><span class="kv-label">SPIKES</span><span class="kv-val">Breaking bad news: Setting, Perception, Invitation, Knowledge, Emotions, Strategy</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="cc theme-purple">
+            <div class="cc-head"><h3>🎯 ICE — Patient-Centred Approach</h3></div>
+            <div class="cc-body">
+                <div class="mn">
+                    <div class="mn-label">Mnemonic — ICE</div>
+                    <div class="mn-word"><span class="ml">I</span><span class="ml">C</span><span class="ml">E</span></div>
+                    <div class="mi"><span class="mk">I</span><span><strong>Ideas</strong> — "What do you think is causing your problem?"</span></div>
+                    <div class="mi"><span class="mk">C</span><span><strong>Concerns</strong> — "What worries you most about this?"</span></div>
+                    <div class="mi"><span class="mk">E</span><span><strong>Expectations</strong> — "What were you hoping we could do today?"</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cc theme-purple">
+            <div class="cc-head"><h3>📢 SPIKES — Breaking Bad News</h3></div>
+            <div class="cc-body">
+                <div class="mn">
+                    <div class="mn-label">Mnemonic — SPIKES</div>
+                    <div class="mn-word"><span class="ml">S</span><span class="ml">P</span><span class="ml">I</span><span class="ml">K</span><span class="ml">E</span><span class="ml">S</span></div>
+                    <div class="mi"><span class="mk">S</span><span><strong>Setting</strong> — private, tissue box, sit at same level</span></div>
+                    <div class="mi"><span class="mk">P</span><span><strong>Perception</strong> — "What do you already know about your condition?"</span></div>
+                    <div class="mi"><span class="mk">I</span><span><strong>Invitation</strong> — "How much information would you like?"</span></div>
+                    <div class="mi"><span class="mk">K</span><span><strong>Knowledge</strong> — fire a "warning shot" then deliver news simply</span></div>
+                    <div class="mi"><span class="mk">E</span><span><strong>Emotions</strong> — acknowledge with NURSE (Name, Understand, Respect, Support, Explore)</span></div>
+                    <div class="mi"><span class="mk">S</span><span><strong>Strategy/Summary</strong> — plan, hope, follow-up</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cc theme-purple">
+            <div class="cc-head"><h3>🧠 Clinical Reasoning Styles</h3></div>
+            <div class="cc-body">
+                <ul class="kv-list">
+                    <li><span class="kv-label">Pattern Recognition</span><span class="kv-val">Expert shortcut — immediate Dx from presentation. Used in primary care.</span></li>
+                    <li><span class="kv-label">Hypothetico-Deductive</span><span class="kv-val"><strong>Most common in hospitals</strong> — generate hypotheses → test them</span></li>
+                    <li><span class="kv-label">Algorithmic</span><span class="kv-val">Step-by-step decision trees — used in protocols/guidelines</span></li>
+                    <li><span class="kv-label">Exhaustive</span><span class="kv-val">List all possibilities then eliminate — used by students</span></li>
+                </ul>
+                <div class="alert alert-amber" style="margin-top:8px;"><strong>⭐ Exam:</strong> Most common in hospitals = <strong>Hypothetico-Deductive</strong></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- JVP -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-section="jvp">
+    <div class="section-title theme-teal"><div class="dot" style="background:#0d9488;"></div>Jugular Venous Pressure (JVP)</div>
+    <div class="card-grid two">
+
+        <div class="cc theme-teal">
+            <div class="cc-head"><h3>📐 Examination Quick Facts</h3></div>
+            <div class="cc-body">
+                <ul class="kv-list">
+                    <li><span class="kv-label">Patient angle</span><span class="kv-val">45° reclined; head 10–20° to left</span></li>
+                    <li><span class="kv-label">Reference point</span><span class="kv-val">Sternal angle (angle of Louis) + 5 cm → CVP</span></li>
+                    <li><span class="kv-label">Normal JVP</span><span class="kv-val">6–8 cm H₂O (1–3 cm above sternal angle)</span></li>
+                    <li><span class="kv-label">&lt;5 cm</span><span class="kv-val">Hypovolaemia</span></li>
+                    <li><span class="kv-label">&gt;9 cm</span><span class="kv-val">Elevated — impaired cardiac filling</span></li>
+                    <li><span class="kv-label">Vein used</span><span class="kv-val">Internal jugular (preferred) or external jugular</span></li>
+                    <li><span class="kv-label">JVP vs Carotid</span><span class="kv-val">JVP = biphasic, non-palpable, obliterated by pressure, decreases with inspiration</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="cc theme-teal">
+            <div class="cc-head"><h3>〰️ JVP Waveform</h3></div>
+            <div class="cc-body">
+                <div class="mn">
+                    <div class="mn-label">Mnemonic — "a c x v y"</div>
+                    <div class="mn-word"><span class="ml">a</span><span class="ml">c</span><span class="ml">x</span><span class="ml">v</span><span class="ml">y</span></div>
+                    <div class="mi"><span class="mk">a</span><span><strong>A</strong>trial contraction → ends with carotid pulse</span></div>
+                    <div class="mi"><span class="mk">c</span><span>tri<strong>C</strong>uspid valve bulges toward RA during RV contraction</span></div>
+                    <div class="mi"><span class="mk">x</span><span>atrial rela<strong>X</strong>ation + RV pulls TV down (x' = RV contractility)</span></div>
+                    <div class="mi"><span class="mk">v</span><span><strong>V</strong>enous filling — TV closed, blood builds up</span></div>
+                    <div class="mi"><span class="mk">y</span><span>rapid empt<strong>Y</strong>ing when TV opens</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cc theme-teal">
+            <div class="cc-head"><h3>🔴 6 Causes of Elevated JVP</h3></div>
+            <div class="cc-body">
+                <div class="mn">
+                    <div class="mn-label">Mnemonic — "RF TC SA"</div>
+                    <div class="mn-word"><span class="ml">R</span><span class="ml">F</span><span class="ml">T</span><span class="ml">C</span><span class="ml">S</span><span class="ml">A</span></div>
+                    <div class="mi"><span class="mk">R</span><span><strong>Right heart failure</strong> — most common; often 2° to LHF</span></div>
+                    <div class="mi"><span class="mk">F</span><span><strong>Fluid overload</strong> — excess intake or renal failure</span></div>
+                    <div class="mi"><span class="mk">T</span><span><strong>Tricuspid regurgitation</strong> — massive v wave; no x descent</span></div>
+                    <div class="mi"><span class="mk">C</span><span><strong>Complete heart block</strong> — AV dissociation → cannon a waves</span></div>
+                    <div class="mi"><span class="mk">S</span><span><strong>SVC obstruction</strong> — elevated WITHOUT pulsation; HJR negative</span></div>
+                    <div class="mi"><span class="mk">A</span><span><strong>Atrial fibrillation</strong> — no atrial systole → absent a wave</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cc theme-teal">
+            <div class="cc-head"><h3>💡 Waveform Abnormalities</h3></div>
+            <div class="cc-body">
+                <table class="comp-table">
+                    <thead><tr><th>Finding</th><th>Cause</th></tr></thead>
+                    <tbody>
+                        <tr><td>Absent a wave</td><td>Atrial fibrillation</td></tr>
+                        <tr><td>Large a wave</td><td>Tricuspid stenosis, RHF, Pulm. HTN</td></tr>
+                        <tr><td>Cannon a wave</td><td>3° heart block, VT, ectopics</td></tr>
+                        <tr><td>Large v wave (c-v)</td><td>Tricuspid regurgitation</td></tr>
+                        <tr><td>Absent x descent</td><td>Tricuspid regurgitation</td></tr>
+                        <tr><td>Prominent x descent</td><td>Constrictive pericarditis (Friedreich's)</td></tr>
+                        <tr><td>Slow y descent</td><td>Tricuspid stenosis, Cardiac tamponade</td></tr>
+                        <tr><td>No pulsation</td><td>SVC obstruction</td></tr>
+                    </tbody>
+                </table>
+                <div class="alert alert-purple" style="margin-top:8px;"><strong>Kussmaul's sign:</strong> JVP ↑ with inspiration → CROP: Constrictive pericarditis, Restrictive CMP, Obstruction/RHF, Pericardial effusion</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- GERD -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-section="gerd">
+    <div class="section-title theme-amber"><div class="dot" style="background:#d97706;"></div>GERD</div>
+    <div class="card-grid two">
+
+        <div class="cc theme-amber">
+            <div class="cc-head"><h3>⚡ Aggravating Factors</h3></div>
+            <div class="cc-body">
+                <div class="mn">
+                    <div class="mn-label">Mnemonic — "FAT CLOCS"</div>
+                    <div class="mn-word"><span class="ml">F</span><span class="ml">A</span><span class="ml">T</span><span class="ml">C</span><span class="ml">L</span><span class="ml">O</span><span class="ml">C</span><span class="ml">S</span></div>
+                    <div class="mi"><span class="mk">F</span><span><strong>Fatty/fried</strong> foods</span></div>
+                    <div class="mi"><span class="mk">A</span><span><strong>Alcohol</strong> and NSAIDs</span></div>
+                    <div class="mi"><span class="mk">T</span><span><strong>Tobacco</strong> (smoking)</span></div>
+                    <div class="mi"><span class="mk">C</span><span><strong>Coffee</strong>, chocolate, carbonated drinks</span></div>
+                    <div class="mi"><span class="mk">L</span><span><strong>Lying down</strong> after meals (&lt;3 hrs)</span></div>
+                    <div class="mi"><span class="mk">O</span><span><strong>Obesity</strong></span></div>
+                    <div class="mi"><span class="mk">C</span><span><strong>Calcium channel blockers</strong> + large meals</span></div>
+                    <div class="mi"><span class="mk">S</span><span><strong>Spicy</strong> food + tight clothing</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cc theme-amber">
+            <div class="cc-head"><h3>🚨 Red Flags (ALARM Signs)</h3></div>
+            <div class="cc-body">
+                <div class="mn">
+                    <div class="mn-label">Mnemonic — ALARM → refer for endoscopy</div>
+                    <div class="mn-word"><span class="ml">A</span><span class="ml">L</span><span class="ml">A</span><span class="ml">R</span><span class="ml">M</span></div>
+                    <div class="mi"><span class="mk">A</span><span><strong>Anaemia</strong> (iron deficiency)</span></div>
+                    <div class="mi"><span class="mk">L</span><span><strong>Loss of weight</strong> (unintentional)</span></div>
+                    <div class="mi"><span class="mk">A</span><span><strong>Anorexia/persistent vomiting</strong></span></div>
+                    <div class="mi"><span class="mk">R</span><span><strong>Recent onset</strong> in patient &gt;55 years</span></div>
+                    <div class="mi"><span class="mk">M</span><span><strong>Melaena/haematemesis</strong> (GI bleeding)</span></div>
+                </div>
+                <div class="alert alert-red">+ Dysphagia / odynophagia = refer immediately</div>
+            </div>
+        </div>
+
+        <div class="cc theme-amber">
+            <div class="cc-head"><h3>💊 Treatment & Lifestyle</h3></div>
+            <div class="cc-body">
+                <ul class="kv-list">
+                    <li><span class="kv-label">PPI (first-line)</span><span class="kv-val">Omeprazole/Pantoprazole 20–40 mg <strong>30 min before meals</strong>, 4–8 weeks</span></li>
+                    <li><span class="kv-label">Head of bed</span><span class="kv-val">Raise 15–20 cm (sleep left lateral)</span></li>
+                    <li><span class="kv-label">Meals</span><span class="kv-val">Small frequent; avoid food 3 hrs before bed</span></li>
+                    <li><span class="kv-label">Weight loss</span><span class="kv-val">Most effective lifestyle intervention</span></li>
+                    <li><span class="kv-label">Atypical features</span><span class="kv-val">Chronic cough, laryngitis, hoarseness, asthma-like, dental erosion</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="cc theme-amber">
+            <div class="cc-head"><h3>🔍 GERD vs Peptic Ulcer vs Cardiac</h3></div>
+            <div class="cc-body">
+                <table class="comp-table">
+                    <thead><tr><th></th><th>GERD</th><th>PU</th><th>Cardiac</th></tr></thead>
+                    <tbody>
+                        <tr><td>Character</td><td>Burning, rising</td><td>Epigastric ache</td><td>Crushing/pressure</td></tr>
+                        <tr><td>Radiation</td><td>Up to throat</td><td>None/back</td><td>Left arm/jaw</td></tr>
+                        <tr><td>Better with</td><td>Standing, antacid</td><td>Food (DU)</td><td>GTN, rest</td></tr>
+                        <tr><td>Worse with</td><td>Lying, bending</td><td>Hunger (DU)</td><td>Exertion</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- CARDIOLOGY -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-section="cardiology">
+    <div class="section-title theme-red"><div class="dot" style="background:#dc2626;"></div>Cardiology</div>
+    <div class="card-grid">
+
+        <div class="cc theme-red">
+            <div class="cc-head"><h3>🫀 Cor Pulmonale</h3></div>
+            <div class="cc-body">
+                <ul class="kv-list">
+                    <li><span class="kv-label">Definition</span><span class="kv-val">RV failure caused by <strong>pulmonary disease</strong> (not primary cardiac)</span></li>
+                    <li><span class="kv-label">Classic case</span><span class="kv-val">Heavy smoker + SOB + foot oedema + no LHF history</span></li>
+                    <li><span class="kv-label">ECG</span><span class="kv-val">Right axis deviation + RBBB</span></li>
+                    <li><span class="kv-label">Echo</span><span class="kv-val">Normal LV; hypertrophied RV; paradoxical IVS bulging</span></li>
+                    <li><span class="kv-label">Cause</span><span class="kv-val">COPD most common; also PE, pulm. fibrosis, OSA</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="cc theme-red">
+            <div class="cc-head"><h3>💊 Hypertension — Drug Choice (ACC/AHA)</h3></div>
+            <div class="cc-body">
+                <div class="mn">
+                    <div class="mn-label">Mnemonic — A B C D</div>
+                    <div class="mn-word"><span class="ml">A</span><span class="ml">B</span><span class="ml">C</span><span class="ml">D</span></div>
+                    <div class="mi"><span class="mk">A</span><span><strong>ACE inhibitor / ARB</strong> — DM, CKD, proteinuria, heart failure</span></div>
+                    <div class="mi"><span class="mk">B</span><span><strong>Beta-blocker</strong> — post-MI, heart failure, angina, AF</span></div>
+                    <div class="mi"><span class="mk">C</span><span><strong>Calcium channel blocker</strong> — elderly, Afro-Caribbean</span></div>
+                    <div class="mi"><span class="mk">D</span><span><strong>Diuretic (thiazide)</strong> — elderly, Afro-Caribbean, isolated systolic</span></div>
+                </div>
+                <div class="alert alert-blue"><strong>Normal labs + isolated HTN → Lisinopril/HCTZ 10/12.5 mg daily</strong> (ACC/AHA guideline)</div>
+            </div>
+        </div>
+
+        <div class="cc theme-red">
+            <div class="cc-head"><h3>🩺 Polymyalgia Rheumatica (PMR)</h3></div>
+            <div class="cc-body">
+                <ul class="kv-list">
+                    <li><span class="kv-label">Age</span><span class="kv-val">&gt;50 yrs (usually &gt;65)</span></li>
+                    <li><span class="kv-label">Symptoms</span><span class="kv-val">Bilateral shoulder + hip girdle pain, morning stiffness &gt;45 min, weight loss, fatigue</span></li>
+                    <li><span class="kv-label">Labs</span><span class="kv-val">ESR &gt;50 (often &gt;100), CRP elevated; <strong>CK normal</strong> (unlike polymyositis)</span></li>
+                    <li><span class="kv-label">Treatment</span><span class="kv-val">Low-dose <strong>Prednisolone</strong> — dramatic response confirms diagnosis</span></li>
+                    <li><span class="kv-label">Vs. polymyositis</span><span class="kv-val">PMR: no muscle weakness, CK normal. Polymyositis: weakness + ↑CK</span></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- RESPIRATORY -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-section="respiratory">
+    <div class="section-title theme-blue"><div class="dot" style="background:#1d4ed8;"></div>Respiratory</div>
+    <div class="card-grid">
+
+        <div class="cc theme-blue">
+            <div class="cc-head"><h3>🫁 COPD — GOLD Staging</h3></div>
+            <div class="cc-body">
+                <table class="comp-table">
+                    <thead><tr><th>Stage</th><th>Severity</th><th>FEV1% predicted</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>GOLD 1</strong></td><td>Mild</td><td>≥80%</td></tr>
+                        <tr><td><strong>GOLD 2</strong></td><td>Moderate</td><td>50–79%</td></tr>
+                        <tr><td><strong>GOLD 3</strong></td><td>Severe</td><td>30–49%</td></tr>
+                        <tr><td><strong>GOLD 4</strong></td><td>Very Severe</td><td>&lt;30%</td></tr>
+                    </tbody>
+                </table>
+                <div class="alert alert-blue" style="margin-top:8px;"><strong>Diagnosis requires:</strong> Post-bronchodilator FEV1/FVC &lt;0.70</div>
+                <div class="alert alert-amber" style="margin-top:6px;"><strong>Exacerbation Rx:</strong> Prednisolone <strong>40 mg × 5 days</strong> + bronchodilators + antibiotics if purulent sputum</div>
+            </div>
+        </div>
+
+        <div class="cc theme-blue">
+            <div class="cc-head"><h3>🌬️ Spirometry Interpretation</h3></div>
+            <div class="cc-body">
+                <table class="comp-table">
+                    <thead><tr><th>Pattern</th><th>FEV1/FVC</th><th>FVC</th><th>Diagnosis</th></tr></thead>
+                    <tbody>
+                        <tr><td>Obstructive</td><td>&lt;0.70</td><td>Normal/↓</td><td>COPD, Asthma</td></tr>
+                        <tr><td>Restrictive</td><td>Normal/↑</td><td>↓</td><td>Fibrosis, kyphosis</td></tr>
+                        <tr><td>Mixed</td><td>&lt;0.70</td><td>↓</td><td>Severe COPD</td></tr>
+                    </tbody>
+                </table>
+                <div class="alert alert-blue" style="margin-top:8px;"><strong>Asthma workup:</strong> Spirometry first. If normal → Methacholine challenge test (bronchial provocation)</div>
+            </div>
+        </div>
+
+        <div class="cc theme-blue">
+            <div class="cc-head"><h3>💨 Asthma — Step-Up Therapy</h3></div>
+            <div class="cc-body">
+                <ul class="kv-list">
+                    <li><span class="kv-label">Step 1</span><span class="kv-val">SABA (Salbutamol) PRN — mild intermittent</span></li>
+                    <li><span class="kv-label">Step 2</span><span class="kv-val">Low-dose ICS (Beclomethasone) + SABA</span></li>
+                    <li><span class="kv-label">Step 3</span><span class="kv-val">ICS + <strong>LABA (Salmeterol)</strong> — add when step 2 fails</span></li>
+                    <li><span class="kv-label">Step 4</span><span class="kv-val">High-dose ICS + LABA ± LTRA</span></li>
+                    <li><span class="kv-label">Step 5</span><span class="kv-val">Specialist referral + oral steroids</span></li>
+                </ul>
+                <div class="alert alert-amber"><strong>Exam pearl:</strong> "Not controlled on low-dose ICS + SABA" → Add <strong>Salmeterol (LABA)</strong></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- MSK -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-section="msk">
+    <div class="section-title theme-slate"><div class="dot" style="background:#475569;"></div>Musculoskeletal</div>
+    <div class="card-grid">
+
+        <div class="cc theme-slate">
+            <div class="cc-head"><h3>🦴 Scaphoid Fracture</h3></div>
+            <div class="cc-body">
+                <ul class="kv-list">
+                    <li><span class="kv-label">Mechanism</span><span class="kv-val">Fall on outstretched hand (FOOSH)</span></li>
+                    <li><span class="kv-label">Sign</span><span class="kv-val"><strong>Anatomical snuffbox tenderness</strong> — pathognomonic</span></li>
+                    <li><span class="kv-label">X-ray</span><span class="kv-val">May be normal initially (fracture not visible for 10–14 days)</span></li>
+                    <li><span class="kv-label">Management</span><span class="kv-val"><strong>Thumb Spica cast + repeat X-ray in 2–3 weeks</strong> (treat as scaphoid Fx until proven otherwise)</span></li>
+                    <li><span class="kv-label">Complication</span><span class="kv-val">Avascular necrosis (blood supply enters distally)</span></li>
+                </ul>
+                <div class="alert alert-red"><strong>Never say "no fracture, go home."</strong> Missed scaphoid = AVN.</div>
+            </div>
+        </div>
+
+        <div class="cc theme-slate">
+            <div class="cc-head"><h3>🦵 Knee — Ottawa Rules (X-ray needed if…)</h3></div>
+            <div class="cc-body">
+                <div class="mn">
+                    <div class="mn-label">Mnemonic — "FIFE Walk"</div>
+                    <div class="mn-word"><span class="ml">F</span><span class="ml">I</span><span class="ml">F</span><span class="ml">E</span></div>
+                    <div class="mi"><span class="mk">F</span><span>Age ≥55 (or &lt;18 with growth plates)</span></div>
+                    <div class="mi"><span class="mk">I</span><span>Isolated patellar tenderness (no bony tenderness elsewhere)</span></div>
+                    <div class="mi"><span class="mk">F</span><span>Fibular head tenderness</span></div>
+                    <div class="mi"><span class="mk">E</span><span>Extension — unable to flex to 90°; unable to walk 4 steps</span></div>
+                </div>
+                <div class="alert alert-blue">Obese patient, fall on ice, can flex &gt;90°, walks with limp → <strong>X-ray indicated</strong> (age ≥55)</div>
+            </div>
+        </div>
+
+        <div class="cc theme-slate">
+            <div class="cc-head"><h3>🦷 Other MSK Pearls</h3></div>
+            <div class="cc-body">
+                <ul class="kv-list">
+                    <li><span class="kv-label">Lateral hip pain</span><span class="kv-val">Not responding to meds/PT → <strong>Gluteus medius tendon tear</strong></span></li>
+                    <li><span class="kv-label">Midfoot pain + normal X-ray</span><span class="kv-val">Non-weight bearing + CT/MRI</span></li>
+                    <li><span class="kv-label">Shortened external rotation (elderly)</span><span class="kv-val">Hip/pelvis radiograph → hip fracture</span></li>
+                    <li><span class="kv-label">Necrotizing fasciitis (DM)</span><span class="kv-val">Most likely preceded by <strong>penetrating trauma</strong></span></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PEDIATRICS -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-section="pediatrics">
+    <div class="section-title theme-green"><div class="dot" style="background:#16a34a;"></div>Pediatrics</div>
+    <div class="card-grid">
+
+        <div class="cc theme-green">
+            <div class="cc-head"><h3>🧒 Classic Pediatric Presentations</h3></div>
+            <div class="cc-body">
+                <table class="comp-table">
+                    <thead><tr><th>Presentation</th><th>Diagnosis</th><th>Key Fact</th></tr></thead>
+                    <tbody>
+                        <tr><td>Slapped cheek rash, low fever</td><td><strong>Parvovirus B19</strong> (Fifth disease)</td><td>Rash appears as fever resolves</td></tr>
+                        <tr><td>Hair broken above scalp, hyphae, pruritic patches</td><td><strong>Tinea capitis</strong></td><td>Oral antifungals — topical cannot penetrate hair shaft</td></tr>
+                        <tr><td>Herald patch → cleavage line rash</td><td><strong>Pityriasis rosea</strong></td><td>Self-limiting, Christmas tree pattern</td></tr>
+                        <tr><td>8yo, abdominal pain, intussusception confirmed</td><td>Meckel's diverticulum</td><td>Most common anatomic GI anomaly</td></tr>
+                        <tr><td>Barky cough, stridor, fever 38.2</td><td>Croup (Laryngotracheobronchitis)</td><td>Oral dexamethasone</td></tr>
+                        <tr><td>Ear pain, Temp 40°C, cold history (18 months)</td><td>Acute otitis media</td><td>Paracetamol + Amoxicillin 5 days</td></tr>
+                        <tr><td>Nocturnal anal itching (4yo)</td><td>Pinworms (Enterobius)</td><td>Albendazole 400 mg × 1, repeat in 2 weeks</td></tr>
+                        <tr><td>Nocturnal enuresis, alarm failed (7yo)</td><td>Primary enuresis</td><td>Desmopressin</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="cc theme-green">
+            <div class="cc-head"><h3>📏 Developmental Milestones — Red Flags</h3></div>
+            <div class="cc-body">
+                <ul class="kv-list">
+                    <li><span class="kv-label">Not walking by 18 months</span><span class="kv-val">Refer to pediatrician</span></li>
+                    <li><span class="kv-label">MUAC &lt;115 mm (18 months)</span><span class="kv-val">Malnutrition red flag</span></li>
+                    <li><span class="kv-label">Short stature (bone age = chron. age)</span><span class="kv-val">Genetic short stature (familial)</span></li>
+                    <li><span class="kv-label">Obese 12yo, leg pain at night, no limp</span><span class="kv-val">Growing pains</span></li>
+                </ul>
+                <div class="alert alert-amber" style="margin-top:8px;"><strong>Hypoglycaemia (T1DM):</strong> 15g carbs → recheck in 15 min → if still low → repeat 15g. "15–15 rule"</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- DERMATOLOGY -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-section="dermatology">
+    <div class="section-title theme-pink"><div class="dot" style="background:#a21caf;"></div>Dermatology</div>
+    <div class="card-grid">
+
+        <div class="cc theme-pink">
+            <div class="cc-head"><h3>🧴 Skin Condition Quick Reference</h3></div>
+            <div class="cc-body">
+                <table class="comp-table">
+                    <thead><tr><th>Condition</th><th>Key Feature</th><th>Treatment</th></tr></thead>
+                    <tbody>
+                        <tr><td>Tinea capitis</td><td>Broken hair shafts + hyphae on scraping</td><td><strong>Oral antifungals</strong> (not topical)</td></tr>
+                        <tr><td>Pityriasis rosea</td><td>Herald patch → follow cleavage lines (Christmas tree)</td><td>Self-limiting; antihistamines for itch</td></tr>
+                        <tr><td>Scabies</td><td>Interdigital burrows, nocturnal itch</td><td>Permethrin cream (whole body)</td></tr>
+                        <tr><td>Bedbugs</td><td>Pruritic papules in clusters, hotel stay</td><td>Remove source; antihistamines</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- INTERNAL MEDICINE -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-section="internal">
+    <div class="section-title theme-blue"><div class="dot" style="background:#0369a1;"></div>Internal Medicine</div>
+    <div class="card-grid">
+
+        <div class="cc theme-blue">
+            <div class="cc-head"><h3>🧪 Adrenal Insufficiency</h3></div>
+            <div class="cc-body">
+                <ul class="kv-list">
+                    <li><span class="kv-label">Presentation</span><span class="kv-val">Fatigue, anorexia, nausea, hypotension, hyperpigmentation</span></li>
+                    <li><span class="kv-label">Screening</span><span class="kv-val">Morning cortisol level (8 AM)</span></li>
+                    <li><span class="kv-label">Confirmatory test</span><span class="kv-val"><strong>ACTH stimulation test</strong> (Synacthen test)</span></li>
+                    <li><span class="kv-label">If low cortisol response → primary AI</span><span class="kv-val">Addison's disease</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="cc theme-blue">
+            <div class="cc-head"><h3>🫀 Primary Biliary Cholangitis (PBC)</h3></div>
+            <div class="cc-body">
+                <ul class="kv-list">
+                    <li><span class="kv-label">Who</span><span class="kv-val">Middle-aged women, fatigue, RUQ pain</span></li>
+                    <li><span class="kv-label">Exam</span><span class="kv-val">Hepatomegaly, xanthomas, jaundice (late)</span></li>
+                    <li><span class="kv-label">Labs</span><span class="kv-val"><strong>↑↑ ALP</strong>, normal ALT/AST, <strong>positive AMA</strong> (anti-mitochondrial Ab)</span></li>
+                    <li><span class="kv-label">Treatment</span><span class="kv-val">Ursodeoxycholic acid (UDCA)</span></li>
+                </ul>
+                <div class="alert alert-blue">ALP ↑ + AMA positive = PBC until proven otherwise</div>
+            </div>
+        </div>
+
+        <div class="cc theme-blue">
+            <div class="cc-head"><h3>🫘 Nephrology Pearls</h3></div>
+            <div class="cc-body">
+                <ul class="kv-list">
+                    <li><span class="kv-label">Low eGFR in bodybuilder</span><span class="kv-val">High muscle mass → ↑ creatinine → falsely lowers eGFR (not true CKD)</span></li>
+                    <li><span class="kv-label">ADPKD screening</span><span class="kv-val"><strong>Ultrasound abdomen</strong> — first line, non-invasive</span></li>
+                    <li><span class="kv-label">Elderly incontinence + bacteriuria</span><span class="kv-val">If asymptomatic → <strong>NO antibiotics</strong>. Treat with scheduled voiding (immobility)</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="cc theme-blue">
+            <div class="cc-head"><h3>🩸 Haematology</h3></div>
+            <div class="cc-body">
+                <ul class="kv-list">
+                    <li><span class="kv-label">Von Willebrand Type 1</span><span class="kv-val">Mild; treat with <strong>Desmopressin (DDAVP)</strong> — releases vWF from endothelium</span></li>
+                    <li><span class="kv-label">Von Willebrand Type 2/3</span><span class="kv-val">Factor VIII + vWF concentrate (DDAVP not effective)</span></li>
+                </ul>
+                <div class="alert alert-amber"><strong>Dental extraction + Type 1 vWD → Desmopressin</strong> given before procedure</div>
+            </div>
+        </div>
+
+        <div class="cc theme-blue">
+            <div class="cc-head"><h3>🔬 Other High-Yield Pearls</h3></div>
+            <div class="cc-body">
+                <ul class="kv-list">
+                    <li><span class="kv-label">Ischemic colitis</span><span class="kv-val">Elderly + bloody diarrhea + severe LLQ pain</span></li>
+                    <li><span class="kv-label">Smoking cessation</span><span class="kv-val">Most effective: <strong>Varenicline + nicotine gum</strong></span></li>
+                    <li><span class="kv-label">Shingrix vaccine</span><span class="kv-val">2 doses recombinant zoster vaccine (preferred even if had live vaccine &gt;5 yrs ago)</span></li>
+                    <li><span class="kv-label">Sea sting (punctuate lesions)</span><span class="kv-val"><strong>Vinegar</strong></span></li>
+                    <li><span class="kv-label">Acoustic neuroma</span><span class="kv-val">Dizziness + unilateral hearing loss + tinnitus + facial numbness</span></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- EMERGENCY -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-section="emergency">
+    <div class="section-title theme-red"><div class="dot" style="background:#b91c1c;"></div>Emergency Medicine</div>
+    <div class="card-grid">
+
+        <div class="cc theme-red">
+            <div class="cc-head"><h3>🚨 CO Poisoning</h3></div>
+            <div class="cc-body">
+                <div class="mn">
+                    <div class="mn-label">Management Mnemonic — "O-HOT"</div>
+                    <div class="mn-word"><span class="ml">O</span><span class="ml">H</span><span class="ml">O</span><span class="ml">T</span></div>
+                    <div class="mi"><span class="mk">O</span><span><strong>100% Oxygen</strong> — first step ALWAYS</span></div>
+                    <div class="mi"><span class="mk">H</span><span><strong>Hyperbaric O₂</strong> — if severe (coma, cardiac, pregnant, carboxyHb &gt;25%)</span></div>
+                    <div class="mi"><span class="mk">O</span><span><strong>Observation</strong> — monitor neurological status</span></div>
+                    <div class="mi"><span class="mk">T</span><span><strong>Transfer</strong> — remove from source immediately</span></div>
+                </div>
+                <div class="alert alert-red"><strong>Pregnant mother</strong> and <strong>child always need hyperbaric O₂</strong> even if asymptomatic (fetal Hb binds CO more avidly)</div>
+            </div>
+        </div>
+
+        <div class="cc theme-red">
+            <div class="cc-head"><h3>⚡ Emergency Quick Hits</h3></div>
+            <div class="cc-body">
+                <ul class="kv-list">
+                    <li><span class="kv-label">Fainting spells (arrhythmia?)</span><span class="kv-val">First investigation: <strong>ECG</strong></span></li>
+                    <li><span class="kv-label">Peripheral vertigo</span><span class="kv-val">Hallpike positive — violent symptoms after latent period</span></li>
+                    <li><span class="kv-label">Ventricular septal bulge + RHF</span><span class="kv-val">Cor pulmonale (paradoxical IVS)</span></li>
+                    <li><span class="kv-label">Pancreatitis cause (radiating to back)</span><span class="kv-val">Biliary tract disease (gallstones) #1</span></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PREVENTION LEVELS -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-section="prevention">
+    <div class="section-title theme-green"><div class="dot" style="background:#15803d;"></div>Levels of Prevention</div>
+    <div class="card-grid">
+
+        <div class="cc theme-green">
+            <div class="cc-head"><h3>🛡️ Prevention Levels</h3></div>
+            <div class="cc-body">
+                <div class="mn">
+                    <div class="mn-label">Mnemonic — "Please See The Quality"</div>
+                    <div class="mn-word"><span class="ml">P</span><span class="ml">S</span><span class="ml">T</span><span class="ml">Q</span></div>
+                    <div class="mi"><span class="mk">P</span><span><strong>Primary</strong> — before disease occurs (vaccines, lifestyle, health education, smoking cessation)</span></div>
+                    <div class="mi"><span class="mk">S</span><span><strong>Secondary</strong> — early detection (screening, BP check, mammography, Pap smear)</span></div>
+                    <div class="mi"><span class="mk">T</span><span><strong>Tertiary</strong> — limit disability after disease established (<strong>cardiac rehab post-MI</strong>, physiotherapy, chemotherapy)</span></div>
+                    <div class="mi"><span class="mk">Q</span><span><strong>Quaternary</strong> — prevent over-medicalization (avoid unnecessary treatments/investigations)</span></div>
+                </div>
+                <div class="alert alert-green"><strong>Cardiac rehab after MI = Tertiary prevention</strong></div>
+            </div>
+        </div>
+
+        <div class="cc theme-green">
+            <div class="cc-head"><h3>🏥 Primary Health Care (PHC) Essentials</h3></div>
+            <div class="cc-body">
+                <div class="mn">
+                    <div class="mn-label">Mnemonic — "TEACH" (Alma Ata 1978)</div>
+                    <div class="mn-word"><span class="ml">T</span><span class="ml">E</span><span class="ml">A</span><span class="ml">C</span><span class="ml">H</span></div>
+                    <div class="mi"><span class="mk">T</span><span><strong>Technology appropriate</strong> to what people can use and afford ← <strong>essential element</strong></span></div>
+                    <div class="mi"><span class="mk">E</span><span><strong>Equitable distribution</strong> of resources</span></div>
+                    <div class="mi"><span class="mk">A</span><span><strong>Appropriate treatment</strong> of common diseases</span></div>
+                    <div class="mi"><span class="mk">C</span><span><strong>Community participation</strong></span></div>
+                    <div class="mi"><span class="mk">H</span><span><strong>Health promotion</strong> and disease prevention</span></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- ETHICS -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-section="ethics">
+    <div class="section-title theme-purple"><div class="dot" style="background:#7c3aed;"></div>Ethics & Practice Management</div>
+    <div class="card-grid">
+
+        <div class="cc theme-purple">
+            <div class="cc-head"><h3>⚖️ Core Ethical Principles</h3></div>
+            <div class="cc-body">
+                <div class="mn">
+                    <div class="mn-label">Mnemonic — JAVA</div>
+                    <div class="mn-word"><span class="ml">J</span><span class="ml">A</span><span class="ml">V</span><span class="ml">A</span></div>
+                    <div class="mi"><span class="mk">J</span><span><strong>Justice</strong> — fair distribution of resources</span></div>
+                    <div class="mi"><span class="mk">A</span><span><strong>Autonomy</strong> — patient's right to decide for themselves</span></div>
+                    <div class="mi"><span class="mk">V</span><span><strong>Veracity</strong> — truthfulness and honesty</span></div>
+                    <div class="mi"><span class="mk">A</span><span>Beneficence + Non-<strong>m</strong>aleficence — do good, do no harm</span></div>
+                </div>
+                <div class="alert alert-purple"><strong>Competent patient refuses life-saving treatment → respect their autonomy</strong></div>
+            </div>
+        </div>
+
+        <div class="cc theme-purple">
+            <div class="cc-head"><h3>👥 Team Development Stages</h3></div>
+            <div class="cc-body">
+                <div class="mn">
+                    <div class="mn-label">Mnemonic — Tuckman's Model: "Forming, Storming, Norming, Performing"</div>
+                    <div class="mn-word"><span class="ml">F</span><span class="ml">S</span><span class="ml">N</span><span class="ml">P</span></div>
+                    <div class="mi"><span class="mk">F</span><span><strong>Forming</strong> — team meets, polite, dependent on leader</span></div>
+                    <div class="mi"><span class="mk">S</span><span><strong>Storming</strong> — conflict, jockeying for position</span></div>
+                    <div class="mi"><span class="mk">N</span><span><strong>Norming</strong> — rules established, team cohesion builds</span></div>
+                    <div class="mi"><span class="mk">P</span><span><strong>Performing</strong> — <strong>operates without supervision</strong>; everyone on same page → cohesive unit</span></div>
+                </div>
+                <div class="alert alert-purple"><strong>Exam pearl:</strong> "No supervision needed + cohesive" = <strong>Performing stage</strong></div>
+            </div>
+        </div>
+
+        <div class="cc theme-purple">
+            <div class="cc-head"><h3>📋 Transtheoretical Model (Behaviour Change)</h3></div>
+            <div class="cc-body">
+                <div class="mn">
+                    <div class="mn-label">Mnemonic — "Pre-Con, Con, Prep, Act, Main"</div>
+                    <div class="mn-word"><span class="ml">PC</span><span class="ml">Co</span><span class="ml">Pr</span><span class="ml">Ac</span><span class="ml">M</span></div>
+                    <div class="mi"><span class="mk">PC</span><span><strong>Pre-contemplation</strong> — not thinking about change</span></div>
+                    <div class="mi"><span class="mk">Co</span><span><strong>Contemplation</strong> — "sometime in the future" → thinking about it</span></div>
+                    <div class="mi"><span class="mk">Pr</span><span><strong>Preparation</strong> — planning to change soon</span></div>
+                    <div class="mi"><span class="mk">Ac</span><span><strong>Action</strong> — actively making change (&lt;6 months)</span></div>
+                    <div class="mi"><span class="mk">M</span><span><strong>Maintenance</strong> — sustained change &gt;6 months</span></div>
+                </div>
+                <div class="alert alert-purple"><strong>"Quit smoking sometime in the future"</strong> = <strong>Contemplation</strong></div>
+            </div>
+        </div>
+
+        <div class="cc theme-purple">
+            <div class="cc-head"><h3>🏃 Management Quick Hits</h3></div>
+            <div class="cc-body">
+                <ul class="kv-list">
+                    <li><span class="kv-label">Low patient satisfaction</span><span class="kv-val">Develop a <strong>strategic action plan</strong> (not ignore, not escalate without planning)</span></li>
+                    <li><span class="kv-label">Prescription error by colleague</span><span class="kv-val">Violates commitment to <strong>quality improvement</strong></span></li>
+                    <li><span class="kv-label">Patient requests wrong specialist</span><span class="kv-val">Empathize + <strong>refer to requested specialist</strong></span></li>
+                    <li><span class="kv-label">Breaking bad news — companion present</span><span class="kv-val">Honor <strong>patient preference relating to privacy</strong></span></li>
+                    <li><span class="kv-label">Main communication barrier</span><span class="kv-val"><strong>Presence of distractions</strong></span></li>
+                    <li><span class="kv-label">Medical record by last/first/middle name</span><span class="kv-val"><strong>Alphabetical filing system</strong></span></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</div><!-- /container -->
+
+<button id="st" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function filterSection(key) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    document.querySelectorAll('.section').forEach(s => {
+        if (key === 'all' || s.dataset.section === key) {
+            s.classList.remove('hidden');
+        } else {
+            s.classList.add('hidden');
+        }
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+window.addEventListener('scroll', () => {
+    const d = document.documentElement;
+    document.getElementById('sp').style.width = (d.scrollTop / (d.scrollHeight - d.clientHeight) * 100) + '%';
+    document.getElementById('st').classList.toggle('v', d.scrollTop > 300);
+});
+</script>
+</body>
+</html>
