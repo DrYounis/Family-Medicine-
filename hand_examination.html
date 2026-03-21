@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand Joint Examination — OSCE Guide</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;600;700;800&display=swap');
+
+        :root {
+            --blue: #1d4ed8;
+            --blue-light: #eff6ff;
+            --blue-border: #bfdbfe;
+            --teal: #0d9488;
+            --teal-light: #f0fdfa;
+            --teal-border: #99f6e4;
+            --red: #dc2626;
+            --red-light: #fef2f2;
+            --red-border: #fecaca;
+            --amber: #d97706;
+            --amber-light: #fffbeb;
+            --amber-border: #fde68a;
+            --green: #16a34a;
+            --green-light: #f0fdf4;
+            --green-border: #bbf7d0;
+            --purple: #7c3aed;
+            --purple-light: #f5f3ff;
+            --purple-border: #ddd6fe;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.65;
+            font-size: 15px;
+        }
+
+        #scroll-bar {
+            position: fixed; top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #1e40af, #db2777);
+            width: 0%; z-index: 9999;
+        }
+
+        /* Top nav */
+        .top-nav {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .back-link {
+            color: var(--blue); font-weight: 600; text-decoration: none;
+            font-size: 0.88em; padding: 5px 12px; border-radius: 6px;
+            border: 1.5px solid var(--border); transition: all 0.15s;
+        }
+        .back-link:hover { border-color: var(--blue); background: var(--blue-light); }
+        .print-btn {
+            background: transparent; border: 1.5px solid var(--border);
+            color: var(--muted); font-family: 'Inter', sans-serif;
+            font-size: 0.82em; font-weight: 600; padding: 5px 14px;
+            border-radius: 6px; cursor: pointer; transition: all 0.15s;
+        }
+        .print-btn:hover { border-color: var(--blue); color: var(--blue); }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #db2777 100%);
+            color: white;
+            padding: 24px 20px 18px;
+            text-align: center;
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 4px 20px rgba(30,64,175,0.35);
+        }
+        .header-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 20px;
+            padding: 3px 14px;
+            font-size: 0.78em;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+        .header h1 { font-size: 1.55em; font-weight: 900; margin-bottom: 4px; }
+        .header p { font-size: 0.88em; opacity: 0.85; margin-bottom: 14px; }
+
+        .mode-tabs { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+        .mode-tab {
+            padding: 7px 18px; border-radius: 20px;
+            font-size: 0.82em; font-weight: 700;
+            cursor: pointer; border: none;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            background: rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.8);
+            border: 1.5px solid rgba(255,255,255,0.25);
+        }
+        .mode-tab.active {
+            background: white;
+            color: #1e40af;
+            border-color: white;
+        }
+        .mode-tab:hover:not(.active) { background: rgba(255,255,255,0.25); color: white; }
+
+        /* Progress */
+        .progress-bar-wrap {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .progress-bar-bg {
+            flex: 1; background: var(--border);
+            border-radius: 10px; height: 8px; overflow: hidden;
+        }
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #1e40af, #db2777);
+            height: 100%; border-radius: 10px;
+            width: 0%; transition: width 0.4s ease;
+        }
+        .progress-text { font-size: 0.8em; font-weight: 700; color: var(--muted); min-width: 60px; }
+
+        /* Expand controls */
+        .expand-controls {
+            display: flex; gap: 8px; padding: 10px 20px 0;
+            max-width: 800px; margin: 0 auto;
+        }
+        .ec-btn {
+            background: white; border: 1.5px solid var(--border);
+            color: var(--muted); font-family: 'Inter', sans-serif;
+            font-size: 0.78em; font-weight: 700; padding: 4px 12px;
+            border-radius: 6px; cursor: pointer; transition: all 0.15s;
+        }
+        .ec-btn:hover { border-color: var(--blue); color: var(--blue); }
+
+        /* Quick-reference cheat sheet */
+        .cheat-sheet {
+            background: #0f172a;
+            color: #e2e8f0;
+            margin: 14px 16px;
+            border-radius: 14px;
+            padding: 16px 20px;
+            max-width: 800px;
+            margin-left: auto; margin-right: auto;
+            font-size: 0.85em;
+        }
+        .cs-title {
+            font-size: 0.72em; font-weight: 900; text-transform: uppercase;
+            letter-spacing: 0.1em; color: #94a3b8; margin-bottom: 12px;
+        }
+        .cs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        .cs-item { display: flex; flex-direction: column; gap: 2px; }
+        .cs-label { font-size: 0.72em; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
+        .cs-val { color: #f1f5f9; font-weight: 600; font-size: 0.9em; }
+        .cs-divider { border: none; border-top: 1px solid #1e293b; margin: 10px 0; }
+
+        /* Step card */
+        .step-container { max-width: 800px; margin: 0 auto; padding: 14px 16px 40px; display: flex; flex-direction: column; gap: 10px; }
+        .step-card {
+            background: white;
+            border-radius: 12px;
+            border: 1.5px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: box-shadow 0.2s;
+        }
+        .step-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+        .step-card.done { border-color: var(--green); border-left: 4px solid var(--green); }
+
+        .step-header {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px 16px; cursor: pointer;
+            user-select: none;
+        }
+        .step-header:hover { background: #fafafa; }
+        .step-num {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: linear-gradient(135deg, #1e40af, #db2777);
+            color: white; font-weight: 900; font-size: 0.85em;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .step-card.done .step-num { background: var(--green); }
+        .step-title { font-weight: 800; font-size: 0.95em; flex: 1; }
+        .step-subtitle { font-size: 0.78em; color: var(--muted); font-weight: 500; }
+        .step-badge {
+            font-size: 0.68em; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 0.05em; padding: 3px 8px; border-radius: 8px;
+            flex-shrink: 0;
+        }
+        .badge-marks { background: #fef3c7; color: #d97706; }
+        .badge-critical { background: #fef2f2; color: #dc2626; }
+        .badge-hy { background: #f0fdf4; color: #16a34a; }
+        .chevron {
+            color: var(--muted); font-size: 0.9em; flex-shrink: 0;
+            transition: transform 0.2s;
+        }
+        .chevron.open { transform: rotate(180deg); }
+
+        .step-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+        .step-body.open { display: block; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 10px; padding: 12px 15px; margin-top: 12px;
+        }
+        .info-box ul { padding-left: 18px; }
+        .info-box li { margin-bottom: 5px; font-size: 0.9em; }
+        .info-box li:last-child { margin-bottom: 0; }
+        .box-title { font-weight: 800; font-size: 0.82em; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+        .info-box.blue { background: var(--blue-light); border: 1.5px solid var(--blue-border); color: #1e3a8a; }
+        .info-box.green { background: var(--green-light); border: 1.5px solid var(--green-border); color: #14532d; }
+        .info-box.red { background: var(--red-light); border: 1.5px solid var(--red-border); color: #7f1d1d; }
+        .info-box.amber { background: var(--amber-light); border: 1.5px solid var(--amber-border); color: #78350f; }
+        .info-box.purple { background: var(--purple-light); border: 1.5px solid var(--purple-border); color: #4c1d95; }
+        .info-box.teal { background: var(--teal-light); border: 1.5px solid var(--teal-border); color: #134e4a; }
+
+        /* Exam tip */
+        .exam-tip {
+            background: #fafafa;
+            border-left: 4px solid #1e40af;
+            border-radius: 0 8px 8px 0;
+            padding: 10px 14px;
+            margin-top: 12px;
+        }
+        .tip-label { font-size: 0.75em; font-weight: 800; color: #1e40af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 5px; }
+        .tip-text { font-size: 0.88em; color: var(--text); line-height: 1.5; }
+        .hy-badge { background: #dcfce7; color: #16a34a; padding: 1px 7px; border-radius: 8px; font-size: 0.85em; }
+
+        /* Done button */
+        .done-btn {
+            margin-top: 14px;
+            background: transparent;
+            border: 1.5px solid var(--border);
+            color: var(--muted);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82em;
+            font-weight: 700;
+            padding: 7px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .done-btn:hover { border-color: var(--green); color: var(--green); }
+        .done-btn.marked { background: var(--green); border-color: var(--green); color: white; }
+
+        /* Arabic patient script */
+        .arabic-panel {
+            background: #fff;
+            border-radius: 14px;
+            border: 1.5px solid #e9d5ff;
+            overflow: hidden;
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+        .arabic-head {
+            background: linear-gradient(135deg, #6d28d9, #db2777);
+            color: white; padding: 14px 18px;
+        }
+        .arabic-head h3 { font-size: 0.95em; font-weight: 800; margin-bottom: 2px; }
+        .arabic-head p { font-size: 0.8em; opacity: 0.85; }
+        .arabic-body { padding: 16px 18px; }
+        .arabic-section { margin-bottom: 16px; }
+        .arabic-section-title {
+            font-size: 0.72em; font-weight: 900; text-transform: uppercase;
+            letter-spacing: 0.07em; color: var(--muted); margin-bottom: 8px;
+            padding-bottom: 5px; border-bottom: 2px solid var(--border);
+        }
+        .arabic-block {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl; text-align: right;
+            background: #faf5ff;
+            border: 1.5px solid #e9d5ff;
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-size: 0.92em;
+            line-height: 1.9;
+            color: #2e1065;
+        }
+        .arabic-block ul { list-style: none; padding: 0; }
+        .arabic-block li { padding: 3px 0; border-bottom: 1px solid #ede9fe; }
+        .arabic-block li:last-child { border-bottom: none; }
+        .arabic-block li::before { content: "◆ "; color: #7c3aed; font-size: 0.8em; }
+        .ar-label { font-size: 0.78em; font-weight: 800; color: #6d28d9; display: inline-block; margin-left: 4px; }
+        .response-card {
+            background: #f0fdf4;
+            border: 1.5px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 10px 13px;
+            margin-top: 8px;
+            font-size: 0.88em;
+        }
+        .response-card .r-title { font-weight: 800; color: #15803d; font-size: 0.82em; text-transform: uppercase; margin-bottom: 5px; }
+        .response-card .r-arabic { font-family: 'Cairo', sans-serif; direction: rtl; text-align: right; color: #14532d; font-size: 0.95em; line-height: 1.8; }
+        .response-card .r-english { color: #166534; font-size: 0.85em; margin-top: 4px; font-style: italic; }
+
+        /* Mnemonic card */
+        .mnemonic-card {
+            background: linear-gradient(135deg, #f5f3ff, #ede9fe);
+            border: 1.5px solid var(--purple-border);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-top: 12px;
+        }
+        .mn-title { font-size: 0.75em; font-weight: 900; text-transform: uppercase; letter-spacing: 0.07em; color: var(--purple); margin-bottom: 10px; }
+        .mn-word { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+        .mn-letter { background: var(--purple); color: white; border-radius: 7px; padding: 5px 11px; font-size: 0.9em; font-weight: 900; min-width: 32px; text-align: center; }
+        .mn-item { display: flex; gap: 10px; padding: 4px 0; border-bottom: 1px solid #ddd6fe; font-size: 0.88em; }
+        .mn-item:last-child { border-bottom: none; }
+        .mn-key { color: var(--purple); font-weight: 800; min-width: 18px; }
+
+        /* Provocative tests table */
+        .tests-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.87em; }
+        .tests-table th { background: #1e293b; color: white; padding: 8px 10px; text-align: left; font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.04em; }
+        .tests-table th:first-child { border-radius: 6px 0 0 0; }
+        .tests-table th:last-child { border-radius: 0 6px 0 0; }
+        .tests-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .tests-table tr:last-child td { border-bottom: none; }
+        .tests-table tr:hover td { background: #f8fafc; }
+
+        /* Range of motion grid */
+        .rom-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin-top: 10px; }
+        .rom-card {
+            background: var(--blue-light);
+            border: 1.5px solid var(--blue-border);
+            border-radius: 8px;
+            padding: 8px 10px;
+            text-align: center;
+        }
+        .rom-joint { font-size: 0.75em; font-weight: 800; color: var(--blue); margin-bottom: 4px; text-transform: uppercase; }
+        .rom-val { font-size: 0.88em; color: #1e3a8a; }
+
+        /* Practice mode */
+        .practice-panel { max-width: 800px; margin: 0 auto; padding: 16px; }
+        .prac-card {
+            background: white;
+            border-radius: 14px;
+            border: 1.5px solid var(--border);
+            padding: 24px;
+            text-align: center;
+            min-height: 220px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .prac-card .step-q { font-size: 1.05em; font-weight: 700; margin-bottom: 20px; color: var(--text); line-height: 1.5; }
+        .prac-card .reveal-btn {
+            background: linear-gradient(135deg, #1e40af, #db2777);
+            color: white; border: none; border-radius: 10px;
+            padding: 10px 26px; font-family: 'Inter', sans-serif;
+            font-size: 0.9em; font-weight: 700; cursor: pointer; margin-bottom: 12px;
+        }
+        .prac-answer {
+            display: none;
+            background: var(--green-light);
+            border: 1.5px solid var(--green-border);
+            border-radius: 10px;
+            padding: 14px 18px;
+            text-align: left;
+            color: #14532d;
+            font-size: 0.9em;
+            line-height: 1.6;
+            margin-top: 10px;
+            width: 100%;
+        }
+        .prac-nav { display: flex; gap: 10px; justify-content: center; margin-top: 16px; }
+        .prac-nav-btn {
+            background: white; border: 1.5px solid var(--border); color: var(--muted);
+            font-family: 'Inter', sans-serif; font-size: 0.85em; font-weight: 700;
+            padding: 8px 20px; border-radius: 8px; cursor: pointer; transition: all 0.15s;
+        }
+        .prac-nav-btn:hover { border-color: var(--blue); color: var(--blue); }
+        .prac-counter { font-size: 0.8em; color: var(--muted); margin-top: 10px; }
+
+        @media (max-width: 600px) {
+            .cs-grid { grid-template-columns: 1fr 1fr; }
+            .rom-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media print {
+            #scroll-bar, .top-nav, .header .mode-tabs, .print-btn, .done-btn, .prac-nav-btn { display: none !important; }
+            .step-body { display: block !important; }
+            body { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="scroll-bar"></div>
+
+<!-- Top nav -->
+<div class="top-nav">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="osce.html" class="back-link">← OSCE Flashcards</a>
+        <a href="cheatsheet.html" class="back-link" style="background:#0f172a;color:white;border-color:#0f172a;">📚 Cheat Sheet</a>
+        <a href="jvp_examination.html" class="back-link" style="border-color:#0d9488;color:#0d9488;">💙 JVP</a>
+    </div>
+    <button class="print-btn" onclick="window.print()">🖨 Print</button>
+</div>
+
+<!-- Sticky header -->
+<div class="header">
+    <div class="header-badge">OSCE STATION</div>
+    <h1>🤝 Hand Joint Examination</h1>
+    <p>Carpal Tunnel Syndrome — 9-Step OSCE Guide</p>
+    <div class="mode-tabs">
+        <button class="mode-tab active" id="tab-ref" onclick="setMode('reference')">📖 Reference Mode</button>
+        <button class="mode-tab" id="tab-ar" onclick="setMode('arabic')">🎭 Patient Script (Arabic)</button>
+        <button class="mode-tab" id="tab-prac" onclick="setMode('practice')">⚡ Practice Mode</button>
+    </div>
+</div>
+
+<!-- Progress bar -->
+<div class="progress-bar-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="prog-fill"></div></div>
+    <span class="progress-text" id="prog-text">0 / 9</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- REFERENCE MODE -->
+<!-- ══════════════════════════════════════════════════ -->
+<div id="mode-reference">
+
+    <!-- Cheat sheet -->
+    <div class="cheat-sheet">
+        <div class="cs-title">⚡ Quick Reference Cheat Sheet — Hand Examination</div>
+        <div class="cs-grid">
+            <div class="cs-item"><span class="cs-label">Patient Position</span><span class="cs-val">Seated, hands resting on pillow</span></div>
+            <div class="cs-item"><span class="cs-label">Infection Control</span><span class="cs-val">ABHR × 6 steps × 30 sec BEFORE &amp; AFTER</span></div>
+            <div class="cs-item"><span class="cs-label">Median Nerve</span><span class="cs-val">Lateral 3½ fingers (thumb, index, middle, lateral ½ ring)</span></div>
+            <div class="cs-item"><span class="cs-label">Ulnar Nerve</span><span class="cs-val">Medial 1½ fingers (little + medial ½ ring)</span></div>
+        </div>
+        <hr class="cs-divider">
+        <div class="cs-grid">
+            <div class="cs-item"><span class="cs-label">Phalen's Test</span><span class="cs-val">Wrist flexion 90° × 60 sec → CTS</span></div>
+            <div class="cs-item"><span class="cs-label">Tinel's Sign</span><span class="cs-val">Tap carpal tunnel → tingling → CTS</span></div>
+            <div class="cs-item"><span class="cs-label">Durkan's Test</span><span class="cs-val">Direct compression carpal tunnel × 30 sec → CTS</span></div>
+            <div class="cs-item"><span class="cs-label">Power Grip</span><span class="cs-val">Squeeze examiner's 2 fingers</span></div>
+            <div class="cs-item"><span class="cs-label">Pincer Grip</span><span class="cs-val">Thumb &amp; index finger opposition strength</span></div>
+            <div class="cs-item"><span class="cs-label">Most sensitive test</span><span class="cs-val">Durkan's Carpal Compression (highest sensitivity)</span></div>
+        </div>
+    </div>
+
+    <!-- Expand controls -->
+    <div class="expand-controls">
+        <button class="ec-btn" onclick="expandAll()">⊞ Expand All</button>
+        <button class="ec-btn" onclick="collapseAll()">⊟ Collapse All</button>
+    </div>
+
+    <!-- Steps -->
+    <div class="step-container">
+
+        <!-- STEP 1 -->
+        <div class="step-card" id="card-0">
+            <div class="step-header" onclick="toggleStep(0)">
+                <div class="step-num">1</div>
+                <div style="flex:1;">
+                    <div class="step-title">Rapport Building &amp; Communication</div>
+                    <div class="step-subtitle">Permission · Introduction · Explanation</div>
+                </div>
+                <span class="step-badge badge-marks">DOMAIN 1</span>
+                <span class="chevron" id="toggle-0">▼</span>
+            </div>
+            <div class="step-body" id="body-0">
+                <div class="info-box blue">
+                    <div class="box-title">📋 What to Say &amp; Do</div>
+                    <ul>
+                        <li>Greet and introduce yourself: <em>"Good morning, I'm Dr. [name]. I'm going to examine your hands today."</em></li>
+                        <li>Ask about background: <em>"Have you had any hand examination before? Can you tell me a little about your complaint?"</em></li>
+                        <li><strong>Ask permission:</strong> <em>"Is it alright if I begin the examination of your hands?"</em></li>
+                        <li>Explain the steps: <em>"I'll be looking at your hands, feeling for tenderness, checking your movements, strength, and sensation, then doing some special tests."</em></li>
+                        <li>Ask patient to tell you if anything is uncomfortable at any point.</li>
+                    </ul>
+                </div>
+                <div class="exam-tip">
+                    <div class="tip-label">⭐ Exam Tip — <span class="hy-badge">High Yield</span></div>
+                    <div class="tip-text">The examiner is watching for <strong>fluency and naturalness</strong> — don't just say words mechanically. Make genuine eye contact, use the patient's name, and explain each step AS you do it, not before.</div>
+                </div>
+                <button class="done-btn" id="done-0" onclick="markDone(0)">✓ Done</button>
+            </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step-card" id="card-1">
+            <div class="step-header" onclick="toggleStep(1)">
+                <div class="step-num">2</div>
+                <div style="flex:1;">
+                    <div class="step-title">Infection Control — ABHR</div>
+                    <div class="step-subtitle">Alcohol Based Hand Rub · 6 steps · 30 seconds</div>
+                </div>
+                <span class="step-badge badge-critical">CRITICAL</span>
+                <span class="chevron" id="toggle-1">▼</span>
+            </div>
+            <div class="step-body" id="body-1">
+                <div class="mnemonic-card">
+                    <div class="mn-title">🧠 Mnemonic — ABHR 6 Steps: "PP BBT T"</div>
+                    <div class="mn-word">
+                        <span class="mn-letter">PP</span>
+                        <span class="mn-letter">B</span>
+                        <span class="mn-letter">B</span>
+                        <span class="mn-letter">T</span>
+                        <span class="mn-letter">T</span>
+                    </div>
+                    <div class="mn-item"><span class="mn-key">1</span><span><strong>Palm to Palm</strong> — rub both palms together</span></div>
+                    <div class="mn-item"><span class="mn-key">2</span><span><strong>Palm over Back</strong> — right palm over dorsum of left, interlaced fingers; then swap</span></div>
+                    <div class="mn-item"><span class="mn-key">3</span><span><strong>Between Fingers</strong> — palm to palm with fingers interlaced</span></div>
+                    <div class="mn-item"><span class="mn-key">4</span><span><strong>Back of Fingers</strong> — backs of fingers against opposing palms (interlocked)</span></div>
+                    <div class="mn-item"><span class="mn-key">5</span><span><strong>Top / Nails</strong> — rotational rubbing of right thumb in left palm; then swap</span></div>
+                    <div class="mn-item"><span class="mn-key">6</span><span><strong>Thumb</strong> — rotational rubbing of closed right fingers on left palm; then swap</span></div>
+                </div>
+                <div class="info-box red">
+                    <div class="box-title">⚠️ Rules</div>
+                    <ul>
+                        <li>Perform BEFORE touching the patient AND AFTER the examination</li>
+                        <li>Minimum 30 seconds per hand rub</li>
+                        <li>Both omissions = automatic fail on this domain</li>
+                    </ul>
+                </div>
+                <div class="exam-tip">
+                    <div class="tip-label">⭐ Exam Tip — <span class="hy-badge">High Yield</span></div>
+                    <div class="tip-text">Say out loud: <em>"I'm now applying alcohol-based hand rub before examining the patient."</em> Then verbalize again at the end. Examiners cannot give marks for something they don't see OR hear.</div>
+                </div>
+                <button class="done-btn" id="done-1" onclick="markDone(1)">✓ Done</button>
+            </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step-card" id="card-2">
+            <div class="step-header" onclick="toggleStep(2)">
+                <div class="step-num">3</div>
+                <div style="flex:1;">
+                    <div class="step-title">Inspection — Both Hands</div>
+                    <div class="step-subtitle">Skin · Nails · Swellings · Deformities · Muscle Wasting</div>
+                </div>
+                <span class="step-badge badge-marks">LOOK</span>
+                <span class="chevron" id="toggle-2">▼</span>
+            </div>
+            <div class="step-body" id="body-2">
+                <div class="info-box teal">
+                    <div class="box-title">👁️ What to Look For — Compare Both Sides</div>
+                    <ul>
+                        <li><strong>Skin:</strong> Erythema, pallor, bruising, scars, rashes, skin tightening (scleroderma)</li>
+                        <li><strong>Nails:</strong> Pitting (psoriasis), onycholysis, clubbing, koilonychia, nail-fold infarcts (vasculitis)</li>
+                        <li><strong>Swellings:</strong> DIP joints (Heberden's nodes – OA), PIP joints (Bouchard's nodes – OA; or RA), MCP joints (RA), wrist (ganglion, RA synovitis)</li>
+                        <li><strong>Deformities:</strong> Ulnar deviation (RA), Swan neck, Boutonnière, Z-deformity of thumb (RA), Dupuytren's contracture</li>
+                        <li><strong>Muscle wasting:</strong> Thenar eminence (median nerve — CTS), Hypothenar (ulnar nerve), Interosseous wasting (RA, ulnar nerve)</li>
+                    </ul>
+                </div>
+                <div class="info-box amber">
+                    <div class="box-title">🎯 CTS-Specific Findings on Inspection</div>
+                    <ul>
+                        <li>Thenar muscle wasting (late sign — severe/chronic CTS)</li>
+                        <li>No visible swelling at wrist in most cases</li>
+                        <li>Skin may be dry (autonomic involvement)</li>
+                    </ul>
+                </div>
+                <div class="exam-tip">
+                    <div class="tip-label">⭐ Exam Tip</div>
+                    <div class="tip-text">Always start dorsum → then palmar surface. Always ask patient to turn hands over. Verbalize every finding (even normal): <em>"I can see no skin changes, no nail abnormalities, no obvious deformities or swelling. I notice the thenar eminence appears slightly flattened on the right compared to the left."</em></div>
+                </div>
+                <button class="done-btn" id="done-2" onclick="markDone(2)">✓ Done</button>
+            </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="step-card" id="card-3">
+            <div class="step-header" onclick="toggleStep(3)">
+                <div class="step-num">4</div>
+                <div style="flex:1;">
+                    <div class="step-title">Temperature Assessment</div>
+                    <div class="step-subtitle">Forearms and Hands · Use Dorsum of Examiner's Hand</div>
+                </div>
+                <span class="step-badge badge-marks">FEEL</span>
+                <span class="chevron" id="toggle-3">▼</span>
+            </div>
+            <div class="step-body" id="body-3">
+                <div class="info-box blue">
+                    <div class="box-title">🌡️ Technique</div>
+                    <ul>
+                        <li>Use the <strong>dorsum</strong> of your hand (more sensitive to temperature)</li>
+                        <li>Start from <strong>forearm</strong> → move distally to the hand</li>
+                        <li>Compare both sides simultaneously or sequentially</li>
+                        <li>Verbalize: <em>"I'm assessing the temperature of both forearms and hands…"</em></li>
+                    </ul>
+                </div>
+                <div class="info-box green">
+                    <div class="box-title">🔍 What Temperature Tells You</div>
+                    <ul>
+                        <li><strong>Warm + swollen joint</strong> → active inflammation (RA, gout, septic arthritis)</li>
+                        <li><strong>Cool hands</strong> → poor perfusion, Raynaud's, peripheral vascular disease</li>
+                        <li><strong>CTS</strong> → usually no temperature change (nerve compression)</li>
+                    </ul>
+                </div>
+                <div class="exam-tip">
+                    <div class="tip-label">⭐ Exam Tip</div>
+                    <div class="tip-text">This step is often forgotten. Even if you find nothing abnormal, say: <em>"Temperature is normal and equal in both hands."</em> The examiner is scoring whether you did it, not what you found.</div>
+                </div>
+                <button class="done-btn" id="done-3" onclick="markDone(3)">✓ Done</button>
+            </div>
+        </div>
+
+        <!-- STEP 5 -->
+        <div class="step-card" id="card-4">
+            <div class="step-header" onclick="toggleStep(4)">
+                <div class="step-num">5</div>
+                <div style="flex:1;">
+                    <div class="step-title">Palpation — Joints, Eminences &amp; Radial Pulse</div>
+                    <div class="step-subtitle">Tenderness · Swelling · Thenar &amp; Hypothenar Bulk · Radial Pulse</div>
+                </div>
+                <span class="step-badge badge-hy">High Yield</span>
+                <span class="chevron" id="toggle-4">▼</span>
+            </div>
+            <div class="step-body" id="body-4">
+                <div class="info-box blue">
+                    <div class="box-title">✋ Palpation Sequence</div>
+                    <ul>
+                        <li><strong>1. Finger joints:</strong> Palpate each DIP, PIP, MCP joint — squeeze gently from sides to assess tenderness and detect synovial thickening or effusion</li>
+                        <li><strong>2. Wrist joint:</strong> Palpate with both thumbs on the dorsum — feel for boggy synovitis, bony tenderness, or crepitus</li>
+                        <li><strong>3. Thenar eminence:</strong> Palpate at base of thumb (median nerve muscles — Opponens pollicis, Abductor pollicis brevis, Flexor pollicis brevis) — compare bulk with other side</li>
+                        <li><strong>4. Hypothenar eminence:</strong> Palpate at base of little finger (ulnar nerve muscles)</li>
+                        <li><strong>5. Radial pulse:</strong> Palpate radial pulse at the wrist — document rate and regularity</li>
+                    </ul>
+                </div>
+                <div class="info-box purple">
+                    <div class="box-title">🎯 CTS: Expected Palpation Findings</div>
+                    <ul>
+                        <li><strong>Thenar wasting</strong> on right (late sign)</li>
+                        <li>Tenderness over carpal tunnel (volar wrist crease, centre)</li>
+                        <li>No joint swelling or synovitis</li>
+                        <li>Radial pulse — normal</li>
+                    </ul>
+                </div>
+                <div class="exam-tip">
+                    <div class="tip-label">⭐ Exam Tip — <span class="hy-badge">High Yield</span></div>
+                    <div class="tip-text">Always watch the patient's face when palpating for pain — not just your hands. Say: <em>"Tell me if I press anywhere tender."</em> Palpating radial pulse is a scored checkpoint — don't skip it.</div>
+                </div>
+                <button class="done-btn" id="done-4" onclick="markDone(4)">✓ Done</button>
+            </div>
+        </div>
+
+        <!-- STEP 6 -->
+        <div class="step-card" id="card-5">
+            <div class="step-header" onclick="toggleStep(5)">
+                <div class="step-num">6</div>
+                <div style="flex:1;">
+                    <div class="step-title">Range of Movement — Passive &amp; Active</div>
+                    <div class="step-subtitle">Wrist · MCP · PIP · DIP · Pain · Crepitus</div>
+                </div>
+                <span class="step-badge badge-marks">MOVE</span>
+                <span class="chevron" id="toggle-5">▼</span>
+            </div>
+            <div class="step-body" id="body-5">
+                <div class="info-box teal">
+                    <div class="box-title">🔄 Sequence: Active First → Then Passive</div>
+                    <ul>
+                        <li>Ask patient to perform movements first (active) — this tells you their pain and willingness</li>
+                        <li>Then you gently move the joint through its range (passive) — feel for crepitus, end-feel, restriction</li>
+                        <li>For each movement verbalize: <em>"I'm checking [joint] flexion/extension… any pain? Any clicking?"</em></li>
+                    </ul>
+                </div>
+                <div class="rom-grid">
+                    <div class="rom-card"><div class="rom-joint">Wrist Flexion</div><div class="rom-val">0 – 80°</div></div>
+                    <div class="rom-card"><div class="rom-joint">Wrist Extension</div><div class="rom-val">0 – 70°</div></div>
+                    <div class="rom-card"><div class="rom-joint">Radial Deviation</div><div class="rom-val">0 – 20°</div></div>
+                    <div class="rom-card"><div class="rom-joint">Ulnar Deviation</div><div class="rom-val">0 – 30°</div></div>
+                    <div class="rom-card"><div class="rom-joint">MCP Flexion</div><div class="rom-val">0 – 90°</div></div>
+                    <div class="rom-card"><div class="rom-joint">PIP Flexion</div><div class="rom-val">0 – 100°</div></div>
+                    <div class="rom-card"><div class="rom-joint">DIP Flexion</div><div class="rom-val">0 – 70°</div></div>
+                    <div class="rom-card"><div class="rom-joint">Thumb Opposition</div><div class="rom-val">Full = touches base of 5th</div></div>
+                </div>
+                <div class="exam-tip">
+                    <div class="tip-label">⭐ Exam Tip</div>
+                    <div class="tip-text">In CTS, wrist range of movement is usually <strong>normal</strong>. The finding to report: <em>"Full range of movement in all joints. No pain or crepitus."</em> Then proceed to the power and sensation assessment.</div>
+                </div>
+                <button class="done-btn" id="done-5" onclick="markDone(5)">✓ Done</button>
+            </div>
+        </div>
+
+        <!-- STEP 7 -->
+        <div class="step-card" id="card-6">
+            <div class="step-header" onclick="toggleStep(6)">
+                <div class="step-num">7</div>
+                <div style="flex:1;">
+                    <div class="step-title">Power &amp; Sensation</div>
+                    <div class="step-subtitle">Power Grip · Pincer Grip · Light Touch · Pin Prick · Compare Both Sides</div>
+                </div>
+                <span class="step-badge badge-hy">High Yield</span>
+                <span class="chevron" id="toggle-6">▼</span>
+            </div>
+            <div class="step-body" id="body-6">
+                <div class="info-box blue">
+                    <div class="box-title">💪 Power Assessment</div>
+                    <ul>
+                        <li><strong>Power grip:</strong> Ask patient to squeeze your 2 fingers as tightly as possible — both hands simultaneously or separately</li>
+                        <li><strong>Pincer grip (key pinch):</strong> Thumb against index finger — resist separation. <em>"Hold this as tight as you can, don't let me pull it apart."</em></li>
+                        <li><strong>Thumb abduction:</strong> Ask patient to point thumb to ceiling and resist downward pressure — tests APB (median nerve / CTS)</li>
+                        <li>Grade using MRC scale 0–5</li>
+                    </ul>
+                </div>
+                <div class="info-box purple">
+                    <div class="box-title">🎯 Sensation — Median Nerve Territory</div>
+                    <ul>
+                        <li>Use cotton wool (light touch) and/or pin prick</li>
+                        <li><strong>Median nerve:</strong> Palmar surface of thumb, index, middle finger, and lateral ½ of ring finger</li>
+                        <li><strong>Ulnar nerve:</strong> Little finger and medial ½ of ring finger</li>
+                        <li>Compare right vs left — ask: <em>"Does this feel the same on both sides? Is it sharper, duller, or the same?"</em></li>
+                        <li>In CTS: reduced sensation in median nerve territory — especially index + middle finger tips</li>
+                    </ul>
+                </div>
+                <div class="exam-tip">
+                    <div class="tip-label">⭐ Exam Tip — <span class="hy-badge">High Yield</span></div>
+                    <div class="tip-text"><strong>Always compare both sides.</strong> Start with the normal (left) side so the patient knows what "normal" feels like. In this patient: sensation reduced in lateral 2/3 of right palm (thumb/index/middle anteriorly). Medial 1/3 also slightly reduced.</div>
+                </div>
+                <button class="done-btn" id="done-6" onclick="markDone(6)">✓ Done</button>
+            </div>
+        </div>
+
+        <!-- STEP 8 -->
+        <div class="step-card" id="card-7">
+            <div class="step-header" onclick="toggleStep(7)">
+                <div class="step-num">8</div>
+                <div style="flex:1;">
+                    <div class="step-title">Provocative Tests — Phalen's, Tinel's, Durkan's</div>
+                    <div class="step-subtitle">Carpal Tunnel Syndrome Confirmation Tests</div>
+                </div>
+                <span class="step-badge badge-critical">CRITICAL</span>
+                <span class="chevron" id="toggle-7">▼</span>
+            </div>
+            <div class="step-body" id="body-7">
+                <div class="mnemonic-card">
+                    <div class="mn-title">🧠 Mnemonic — "Please Try Driving" = PTD</div>
+                    <div class="mn-word">
+                        <span class="mn-letter">P</span>
+                        <span class="mn-letter">T</span>
+                        <span class="mn-letter">D</span>
+                    </div>
+                    <div class="mn-item"><span class="mn-key">P</span><span><strong>Phalen's</strong> — wrist flexion test</span></div>
+                    <div class="mn-item"><span class="mn-key">T</span><span><strong>Tinel's</strong> — tapping test</span></div>
+                    <div class="mn-item"><span class="mn-key">D</span><span><strong>Durkan's</strong> — direct compression test (most sensitive)</span></div>
+                </div>
+                <table class="tests-table">
+                    <thead>
+                        <tr>
+                            <th>Test</th>
+                            <th>Technique</th>
+                            <th>Positive Result</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Phalen's</strong></td>
+                            <td>Both wrists fully flexed (dorsum-to-dorsum) for <strong>60 seconds</strong></td>
+                            <td>Tingling/numbness in median nerve territory (thumb, index, middle)</td>
+                            <td>Sensitivity ~68%, Specificity ~73%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tinel's Sign</strong></td>
+                            <td>Tap with finger over the carpal tunnel (volar wrist crease, centre)</td>
+                            <td>Tingling radiates distally into thumb/index/middle</td>
+                            <td>Sensitivity ~50%, Specificity ~77%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Durkan's (Carpal Compression)</strong></td>
+                            <td>Apply direct firm pressure over carpal tunnel with both thumbs for <strong>30 seconds</strong></td>
+                            <td>Tingling/numbness in median nerve territory</td>
+                            <td><strong>Most sensitive</strong> — Sensitivity ~87%, Specificity ~90%</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="exam-tip">
+                    <div class="tip-label">⭐ Exam Tip — <span class="hy-badge">High Yield</span></div>
+                    <div class="tip-text">In this OSCE station: the patient (simulated) <strong>will report tingling in thumb/index/middle</strong> with Phalen's, and tingling in lateral 2/3 of palm with Tinel's/Durkan's. This confirms CTS. Make sure to time 60 seconds for Phalen's and 30 seconds for Durkan's — do NOT rush.</div>
+                </div>
+                <button class="done-btn" id="done-7" onclick="markDone(7)">✓ Done</button>
+            </div>
+        </div>
+
+        <!-- STEP 9 -->
+        <div class="step-card" id="card-8">
+            <div class="step-header" onclick="toggleStep(8)">
+                <div class="step-num">9</div>
+                <div style="flex:1;">
+                    <div class="step-title">Closing — Share Outcome &amp; Thank Patient</div>
+                    <div class="step-subtitle">Summary · Follow-up · Questions</div>
+                </div>
+                <span class="step-badge badge-marks">DOMAIN 3</span>
+                <span class="chevron" id="toggle-8">▼</span>
+            </div>
+            <div class="step-body" id="body-8">
+                <div class="info-box green">
+                    <div class="box-title">✅ What to Say</div>
+                    <ul>
+                        <li>Share findings: <em>"I've finished the examination. I found some reduction in sensation in your right hand, particularly in the thumb, index, and middle fingers, and a slight reduction in the power of your right thumb. The special tests I performed suggest possible compression of the median nerve at the wrist — this is called carpal tunnel syndrome."</em></li>
+                        <li>Explain next steps: <em>"I'd like to arrange some nerve conduction studies to confirm this. We'll then discuss treatment options, which can include splinting, injections, or a minor surgical procedure."</em></li>
+                        <li><strong>ABHR again</strong> after contact</li>
+                        <li>Thank the patient: <em>"Thank you for coming in today. Do you have any questions for me?"</em></li>
+                    </ul>
+                </div>
+                <div class="exam-tip">
+                    <div class="tip-label">⭐ Exam Tip</div>
+                    <div class="tip-text">Don't forget to do ABHR at the END. Then finish with: <em>"Do you have any questions?"</em> — this is a scored item on the mark sheet (Closing the session). A warm, caring closing tone matters for the communication domain score.</div>
+                </div>
+                <button class="done-btn" id="done-8" onclick="markDone(8)">✓ Done</button>
+            </div>
+        </div>
+
+    </div><!-- /step-container -->
+</div><!-- /mode-reference -->
+
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- ARABIC PATIENT SCRIPT -->
+<!-- ══════════════════════════════════════════════════ -->
+<div id="mode-arabic" style="display:none;">
+    <div class="step-container" style="padding-top:16px;">
+
+        <div class="arabic-panel">
+            <div class="arabic-head">
+                <h3>🎭 Patient Roleplay Script — محمد عصام</h3>
+                <p>Carpal Tunnel Syndrome · Station Instructions for Patient Actor</p>
+            </div>
+            <div class="arabic-body">
+
+                <!-- Identity -->
+                <div class="arabic-section">
+                    <div class="arabic-section-title">Patient Identity</div>
+                    <div class="arabic-block">
+                        <ul>
+                            <li><span class="ar-label">الاسم:</span> محمد عصام</li>
+                            <li><span class="ar-label">العمر:</span> 45 سنة</li>
+                            <li><span class="ar-label">العمل:</span> موظف بكلية الطب جامعة قناة السويس</li>
+                            <li><span class="ar-label">الحالة الاجتماعية:</span> متزوج وعندك بنتين عندهما 16 سنة و13 سنة، وأنت مدخن</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Complaint -->
+                <div class="arabic-section">
+                    <div class="arabic-section-title">Chief Complaint — ماذا تقول لو سألك الدكتور؟</div>
+                    <div class="arabic-block">
+                        <ul>
+                            <li>اللي أنت بتشتكي منه حصل من 6 أسابيع</li>
+                            <li>إنت إيديك متأثرين لكن اليمين أكثر — أنت بتستخدم اليد اليمنى أكثر</li>
+                            <li>وأنت بتقضي معظم الأيام على الكمبيوتر وبتظن أن ذلك هو سبب مشكلتك</li>
+                            <li>أنت قلقان يكون في <strong>اختناق في العصب الأوسط للكد</strong> كما بيقولوا</li>
+                            <li>أنت لا تشتكي من أي شكوى أخرى</li>
+                        </ul>
+                    </div>
+                    <div class="info-box amber" style="margin-top:10px;">
+                        <div class="box-title">📖 In English for Reference</div>
+                        <p style="font-size:0.9em;line-height:1.6;">Symptoms for 6 weeks. Both hands affected but right more. Heavy computer user — believes that is the cause. Worried about median nerve entrapment (carpal tunnel syndrome). No other complaints.</p>
+                    </div>
+                </div>
+
+                <!-- Behaviour instructions -->
+                <div class="arabic-section">
+                    <div class="arabic-section-title">Patient Behaviour — تعليمات محددة لسلوكك / لغة الجسد</div>
+                    <div class="arabic-block">
+                        <ul>
+                            <li>لو الدكتور استأذنك في الفحص اسمح له</li>
+                            <li>اتبع تعليماته الفحص</li>
+                            <li>إذا بدأ الدكتور باليد اليسرى أخبره أن الألم أكثر في اليد اليمنى</li>
+                            <li>إذا اختبر الدكتور الإحساس بدبوس أو قطنة أخبره أن إحساس 3/2 من كف اليد اليمنى والجانب الأمامي من الإبهام والسبابة والوسطى أقل من 1/3 الآخر لليد اليمنى وأقل لمثيله من اليسرى</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Phalen's response -->
+                <div class="arabic-section">
+                    <div class="arabic-section-title">Phalen's Test Response — كيف تتصرف</div>
+                    <div class="response-card">
+                        <div class="r-title">✅ When doctor performs Phalen's (wrists flexed 1 minute)</div>
+                        <div class="r-arabic">إذا عمل لك الدكتور هذا الاختبار كما هو موضح بالصورة لمدة دقيقة أخبره بأن هناك تنميل في كافة إيدك تنميل وشاور عليها من ناحية الإبهام والسبابة والوسطى</div>
+                        <div class="r-english">Report: tingling in all fingers, coming from the thumb/index/middle side → confirms positive Phalen's</div>
+                    </div>
+                </div>
+
+                <!-- Tinel's / Durkan's response -->
+                <div class="arabic-section">
+                    <div class="arabic-section-title">Tinel's / Durkan's Test Response — كيف تتصرف</div>
+                    <div class="response-card">
+                        <div class="r-title">✅ When doctor taps or compresses the carpal tunnel</div>
+                        <div class="r-arabic">إذا خبط الدكتور أو ضغط على مكان محدد بالرسغ كما هو موضح بالصورتين أخبره بأن هناك تنميل في كف إيدك من ثلثين وشاور عليها من ناحية الإبهام والسبابة والوسطى</div>
+                        <div class="r-english">Report: tingling in 2/3 of palm from the thumb/index/middle side → confirms positive Tinel's/Durkan's</div>
+                    </div>
+                </div>
+
+                <!-- If asked about outcome -->
+                <div class="arabic-section">
+                    <div class="arabic-section-title">If Doctor Doesn't Share Outcome — أسئلة للممثل</div>
+                    <div class="arabic-block">
+                        <ul>
+                            <li>لو الدكتور لم يبلغك نتيجة الفحص اسأله: <strong>"إيه مشكلتي؟"</strong></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div><!-- /mode-arabic -->
+
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- PRACTICE MODE -->
+<!-- ══════════════════════════════════════════════════ -->
+<div id="mode-practice" style="display:none;">
+    <div class="practice-panel">
+        <div class="prac-card">
+            <div class="step-q" id="prac-q">Loading...</div>
+            <button class="reveal-btn" onclick="revealAnswer()">Reveal Answer</button>
+            <div class="prac-answer" id="prac-ans"></div>
+        </div>
+        <div class="prac-nav">
+            <button class="prac-nav-btn" onclick="prevQ()">← Previous</button>
+            <button class="prac-nav-btn" onclick="nextQ()">Next →</button>
+        </div>
+        <div class="prac-counter" id="prac-counter">Question 1 of 12</div>
+    </div>
+</div>
+
+<script>
+const practiceQs = [
+    { q: "What is the correct patient position for hand examination?", a: "Seated comfortably with hands resting on a pillow or flat surface, at the level of the examiner's waist. This allows comparison of both hands simultaneously." },
+    { q: "How many steps does ABHR (Alcohol Based Hand Rub) have, and how long should it take?", a: "6 steps / 30 seconds minimum. Steps: (1) Palm to palm, (2) Palm over back with interlaced fingers (both sides), (3) Palm to palm with fingers interlaced, (4) Backs of fingers to opposing palms, (5) Rotational rubbing of thumbs (both), (6) Rotational rubbing of closed fingers on palms. Must be done BEFORE and AFTER patient contact." },
+    { q: "What specific findings do you look for on inspection of the hand in CTS?", a: "Thenar muscle wasting (lateral thenar eminence — chronic CTS), skin changes (dryness — autonomic involvement), no joint swellings, no deformities. Always compare both sides. Document any asymmetry in thenar bulk." },
+    { q: "Name 3 hand deformities and their associated diagnoses.", a: "Swan neck (RA) — PIP hyperextension + DIP flexion. Boutonnière (RA) — PIP flexion + DIP hyperextension. Ulnar deviation at MCPs (RA). Heberden's nodes at DIP (OA). Dupuytren's contracture — fibrous thickening of palmar fascia, ring finger pulled into flexion." },
+    { q: "Which muscles are in the thenar eminence and which nerve supplies them?", a: "Thenar eminence = LOAF (Lateral 2 lumbricals, Opponens pollicis, Abductor pollicis brevis, Flexor pollicis brevis) — all supplied by the Median nerve (recurrent branch). Wasting of thenar eminence = median nerve pathology = CTS." },
+    { q: "What are the normal ranges of wrist flexion and extension?", a: "Flexion: 0–80°. Extension (dorsiflexion): 0–70°. Radial deviation: 0–20°. Ulnar deviation: 0–30°. In CTS, wrist ROM is typically normal — the pathology is nerve compression, not joint disease." },
+    { q: "Describe how to perform the Power Grip and Pincer Grip tests.", a: "Power grip: Ask patient to squeeze your 2 fingers as tightly as possible — tests overall hand strength (C8–T1 level). Pincer grip: Thumb against index finger in a key pinch — resist separation. Also test thumb abduction against resistance (points ceiling, resist downward force) — tests APB = median nerve = CTS weakness." },
+    { q: "Which fingers carry median nerve sensation, and which carry ulnar nerve sensation?", a: "Median nerve: lateral 3.5 fingers — thumb, index, middle, and lateral half of ring finger (palmar surface). Ulnar nerve: medial 1.5 fingers — little finger + medial half of ring finger. In CTS: reduced sensation starts at index and middle finger tips." },
+    { q: "Describe Phalen's test — technique, timing, and positive result.", a: "Technique: Both wrists held in maximum flexion (dorsum-to-dorsum, no active muscular effort) for 60 seconds. Positive: reproduction of tingling/numbness in median nerve territory (thumb, index, middle). In this patient: tingling in all fingers from thumb/index/middle side. Sensitivity ~68%, Specificity ~73%." },
+    { q: "Describe Tinel's sign — technique and positive result.", a: "Technique: Gently tap with your index finger directly over the carpal tunnel (at the centre of the volar wrist crease, between the palmaris longus and FCR tendons). Positive: tingling or electric sensation radiating distally into the thumb, index, and middle finger (median nerve distribution). Sensitivity ~50%, Specificity ~77%." },
+    { q: "What is Durkan's Carpal Compression Test and why is it clinically important?", a: "Technique: Apply firm direct pressure with both thumbs over the carpal tunnel for 30 seconds. Positive: tingling/numbness in median nerve territory. It is the MOST SENSITIVE provocative test for CTS (sensitivity ~87%, specificity ~90%) — more sensitive than both Phalen's and Tinel's." },
+    { q: "How should you close the hand examination OSCE station properly?", a: "1. Verbalize ABHR again after contact. 2. Share findings with the patient: mention the reduced sensation, thenar wasting, and positive tests pointing to CTS. 3. Suggest next steps (nerve conduction studies). 4. Thank the patient. 5. Ask: 'Do you have any questions for me?' The closing domain is scored separately — don't rush it." }
+];
+
+let pracIdx = 0;
+const done = new Set();
+
+function showQ(i) {
+    const q = practiceQs[i];
+    document.getElementById('prac-q').textContent = q.q;
+    const ans = document.getElementById('prac-ans');
+    ans.style.display = 'none';
+    ans.textContent = q.a;
+    document.getElementById('prac-counter').textContent = `Question ${i + 1} of ${practiceQs.length}`;
+}
+function revealAnswer() {
+    document.getElementById('prac-ans').style.display = 'block';
+}
+function nextQ() { pracIdx = (pracIdx + 1) % practiceQs.length; showQ(pracIdx); }
+function prevQ() { pracIdx = (pracIdx - 1 + practiceQs.length) % practiceQs.length; showQ(pracIdx); }
+
+function setMode(m) {
+    ['reference','arabic','practice'].forEach(x => {
+        document.getElementById('mode-' + x).style.display = (x === m) ? 'block' : 'none';
+    });
+    document.getElementById('tab-ref').classList.toggle('active', m === 'reference');
+    document.getElementById('tab-ar').classList.toggle('active', m === 'arabic');
+    document.getElementById('tab-prac').classList.toggle('active', m === 'practice');
+    if (m === 'practice') showQ(pracIdx);
+}
+
+function toggleStep(i) {
+    const body = document.getElementById(`body-${i}`);
+    const toggle = document.getElementById(`toggle-${i}`);
+    const open = body.classList.contains('open');
+    body.classList.toggle('open', !open);
+    toggle.classList.toggle('open', !open);
+}
+
+function expandAll() {
+    for (let i = 0; i < 9; i++) {
+        document.getElementById(`body-${i}`).classList.add('open');
+        document.getElementById(`toggle-${i}`).classList.add('open');
+    }
+}
+
+function collapseAll() {
+    for (let i = 0; i < 9; i++) {
+        document.getElementById(`body-${i}`).classList.remove('open');
+        document.getElementById(`toggle-${i}`).classList.remove('open');
+    }
+}
+
+function markDone(i) {
+    done.add(i);
+    const btn = document.getElementById(`done-${i}`);
+    btn.textContent = '✓ Completed';
+    btn.classList.add('marked');
+    document.getElementById(`card-${i}`).classList.add('done');
+    const fill = (done.size / 9) * 100;
+    document.getElementById('prog-fill').style.width = fill + '%';
+    document.getElementById('prog-text').textContent = `${done.size} / 9`;
+}
+
+window.addEventListener('scroll', () => {
+    const d = document.documentElement;
+    document.getElementById('scroll-bar').style.width = (d.scrollTop / (d.scrollHeight - d.clientHeight) * 100) + '%';
+});
+
+// Open step 1 by default
+toggleStep(0);
+</script>
+</body>
+</html>
