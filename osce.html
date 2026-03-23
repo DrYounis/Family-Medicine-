@@ -833,6 +833,98 @@
                 "Starts Levothyroxine at too high a dose without titrating",
                 "Does not arrange follow-up TSH monitoring"
             ]
+        },
+
+        // ─── DIABETES MELLITUS ──────────────────────────────────────────────────
+        {
+            cat: "Internal Med",
+            type: "checklist",
+            cardNum: "13",
+            q: "Diabetes Mellitus (Type 2) — Management, CVD Risk & Follow-up",
+            good: [
+                "Establishes rapport; collects name, age, detailed history of complaint",
+                "Asks about social/work context: employment status, insurance coverage, support system",
+                // HbA1c-GUIDED TREATMENT
+                "Uses HbA1c to guide therapy: 6.5–7.5% → monotherapy; 7.6–9% → dual therapy; 10–12% → triple therapy or insulin",
+                "Starts with Metformin as first-line monotherapy for Type 2 DM (no contraindications)",
+                "Screens for contraindications before Metformin: history of peptic ulcer disease, eGFR <30, heart failure, contrast media use",
+                "Discusses side effects of Metformin with patient: GI upset, nausea — advise taking with food",
+                "Emphasises patient education and medication adherence at every visit",
+                // CARDIOVASCULAR RISK
+                "Identifies CVD risk in uncontrolled T2DM: hypertension, dyslipidaemia, smoking, obesity",
+                "Manages hypertension: prescribes ACE Inhibitor (e.g., Captopril) — nephroprotective in DM",
+                "Manages dyslipidaemia: prescribes Atorvastatin 20–40 mg once daily, taken after dinner",
+                "Checks for Aspirin allergy before prescribing antiplatelet therapy",
+                "Prescribes antiplatelet therapy in high CVD-risk patients: Aspirin + Clopidogrel (Plavix) 75 mg daily",
+                "Strongly advises smoking cessation; offers referral for cessation support",
+                // HEALTH EDUCATION
+                "Advises lifestyle modifications: low glycaemic diet, regular physical activity (150 min/week), weight reduction",
+                "Educates on hypoglycaemia recognition and management (especially if on sulfonylurea or insulin)",
+                "Advises foot care, regular ophthalmology review, dental hygiene",
+                // ICE & FOLLOW-UP
+                "Elicits ICE: patient's ideas about DM cause, concerns about medication/injections, expectations",
+                "Schedules follow-up: 1 month for medication review and HbA1c recheck",
+                "Monitors: HbA1c every 3 months until target, then every 6 months; BP, renal function (eGFR, urine ACR), lipids annually"
+            ],
+            poor: [
+                "Does not use HbA1c to guide treatment escalation",
+                "Prescribes Metformin without screening for contraindications (eGFR, peptic ulcer, contrast exposure)",
+                "Does not discuss Metformin side effects or advise taking with food",
+                "Ignores cardiovascular risk assessment (BP, lipids, smoking, obesity)",
+                "Does not prescribe ACE Inhibitor for hypertensive DM patient (nephroprotective)",
+                "Does not prescribe statin (Atorvastatin) for dyslipidaemia",
+                "Prescribes Aspirin without checking for allergy",
+                "Does not advise smoking cessation",
+                "Does not address patient education or adherence",
+                "Does not elicit ICE or schedule 1-month follow-up",
+                "Does not plan monitoring of HbA1c, renal function, and lipids"
+            ]
+        },
+
+        // ─── CHEST PAIN DIFFERENTIALS ────────────────────────────────────────────
+        {
+            cat: "Internal Med",
+            type: "checklist",
+            cardNum: "14",
+            q: "Chest Pain — History, Differentials & Initial Management",
+            good: [
+                "Establishes rapport; collects name, age, detailed history of chest pain",
+                // HISTORY
+                "Analyses chest pain systematically: onset, duration, character, site, radiation, severity (0–10)",
+                "Asks about radiation: to left arm, both arms, jaw, neck, back, shoulder",
+                "Asks about associated symptoms: sweating, nausea, vomiting, dyspnoea, palpitations, cough, fever",
+                "Asks about aggravating/relieving factors: exertion, rest, GTN spray, position, breathing, eating",
+                "Asks about past cardiac history, previous MI, PCI/CABG, risk factors (DM, HTN, smoking, family history, obesity)",
+                "Asks about medication history: anticoagulants, antiplatelets, NSAIDs",
+                // DIFFERENTIALS — uses clinical features to distinguish
+                "Considers MYOCARDIAL INFARCTION (MI): crushing/pressure chest pain → both arms; sweating, hypotension, nausea; ECG changes (ST elevation); → 999/Emergency",
+                "Considers UNSTABLE ANGINA: ischaemic pain at rest or increasing frequency; no ST elevation; troponin negative",
+                "Considers GERD: retrosternal burning; worse after meals and lying flat; relieved by antacids; no radiation to arms",
+                "Considers PERICARDITIS: sharp pleuritic chest pain; worse lying flat, better sitting forward; friction rub on auscultation",
+                "Considers PNEUMONIA: productive cough, fever, pleuritic pain; dullness on percussion; bronchial breathing",
+                "Considers HEART FAILURE: dyspnoea, orthopnoea, PND; bilateral crackles; pulmonary oedema on CXR",
+                // EXAMINATION
+                "Performs focused clinical examination: vital signs (BP, HR, RR, SpO2, temp), cardiac auscultation, respiratory examination",
+                "Orders urgent ECG (first-line for any chest pain presentation)",
+                "Orders troponin, CXR, FBC, U&E, LFTs, glucose as appropriate",
+                // EMERGENCY
+                "Recognises STEMI as emergency: activates emergency services, gives Aspirin 300mg stat (if no allergy), O2 if SpO2 <94%",
+                "Documents clinical reasoning for differential diagnosis chosen",
+                "Elicits ICE: patient's ideas, concerns, expectations",
+                "Explains diagnosis and management plan clearly; arranges appropriate follow-up"
+            ],
+            poor: [
+                "Does not analyse chest pain systematically (SOCRATES)",
+                "Does not ask about radiation to left/both arms (MI red flag)",
+                "Does not ask about associated symptoms (sweating, dyspnoea, nausea)",
+                "Does not consider cardiac, GI, respiratory, and pericardial causes",
+                "Does not distinguish MI from other causes of chest pain",
+                "Does not order urgent ECG as first investigation",
+                "Does not recognise STEMI as an emergency requiring immediate action",
+                "Does not give Aspirin 300mg stat in suspected MI (if no allergy)",
+                "Does not examine vital signs, cardiovascular, and respiratory systems",
+                "Does not elicit ICE or explain diagnosis and plan to patient"
+            ]
         }
     ];
 
