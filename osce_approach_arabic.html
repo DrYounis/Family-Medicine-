@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نهج كل الحالات — بالعربي</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+
+        :root {
+            --purple: #7c3aed; --purple-light: #ede9fe; --purple-border: #ddd6fe;
+            --green: #059669; --green-light: #f0fdf4; --green-border: #bbf7d0;
+            --red: #dc2626; --red-light: #fef2f2; --red-border: #fecaca;
+            --blue: #2563eb; --blue-light: #eff6ff; --blue-border: #bfdbfe;
+            --orange: #d97706; --orange-light: #fffbeb; --orange-border: #fde68a;
+            --pink: #db2777; --pink-light: #fdf2f8; --pink-border: #fbcfe8;
+            --bg: #f1f5f9; --card: #ffffff; --text: #1e293b;
+            --muted: #64748b; --border: #e2e8f0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+        #scroll-progress { position: fixed; top: 0; right: 0; left: 0; height: 4px;
+            background: linear-gradient(90deg, var(--purple), var(--blue)); width: 0%; z-index: 9999; transition: width 0.1s; }
+
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;
+            padding: 22px 20px 14px; text-align: center; position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 4px 20px rgba(102,126,234,0.4); }
+        .header h1 { font-size: 1.5em; font-weight: 900; margin-bottom: 4px; }
+        .header p { font-size: 0.85em; opacity: 0.88; margin-bottom: 12px; }
+
+        .mode-tabs { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+        .mode-tab { padding: 6px 16px; border-radius: 20px; border: 2px solid rgba(255,255,255,0.5);
+            background: transparent; color: white; font-family: 'Cairo', sans-serif;
+            font-weight: 700; font-size: 0.85em; cursor: pointer; transition: all 0.2s; }
+        .mode-tab:hover { background: rgba(255,255,255,0.15); }
+        .mode-tab.active { background: white; color: #7c3aed; border-color: white; }
+
+        /* Case selector */
+        .case-selector-wrap { background: white; border-bottom: 2px solid var(--border); padding: 12px 16px; overflow-x: auto; }
+        .case-selector { display: flex; gap: 8px; white-space: nowrap; justify-content: flex-start; }
+        .case-btn { padding: 7px 16px; border-radius: 22px; border: 2px solid var(--border);
+            background: var(--bg); color: var(--muted); font-family: 'Cairo', sans-serif;
+            font-weight: 700; font-size: 0.82em; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+        .case-btn:hover { border-color: var(--purple); color: var(--purple); background: var(--purple-light); }
+        .case-btn.active { background: var(--purple); color: white; border-color: var(--purple); }
+
+        /* Progress */
+        .progress-wrap { background: white; border-bottom: 1px solid var(--border); padding: 9px 20px;
+            display: flex; align-items: center; gap: 12px; }
+        .progress-label { font-size: 0.82em; font-weight: 700; color: var(--muted); white-space: nowrap; }
+        .progress-track { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--green));
+            border-radius: 4px; transition: width 0.5s ease; }
+        .progress-count { font-size: 0.82em; font-weight: 700; color: var(--purple); white-space: nowrap; }
+
+        /* Case title banner */
+        .case-banner { padding: 14px 20px; margin: 16px 0 0; border-radius: 14px; display: flex;
+            align-items: center; gap: 12px; }
+        .case-banner .case-icon { font-size: 2em; }
+        .case-banner .case-name { font-size: 1.2em; font-weight: 900; }
+        .case-banner .case-sub { font-size: 0.82em; font-weight: 600; opacity: 0.8; }
+
+        .container { max-width: 860px; margin: 0 auto; padding: 0 16px 80px; }
+
+        /* Step cards */
+        .step-card { background: var(--card); border-radius: 14px; margin-bottom: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1.5px solid var(--border);
+            overflow: hidden; transition: box-shadow 0.2s, border-color 0.2s; }
+        .step-card.done { border-color: var(--green); }
+        .step-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+
+        .step-header { display: flex; align-items: flex-start; gap: 14px; padding: 18px 20px;
+            cursor: pointer; user-select: none; transition: background 0.15s; }
+        .step-header:hover { background: #fafafa; }
+
+        .step-num { width: 36px; height: 36px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; font-weight: 900;
+            font-size: 0.95em; flex-shrink: 0; margin-top: 2px; }
+
+        .step-title-wrap { flex: 1; }
+        .step-tag { font-size: 0.72em; font-weight: 700; padding: 2px 9px; border-radius: 20px;
+            display: inline-block; margin-bottom: 4px; }
+        .step-title { font-weight: 700; font-size: 1.05em; line-height: 1.4; }
+
+        .step-toggle { font-size: 1em; flex-shrink: 0; transition: transform 0.25s; color: var(--muted); margin-top: 6px; }
+        .step-toggle.open { transform: rotate(180deg); }
+
+        .step-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+        .step-body.open { max-height: 4000px; }
+        .step-body-inner { padding: 0 20px 20px; border-top: 1px solid var(--border); }
+
+        .subsection { margin-top: 18px; }
+        .subsection-title { font-size: 0.82em; font-weight: 700; letter-spacing: 0.04em;
+            color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .subsection-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        .phrase-box { background: var(--purple-light); border: 1.5px solid var(--purple-border);
+            border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+        .phrase-box .phrase-label { font-size: 0.78em; font-weight: 700; color: var(--purple); margin-bottom: 6px; }
+        .phrase-box .phrase-text { font-size: 1.04em; font-weight: 600; color: #3b0764; line-height: 1.9; }
+
+        .info-box { border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+        .info-box.green { background: var(--green-light); border: 1.5px solid var(--green-border); }
+        .info-box.red { background: var(--red-light); border: 1.5px solid var(--red-border); }
+        .info-box.blue { background: var(--blue-light); border: 1.5px solid var(--blue-border); }
+        .info-box.orange { background: var(--orange-light); border: 1.5px solid var(--orange-border); }
+        .info-box.pink { background: var(--pink-light); border: 1.5px solid var(--pink-border); }
+
+        .info-box .box-title { font-size: 0.82em; font-weight: 700; margin-bottom: 8px; }
+        .info-box.green .box-title { color: var(--green); }
+        .info-box.red .box-title { color: var(--red); }
+        .info-box.blue .box-title { color: var(--blue); }
+        .info-box.orange .box-title { color: var(--orange); }
+        .info-box.pink .box-title { color: var(--pink); }
+        .info-box ul { padding-right: 18px; }
+        .info-box ul li { font-size: 0.95em; padding: 3px 0; line-height: 1.6; }
+
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+        .done-btn { display: flex; align-items: center; gap: 8px; margin-top: 18px;
+            padding: 10px 20px; border-radius: 8px; border: 2px solid var(--green);
+            background: var(--green-light); color: var(--green); font-family: 'Cairo', sans-serif;
+            font-weight: 700; font-size: 0.95em; cursor: pointer; transition: all 0.2s;
+            width: 100%; justify-content: center; }
+        .done-btn:hover { background: var(--green); color: white; }
+        .done-btn.active { background: var(--green); color: white; }
+
+        /* Practice mode */
+        #practice-mode { display: none; }
+        #practice-mode.active { display: block; }
+        #reference-mode.hidden { display: none; }
+
+        .practice-card { background: var(--card); border-radius: 16px; padding: 32px 28px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1); text-align: center; }
+        .practice-step-indicator { font-size: 0.85em; color: var(--muted); font-weight: 700; margin-bottom: 20px; }
+        .practice-tag { display: inline-block; padding: 4px 14px; border-radius: 20px;
+            font-size: 0.82em; font-weight: 700; margin-bottom: 16px; }
+        .practice-title { font-size: 1.3em; font-weight: 900; margin-bottom: 24px; line-height: 1.4; }
+        .practice-reveal-btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white;
+            border: none; padding: 14px 32px; border-radius: 10px; font-family: 'Cairo', sans-serif;
+            font-weight: 700; font-size: 1.05em; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 4px 16px rgba(102,126,234,0.4); }
+        .practice-reveal-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(102,126,234,0.5); }
+        .practice-content { display: none; text-align: right; margin-top: 24px; animation: fadeUp 0.3s ease; }
+        .practice-content.visible { display: block; }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+        .practice-nav { display: flex; gap: 10px; margin-top: 24px; justify-content: center; flex-wrap: wrap; }
+        .nav-btn { padding: 10px 24px; border-radius: 8px; font-family: 'Cairo', sans-serif;
+            font-weight: 700; font-size: 0.95em; cursor: pointer; transition: all 0.15s;
+            border: 2px solid var(--purple); }
+        .nav-btn.primary { background: var(--purple); color: white; }
+        .nav-btn.primary:hover { background: #6d28d9; }
+        .nav-btn.secondary { background: transparent; color: var(--purple); }
+        .nav-btn.secondary:hover { background: var(--purple-light); }
+
+        #scroll-top { position: fixed; bottom: 24px; left: 20px; background: var(--purple);
+            color: white; border: none; border-radius: 50%; width: 44px; height: 44px;
+            font-size: 1.2em; cursor: pointer; box-shadow: 0 4px 14px rgba(124,58,237,0.4);
+            opacity: 0; transition: opacity 0.3s; z-index: 200; }
+        #scroll-top.visible { opacity: 1; }
+
+        .top-nav { display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 16px; background: white; border-bottom: 1px solid var(--border);
+            flex-wrap: wrap; gap: 8px; }
+        .back-link { color: var(--purple); text-decoration: none; font-weight: 700;
+            font-size: 0.9em; display: flex; align-items: center; gap: 4px; }
+        .back-link:hover { text-decoration: underline; }
+        .print-btn { background: transparent; border: 1.5px solid var(--border); color: var(--muted);
+            font-family: 'Cairo', sans-serif; font-size: 0.85em; font-weight: 700;
+            padding: 6px 14px; border-radius: 7px; cursor: pointer; transition: all 0.15s; }
+        .print-btn:hover { border-color: var(--purple); color: var(--purple); }
+
+        @media print {
+            #scroll-progress, #scroll-top, .mode-tabs, .top-nav, .case-selector-wrap,
+            .done-btn, .practice-nav, .progress-wrap { display: none !important; }
+            .step-body { max-height: none !important; }
+            .step-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+            body { background: white; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+
+<div class="top-nav">
+    <a href="osce.html" class="back-link">← OSCE Flashcards</a>
+    <button class="print-btn" onclick="window.print()">🖨 طباعة</button>
+</div>
+
+<div class="header">
+    <h1>🩺 نهج كل الحالات — بالعربي</h1>
+    <p>الأسئلة والعبارات بالعامية المصرية لكل OSCE</p>
+    <div class="mode-tabs">
+        <button class="mode-tab active" onclick="setMode('reference')">📖 مرجع شامل</button>
+        <button class="mode-tab" onclick="setMode('practice')">🎯 وضع التدريب</button>
+    </div>
+</div>
+
+<!-- Case selector -->
+<div class="case-selector-wrap">
+    <div class="case-selector" id="case-selector"></div>
+</div>
+
+<!-- Progress -->
+<div class="progress-wrap">
+    <span class="progress-label">تقدمك:</span>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <span class="progress-count" id="progress-count">0 / 0</span>
+</div>
+
+<!-- Reference mode -->
+<div id="reference-mode">
+<div class="container">
+    <div id="case-banner-wrap"></div>
+    <div id="steps-container"></div>
+</div>
+</div>
+
+<!-- Practice mode -->
+<div id="practice-mode">
+<div class="container" style="padding-top:20px;">
+    <div class="practice-card" id="practice-card">
+        <div class="practice-step-indicator" id="practice-indicator"></div>
+        <div class="practice-tag" id="practice-tag"></div>
+        <div class="practice-title" id="practice-title"></div>
+        <button class="practice-reveal-btn" onclick="revealPractice()">👁 اضغط لإظهار الأسئلة</button>
+        <div class="practice-content" id="practice-content"></div>
+        <div class="practice-nav">
+            <button class="nav-btn secondary" onclick="prevPractice()" id="prev-btn">→ السابق</button>
+            <button class="nav-btn primary" onclick="nextPractice()" id="next-btn">← التالي</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="للأعلى">↑</button>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  DATA — All cases
+// ═══════════════════════════════════════════════════════════════
+const cases = [
+
+    // ── 1. عرق النسا / Sciatica ──────────────────────────────────
+    {
+        id: 'sciatica',
+        name: 'عرق النسا (Sciatica)',
+        icon: '🦵',
+        color: '#7c3aed', colorLight: '#ede9fe',
+        steps: [
+            {
+                tag: 'تعريف المرض', tagColor: '#ede9fe', tagText: '#7c3aed',
+                title: 'إيه هو عرق النسا وإزاي تشرحه للمريض؟',
+                phrases: [
+                    { label: '📍 شرح المرض', text: '"عرق النسا ده عصب بيتضغط عليه في أسفل ضهرك — ده بيعمل ألم أو تنميل بييجي من الأرداف لأسفل الرجل لحد القدم."<br>"الألم ده ممكن يبقى حرقة أو وخز أو تنمل، وبييجي في خط واحد من الردف للرجل للقدم."' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'تاريخ الأعراض', tagColor: '#ede9fe', tagText: '#7c3aed',
+                title: 'إزاي تسأل عن الأعراض والمسار؟',
+                phrases: [
+                    { label: '📍 وصف الألم', text: '"الوجع ده فين بالظبط؟ ابدأ وقوللي."<br>"الألم بيحس إيه — حرقة ولا وخز ولا تنميل ولا صدمة كهربا؟"<br>"بيبدأ منين؟ من الضهر ولا من الردف؟"<br>"بيوصل لأسفل الرجل؟ لحد القدم؟"' },
+                    { label: '📍 الشدة والتأثير', text: '"على أد إيه الوجع؟ تدي له كام من عشرة؟"<br>"بيأثر على مشيتك؟ قادر تشتغل؟ بتنام؟"' },
+                    { label: '📍 مشيِّد ومخفف', text: '"إيه اللي بيزود الوجع؟ القعاد فترة طويلة؟ السعال؟ العطسة؟"<br>"إيه اللي بيريحك؟ الاستلقاء على ضهرك بركبك مقوسين؟ المشي الخفيف؟"' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'الأسباب وعوامل الخطر', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'إيه أسباب عرق النسا التي تسأل عنها؟',
+                phrases: [
+                    { label: '📍 أسباب شائعة', text: '"رفعت حاجة تقيلة قريباً؟"<br>"هل عندك مشكلة في الغضاريف من قبل؟"<br>"وزنك زايد؟" (السمنة من أسباب الضغط على العصب)<br>"هل حامل؟" (الحمل يضغط على العصب)<br>"حصلك حادث أو ضربة في الضهر؟"' },
+                    { label: '📍 أسباب خطيرة تستبعد', text: '"عندك أورام أو سرطان بتتعالج منه؟"<br>"كنت عندك حمى مع الوجع؟" (إنتان/خراج)<br>"عندك تاريخ بتب؟"' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'blue', title: '✅ أسباب الضغط على العصب', items: ['هرنية الغضروف (الأكثر شيوعاً)', 'ضيق قناة العمود الفقري', 'تروما أو أورام', 'إنتان (خراج فقري)', 'السمنة والحمل'] },
+                    right: { color: 'orange', title: '⚠️ عوامل الخطر', items: ['مهنة بترفع فيها حاجات تقيلة', 'قعاد طويل وراء المكتب', 'سمنة BMI > 30', 'عمر ٣٠-٥٠', 'سكري (يضعف العصب)'] }
+                }
+            },
+            {
+                tag: 'العلامات الخطرة 🚨', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'أسئلة الـ Red Flags — Cauda Equina',
+                phrases: [
+                    { label: '🚨 أسئلة لازم تسألها', text: '"هل حصل وبلت أو اتبرزت من غير إرادتك؟" — ده علامة خطر جداً<br>"هل حاسس بتنميل في المنطقة بين رجليك (السرج)؟"<br>"عندك ضعف في الرجلين الاتنين مع بعض؟"<br>"مقدرش تمسك البول؟"' },
+                    { label: '⚠️ الأعراض الخطرة الأخرى', text: '"حصلك نقص في وزنك من غير سبب؟"<br>"عندك حمى مع الوجع ده؟"<br>"عندك وجع في الليل حتى لما بتنام؟"' }
+                ],
+                clinical: {
+                    type: 'single',
+                    color: 'red',
+                    title: '🚨 لو إجابته آه على أي سؤال تحويل عاجل!',
+                    items: ['فقدان كنترول المثانة أو الأمعاء → طوارئ فوراً', 'تنميل منطقة السرج → cauda equina', 'ضعف في الرجلين = علامة عصبية خطيرة', 'لا تأخر في التحويل لجراح العمود الفقري']
+                }
+            },
+            {
+                tag: 'ICE', tagColor: '#fdf4ff', tagText: '#a21caf',
+                title: 'أسئلة الـ ICE — فهم المريض وقلقه',
+                phrases: [
+                    { label: '💭 Ideas', text: '"إيه رأيك إيه اللي سبّب الوجع ده؟"<br>"حد قالك إيه عن حالتك؟"' },
+                    { label: '😟 Concerns', text: '"إيه اللي بيقلقك في الموضوع ده أكتر حاجة؟"<br>"خايف يكون محتاج عملية؟"' },
+                    { label: '🎯 Expectations', text: '"إيه اللي توقعته من الزيارة دي؟"<br>"عايز تعرف إيه النهارده بالظبط؟"' },
+                    { label: '💬 الرد على الخوف من العملية', text: '"أنا فاهم قلقك — الحمد لله في الغالب مش محتاج عملية."<br>"٩٠٪ من الحالات بتتحسن لوحدها في ٦ لـ ١٢ أسبوع بعلاج بسيط."' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'الكشف الإكلينيكي', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'الفحص — Look / Feel / Move / Special Tests',
+                phrases: [
+                    { label: '👁️ LOOK (من الأمام والجنب والخلف)', text: '"هخليك تقف لحظة وهشوف وقفتك."<br>الطبيب: لاحظ الوقفة، أي انحراف في العمود، ضمور العضلات، تغير الجلد.' },
+                    { label: '✋ FEEL (بضهر الإيد الأول)', text: '"هلمسك بضهر إيدي لأحس الحرارة." → ثم أطراف الأصابع<br>"فين بالظبط بيوجعك لما بضغط هنا؟"<br>الطبيب: اضغط على العضلات الجانبية للعمود وعلى نقطة عرق النسا.' },
+                    { label: '🔄 MOVE (حركة نشطة وسلبية)', text: '"هخليك تنحني للأمام بالراحة."<br>"انحني للجنبين." — لاحظ أي حركة بتزود الوجع' },
+                    { label: '🦿 SPECIAL TEST — SLR (Straight Leg Raise)', text: '"هترفع رجلك وهي مستقيمة — قولي لما حتحس وجع."<br>SLR موجب: لو الوجع بيضرب تحت الركبة قبل ٦٠ درجة — ده علامة عرق النسا الأساسية' },
+                    { label: '🦵 SPECIAL TEST — فحص الركبة', text: '"هفحص ركبتك كمان."<br>افحص: تحت وفوق الرضفة (الرُكبة) — Patella Tap Test<br>"هضرب تحت ركبتك بالمطرقة لأشوف الانعكاس."' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'العلاج والمتابعة', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تشرح العلاج والنصائح للمريض؟',
+                phrases: [
+                    { label: '💊 الأدوية', text: '"هاكاسبلك مسكنات من نوع الإيبوبروفين مع الأكل ٣ مرات في اليوم."<br>"وكمان باراسيتامول كل ٦ ساعات لو الوجع شديد."<br>"لو في حرقة أو وخز — ممكن أضيف دواء للأعصاب."' },
+                    { label: '🏃 النشاط والحركة', text: '"لا تفضل مستلقي في البيت — ده بيأخر التحسن."<br>"امشي مسافات قصيرة — الحركة الخفيفة أحسن علاج."<br>"لو اشتغلت — استخدم كرسي بظهر مريح وقوم كل ٣٠ دقيقة."' },
+                    { label: '🧘 العلاج الطبيعي', text: '"هحولك على العلاج الطبيعي — فيه تمارين بتقوي ضهرك وبتريح العصب."' },
+                    { label: '📅 المتابعة والخطر', text: '"هنشوفك بعد أسبوعين أو أربعة."<br>"لو حصل فقدان كنترول على البول أو البراز — روح أقرب طوارئ فوراً."' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 2. القدم السكرية / Diabetic Foot ─────────────────────────
+    {
+        id: 'diabetic-foot',
+        name: 'القدم السكرية',
+        icon: '🦶',
+        color: '#059669', colorLight: '#f0fdf4',
+        steps: [
+            {
+                tag: 'التحضير والتجهيز', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تبدأ فحص القدم السكرية؟',
+                phrases: [
+                    { label: '🧼 قبل ما تبدأ', text: '"هغسل إيدي الأول بإذنك."<br>"ممكن تخلع جوربك وتمد رجليك كويس؟"<br>"أي ألم في رجلك وقت ما أفحص — قولي على طول."' },
+                    { label: '🔧 جهاز الفحص جاهز', text: 'خيط المونوفيلامنت ١٠ جرام — الأهم<br>الشوكة الرنانة (١٢٨Hz) لحس الاهتزاز<br>المطرقة للانعكاسات<br>دبوس للألم — كرة قطن للحساسية' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'LOOK — الفحص البصري', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'إيه اللي بتدور عليه لما بتبص على القدم؟',
+                phrases: [
+                    { label: '👁️ اللون والجلد', text: '"ببص على لون القدم — شحوب؟ احمرار؟ زرقة؟"<br>"فيه جروح أو قرح أو مناطق بيضاء؟"<br>"الجلد جاف؟ فيه شقوق؟ فيه نداوة بين الأصابع؟"' },
+                    { label: '👁️ التشوهات والأظافر', text: '"الأظافر طبيعية ولا سميكة ولا فطر؟"<br>"شكل القدم طبيعي؟ فيه أصابع ملتوية أو فقدان قوس القدم؟"<br>"فيه تورم في القدم؟"' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'FEEL — الأوعية الدموية', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'إزاي تفحص الدورة الدموية في القدم؟',
+                phrases: [
+                    { label: '✋ درجة الحرارة', text: '"هلمسك بضهر إيدي لأحس الحرارة." — برود القدم = ضعف دورة دموية<br>قارن القدمين مع بعض' },
+                    { label: '💓 النبضات', text: '"هجس على نبضتين في قدمك."<br>Dorsalis pedis: فوق القدم بين إصبع الكبير والتاني<br>Posterior tibial: ورا عظمة الكاحل الداخلية<br>"الضربان قوي ولا ضعيف؟"' },
+                    { label: '🔴 امتلاء الشعيرات', text: '"هضغط على ظفرك ٥ ثواني." — الأحمر لازم يرجع في أقل من ثانيتين<br>لو بطيء = ضعف دورة دموية' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'FEEL — الجهاز العصبي', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'إزاي تفحص الإحساس في القدم؟',
+                phrases: [
+                    { label: '🧵 خيط المونوفيلامنت (الأهم)', text: '"هلمسك بخيط رفيع — قولي لما حتحس."<br>"غمض عينيك بالراحة."<br>"حسيت بحاجة؟" — الخيط بيلمس ١٠ نقاط مختلفة في القدم' },
+                    { label: '🔔 الشوكة الرنانة', text: '"هضع شوكة على عظم إبهامك." → "حاسس بإيه؟ بتحس برعشة؟"<br>كرر على عظم الكاحل وعلى الركبة لو مش حاسس' },
+                    { label: '📍 الألم والحرارة', text: '"هشوش دبوس خفيف — حريف ولا مش حريف؟"<br>"حاسس بالفرق بين الكوباية الساخنة والبارده؟"' },
+                    { label: '🔨 الانعكاس', text: '"هضرب تحت كاحلك بالمطرقة." — لو مفيش انعكاس = اعتلال عصبي محيطي' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'التصنيف والتعليم', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تصنف المريض وتعلمه على القدم؟',
+                phrases: [
+                    { label: '📊 التصنيف', text: '"القدم سليمة — إحساس ونبضات طبيعيين." → خطر منخفض<br>"في مشكلة واحدة — إحساس أو نبض ضعيف." → خطر متوسط<br>"في مشكلتين أو قرحة قديمة." → خطر عالي → تحويل فوري' },
+                    { label: '📚 تعليم المريض', text: '"بص على قدميك كل يوم — حتى بين الأصابع."<br>"لا تمشي حافياً أبداً."<br>"اللبس المناسب بيحمي قدمك من الجروح."<br>"لقطعت أو جرح صغير — تيجي علينا فوراً — لا تستنى."<br>"بلل رجلك وجففها كويس — وخصوصاً بين الأصابع."' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 3. IMCI — تقييم الطفل ─────────────────────────────────────
+    {
+        id: 'imci',
+        name: 'IMCI — تقييم الطفل',
+        icon: '👶',
+        color: '#db2777', colorLight: '#fdf2f8',
+        steps: [
+            {
+                tag: 'علامات الخطر 🚨', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'أول حاجة — اسأل عن علامات الخطر',
+                phrases: [
+                    { label: '🚨 علامات الخطر الأربعة (اسأل بالترتيب)', text: '"الطفل عنده تشنجات دلوقتي أو من قريب؟"<br>"صحيان وبيفضل صحيان؟ ولا كسلان جداً ومش بيحرك؟"<br>"بيرضع أو بياكل طبيعي؟ ولا رافض أكل؟"<br>"بيقيء كل حاجة بياكلها؟ ولا القيء بس أحياناً؟"' },
+                    { label: '⚠️ الصعوبات', text: '"صعب عليه يبلع؟ بيخنق على نفسه؟"<br>"في أي صعوبة في التنفس؟"' }
+                ],
+                clinical: {
+                    type: 'single',
+                    color: 'red',
+                    title: '🚨 لو في علامة خطر واحدة = تحويل عاجل للمستشفى',
+                    items: ['تشنجات → طوارئ فوراً', 'مش صحيان / كسلان جداً → قبول مستشفى', 'رافض أكل كامل → تحويل', 'بيقيء كل حاجة → خطر جفاف']
+                }
+            },
+            {
+                tag: 'التاريخ والفحص', tagColor: '#fdf2f8', tagText: '#db2777',
+                title: 'إزاي تاخد تاريخ الطفل المريض؟',
+                phrases: [
+                    { label: '📋 الأسئلة الأساسية', text: '"الطفل عنده قد إيه؟ وزنه كام آخر مرة اتقاسه؟"<br>"الشكوى الأساسية إيه؟ من امتى؟"<br>"عنده حمى؟ سعال؟ زكام؟ إسهال؟ قيء؟ طفح؟ إصفرار؟"<br>"أخد أي دواء من البيت؟ أنتيبيوتيك؟"' },
+                    { label: '💉 الحالة التطعيمية', text: '"كرت التطعيمات موجود؟ التطعيمات كلها اخدها؟"' },
+                    { label: '🍼 التغذية', text: '"بيرضع طبيعي؟ ولا على مياه أو لبن بقري؟"<br>"عمره أد إيه ابتدا ياكل أكل صلب؟"' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'التصنيف والعلاج', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تصنف الحالة وتقرر العلاج؟',
+                phrases: [
+                    { label: '🏠 البيت', text: '"الطفل كويس — مفيش علامات خطر."<br>"هاكسبلك علاج بتاخده في البيت."<br>"هتجي تراجعنا بعد أسبوع أو لو اتعب أكتر."' },
+                    { label: '🏥 المستشفى', text: '"عنده علامة خطر — محتاج يتحول على المستشفى دلوقتي."<br>"هاديه جرعة أولى قبل ما تروح."' },
+                    { label: '⚠️ تعليم الأهل', text: '"تيجي فوراً لو: التشنجات رجعت، الطفل وقف عن الأكل خالص، رجع تقيء كتير، الحالة اتعبت."' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 4. نزلة البرد vs التهاب الجيوب ─────────────────────────────
+    {
+        id: 'cold-sinusitis',
+        name: 'نزلة برد أم جيوب أنفية؟',
+        icon: '🤧',
+        color: '#2563eb', colorLight: '#eff6ff',
+        steps: [
+            {
+                tag: 'التمييز الأساسي', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'إزاي تفرق نزلة البرد عن التهاب الجيوب الأنفية؟',
+                phrases: [
+                    { label: '📍 السؤال الأول — المدة', text: '"من امتى بدأ الزكام ده؟"<br>"نزلة البرد عادةً بتتحسن في ٧ لـ ١٠ أيام — لو فاضل من أكتر من كده، ده بقى مش نزلة بس."<br>"بدأ يتحسن وبعدين اتعب تاني؟" — ده علامة مهمة على تحول لبكتيري' },
+                    { label: '📍 السؤال التاني — السيلان', text: '"الإفرازات دي شكلها إيه؟ شفافة ولا صفرا ولا خضرا؟"<br>"الصفرا والخضرا بتيجي مع البكتيريا — مش دايماً بس دي علامة مساعدة."<br>"كمية السيلان كتيرة ولا قليلة؟"' },
+                    { label: '📍 ألم الوجه والضغط', text: '"عندك إحساس ضغط أو ألم في وشك؟ تحت عينيك أو في جبهتك؟"<br>"الألم ده بيتزود لما بتنحني للأمام؟"<br>"عندك ألم في أسنانك العلوية؟"' },
+                    { label: '📍 الحمى والتأثير', text: '"عندك حمى؟ كام الحرارة؟"<br>"حاسس بتعب ووجع في جسمك عموماً؟"' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'blue', title: '🤧 نزلة برد — فيروسي', items: ['سيلان شفاف أو أبيض', 'بتتحسن في ٧-١٠ أيام', 'حمى خفيفة أو مفيش', 'مفيش ألم في الوجه شديد', 'العلاج: دعم فقط — بلا أنتيبيوتيك'] },
+                    right: { color: 'red', title: '😷 جيوب بكتيرية', items: ['سيلان أصفر/أخضر', 'أكتر من ١٠ أيام أو بتتعب بعد تحسن', 'ألم في الوجه أو تحت العين', 'حمى أعلى', 'العلاج: أنتيبيوتيك مطلوب'] }
+                }
+            },
+            {
+                tag: 'العلاج', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'إزاي تشرح العلاج للأهل أو المريض؟',
+                phrases: [
+                    { label: '🤧 لو نزلة برد (فيروسي)', text: '"الأنتيبيوتيك مش هينفع هنا — ده فيروس مش بكتيريا."<br>"بدي مسكن للحرارة والألم وقطرة الأنف للراحة."<br>"شرب سوايل كتيرة — نوم كافي."<br>"بتتحسن لوحدها في أسبوع."' },
+                    { label: '😷 لو جيوب بكتيرية', text: '"محتاج أنتيبيوتيك — هاكسبلك كو-أموكسيكلاف."<br>"للأطفال: أوجمنتين شراب ٤٥٧ ملجم مرتين في اليوم لمدة ٧ أيام."<br>"للكبار: أوجمنتين قرص مرتين في اليوم لمدة ٧ أيام."<br>"لو ما اتحسنتش في يومين تاني — رجعلي."' },
+                    { label: '📅 المتابعة', text: '"لو رفعت حرارة جداً أو بدأت ترى باضعاف أو عندك شديد وجع في الرأس أو الرقبة — ارجع فوراً."' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 5. التهاب الأذن الوسطى (AOM) ─────────────────────────────
+    {
+        id: 'aom',
+        name: 'التهاب الأذن الوسطى (AOM)',
+        icon: '👂',
+        color: '#d97706', colorLight: '#fffbeb',
+        steps: [
+            {
+                tag: 'التاريخ والأعراض', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'إزاي تاخد تاريخ التهاب الأذن؟',
+                phrases: [
+                    { label: '📍 الشكوى الأساسية', text: '"الطفل بيشكي من وجع في الأذن؟ أنهي جهة؟"<br>"صغار: ممكن يمسك أذنه وهو عيان أو يبكي وهو مفيش سبب واضح."<br>"في إفرازات خارجة من الأذن؟"<br>"بيسمع كويس ولا حاسسة إن سمعه اتأثر؟"' },
+                    { label: '📍 الأعراض المصاحبة', text: '"عنده حمى؟ كام الحرارة؟"<br>"عنده زكام أو سعال قبلها؟"<br>"مبقاش بيكل كويس أو بيبكي كتير؟"' },
+                    { label: '📍 تاريخ الأذن', text: '"حصلت عنده التهاب أذن من قبل؟ كام مرة في السنة؟"<br>"عمل عملية أنابيب في الأذن؟"<br>"بياخد أنتيبيوتيك؟ أي نوع؟"' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'الكشف — طبلة الأذن', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'إزاي تفحص الأذن وإيه العلامة المهمة؟',
+                phrases: [
+                    { label: '🔦 الأوتوسكوب', text: '"هفحص أذنك بالأوتوسكوب — مش هيوجع."<br>"العلامة الأساسية لـ AOM: طبلة الأذن منتفخة للخارج (Bulging) — ده التشخيص!"<br>"برضو ابدور: احمرار في الطبلة، ضياع الانعكاس الضوئي، إفرازات لو الطبلة انثقبت."' },
+                    { label: '📝 التوثيق المهم', text: '"لازم أوثق الجهة المصابة: التهاب أذن وسطى حاد — الأذن اليسرى" ولا اليمنى ولا الاتنين.<br>لو ثنائي → يساعد في قرار العلاج' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'قرار العلاج', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'هل تعطي أنتيبيوتيك ولا تنتظر؟',
+                phrases: [
+                    { label: '⏳ المراقبة أولاً (لو خفيف وعمره +٢ سنة)', text: '"الحالة خفيفة — هناخد يومين نشوف."<br>"هاديه مسكن — إيبوبروفين ولا باراسيتامول — وهنراقب."<br>"لو ما اتحسنش في ٤٨ ساعة — ابدأ الأنتيبيوتيك."' },
+                    { label: '💊 الأنتيبيوتيك (لو أقل من سنتين / شديد / الاتنين)', text: '"محتاج أنتيبيوتيك — أموكسيسيلين جرعة عالية."<br>"الجرعة: ٨٠-٩٠ ملجم/كجم/يوم مقسومة مرتين."<br>"الكورس: ٥ أيام للكبار — ١٠ أيام لو أقل من سنتين."<br>"كمان هاكسبلك مسكن للألم."' },
+                    { label: '📚 تعليم الأهل', text: '"ده مش عشان الطفل بياكل قهوة — أي طفل ممكن يجيله التهاب أذن."<br>"ممكن يحس بضعف سمع مؤقت — ده طبيعي وبيتحسن."<br>"متحطش أي حاجة في الأذن."<br>"هتعملوا معايا متابعة بعد أسبوعين."' }
+                ],
+                clinical: {
+                    type: 'single',
+                    color: 'red',
+                    title: '🚨 تحويل فوري لو:',
+                    items: ['احمرار ورم ورا الأذن (التهاب الخشاء — Mastoiditis)', 'صداع شديد أو تيبس رقبة (تهديد سحايا)', 'ضعف في وجهه (شلل العصب السابع)', 'التهاب متكرر +٣ مرات في ٦ أشهر → ENT وأنابيب']
+                }
+            }
+        ]
+    },
+
+    // ── 6. فقر الدم بالحديد (IDA) ─────────────────────────────────
+    {
+        id: 'ida',
+        name: 'فقر الدم بالحديد (IDA)',
+        icon: '🩸',
+        color: '#dc2626', colorLight: '#fef2f2',
+        steps: [
+            {
+                tag: 'التاريخ والأعراض', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'إزاي تبدأ مع طفل شاحب ووالدته خايفة عليه؟',
+                phrases: [
+                    { label: '📍 الشكوى الأولى', text: '"إيه اللي لفت نظرك في الطفل؟"<br>"من امتى لاحظتي إنه شاحب؟"<br>"بيكتشف أو يلعب زي الأول؟ ولا بيتعب بسرعة؟"<br>"بيشيل حاجات غريبة ويبقى يمضغها؟" — ده Pica، علامة مهمة جداً لـ IDA' },
+                    { label: '📍 التغذية', text: '"بياكل لحمة أو فراخ أو سمك؟ ولا رافضهم؟"<br>"بيشرب لبن بقري كتير؟ كام مرة في اليوم؟" — اللبن الكتير بيمنع امتصاص الحديد<br>"رضاعة طبيعية لحد عمر كام؟"<br>"بدأ ياكل أكل صلب من عمر كام؟"' },
+                    { label: '📍 تاريخ العيلة', text: '"في حد في العيلة عنده فقر دم؟"<br>"الطفل اتولد مبتسر؟" — المبتسرون بيتولدوا بمخازن حديد أقل<br>"حصل معاه نزيف أو عمليات؟"' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'الكشف والعلامات', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'إزاي تفحص الطفل وتدور على علامات فقر الدم؟',
+                phrases: [
+                    { label: '👁️ الفحص السريري', text: '"هبص على جفن عينه من الداخل — الغشاء باهت؟"<br>"أظافره شاحبة؟ فيها تجويف من الجوه (كوبونيكيا)؟"<br>"في شقوق في زوايا بقه؟ — Angular stomatitis"<br>"لسانه أملس ومش فيه حبيبات؟ — Glossitis"<br>"جلد راحة إيده وباطن رجله شاحب؟"' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'التحاليل', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'إيه التحاليل المطلوبة وإزاي تفسرها؟',
+                phrases: [
+                    { label: '🔬 الـ CBC', text: '"هطلب تحليل دم شامل — هيبينلك الهيموجلوبين وشكل الكريات."<br>"في IDA: الهيموجلوبين واطي — الكريات صغيرة وباهتة (Microcytic Hypochromic)."<br>Hb طبيعي للأطفال: أكتر من ١١ جم — لو أقل = فقر دم' }
+                ],
+                clinical: {
+                    type: 'single',
+                    color: 'blue',
+                    title: '🔬 نتائج الـ CBC في IDA',
+                    items: ['Hb منخفض (< 11 جم/دل)', 'MCV منخفض (كريات صغيرة)', 'MCH و MCHC منخفضين', 'RDW مرتفع', 'Ferritin منخفض = مخازن الحديد فاضلة']
+                }
+            },
+            {
+                tag: 'العلاج والمتابعة', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تشرح علاج الحديد للأهل بشكل صح؟',
+                phrases: [
+                    { label: '💊 جرعة الحديد', text: '"هاكسبلك شراب حديد."<br>"الجرعة: ٣ لـ ٦ ملجم/كجم/يوم — مرة واحدة في اليوم."<br>"أحسن وقت: الصبح قبل الأكل على معدة فاضية." — لو وجع معدة تعطيه مع الأكل' },
+                    { label: '🍊 عشان يتمص أحسن', text: '"اديه مع عصير برتقال أو ليمون — فيتامين C بيساعد الجسم يمص الحديد."<br>"لا تديه مع اللبن أو الشاي — بيمنعوا الامتصاص."' },
+                    { label: '📅 المتابعة', text: '"هتيجي بعد أسبوع أولاً — نشوف إذا الطفل عامله ألم في البطن من الدواء."<br>"بعد شهر — هنعمل تحليل تاني ونشوف الهيموجلوبين."<br>"الدواء مش بيخلص مع ما يتحسن الهيموجلوبين — لازم يكمل ٣ شهور بعد التحسن عشان يملي المخازن."' },
+                    { label: '🥩 تعديل الغذاء', text: '"كتر اللحمة والفراخ والسمك والعدس."<br>"قلل اللبن البقري — أقل من نص لتر في اليوم."' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 7. الغدة الدرقية / Thyroid ───────────────────────────────
+    {
+        id: 'thyroid',
+        name: 'الغدة الدرقية',
+        icon: '🦋',
+        color: '#7c3aed', colorLight: '#ede9fe',
+        steps: [
+            {
+                tag: 'أعراض القصور والفرط', tagColor: '#ede9fe', tagText: '#7c3aed',
+                title: 'إزاي تسأل عن أعراض الغدة؟',
+                phrases: [
+                    { label: '🥶 أعراض قصور الغدة (Hypothyroid)', text: '"بتحس ببطء وإرهاق من غير سبب؟"<br>"وزنك بيزيد وإنت مش بتاكل أكتر؟"<br>"بتحس ببرد أكتر من الناس؟"<br>"شعرك بيتساقط؟ جلدك بقى جاف؟"<br>"الإمساك أو التعب بيمنعك من أي حاجة؟"<br>"مزاجك بيتغير؟ عندك اكتئاب أو كسل ذهني؟"' },
+                    { label: '🔥 أعراض فرط الغدة (Hyperthyroid)', text: '"وزنك بيقل وإنت مش بتعمل حمية؟"<br>"قلبك بيسرع أو بتحس بخفقان؟"<br>"بتتعرق كتير حتى في الجو البارد؟"<br>"عندك رعشة في إيديك؟"<br>"بتحس بعصبية وقلق من غير سبب؟"<br>"عندك إسهال أو حاجة متكررة للحمام؟"<br>"عيونك بارزين؟ الناس قالتلك عيونك كبرت؟"' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'blue', title: '🥶 قصور الغدة', items: ['تعب وكسل', 'زيادة وزن', 'برودة', 'جلد جاف وشعر متساقط', 'إمساك', 'تباطؤ القلب'] },
+                    right: { color: 'red', title: '🔥 فرط نشاط الغدة', items: ['نقص وزن', 'خفقان وسرعة قلب', 'تعرق وحرارة', 'رعشة وعصبية', 'إسهال', 'بروز العيون'] }
+                }
+            },
+            {
+                tag: 'الفحص', tagColor: '#ede9fe', tagText: '#7c3aed',
+                title: 'إزاي تفحص الغدة الدرقية؟',
+                phrases: [
+                    { label: '👁️ الفحص البصري', text: '"هتبلع ريقك لحظة؟" → ابص على الرقبة — لو في تورم بيتحرك مع البلع = تضخم الغدة' },
+                    { label: '✋ الجس من الخلف', text: '"هقف وراك وأجس رقبتك." — جس من الخلف: الحجم، القوام، نعومة ولا فيها حبوب، ألم؟<br>"هل التضخم ثنائي ولا في ناحية بس؟"' },
+                    { label: '🔊 السماعة', text: '"هحط السماعة على رقبتك." — لو سامع صوت طنين (Bruit) = فرط نشاط الغدة' },
+                    { label: '🔎 علامات إضافية', text: '"امدد إيدك أمامك." — لو فيه رعشة = فرط نشاط<br>"هشوف بياض عينيك." — Exophthalmos = بروز<br>"هقيس نبضك وضغطك."' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'التحاليل والتصنيف', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'إيه التحاليل ومعناها؟',
+                phrases: [
+                    { label: '🔬 التحاليل المطلوبة', text: '"هطلب تحليل وظائف الغدة: TSH — T3 — T4."<br>"الـ TSH هو الأهم والأحساس في الشاشة." — يبدأ به' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'blue', title: '🔵 أولي (Primary) — المشكلة في الغدة نفسها', items: ['TSH ↑ + T4 ↓ = قصور أولي', 'TSH ↓ + T4 ↑ = فرط أولي', 'السبب: في الغدة الدرقية'] },
+                    right: { color: 'orange', title: '🟡 ثانوي (Secondary) — المشكلة في الغدة النخامية', items: ['TSH ↓ + T4 ↓ = قصور ثانوي (النخامة فاشلة)', 'السبب: في المخ — الغدة النخامية', 'محتاج تحويل لمتخصص'] }
+                }
+            },
+            {
+                tag: 'العلاج والمتابعة', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تشرح العلاج للمريض؟',
+                phrases: [
+                    { label: '💊 قصور الغدة — Levothyroxine', text: '"هاكسبلك دواء هرمون الغدة — ليفوثيروكسين."<br>"هتبدأ بجرعة صغيرة ونزود بالتدريج."<br>"الدواء ده لازم تاخده كل يوم الصبح على معدة فاضية نص ساعة قبل الأكل."<br>"هو دواء عمره — مش تقف عنه من غير ما تسألني."' },
+                    { label: '🔥 فرط نشاط الغدة', text: '"ده محتاج متخصص — هحولك على استشاري الغدد."<br>"في خيارات: دواء يقلل الغدة، أو يود مشع، أو عملية."' },
+                    { label: '📅 المتابعة', text: '"هنعمل تحليل TSH بعد ٦ لـ ٨ أسابيع من بداية العلاج."<br>"بعد استقرار الجرعة — تحليل كل ٦ لـ ١٢ شهر."' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 8. فحص الأعصاب القحفية / Cranial Nerves ─────────────────
+    {
+        id: 'cranial-nerve',
+        name: 'الأعصاب القحفية',
+        icon: '🧠',
+        color: '#059669', colorLight: '#f0fdf4',
+        steps: [
+            {
+                tag: 'التحضير والبداية', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تبدأ فحص الأعصاب القحفية؟',
+                phrases: [
+                    { label: '🤝 الـ Rapport', text: '"اسمك إيه؟ عمرك كام؟ إنت فين دلوقتي؟ النهارده إيه؟" — Orientation<br>"هفحص أعصاب وشك ورأسك — هشرحلك كل خطوة قبل ما أعملها."' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'CN I — V (١ لـ ٥)', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'فحص الأعصاب من الأول للخامس',
+                phrases: [
+                    { label: '👃 CN I — الشم', text: '"غمض عينيك — إيه رائحة ده؟" — باستخدام مادة بريحة معروفة<br>لو مش حاسس برائحة = إصابة العصب الأول' },
+                    { label: '👁️ CN II — البصر والحدقة', text: '"اتبعني بعينيك بس من غير ما تحرك رأسك."<br>"البصر كويس؟ شايف بالعينين الاتنين؟"<br>افحص: حدة الإبصار، المجال البصري، انعكاس الضوء على الحدقة' },
+                    { label: '👀 CN III, IV, VI — حركة العين', text: '"اتبع إصبعي" — حركه H في الهواء<br>لو العين مش بتتحرك في اتجاه = إصابة العصب<br>ابص على: ترجّع العين، الحول، هبوط الجفن (Ptosis)' },
+                    { label: '😶 CN V — الإحساس في الوجه', text: '"هلمسك بقطنة رفيعة — غمض عينيك وقولي حسيت؟"<br>الثلاث مناطق: الجبهة، الخد، الذقن<br>"افتح بقك — دفع لسانك لليمين ولليسار — هقاوم بإيدي."' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'CN VII — XII (٧ لـ ١٢)', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'فحص الأعصاب من السابع للثاني عشر',
+                phrases: [
+                    { label: '😁 CN VII — وجه وعضلات', text: '"ابتسم واسع."<br>"زعّل وشك."<br>"قفل عينيك بقوة — هحاول أفتحهم."<br>الفرق: Upper motor neuron → الجبهة متأثرة؟ Lower motor neuron → كل الوجه متأثر' },
+                    { label: '👂 CN VIII — السمع', text: '"هفرفر بإصبعي جنب أذنك — قولي لما تسمع."<br>Weber test: الشوكة الرنانة في منتصف الجبهة — بيوصل لأنهي أذن؟<br>Rinne test: شوكة على الخشاء ثم قدام الأذن' },
+                    { label: '🗣️ CN IX, X — بلع وحنك', text: '"قول: آه ——" → ابص على الحنك الطري — هيتحرك في المنتصف؟<br>لو انحرف لجهة = إصابة العصب X للجهة التانية' },
+                    { label: '💪 CN XI — كتف ورقبة', text: '"ارفع كتفيك — هضغط عليهم." — اختبار الترابيزيوس<br>"لف رأسك لليمين ضدي — ولليسار." — اختبار العضلة القرنية-الخشائية' },
+                    { label: '👅 CN XII — اللسان', text: '"أخرج لسانك." → ابص — بينحرف لجهة؟<br>"حركه من جنب لجنب بسرعة."<br>الانحراف للجهة المصابة = إصابة CN XII' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 9. حصوة الكلى / Renal Stone ──────────────────────────────
+    {
+        id: 'renal-stone',
+        name: 'حصوة الكلى',
+        icon: '🪨',
+        color: '#d97706', colorLight: '#fffbeb',
+        steps: [
+            {
+                tag: 'وصف الألم', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'إزاي تسأل عن ألم حصوة الكلى؟',
+                phrases: [
+                    { label: '📍 الألم الكلوي المميز', text: '"الوجع ده فين بالظبط؟"<br>"بيجي على شكل نوبات زي التقلصات ولا مستمر؟"<br>"بيشيل على إيه؟ بيوصل للبطن السفلي أو المنطقة التناسلية؟"<br>"الوجع بيتزود مع المشي ولا مع الاستلقاء؟"<br>"دايماً مش لاقي راحة وعمال تتحرك؟" — ده كلاسيكي في حصوة الكلى' },
+                    { label: '📍 أعراض مصاحبة', text: '"فيه دم في البول؟ لاحظت لون البول أحمر أو بني؟"<br>"عندك حرقة في البول أو كثرة التبول؟"<br>"قيء معاك؟ غثيان؟"<br>"حمى أو قشعريرة؟" — لو في حمى مع حصوة = إنتان خطير' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'عوامل الخطر والتاريخ', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'إزاي تسأل عن عوامل الخطر؟',
+                phrases: [
+                    { label: '📋 الأسئلة المهمة', text: '"عندك تاريخ حصوات كلى من قبل؟"<br>"في العيلة حد عنده حصوات؟"<br>"بتشرب سوايل كافية في اليوم؟ قد إيه؟"<br>"بتاكل ملح كتير؟ لحمة حمرا كتير؟"<br>"عندك نقرس أو ارتفاع حمض اليوريك؟"<br>"بتاخد فيتامين C بجرعات عالية؟"' }
+                ],
+                clinical: {
+                    type: 'single',
+                    color: 'red',
+                    title: '🚨 علامات الخطر — تحويل طوارئ',
+                    items: ['حمى مع حصوة = إنتان في بول محبوس → طوارئ فوراً', 'كلية وحيدة معاها حصوة', 'ألم لا يتحكم فيه بمسكنات', 'قصور كلوي حاد']
+                }
+            },
+            {
+                tag: 'التحاليل والتصوير', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'إيه التحاليل المطلوبة؟',
+                phrases: [
+                    { label: '🔬 التحاليل', text: '"هطلب تحليل بول — CBC — كرياتينين — حمض اليوريك."<br>"هطلب كالسيوم في الدم."' },
+                    { label: '📷 التصوير', text: '"أهم تصوير هو السي تي سكان بطن بدون صبغة — بيحدد مكان الحصوة وحجمها."<br>"الأشعة الصوتية (Ultrasound) كمان ممكن نستخدمها أول حاجة — مش فيها إشعاع."' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'العلاج والوقاية', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تعالج وتنصح المريض؟',
+                phrases: [
+                    { label: '💊 المسكنات', text: '"هاكاسبلك مسكن قوي للتقلبات — إيبوبروفين أو ديكلوفيناك حقنة."<br>"وشراب يريح العضلة الملساء — Alpha blocker."' },
+                    { label: '💧 السوايل', text: '"لازم تشرب ٢.٥ لـ ٣ لتر مية في اليوم."<br>"الهدف إن البول يبقى فاتح اللون — زي الليمون الفاتح."<br>"ده بيساعد الحصوة تنزل لوحدها."' },
+                    { label: '🔍 تصفية البول', text: '"لما تبول — صفي البول في شاش أو قماش ناعم."<br>"لو طلع حجر — احتفظ بيه عشان نحلله ونعرف نوعه."' },
+                    { label: '🥗 الوقاية', text: '"قلل ملح الأكل."<br>"قلل البروتين الحيواني."<br>"لو الحصوة كالسيوم — مش لازم توقف الكالسيوم من الأكل — الحد من الملح مهم أكتر."<br>"هتيجي تراجعنا ونشوف التحاليل ونقرر هل محتاج تدخل ولا لأ."' }
+                ],
+                clinical: null
+            }
+        ]
+    }
+
+]; // end cases
+
+// ═══════════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════════
+let currentCase = 0;
+let done = {};   // done[caseId][stepIndex] = true
+let practiceIndex = 0;
+let currentMode = 'reference';
+
+cases.forEach(c => { done[c.id] = {}; });
+
+// ═══════════════════════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════════════════════
+function buildCaseSelector() {
+    const sel = document.getElementById('case-selector');
+    sel.innerHTML = '';
+    cases.forEach((c, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'case-btn' + (i === currentCase ? ' active' : '');
+        btn.textContent = c.icon + ' ' + c.name;
+        btn.onclick = () => selectCase(i);
+        sel.appendChild(btn);
+    });
+}
+
+function selectCase(index) {
+    currentCase = index;
+    practiceIndex = 0;
+    document.querySelectorAll('.case-btn').forEach((b, i) => {
+        b.classList.toggle('active', i === currentCase);
+    });
+    renderReference();
+    if (currentMode === 'practice') renderPractice();
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderReference() {
+    const c = cases[currentCase];
+
+    // Banner
+    document.getElementById('case-banner-wrap').innerHTML = `
+        <div class="case-banner" style="background:${c.colorLight};margin-top:16px;">
+            <div class="case-icon">${c.icon}</div>
+            <div>
+                <div class="case-name" style="color:${c.color};">${c.name}</div>
+                <div class="case-sub" style="color:${c.color};">${c.steps.length} خطوات — بالعامية المصرية</div>
+            </div>
+        </div>`;
+
+    // Steps
+    const container = document.getElementById('steps-container');
+    container.innerHTML = '';
+    const totalSteps = c.steps.length;
+
+    c.steps.forEach((step, i) => {
+        const isDone = done[c.id][i];
+        const numColors = [
+            ['#ede9fe','#7c3aed'],['#f0fdf4','#059669'],['#fef2f2','#dc2626'],
+            ['#eff6ff','#2563eb'],['#fffbeb','#d97706'],['#fdf2f8','#db2777'],
+            ['#f0fdf4','#059669'],['#fef2f2','#dc2626']
+        ];
+        const [nbg, ntxt] = numColors[i % numColors.length];
+
+        let clinicalHTML = '';
+        if (step.clinical) {
+            const cl = step.clinical;
+            if (cl.type === 'two-col') {
+                clinicalHTML = `<div class="two-col">
+                    <div class="info-box ${cl.left.color}"><div class="box-title">${cl.left.title}</div><ul>${cl.left.items.map(it=>`<li>${it}</li>`).join('')}</ul></div>
+                    <div class="info-box ${cl.right.color}"><div class="box-title">${cl.right.title}</div><ul>${cl.right.items.map(it=>`<li>${it}</li>`).join('')}</ul></div>
+                </div>`;
+            } else {
+                clinicalHTML = `<div class="info-box ${cl.color}"><div class="box-title">${cl.title}</div><ul>${cl.items.map(it=>`<li>${it}</li>`).join('')}</ul></div>`;
+            }
+        }
+
+        const phrasesHTML = step.phrases.map(ph => `
+            <div class="phrase-box">
+                ${ph.label ? `<div class="phrase-label">${ph.label}</div>` : ''}
+                <div class="phrase-text">${ph.text}</div>
+            </div>`).join('');
+
+        container.innerHTML += `
+        <div class="step-card${isDone ? ' done' : ''}" id="step-${i}">
+            <div class="step-header" onclick="toggleStep(${i})">
+                <div class="step-num" style="background:${nbg};color:${ntxt};">${i+1}</div>
+                <div class="step-title-wrap">
+                    <div class="step-tag" style="background:${step.tagColor};color:${step.tagText};">${step.tag}</div>
+                    <div class="step-title">${step.title}</div>
+                </div>
+                <div class="step-toggle" id="toggle-${i}">▼</div>
+            </div>
+            <div class="step-body" id="body-${i}">
+            <div class="step-body-inner">
+                <div class="subsection">
+                    <div class="subsection-title">الأسئلة والعبارات</div>
+                    ${phrasesHTML}
+                </div>
+                ${clinicalHTML ? `<div class="subsection"><div class="subsection-title">المعلومة الإكلينيكية</div>${clinicalHTML}</div>` : ''}
+                <button class="done-btn${isDone ? ' active' : ''}" id="done-${i}" onclick="markDone(${i})">
+                    ${isDone ? '✓ تم' : '✓ انتهيت من الخطوة دي'}
+                </button>
+            </div>
+            </div>
+        </div>`;
+    });
+}
+
+function toggleStep(index) {
+    const body = document.getElementById(`body-${index}`);
+    const toggle = document.getElementById(`toggle-${index}`);
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    toggle.classList.toggle('open', !isOpen);
+}
+
+function markDone(index) {
+    const c = cases[currentCase];
+    done[c.id][index] = true;
+    const btn = document.getElementById(`done-${index}`);
+    const card = document.getElementById(`step-${index}`);
+    if (btn) { btn.textContent = '✓ تم'; btn.classList.add('active'); }
+    if (card) card.classList.add('done');
+    updateProgress();
+}
+
+function updateProgress() {
+    const c = cases[currentCase];
+    const total = c.steps.length;
+    const doneCount = Object.keys(done[c.id]).length;
+    const pct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-count').textContent = doneCount + ' / ' + total;
+}
+
+// ── Practice mode ────────────────────────────────────────────
+function renderPractice() {
+    const c = cases[currentCase];
+    const step = c.steps[practiceIndex];
+
+    document.getElementById('practice-indicator').textContent =
+        `${c.icon} ${c.name} — خطوة ${practiceIndex + 1} من ${c.steps.length}`;
+    document.getElementById('practice-tag').textContent = step.tag;
+    document.getElementById('practice-tag').style.background = step.tagColor;
+    document.getElementById('practice-tag').style.color = step.tagText;
+    document.getElementById('practice-title').textContent = step.title;
+    document.getElementById('practice-content').classList.remove('visible');
+
+    const phrases = step.phrases.map(ph =>
+        `<div class="phrase-box" style="margin-bottom:8px;">
+            ${ph.label ? `<div class="phrase-label">${ph.label}</div>` : ''}
+            <div class="phrase-text" style="font-size:0.98em;">${ph.text}</div>
+        </div>`
+    ).join('');
+    document.getElementById('practice-content').innerHTML = phrases;
+
+    document.getElementById('prev-btn').style.opacity = practiceIndex === 0 ? '0.3' : '1';
+    document.getElementById('next-btn').textContent =
+        practiceIndex === c.steps.length - 1 ? '✓ انتهيت' : '← التالي';
+}
+
+function revealPractice() {
+    document.getElementById('practice-content').classList.add('visible');
+}
+
+function nextPractice() {
+    const c = cases[currentCase];
+    if (practiceIndex < c.steps.length - 1) {
+        practiceIndex++;
+        renderPractice();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function prevPractice() {
+    if (practiceIndex > 0) {
+        practiceIndex--;
+        renderPractice();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+// ── Mode switch ──────────────────────────────────────────────
+function setMode(mode) {
+    currentMode = mode;
+    const refMode = document.getElementById('reference-mode');
+    document.querySelectorAll('.mode-tab').forEach((t, i) => {
+        t.classList.toggle('active', (i === 0 && mode === 'reference') || (i === 1 && mode === 'practice'));
+    });
+    const practMode = document.getElementById('practice-mode');
+    if (mode === 'reference') {
+        refMode.classList.remove('hidden');
+        practMode.classList.remove('active');
+    } else {
+        refMode.classList.add('hidden');
+        practMode.classList.add('active');
+        practiceIndex = 0;
+        renderPractice();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Scroll progress
+window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const scrolled = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+    document.getElementById('scroll-progress').style.width = scrolled + '%';
+    document.getElementById('scroll-top').classList.toggle('visible', doc.scrollTop > 300);
+});
+
+// ── Init ─────────────────────────────────────────────────────
+buildCaseSelector();
+renderReference();
+renderPractice();
+updateProgress();
+</script>
+
+</body>
+</html>
