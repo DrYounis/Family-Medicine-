@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medications Reference — Family Medicine Masters</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+        :root {
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+
+        #sp { position: fixed; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg,#0f766e,#7c3aed,#db2777); width: 0%; z-index: 9999; }
+
+        /* Top nav */
+        .top-nav { background: #0f172a; color: white; padding: 9px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; position: sticky; top: 0; z-index: 200; }
+        .top-nav h2 { font-size: 0.88em; font-weight: 800; letter-spacing: 0.04em; }
+        .nav-links { display: flex; gap: 6px; flex-wrap: wrap; }
+        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.73em; font-weight: 600; padding: 4px 10px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.15s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.1); color: white; }
+        .print-btn { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.75); font-family:'Inter',sans-serif; font-size:0.73em; font-weight:700; padding:5px 13px; border-radius:6px; cursor:pointer; }
+        .print-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+
+        /* Search + filter bar */
+        .toolbar { background: white; border-bottom: 2px solid var(--border); padding: 10px 16px; display: flex; flex-direction: column; gap: 8px; }
+        .search-row { display: flex; gap: 8px; align-items: center; }
+        .search-box { flex: 1; padding: 8px 14px 8px 36px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.88em; outline: none; transition: border-color 0.15s; background: #f8fafc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 10px center; }
+        .search-box:focus { border-color: #0d9488; }
+        .clear-btn { background: white; border: 1.5px solid var(--border); color: var(--muted); font-family:'Inter',sans-serif; font-size:0.78em; font-weight:700; padding:7px 14px; border-radius:7px; cursor:pointer; white-space:nowrap; }
+        .clear-btn:hover { border-color: #dc2626; color: #dc2626; }
+        .filter-row { display: flex; gap: 5px; flex-wrap: wrap; }
+        .ftab { padding: 4px 12px; border-radius: 16px; font-weight: 700; font-size: 0.75em; cursor: pointer; border: 1.5px solid var(--border); background: white; color: var(--muted); white-space: nowrap; transition: all 0.15s; }
+        .ftab:hover { border-color: #0d9488; color: #0d9488; }
+        .ftab.active { background: #0d9488; border-color: #0d9488; color: white; }
+        .result-count { font-size: 0.75em; color: var(--muted); margin-left: auto; white-space: nowrap; align-self: center; }
+
+        /* Main layout */
+        .container { max-width: 1100px; margin: 0 auto; padding: 16px 14px 80px; }
+
+        /* Section */
+        .section { margin-bottom: 28px; }
+        .section-title {
+            font-size: 0.68em; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--muted); margin-bottom: 10px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .section-title::after { content: ''; flex: 1; height: 2px; background: var(--border); }
+        .sdot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+        /* Drug grid */
+        .drug-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 10px; }
+
+        /* Drug card */
+        .dc {
+            background: var(--card);
+            border-radius: 12px;
+            border: 1.5px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+            transition: box-shadow 0.15s;
+        }
+        .dc:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.09); }
+        .dc.hidden { display: none; }
+
+        .dc-head { padding: 10px 13px 8px; display: flex; align-items: flex-start; gap: 10px; }
+        .dc-icon { font-size: 1.3em; line-height: 1; flex-shrink: 0; margin-top: 1px; }
+        .dc-names { flex: 1; }
+        .dc-name { font-weight: 800; font-size: 0.92em; color: var(--text); }
+        .dc-class { font-size: 0.73em; font-weight: 600; color: var(--muted); margin-top: 1px; }
+        .dc-badge { font-size: 0.65em; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 7px; border-radius: 6px; flex-shrink: 0; align-self: flex-start; }
+
+        .dc-body { padding: 4px 13px 12px; }
+        .dose-row {
+            display: flex; gap: 6px; align-items: flex-start;
+            padding: 5px 0; border-bottom: 1px solid var(--border);
+            font-size: 0.84em;
+        }
+        .dose-row:last-of-type { border-bottom: none; }
+        .dose-label { font-weight: 700; color: var(--muted); font-size: 0.82em; min-width: 68px; flex-shrink: 0; padding-top: 1px; }
+        .dose-val { color: var(--text); line-height: 1.45; }
+        .dose-val strong { color: #0f172a; }
+
+        .pearl { background: #f8fafc; border-left: 3px solid #0d9488; border-radius: 0 7px 7px 0; padding: 7px 10px; margin-top: 8px; font-size: 0.81em; color: var(--text); line-height: 1.45; }
+        .pearl-label { font-weight: 800; color: #0d9488; font-size: 0.85em; }
+
+        /* Color themes */
+        .t-teal .dc-head { background: #f0fdfa; border-bottom: 2px solid #99f6e4; }
+        .t-teal .dc-badge { background: #ccfbf1; color: #0f766e; }
+
+        .t-blue .dc-head { background: #eff6ff; border-bottom: 2px solid #bfdbfe; }
+        .t-blue .dc-badge { background: #dbeafe; color: #1d4ed8; }
+
+        .t-amber .dc-head { background: #fffbeb; border-bottom: 2px solid #fde68a; }
+        .t-amber .dc-badge { background: #fef3c7; color: #d97706; }
+
+        .t-red .dc-head { background: #fef2f2; border-bottom: 2px solid #fecaca; }
+        .t-red .dc-badge { background: #fee2e2; color: #dc2626; }
+
+        .t-green .dc-head { background: #f0fdf4; border-bottom: 2px solid #bbf7d0; }
+        .t-green .dc-badge { background: #dcfce7; color: #16a34a; }
+
+        .t-purple .dc-head { background: #f5f3ff; border-bottom: 2px solid #ddd6fe; }
+        .t-purple .dc-badge { background: #ede9fe; color: #7c3aed; }
+
+        .t-pink .dc-head { background: #fdf4ff; border-bottom: 2px solid #e9d5ff; }
+        .t-pink .dc-badge { background: #f3e8ff; color: #a21caf; }
+
+        .t-slate .dc-head { background: #f8fafc; border-bottom: 2px solid #e2e8f0; }
+        .t-slate .dc-badge { background: #f1f5f9; color: #475569; }
+
+        /* No results */
+        .no-results { text-align: center; padding: 48px 20px; color: var(--muted); display: none; }
+        .no-results.show { display: block; }
+
+        /* Scroll top */
+        #st { position: fixed; bottom: 22px; right: 18px; background: #0d9488; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1em; cursor: pointer; box-shadow: 0 4px 14px rgba(13,148,136,0.4); opacity: 0; transition: opacity 0.3s; z-index: 200; }
+        #st.v { opacity: 1; }
+
+        @media print {
+            #sp,#st,.top-nav,.toolbar,.print-btn { display: none !important; }
+            body { background: white; font-size: 11px; }
+            .dc { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; margin-bottom: 6px; }
+            .section { break-inside: avoid; }
+        }
+        @media (max-width: 580px) {
+            .drug-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div id="sp"></div>
+
+<!-- Top nav -->
+<div class="top-nav">
+    <h2>💊 Medications Reference — Quick Revision</h2>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <div class="nav-links">
+            <a href="index.html">MCQs</a>
+            <a href="osce.html">OSCE</a>
+            <a href="cheatsheet.html">Cheat Sheet</a>
+            <a href="jvp_examination.html">JVP</a>
+            <a href="hand_examination.html">Hand Exam</a>
+            <a href="gerd_approach_arabic.html">GERD</a>
+        </div>
+        <button class="print-btn" onclick="window.print()">🖨 Print All</button>
+    </div>
+</div>
+
+<!-- Toolbar -->
+<div class="toolbar">
+    <div class="search-row">
+        <input class="search-box" type="text" id="search" placeholder="Search drug name, class, dose, or condition…" oninput="filterAll()">
+        <button class="clear-btn" onclick="clearSearch()">✕ Clear</button>
+        <span class="result-count" id="count"></span>
+    </div>
+    <div class="filter-row">
+        <button class="ftab active" onclick="filterSystem('all',this)">All Systems</button>
+        <button class="ftab" onclick="filterSystem('gerd',this)">GERD</button>
+        <button class="ftab" onclick="filterSystem('respiratory',this)">Respiratory</button>
+        <button class="ftab" onclick="filterSystem('cardiology',this)">Cardiology</button>
+        <button class="ftab" onclick="filterSystem('msk',this)">MSK</button>
+        <button class="ftab" onclick="filterSystem('pediatrics',this)">Pediatrics</button>
+        <button class="ftab" onclick="filterSystem('dermatology',this)">Dermatology</button>
+        <button class="ftab" onclick="filterSystem('internal',this)">Internal Med</button>
+        <button class="ftab" onclick="filterSystem('emergency',this)">Emergency</button>
+        <button class="ftab" onclick="filterSystem('preventive',this)">Preventive</button>
+    </div>
+</div>
+
+<div class="container" id="main-container">
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- GERD -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-sys="gerd">
+    <div class="section-title"><div class="sdot" style="background:#d97706;"></div>GERD — Gastro-oesophageal Reflux Disease</div>
+    <div class="drug-grid">
+
+        <div class="dc t-amber" data-sys="gerd" data-search="omeprazole pantoprazole esomeprazole ppi proton pump inhibitor gerd reflux 20mg 40mg">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Omeprazole / Pantoprazole</div><div class="dc-class">Proton Pump Inhibitor (PPI) — First Line</div></div><span class="dc-badge">1st LINE</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Dose</span><span class="dose-val"><strong>20–40 mg</strong> orally once daily</span></div>
+                <div class="dose-row"><span class="dose-label">Timing</span><span class="dose-val"><strong>30 minutes before breakfast</strong> (essential for efficacy)</span></div>
+                <div class="dose-row"><span class="dose-label">Duration</span><span class="dose-val">4–8 weeks (initial); maintenance if needed</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">GERD, peptic ulcer, H. pylori eradication</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Must be taken <strong>30 min before a meal</strong> — ineffective if taken with food or at bedtime.</div>
+            </div>
+        </div>
+
+        <div class="dc t-amber" data-sys="gerd" data-search="ranitidine famotidine h2 blocker h2 antagonist gerd heartburn 150mg">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Famotidine</div><div class="dc-class">H₂ Receptor Antagonist — Second Line</div></div><span class="dc-badge">2nd LINE</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Dose</span><span class="dose-val"><strong>20–40 mg</strong> orally BID or at night</span></div>
+                <div class="dose-row"><span class="dose-label">Duration</span><span class="dose-val">6–8 weeks</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">Mild GERD, breakthrough nocturnal symptoms</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Less effective than PPI. Used if PPI not tolerated or for nocturnal acid breakthrough. Ranitidine withdrawn globally (NDMA contamination).</div>
+            </div>
+        </div>
+
+        <div class="dc t-amber" data-sys="gerd" data-search="metoclopramide domperidone prokinetic gerd nausea vomiting 10mg">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Metoclopramide</div><div class="dc-class">Prokinetic Agent</div></div><span class="dc-badge">ADD-ON</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Dose</span><span class="dose-val"><strong>10 mg</strong> orally TID, 30 min before meals</span></div>
+                <div class="dose-row"><span class="dose-label">Duration</span><span class="dose-val">Short-term only (max 5 days — risk of tardive dyskinesia)</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">Gastroparesis, GERD with nausea, diabetic gastroparesis</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Avoid long-term use — causes extrapyramidal side effects and tardive dyskinesia.</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- RESPIRATORY -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-sys="respiratory">
+    <div class="section-title"><div class="sdot" style="background:#1d4ed8;"></div>Respiratory — COPD &amp; Asthma</div>
+    <div class="drug-grid">
+
+        <div class="dc t-blue" data-sys="respiratory" data-search="salbutamol albuterol saba short-acting beta agonist copd asthma bronchodilator inhaler 100mcg 200mcg 2.5mg nebulizer">
+            <div class="dc-head"><div class="dc-icon">💨</div><div class="dc-names"><div class="dc-name">Salbutamol (Albuterol)</div><div class="dc-class">Short-Acting Beta-2 Agonist (SABA)</div></div><span class="dc-badge">RELIEVER</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Inhaler</span><span class="dose-val"><strong>100–200 mcg</strong> (1–2 puffs) PRN — up to QID</span></div>
+                <div class="dose-row"><span class="dose-label">Nebulizer</span><span class="dose-val"><strong>2.5 mg</strong> in 2.5 ml NS every 20 min × 3 (acute attack)</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">Asthma (Step 1+), COPD PRN, acute bronchospasm</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Using SABA >2×/week (except pre-exercise) = uncontrolled asthma → step up therapy.</div>
+            </div>
+        </div>
+
+        <div class="dc t-blue" data-sys="respiratory" data-search="tiotropium lama long-acting muscarinic antagonist spiriva copd 18mcg maintenance">
+            <div class="dc-head"><div class="dc-icon">💨</div><div class="dc-names"><div class="dc-name">Tiotropium</div><div class="dc-class">Long-Acting Muscarinic Antagonist (LAMA)</div></div><span class="dc-badge">COPD</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Dose</span><span class="dose-val"><strong>18 mcg</strong> inhaled once daily (HandiHaler)</span></div>
+                <div class="dose-row"><span class="dose-label">Duration</span><span class="dose-val">Long-term maintenance</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">COPD maintenance (GOLD 2–4), reduces exacerbations</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>First-choice maintenance drug for COPD in most guidelines. Use with caution in urinary retention, angle-closure glaucoma.</div>
+            </div>
+        </div>
+
+        <div class="dc t-blue" data-sys="respiratory" data-search="salmeterol formoterol laba long-acting beta agonist asthma copd 50mcg maintenance">
+            <div class="dc-head"><div class="dc-icon">💨</div><div class="dc-names"><div class="dc-name">Salmeterol / Formoterol</div><div class="dc-class">Long-Acting Beta-2 Agonist (LABA)</div></div><span class="dc-badge">STEP 3</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Salmeterol</span><span class="dose-val"><strong>50 mcg</strong> inhaled BID (always WITH ICS)</span></div>
+                <div class="dose-row"><span class="dose-label">Formoterol</span><span class="dose-val"><strong>12 mcg</strong> inhaled BID</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">Asthma Step 3 (not controlled on ICS alone); COPD maintenance</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>NEVER use LABA as monotherapy in asthma — must always be combined with ICS. Contraindicated alone in asthma (increases mortality).</div>
+            </div>
+        </div>
+
+        <div class="dc t-blue" data-sys="respiratory" data-search="beclomethasone budesonide fluticasone ics inhaled corticosteroid asthma 100mcg 200mcg 400mcg">
+            <div class="dc-head"><div class="dc-icon">💨</div><div class="dc-names"><div class="dc-name">Beclomethasone / Budesonide / Fluticasone</div><div class="dc-class">Inhaled Corticosteroid (ICS)</div></div><span class="dc-badge">STEP 2</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Low dose</span><span class="dose-val"><strong>100–200 mcg</strong> BID (Step 2 asthma)</span></div>
+                <div class="dose-row"><span class="dose-label">High dose</span><span class="dose-val"><strong>400–800 mcg</strong> BID (Step 4 asthma)</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">Asthma Step 2+, COPD with frequent exacerbations (ICS/LABA combo)</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Rinse mouth after each use to prevent oral candidiasis. ICS is the cornerstone of asthma management — do not stop suddenly.</div>
+            </div>
+        </div>
+
+        <div class="dc t-blue" data-sys="respiratory" data-search="prednisolone prednisone oral steroid copd exacerbation asthma 40mg 5 days">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Prednisolone (Oral)</div><div class="dc-class">Systemic Corticosteroid</div></div><span class="dc-badge">EXACERBATION</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">COPD</span><span class="dose-val"><strong>40 mg</strong> PO once daily × <strong>5 days</strong></span></div>
+                <div class="dose-row"><span class="dose-label">Asthma acute</span><span class="dose-val"><strong>40–50 mg</strong> PO once daily × <strong>5 days</strong></span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">COPD exacerbation, acute severe asthma, PMR (low dose)</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>COPD exacerbation: <strong>40mg × 5 days</strong> — no taper needed for short courses. Longer courses require gradual taper. Add PPI (omeprazole) to protect gastric mucosa.</div>
+            </div>
+        </div>
+
+        <div class="dc t-blue" data-sys="respiratory" data-search="montelukast ltra leukotriene receptor antagonist asthma allergic rhinitis 10mg">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Montelukast</div><div class="dc-class">Leukotriene Receptor Antagonist (LTRA)</div></div><span class="dc-badge">ADD-ON</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Adults</span><span class="dose-val"><strong>10 mg</strong> PO once daily at night</span></div>
+                <div class="dose-row"><span class="dose-label">Children 6–14y</span><span class="dose-val"><strong>5 mg</strong> chewable tablet once daily at night</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">Asthma add-on (Step 3–4), allergic rhinitis, exercise-induced bronchospasm</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>FDA warning: may cause neuropsychiatric events (mood changes, suicidal thoughts) — monitor closely.</div>
+            </div>
+        </div>
+
+        <div class="dc t-blue" data-sys="respiratory" data-search="amoxicillin antibiotic copd exacerbation purulent sputum 500mg">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Amoxicillin / Doxycycline</div><div class="dc-class">Antibiotic — COPD Exacerbation</div></div><span class="dc-badge">IF INFECTIVE</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Amoxicillin</span><span class="dose-val"><strong>500 mg</strong> PO TID × 5 days</span></div>
+                <div class="dose-row"><span class="dose-label">Doxycycline</span><span class="dose-val"><strong>200 mg</strong> PO day 1, then <strong>100 mg</strong> OD × 4 days</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">COPD exacerbation with <strong>purulent sputum</strong> (colour change + increased volume)</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Antibiotics only indicated if sputum becomes purulent (green/yellow). Not every COPD exacerbation requires antibiotics.</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- CARDIOLOGY -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-sys="cardiology">
+    <div class="section-title"><div class="sdot" style="background:#dc2626;"></div>Cardiology — Hypertension, Heart Failure, PMR</div>
+    <div class="drug-grid">
+
+        <div class="dc t-red" data-sys="cardiology" data-search="lisinopril enalapril ramipril ace inhibitor hypertension heart failure ckd diabetes 10mg 5mg">
+            <div class="dc-head"><div class="dc-icon">❤️</div><div class="dc-names"><div class="dc-name">Lisinopril / Enalapril / Ramipril</div><div class="dc-class">ACE Inhibitor (ACEI)</div></div><span class="dc-badge">1st LINE</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Lisinopril</span><span class="dose-val"><strong>10 mg</strong> PO OD → titrate to 40 mg max</span></div>
+                <div class="dose-row"><span class="dose-label">Enalapril</span><span class="dose-val"><strong>5 mg</strong> PO BID → titrate to 20 mg BID</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">HTN with DM, CKD with proteinuria, Heart failure, Post-MI</span></div>
+                <div class="dose-row"><span class="dose-label">Combo (exam)</span><span class="dose-val"><strong>Lisinopril/HCTZ 10/12.5 mg OD</strong> — normal labs + isolated HTN</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Avoid in pregnancy (teratogenic). Dry cough = class effect → switch to ARB. Monitor K⁺ and creatinine at start.</div>
+            </div>
+        </div>
+
+        <div class="dc t-red" data-sys="cardiology" data-search="losartan valsartan irbesartan arb angiotensin receptor blocker hypertension 50mg 100mg">
+            <div class="dc-head"><div class="dc-icon">❤️</div><div class="dc-names"><div class="dc-name">Losartan / Valsartan</div><div class="dc-class">Angiotensin Receptor Blocker (ARB)</div></div><span class="dc-badge">ACEi INTOLERANT</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Losartan</span><span class="dose-val"><strong>50 mg</strong> PO OD → max 100 mg OD</span></div>
+                <div class="dose-row"><span class="dose-label">Valsartan</span><span class="dose-val"><strong>80–160 mg</strong> PO OD → max 320 mg OD</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">HTN, Heart failure, DM nephropathy (especially with proteinuria), ACEi cough intolerance</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Same indications as ACEi but NO cough. Do NOT combine with ACEi (risk of hyperkalaemia and AKI).</div>
+            </div>
+        </div>
+
+        <div class="dc t-red" data-sys="cardiology" data-search="amlodipine nifedipine calcium channel blocker ccb hypertension angina 5mg 10mg">
+            <div class="dc-head"><div class="dc-icon">❤️</div><div class="dc-names"><div class="dc-name">Amlodipine</div><div class="dc-class">Calcium Channel Blocker (CCB) — Dihydropyridine</div></div><span class="dc-badge">ELDERLY / AFK</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Dose</span><span class="dose-val"><strong>5 mg</strong> PO OD → max <strong>10 mg</strong> OD</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">HTN (elderly, Afro-Caribbean), Stable angina, Isolated systolic HTN</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Preferred in elderly and Afro-Caribbean patients. Side effects: ankle oedema, flushing, headache. Oedema is dose-dependent — not fluid overload.</div>
+            </div>
+        </div>
+
+        <div class="dc t-red" data-sys="cardiology" data-search="hctz hydrochlorothiazide indapamide thiazide diuretic hypertension 12.5mg 25mg">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Hydrochlorothiazide (HCTZ) / Indapamide</div><div class="dc-class">Thiazide Diuretic</div></div><span class="dc-badge">STEP 1–2</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">HCTZ</span><span class="dose-val"><strong>12.5–25 mg</strong> PO OD (morning)</span></div>
+                <div class="dose-row"><span class="dose-label">Indapamide</span><span class="dose-val"><strong>1.25–2.5 mg</strong> PO OD</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">HTN (elderly, Afro-Caribbean, isolated systolic), heart failure (NYHA I–II)</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Monitor K⁺ (causes hypokalaemia), glucose (can unmask DM), uric acid (avoid in gout).</div>
+            </div>
+        </div>
+
+        <div class="dc t-red" data-sys="cardiology" data-search="atenolol metoprolol carvedilol bisoprolol beta blocker hypertension heart failure post-mi angina 50mg 100mg">
+            <div class="dc-head"><div class="dc-icon">❤️</div><div class="dc-names"><div class="dc-name">Atenolol / Metoprolol / Bisoprolol</div><div class="dc-class">Beta-Blocker (β1-Selective)</div></div><span class="dc-badge">POST-MI / HF</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Atenolol</span><span class="dose-val"><strong>50–100 mg</strong> PO OD</span></div>
+                <div class="dose-row"><span class="dose-label">Bisoprolol</span><span class="dose-val"><strong>2.5–10 mg</strong> PO OD (HF: start low, titrate up)</span></div>
+                <div class="dose-row"><span class="dose-label">Carvedilol</span><span class="dose-val"><strong>6.25 mg</strong> PO BID → titrate to 25 mg BID (HF)</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">HTN with post-MI, angina, heart failure, AF rate control</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Avoid in COPD/asthma (bronchospasm). Carvedilol = non-selective — covers both β1 + β2 + α1.</div>
+            </div>
+        </div>
+
+        <div class="dc t-red" data-sys="cardiology" data-search="furosemide frusemide loop diuretic heart failure oedema 40mg 80mg">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Furosemide (Frusemide)</div><div class="dc-class">Loop Diuretic</div></div><span class="dc-badge">HEART FAILURE</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Oral</span><span class="dose-val"><strong>40 mg</strong> PO OD (morning); up to 80–160 mg/day</span></div>
+                <div class="dose-row"><span class="dose-label">IV acute</span><span class="dose-val"><strong>40–80 mg</strong> IV slow (acute pulmonary oedema)</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">Acute pulmonary oedema, heart failure with fluid overload, elevated JVP</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Give in the morning — avoid nocturnal diuresis. Monitor K⁺ (hypokalaemia), creatinine (pre-renal AKI).</div>
+            </div>
+        </div>
+
+        <div class="dc t-red" data-sys="cardiology" data-search="spironolactone eplerenone aldosterone antagonist heart failure 25mg 50mg">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Spironolactone / Eplerenone</div><div class="dc-class">Aldosterone Antagonist (MRA)</div></div><span class="dc-badge">HF ADD-ON</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Spironolactone</span><span class="dose-val"><strong>25–50 mg</strong> PO OD (HF: reduce mortality)</span></div>
+                <div class="dose-row"><span class="dose-label">Eplerenone</span><span class="dose-val"><strong>25 mg</strong> PO OD → titrate to 50 mg OD</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">Heart failure (NYHA II–IV, EF ≤35%), post-MI with HF</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Risk of hyperkalaemia — avoid if K⁺ >5.0 or eGFR <30. Spironolactone causes gynaecomastia → use eplerenone instead.</div>
+            </div>
+        </div>
+
+        <div class="dc t-red" data-sys="cardiology" data-search="prednisolone polymyalgia rheumatica pmr 15mg 20mg low dose steroid">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Prednisolone — PMR</div><div class="dc-class">Systemic Corticosteroid</div></div><span class="dc-badge">PMR</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Starting dose</span><span class="dose-val"><strong>15–20 mg</strong> PO OD (dramatic response = diagnostic)</span></div>
+                <div class="dose-row"><span class="dose-label">Taper</span><span class="dose-val">Reduce by 2.5 mg every 2–4 weeks to maintenance ~5 mg OD</span></div>
+                <div class="dose-row"><span class="dose-label">Duration</span><span class="dose-val"><strong>12–24 months</strong> total</span></div>
+                <div class="dose-row"><span class="dose-label">Giant Cell Arteritis</span><span class="dose-val"><strong>60 mg/day</strong> — high dose if GCA suspected (to protect vision)</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Response to low-dose prednisolone <strong>within 1–2 days</strong> confirms PMR diagnosis. Always add bone protection (calcium + vitamin D + bisphosphonate).</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- MSK -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-sys="msk">
+    <div class="section-title"><div class="sdot" style="background:#475569;"></div>Musculoskeletal — CTS, Gout, NSAIDs</div>
+    <div class="drug-grid">
+
+        <div class="dc t-slate" data-sys="msk" data-search="ibuprofen naproxen diclofenac nsaid pain anti-inflammatory 400mg 500mg 50mg msk">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Ibuprofen / Naproxen / Diclofenac</div><div class="dc-class">NSAID — Non-steroidal Anti-inflammatory</div></div><span class="dc-badge">PAIN</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Ibuprofen</span><span class="dose-val"><strong>400–600 mg</strong> PO TID (with food); max 2400 mg/day</span></div>
+                <div class="dose-row"><span class="dose-label">Naproxen</span><span class="dose-val"><strong>250–500 mg</strong> PO BID; max 1250 mg/day</span></div>
+                <div class="dose-row"><span class="dose-label">Diclofenac</span><span class="dose-val"><strong>50 mg</strong> PO TID or 75 mg SR BID</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">CTS mild pain, musculoskeletal pain, acute gout (short-term), OA</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Always take with food. Avoid in CKD, peptic ulcer, heart failure, elderly. Add PPI (omeprazole) if long-term use.</div>
+            </div>
+        </div>
+
+        <div class="dc t-slate" data-sys="msk" data-search="methylprednisolone triamcinolone steroid injection carpal tunnel cts 40mg local injection">
+            <div class="dc-head"><div class="dc-icon">💉</div><div class="dc-names"><div class="dc-name">Methylprednisolone — Carpal Tunnel Injection</div><div class="dc-class">Corticosteroid — Local Injection</div></div><span class="dc-badge">CTS</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Dose</span><span class="dose-val"><strong>40 mg</strong> methylprednisolone + <strong>1 ml</strong> lidocaine 1% into carpal tunnel</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">Mild-moderate CTS (failed conservative management)</span></div>
+                <div class="dose-row"><span class="dose-label">Max repeats</span><span class="dose-val">1–2 injections (risk of tendon rupture with repeated injections)</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Inject ulnar to palmaris longus tendon at wrist crease. Provides 3–6 months relief. If symptoms return → surgical decompression.</div>
+            </div>
+        </div>
+
+        <div class="dc t-slate" data-sys="msk" data-search="colchicine allopurinol febuxostat gout uric acid 0.5mg 100mg 300mg">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Colchicine / Allopurinol</div><div class="dc-class">Gout Treatment</div></div><span class="dc-badge">GOUT</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Colchicine (acute)</span><span class="dose-val"><strong>500 mcg</strong> PO BID–TID × 2–5 days (acute attack)</span></div>
+                <div class="dose-row"><span class="dose-label">Allopurinol (prophylaxis)</span><span class="dose-val"><strong>100 mg</strong> PO OD, titrate to 300 mg OD (start <strong>2–4 weeks AFTER</strong> acute attack settles)</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">Acute gout attack (colchicine/NSAID/steroids), chronic hyperuricaemia (allopurinol)</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Never start allopurinol during an acute attack — can prolong or worsen it. Cover with colchicine 500 mcg OD when initiating allopurinol (for first 6 months).</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PEDIATRICS -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-sys="pediatrics">
+    <div class="section-title"><div class="sdot" style="background:#16a34a;"></div>Pediatrics</div>
+    <div class="drug-grid">
+
+        <div class="dc t-green" data-sys="pediatrics" data-search="paracetamol acetaminophen fever pain otitis media 15mg/kg children dose">
+            <div class="dc-head"><div class="dc-icon">🧒</div><div class="dc-names"><div class="dc-name">Paracetamol (Acetaminophen)</div><div class="dc-class">Analgesic / Antipyretic</div></div><span class="dc-badge">FIRST LINE</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Children</span><span class="dose-val"><strong>15 mg/kg/dose</strong> PO/PR every 4–6 hours PRN; max 4 doses/24h</span></div>
+                <div class="dose-row"><span class="dose-label">Adults</span><span class="dose-val"><strong>500 mg–1 g</strong> PO QID; max <strong>4 g/day</strong></span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">Fever, pain relief in AOM, post-procedural, mild-moderate pain</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Safe in pregnancy. Overdose causes hepatotoxicity — give N-acetylcysteine if suspected overdose.</div>
+            </div>
+        </div>
+
+        <div class="dc t-green" data-sys="pediatrics" data-search="amoxicillin acute otitis media aom ear infection children 80mg/kg 90mg/kg 500mg">
+            <div class="dc-head"><div class="dc-icon">🧒</div><div class="dc-names"><div class="dc-name">Amoxicillin — Acute Otitis Media</div><div class="dc-class">Aminopenicillin Antibiotic</div></div><span class="dc-badge">AOM</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Children</span><span class="dose-val"><strong>80–90 mg/kg/day</strong> PO ÷ BID</span></div>
+                <div class="dose-row"><span class="dose-label">Duration</span><span class="dose-val"><strong>5 days</strong> (≥2 years); <strong>10 days</strong> (&lt;2 years or severe)</span></div>
+                <div class="dose-row"><span class="dose-label">Adults</span><span class="dose-val"><strong>500 mg</strong> PO TID × 5 days</span></div>
+                <div class="dose-row"><span class="dose-label">If failed</span><span class="dose-val">Co-amoxiclav (Augmentin) <strong>90 mg/kg/day</strong> amoxicillin component</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>High-dose (80–90 mg/kg/day) covers resistant S. pneumoniae. Add paracetamol for pain from the start.</div>
+            </div>
+        </div>
+
+        <div class="dc t-green" data-sys="pediatrics" data-search="dexamethasone croup laryngotracheobronchitis 0.6mg/kg oral steroid barky cough stridor">
+            <div class="dc-head"><div class="dc-icon">🧒</div><div class="dc-names"><div class="dc-name">Dexamethasone — Croup</div><div class="dc-class">Corticosteroid</div></div><span class="dc-badge">CROUP</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Dose</span><span class="dose-val"><strong>0.6 mg/kg</strong> PO/IM single dose (max 10 mg)</span></div>
+                <div class="dose-row"><span class="dose-label">Severe croup</span><span class="dose-val">Add nebulized <strong>Adrenaline 0.5 ml/kg</strong> (1:1000) + nebulized Budesonide <strong>2 mg</strong></span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">Viral croup (laryngotracheobronchitis) — barky cough, inspiratory stridor</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>A single dose of oral dexamethasone 0.6 mg/kg is as effective as IM and is preferred. Onset of action ~1–2 hours. Observe for 4 hours after nebulized adrenaline.</div>
+            </div>
+        </div>
+
+        <div class="dc t-green" data-sys="pediatrics" data-search="mebendazole albendazole pinworms enterobius threadworm 100mg 400mg">
+            <div class="dc-head"><div class="dc-icon">🧒</div><div class="dc-names"><div class="dc-name">Mebendazole / Albendazole — Pinworms</div><div class="dc-class">Anthelmintic</div></div><span class="dc-badge">PINWORMS</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Mebendazole</span><span class="dose-val"><strong>100 mg</strong> PO single dose; repeat in <strong>2 weeks</strong></span></div>
+                <div class="dose-row"><span class="dose-label">Albendazole</span><span class="dose-val"><strong>400 mg</strong> PO single dose; repeat in <strong>2 weeks</strong></span></div>
+                <div class="dose-row"><span class="dose-label">Household</span><span class="dose-val">Treat ALL household members simultaneously</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">Enterobius vermicularis (pinworms/threadworms) — nocturnal perianal itching</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Treat entire household simultaneously. Wash bedding and underwear the morning after treatment. Repeat dose at 2 weeks to catch newly hatched eggs.</div>
+            </div>
+        </div>
+
+        <div class="dc t-green" data-sys="pediatrics" data-search="desmopressin ddavp nocturnal enuresis bedwetting 0.2mg 20mcg nasal">
+            <div class="dc-head"><div class="dc-icon">🧒</div><div class="dc-names"><div class="dc-name">Desmopressin (DDAVP) — Nocturnal Enuresis</div><div class="dc-class">ADH Analogue</div></div><span class="dc-badge">ENURESIS</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Oral</span><span class="dose-val"><strong>0.2 mg</strong> PO nocte (1 hour before sleep)</span></div>
+                <div class="dose-row"><span class="dose-label">Nasal spray</span><span class="dose-val"><strong>20 mcg</strong> (2 puffs = 10 mcg each) intranasally at night</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">Primary nocturnal enuresis ≥5 years, failed alarm therapy, pre-event suppression</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Also used in Von Willebrand Type 1 and mild haemophilia A. Restrict fluid 1 hour before to 8 hours after — risk of hyponatraemia if fluid overload.</div>
+            </div>
+        </div>
+
+        <div class="dc t-green" data-sys="pediatrics" data-search="glucagon dextrose hypoglycemia diabetes t1dm 15g 15-15 rule 1mg">
+            <div class="dc-head"><div class="dc-icon">🧒</div><div class="dc-names"><div class="dc-name">Hypoglycaemia Management — T1DM</div><div class="dc-class">15-15 Rule + Glucagon</div></div><span class="dc-badge">HYPOGLYCAEMIA</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Conscious</span><span class="dose-val"><strong>15 g</strong> fast carbs (3–4 glucose tablets, 150ml juice) → recheck in 15 min → repeat if still low</span></div>
+                <div class="dose-row"><span class="dose-label">Unconscious</span><span class="dose-val"><strong>Glucagon 1 mg</strong> IM/SC (child &lt;25 kg: 0.5 mg); or Dextrose 50% 25 ml IV</span></div>
+                <div class="dose-row"><span class="dose-label">After recovery</span><span class="dose-val">Give complex carbohydrate snack (biscuit + milk) to prevent relapse</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>The "15-15 rule": 15 g of fast carbs → wait 15 min → if BG &lt;4 mmol/L → repeat. If glucagon given → do not give orally until fully alert (aspiration risk).</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- DERMATOLOGY -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-sys="dermatology">
+    <div class="section-title"><div class="sdot" style="background:#a21caf;"></div>Dermatology — Tinea Capitis, Scabies, Pityriasis Rosea</div>
+    <div class="drug-grid">
+
+        <div class="dc t-pink" data-sys="dermatology" data-search="griseofulvin terbinafine itraconazole tinea capitis ringworm scalp fungal oral antifungal 250mg 500mg">
+            <div class="dc-head"><div class="dc-icon">🧴</div><div class="dc-names"><div class="dc-name">Terbinafine / Griseofulvin — Tinea Capitis</div><div class="dc-class">Systemic Antifungal (Oral — Essential)</div></div><span class="dc-badge">ORAL ONLY</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Terbinafine (adult)</span><span class="dose-val"><strong>250 mg</strong> PO OD × <strong>4 weeks</strong></span></div>
+                <div class="dose-row"><span class="dose-label">Terbinafine (child)</span><span class="dose-val"><strong>62.5 mg</strong> OD (&lt;20 kg); <strong>125 mg</strong> OD (20–40 kg); <strong>250 mg</strong> OD (&gt;40 kg) × 4–6 weeks</span></div>
+                <div class="dose-row"><span class="dose-label">Griseofulvin</span><span class="dose-val"><strong>20–25 mg/kg/day</strong> PO (max 1 g/day) × 6–8 weeks</span></div>
+                <div class="dose-row"><span class="dose-label">Adjunct</span><span class="dose-val">Ketoconazole 2% shampoo 2–3×/week (reduces shedding, does NOT cure alone)</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Topical antifungals CANNOT penetrate the hair shaft — oral treatment is mandatory. Terbinafine is now preferred over griseofulvin (shorter course, better for dermatophytes).</div>
+            </div>
+        </div>
+
+        <div class="dc t-pink" data-sys="dermatology" data-search="permethrin scabies cream 5% whole body treatment ivermectin 200mcg/kg">
+            <div class="dc-head"><div class="dc-icon">🧴</div><div class="dc-names"><div class="dc-name">Permethrin 5% Cream — Scabies</div><div class="dc-class">Topical Scabicide</div></div><span class="dc-badge">SCABIES</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Application</span><span class="dose-val">Apply to <strong>entire body</strong> (neck downwards), leave overnight (<strong>8–12 hours</strong>), then wash off</span></div>
+                <div class="dose-row"><span class="dose-label">Repeat</span><span class="dose-val">Repeat after <strong>1 week</strong> (to kill newly hatched eggs)</span></div>
+                <div class="dose-row"><span class="dose-label">Ivermectin</span><span class="dose-val"><strong>200 mcg/kg</strong> PO single dose; repeat after 2 weeks (crusted scabies / immunocompromised)</span></div>
+                <div class="dose-row"><span class="dose-label">Itch treatment</span><span class="dose-val">Cetirizine 10 mg OD + 1% hydrocortisone cream (itch can persist 4 weeks after cure)</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Treat ALL household contacts simultaneously. Wash clothing and bedding in hot water. Itch may persist 2–4 weeks after successful treatment — reassure patient, add antihistamine.</div>
+            </div>
+        </div>
+
+        <div class="dc t-pink" data-sys="dermatology" data-search="cetirizine loratadine antihistamine pityriasis rosea itch allergic pruritus 10mg">
+            <div class="dc-head"><div class="dc-icon">🧴</div><div class="dc-names"><div class="dc-name">Cetirizine / Loratadine — Pityriasis Rosea</div><div class="dc-class">Non-sedating Antihistamine</div></div><span class="dc-badge">SYMPTOMATIC</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Cetirizine</span><span class="dose-val"><strong>10 mg</strong> PO OD (evening)</span></div>
+                <div class="dose-row"><span class="dose-label">Loratadine</span><span class="dose-val"><strong>10 mg</strong> PO OD (morning, non-sedating)</span></div>
+                <div class="dose-row"><span class="dose-label">Emollient</span><span class="dose-val">Moisturiser QID for dryness</span></div>
+                <div class="dose-row"><span class="dose-label">Duration</span><span class="dose-val">Until resolution (usually 6–8 weeks — self-limiting)</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Pityriasis rosea is self-limiting — no antifungal or steroid required. Herald patch appears first, then Christmas-tree rash along cleavage lines. Reassure the patient.</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- INTERNAL MEDICINE -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-sys="internal">
+    <div class="section-title"><div class="sdot" style="background:#0369a1;"></div>Internal Medicine — Adrenal, PBC, Von Willebrand, Renal</div>
+    <div class="drug-grid">
+
+        <div class="dc t-blue" data-sys="internal" data-search="hydrocortisone fludrocortisone adrenal insufficiency addison's disease replacement 20mg 10mg 0.1mg">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Hydrocortisone + Fludrocortisone</div><div class="dc-class">Adrenal Hormone Replacement</div></div><span class="dc-badge">ADDISON'S</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Hydrocortisone</span><span class="dose-val"><strong>15–20 mg AM</strong> + <strong>5–10 mg early afternoon</strong> (mimics cortisol rhythm)</span></div>
+                <div class="dose-row"><span class="dose-label">Fludrocortisone</span><span class="dose-val"><strong>0.05–0.1 mg</strong> PO OD (mineralocorticoid — primary AI only)</span></div>
+                <div class="dose-row"><span class="dose-label">Stress dosing</span><span class="dose-val"><strong>100 mg</strong> hydrocortisone IM/IV stat, then 100 mg Q8h (illness/surgery)</span></div>
+                <div class="dose-row"><span class="dose-label">Sick day rule</span><span class="dose-val">Double/triple oral dose during illness; call emergency if vomiting</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Confirmatory test = ACTH stimulation test (Synacthen test). All patients with AI must carry a steroid emergency card and an emergency hydrocortisone injection kit.</div>
+            </div>
+        </div>
+
+        <div class="dc t-blue" data-sys="internal" data-search="ursodeoxycholic acid udca primary biliary cholangitis pbc 13mg/kg obeticholic acid">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Ursodeoxycholic Acid (UDCA)</div><div class="dc-class">Bile Acid Therapy — Primary Biliary Cholangitis</div></div><span class="dc-badge">PBC</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Dose</span><span class="dose-val"><strong>13–15 mg/kg/day</strong> PO in 2–3 divided doses</span></div>
+                <div class="dose-row"><span class="dose-label">Duration</span><span class="dose-val">Lifelong (slows disease progression)</span></div>
+                <div class="dose-row"><span class="dose-label">If UDCA fails</span><span class="dose-val">Obeticholic acid <strong>5 mg</strong> PO OD (titrate to 10 mg if tolerated)</span></div>
+                <div class="dose-row"><span class="dose-label">Monitor</span><span class="dose-val">LFTs every 3–6 months; ALP should fall with treatment</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Diagnosis: ↑↑ALP + positive anti-mitochondrial antibody (AMA). Treatment improves liver biochemistry and delays fibrosis but does NOT cure.</div>
+            </div>
+        </div>
+
+        <div class="dc t-blue" data-sys="internal" data-search="desmopressin ddavp von willebrand vwd type 1 factor viii 0.3mcg/kg nasal 150mcg">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Desmopressin (DDAVP) — Von Willebrand Type 1</div><div class="dc-class">ADH Analogue / vWF Releaser</div></div><span class="dc-badge">vWD TYPE 1</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">IV/SC</span><span class="dose-val"><strong>0.3 mcg/kg</strong> IV over 20–30 min (30 min before procedure)</span></div>
+                <div class="dose-row"><span class="dose-label">Intranasal</span><span class="dose-val"><strong>150 mcg</strong> (1 puff) if &lt;50 kg; <strong>300 mcg</strong> (2 puffs) if ≥50 kg</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">Type 1 vWD before dental/surgical procedure, menorrhagia, mild haemophilia A</span></div>
+                <div class="dose-row"><span class="dose-label">Type 2/3 vWD</span><span class="dose-val"><strong>vWF + Factor VIII concentrate</strong> (e.g., Haemate-P, Wilate) — DDAVP NOT effective</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>DDAVP releases stored vWF from endothelium. Tachyphylaxis develops after repeated doses (2–3 days). Restrict fluids after use — risk of hyponatraemia.</div>
+            </div>
+        </div>
+
+        <div class="dc t-blue" data-sys="internal" data-search="tranexamic acid antifibrinolytic bleeding menorrhagia vwd mucosal 25mg/kg 500mg 1g">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Tranexamic Acid</div><div class="dc-class">Antifibrinolytic Agent</div></div><span class="dc-badge">BLEEDING</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Oral</span><span class="dose-val"><strong>25 mg/kg</strong> TID (usually <strong>500 mg–1 g</strong> TID)</span></div>
+                <div class="dose-row"><span class="dose-label">IV</span><span class="dose-val"><strong>1 g</strong> IV over 10 min (within 3 hours of trauma — TXA)</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">Mucosal bleeding in vWD, menorrhagia, dental extraction in haemophilia, major trauma</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Add to DDAVP or factor concentrates for dental/oral bleeding. Avoids systemic haemostatic treatment when possible. Contraindicated in haematuria (risk of ureteric clot).</div>
+            </div>
+        </div>
+
+        <div class="dc t-blue" data-sys="internal" data-search="varenicline champix bupropion nicotine nrt smoking cessation 1mg 0.5mg 150mg">
+            <div class="dc-head"><div class="dc-icon">🚭</div><div class="dc-names"><div class="dc-name">Varenicline (Champix) + NRT</div><div class="dc-class">Smoking Cessation Therapy</div></div><span class="dc-badge">SMOKING</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Varenicline</span><span class="dose-val"><strong>0.5 mg</strong> OD × 3 days → <strong>0.5 mg</strong> BID × 4 days → <strong>1 mg</strong> BID × 12 weeks</span></div>
+                <div class="dose-row"><span class="dose-label">Bupropion SR</span><span class="dose-val"><strong>150 mg</strong> OD × 3 days → <strong>150 mg</strong> BID × 7–12 weeks</span></div>
+                <div class="dose-row"><span class="dose-label">NRT</span><span class="dose-val">Nicotine patch 21 mg/day → 14 mg → 7 mg (step-down); or gum/lozenge PRN</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Most effective single agent = Varenicline. Most effective combination = Varenicline + NRT (gum). Varenicline + NRT outperforms either alone.</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- EMERGENCY -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-sys="emergency">
+    <div class="section-title"><div class="sdot" style="background:#b91c1c;"></div>Emergency Medicine</div>
+    <div class="drug-grid">
+
+        <div class="dc t-red" data-sys="emergency" data-search="oxygen co poisoning carbon monoxide 100% non-rebreather mask hyperbaric">
+            <div class="dc-head"><div class="dc-icon">🚨</div><div class="dc-names"><div class="dc-name">100% Oxygen — CO Poisoning</div><div class="dc-class">Inhaled Oxygen Therapy</div></div><span class="dc-badge">FIRST STEP</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">First step</span><span class="dose-val"><strong>100% O₂</strong> via non-rebreather mask — start immediately</span></div>
+                <div class="dose-row"><span class="dose-label">Duration</span><span class="dose-val">Until carboxyHb &lt;5% (typically 4–6 hours with 100% O₂)</span></div>
+                <div class="dose-row"><span class="dose-label">Hyperbaric O₂</span><span class="dose-val"><strong>2.5–3 ATA</strong> × 60–90 min — if: coma, cardiac arrhythmia, carboxyHb &gt;25%, neurological symptoms, or <strong>pregnancy</strong></span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Normal SpO₂ does NOT rule out CO poisoning (pulse oximetry cannot distinguish oxyHb from carboxyHb). Measure <strong>co-oximetry</strong> (ABG). Pregnant patients and children always get hyperbaric O₂.</div>
+            </div>
+        </div>
+
+        <div class="dc t-red" data-sys="emergency" data-search="adrenaline epinephrine anaphylaxis epipen 0.3mg 0.5mg im auto-injector">
+            <div class="dc-head"><div class="dc-icon">🚨</div><div class="dc-names"><div class="dc-name">Adrenaline (Epinephrine) — Anaphylaxis</div><div class="dc-class">Alpha + Beta Adrenergic Agonist</div></div><span class="dc-badge">ANAPHYLAXIS</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Adults</span><span class="dose-val"><strong>0.5 mg</strong> (0.5 ml of 1:1000) IM into outer thigh; repeat every 5 min</span></div>
+                <div class="dose-row"><span class="dose-label">Children &gt;12y</span><span class="dose-val"><strong>0.5 mg</strong> IM (same as adult)</span></div>
+                <div class="dose-row"><span class="dose-label">Children 6–12y</span><span class="dose-val"><strong>0.3 mg</strong> IM (EpiPen Jr or equivalent)</span></div>
+                <div class="dose-row"><span class="dose-label">Children &lt;6y</span><span class="dose-val"><strong>0.15 mg</strong> IM (150 mcg)</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>IM into outer thigh — NOT deltoid or SC. IM gives fastest absorption. IV only in refractory anaphylaxis in ICU setting. Adrenaline first — everything else is adjunct.</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PREVENTIVE -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" data-sys="preventive">
+    <div class="section-title"><div class="sdot" style="background:#15803d;"></div>Preventive Medicine — Vaccines &amp; Prophylaxis</div>
+    <div class="drug-grid">
+
+        <div class="dc t-green" data-sys="preventive" data-search="shingrix recombinant zoster vaccine shingles herpes zoster 0.5ml 2 doses">
+            <div class="dc-head"><div class="dc-icon">💉</div><div class="dc-names"><div class="dc-name">Shingrix (Recombinant Zoster Vaccine)</div><div class="dc-class">Vaccine — Shingles Prevention</div></div><span class="dc-badge">≥50 YEARS</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Dose</span><span class="dose-val"><strong>0.5 ml</strong> IM × <strong>2 doses</strong></span></div>
+                <div class="dose-row"><span class="dose-label">Schedule</span><span class="dose-val">Dose 1 → Dose 2 after <strong>2–6 months</strong></span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">All adults ≥50 years; immunocompromised adults ≥18 years</span></div>
+                <div class="dose-row"><span class="dose-label">Note</span><span class="dose-val">Preferred even if prior Zostavax (live vaccine) — wait ≥5 years</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Shingrix is ~90% effective vs. ~50% for Zostavax. Recombinant = safe in immunocompromised. Site: deltoid. Common side effect: injection site pain, myalgia, fatigue (2–3 days).</div>
+            </div>
+        </div>
+
+        <div class="dc t-green" data-sys="preventive" data-search="aspirin low dose antiplatelet 75mg 81mg primary secondary prevention cardiovascular cvd">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Low-Dose Aspirin</div><div class="dc-class">Antiplatelet — Cardiovascular Prevention</div></div><span class="dc-badge">SECONDARY PREV.</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Secondary prev.</span><span class="dose-val"><strong>75–100 mg</strong> PO OD (post-MI, stroke, PCI)</span></div>
+                <div class="dose-row"><span class="dose-label">Primary prev.</span><span class="dose-val">No longer routinely recommended (benefits do not outweigh bleeding risk)</span></div>
+                <div class="dose-row"><span class="dose-label">ACS loading</span><span class="dose-val"><strong>300 mg</strong> PO once (loading dose) then 75 mg OD maintenance</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Combined with clopidogrel 75 mg OD = dual antiplatelet therapy (DAPT) after PCI/ACS for 12 months. Always add PPI for GI protection.</div>
+            </div>
+        </div>
+
+        <div class="dc t-green" data-sys="preventive" data-search="atorvastatin rosuvastatin statin cholesterol cardiovascular 20mg 40mg 80mg">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Atorvastatin / Rosuvastatin</div><div class="dc-class">HMG-CoA Reductase Inhibitor (Statin)</div></div><span class="dc-badge">CARDIOVASCULAR</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Atorvastatin</span><span class="dose-val"><strong>20–40 mg</strong> PO nocte (high intensity: 80 mg)</span></div>
+                <div class="dose-row"><span class="dose-label">Rosuvastatin</span><span class="dose-val"><strong>10–20 mg</strong> PO nocte (high intensity: 40 mg)</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">Post-MI, high CVD risk, DM, familial hypercholesterolaemia, primary prevention &gt;7.5% 10-year risk</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Give at night — cholesterol synthesis is highest during sleep. Main side effect: myopathy/rhabdomyolysis. Monitor LFTs and CK. Avoid with grapefruit juice (atorvastatin).</div>
+            </div>
+        </div>
+
+        <div class="dc t-green" data-sys="preventive" data-search="metformin diabetes type 2 500mg 1000mg biguanide first line">
+            <div class="dc-head"><div class="dc-icon">💊</div><div class="dc-names"><div class="dc-name">Metformin</div><div class="dc-class">Biguanide — Type 2 DM First Line</div></div><span class="dc-badge">T2DM</span></div>
+            <div class="dc-body">
+                <div class="dose-row"><span class="dose-label">Starting dose</span><span class="dose-val"><strong>500 mg</strong> PO OD with main meal × 1 week</span></div>
+                <div class="dose-row"><span class="dose-label">Maintenance</span><span class="dose-val"><strong>500–1000 mg</strong> PO BID–TID (max <strong>3 g/day</strong>)</span></div>
+                <div class="dose-row"><span class="dose-label">Indication</span><span class="dose-val">Type 2 DM (first line), PCOS, pre-diabetes prevention</span></div>
+                <div class="pearl"><span class="pearl-label">⭐ Pearl: </span>Hold 48 hours before contrast/surgery. Risk of lactic acidosis if eGFR &lt;30 — reduce dose if eGFR 30–45, stop if &lt;30. Does NOT cause hypoglycaemia as monotherapy.</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="no-results" id="no-results">
+    <div style="font-size:2em;margin-bottom:10px;">🔍</div>
+    <strong>No medications found</strong><br>
+    <span style="font-size:0.9em;">Try a different search term or clear the filter.</span>
+</div>
+
+</div><!-- /container -->
+
+<button id="st" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+let activeSystem = 'all';
+
+function filterAll() {
+    const q = document.getElementById('search').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.dc');
+    let visible = 0;
+    cards.forEach(c => {
+        const sysMatch = activeSystem === 'all' || c.dataset.sys === activeSystem;
+        const textMatch = !q || c.dataset.search.toLowerCase().includes(q) || c.innerText.toLowerCase().includes(q);
+        const show = sysMatch && textMatch;
+        c.classList.toggle('hidden', !show);
+        if (show) visible++;
+    });
+    document.getElementById('count').textContent = visible + ' drug' + (visible !== 1 ? 's' : '');
+    document.getElementById('no-results').classList.toggle('show', visible === 0);
+    // hide/show section headers
+    document.querySelectorAll('.section').forEach(s => {
+        const anyVisible = [...s.querySelectorAll('.dc')].some(c => !c.classList.contains('hidden'));
+        s.style.display = anyVisible ? '' : 'none';
+    });
+}
+
+function filterSystem(sys, btn) {
+    activeSystem = sys;
+    document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    filterAll();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function clearSearch() {
+    document.getElementById('search').value = '';
+    filterAll();
+    document.getElementById('search').focus();
+}
+
+window.addEventListener('scroll', () => {
+    const d = document.documentElement;
+    document.getElementById('sp').style.width = (d.scrollTop / (d.scrollHeight - d.clientHeight) * 100) + '%';
+    document.getElementById('st').classList.toggle('v', d.scrollTop > 300);
+});
+
+// Initial count
+window.addEventListener('DOMContentLoaded', () => filterAll());
+</script>
+</body>
+</html>
