@@ -185,34 +185,38 @@
         .speak-bar {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 16px;
-            background: linear-gradient(90deg, #ede9fe, #eff6ff);
-            border-bottom: 1px solid var(--purple-border);
+            gap: 14px;
+            padding: 14px 20px;
+            background: linear-gradient(100deg, #ede9fe 0%, #e0e7ff 60%, #dbeafe 100%);
+            border-radius: 16px;
+            border: 1.5px solid var(--purple-border);
+            margin-bottom: 18px;
             flex-wrap: wrap;
+            box-shadow: 0 2px 10px rgba(124,58,237,0.08);
         }
         .speak-btn {
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 7px 16px;
-            border-radius: 22px;
-            border: 2px solid var(--purple);
-            background: var(--purple);
+            gap: 8px;
+            padding: 10px 24px;
+            border-radius: 28px;
+            border: none;
+            background: linear-gradient(135deg, var(--purple), #6d28d9);
             color: white;
             font-family: 'Cairo', sans-serif;
-            font-weight: 700;
-            font-size: 0.88em;
+            font-weight: 800;
+            font-size: 1em;
             cursor: pointer;
             transition: all 0.2s;
             white-space: nowrap;
+            box-shadow: 0 3px 10px rgba(124,58,237,0.3);
         }
-        .speak-btn:hover { background: #6d28d9; border-color: #6d28d9; }
+        .speak-btn:hover { background: linear-gradient(135deg, #6d28d9, #5b21b6); transform: translateY(-1px); }
         .speak-btn.stop {
-            background: var(--red);
-            border-color: var(--red);
+            background: linear-gradient(135deg, var(--red), #b91c1c);
+            box-shadow: 0 3px 10px rgba(220,38,38,0.3);
         }
-        .speak-btn.stop:hover { background: #b91c1c; }
+        .speak-btn.stop:hover { background: linear-gradient(135deg, #b91c1c, #991b1b); }
 
         .speak-voice-note {
             font-size: 0.78em;
@@ -288,6 +292,13 @@
 <div id="reference-mode">
 <div class="container">
     <div id="case-banner-wrap"></div>
+    <!-- Global TTS bar — ONE button reads everything -->
+    <div class="speak-bar" id="global-speak-bar">
+        <button class="speak-btn" id="global-speak-btn" onclick="toggleSpeakAll()">
+            🔊 استمع لكل الخطوات
+        </button>
+        <span class="speak-voice-note" id="global-speak-note">اضغط ويسمعلك كل الكلام من الأول للآخر</span>
+    </div>
     <div id="steps-container"></div>
 </div>
 </div>
@@ -1072,12 +1083,6 @@ function renderReference() {
                 <div class="step-toggle" id="toggle-${i}">▼</div>
             </div>
             <div class="step-body" id="body-${i}">
-            <div class="speak-bar">
-                <button class="speak-btn" id="speak-btn-${i}" onclick="toggleSpeak(${i})">
-                    🔊 استمع للخطوة
-                </button>
-                <span class="speak-voice-note">اضغط لسماع الأسئلة بالصوت</span>
-            </div>
             <div class="step-body-inner">
                 <div class="subsection">
                     <div class="subsection-title">الأسئلة والعبارات</div>
@@ -1094,7 +1099,7 @@ function renderReference() {
 }
 
 // ── Text-to-Speech ──────────────────────────────────────────
-let activeSpeakIndex = null;
+let ttsActive = false;
 
 function stripHTML(html) {
     return html
@@ -1105,107 +1110,132 @@ function stripHTML(html) {
         .replace(/\s+/g, ' ').trim();
 }
 
-function buildStepText(stepIndex) {
+function buildAllStepsText() {
     const c = cases[currentCase];
-    const step = c.steps[stepIndex];
-    let lines = [];
-    lines.push(step.title + '.');
-    step.phrases.forEach(ph => {
-        if (ph.label) {
-            const cleanLabel = ph.label.replace(/[\u{1F300}-\u{1FFFF}]/gu, '').trim();
-            if (cleanLabel) lines.push(cleanLabel + ':');
+    let parts = [];
+    c.steps.forEach((step, idx) => {
+        parts.push(`خطوة ${idx + 1}: ${step.title}.`);
+        step.phrases.forEach(ph => {
+            if (ph.label) {
+                const cleanLabel = ph.label.replace(/[\u{1F300}-\u{1FFFF}]/gu, '').trim();
+                if (cleanLabel) parts.push(cleanLabel + ':');
+            }
+            parts.push(stripHTML(ph.text));
+        });
+        if (step.clinical) {
+            const cl = step.clinical;
+            if (cl.type === 'two-col') {
+                parts.push(stripHTML(cl.left.title) + ':');
+                cl.left.items.forEach(it => parts.push(stripHTML(it)));
+                parts.push(stripHTML(cl.right.title) + ':');
+                cl.right.items.forEach(it => parts.push(stripHTML(it)));
+            } else {
+                parts.push(stripHTML(cl.title) + ':');
+                cl.items.forEach(it => parts.push(stripHTML(it)));
+            }
         }
-        lines.push(stripHTML(ph.text));
+        parts.push('... ');
     });
-    if (step.clinical) {
-        const cl = step.clinical;
-        if (cl.type === 'two-col') {
-            lines.push(stripHTML(cl.left.title) + ':');
-            cl.left.items.forEach(it => lines.push(stripHTML(it)));
-            lines.push(stripHTML(cl.right.title) + ':');
-            cl.right.items.forEach(it => lines.push(stripHTML(it)));
-        } else {
-            lines.push(stripHTML(cl.title) + ':');
-            cl.items.forEach(it => lines.push(stripHTML(it)));
-        }
-    }
-    return lines.join(' ');
+    return parts.join(' ');
 }
 
-function getArabicVoice() {
+// Prefer Egyptian female voice; fall back to any Arabic voice
+function getArabicFemaleVoice() {
     const voices = window.speechSynthesis.getVoices();
-    return voices.find(v => v.lang.startsWith('ar')) || voices[0] || null;
+    const femaleKeywords = ['female','hoda','zeina','laila','salma','dina','nora','farida',
+                            'rana','ranya','woman','girl','f','ar-eg-standard-a'];
+    // 1. Try explicit female Egyptian Arabic
+    const egFemale = voices.find(v =>
+        v.lang === 'ar-EG' &&
+        femaleKeywords.some(k => v.name.toLowerCase().includes(k))
+    );
+    if (egFemale) return egFemale;
+
+    // 2. Any Egyptian Arabic voice
+    const eg = voices.find(v => v.lang === 'ar-EG');
+    if (eg) return eg;
+
+    // 3. Any Arabic female
+    const arFemale = voices.find(v =>
+        v.lang.startsWith('ar') &&
+        femaleKeywords.some(k => v.name.toLowerCase().includes(k))
+    );
+    if (arFemale) return arFemale;
+
+    // 4. Any Arabic voice
+    return voices.find(v => v.lang.startsWith('ar')) || null;
 }
 
-function toggleSpeak(index) {
-    if (activeSpeakIndex === index && window.speechSynthesis.speaking) {
-        stopSpeaking();
-        return;
+function setGlobalSpeakBtnActive(active) {
+    const btn = document.getElementById('global-speak-btn');
+    const note = document.getElementById('global-speak-note');
+    if (!btn) return;
+    if (active) {
+        btn.classList.add('stop');
+        btn.innerHTML = `<span class="wave-icon"><span></span><span></span><span></span><span></span><span></span></span> وقف الصوت`;
+        if (note) note.textContent = 'بيقرأ كل الخطوات…';
+    } else {
+        btn.classList.remove('stop');
+        btn.innerHTML = '🔊 استمع لكل الخطوات';
+        if (note) note.textContent = 'اضغط ويسمعلك كل الكلام من الأول للآخر';
     }
-    stopSpeaking();
-    speakStep(index);
 }
 
-function speakStep(index) {
+function toggleSpeakAll() {
+    if (ttsActive && window.speechSynthesis.speaking) {
+        stopSpeaking();
+    } else {
+        speakAll();
+    }
+}
+
+function speakAll() {
     if (!('speechSynthesis' in window)) {
         alert('المتصفح ده مش بيدعم ميزة الصوت.');
         return;
     }
 
-    // Auto-open the step
-    const body = document.getElementById(`body-${index}`);
-    const toggle = document.getElementById(`toggle-${index}`);
-    if (body && !body.classList.contains('open')) {
-        body.classList.add('open');
-        if (toggle) toggle.classList.add('open');
-    }
+    // Open all steps so the user follows along
+    const c = cases[currentCase];
+    c.steps.forEach((_, i) => {
+        const body = document.getElementById(`body-${i}`);
+        const toggle = document.getElementById(`toggle-${i}`);
+        if (body && !body.classList.contains('open')) {
+            body.classList.add('open');
+            if (toggle) toggle.classList.add('open');
+        }
+    });
 
-    const text = buildStepText(index);
+    const text = buildAllStepsText();
     const utter = new SpeechSynthesisUtterance(text);
     utter.lang = 'ar-EG';
-    utter.rate = 0.88;
-    utter.pitch = 1.05;
+    utter.rate = 0.85;
+    utter.pitch = 1.35;   // higher pitch → more feminine feel
 
-    // Try to set Arabic voice
-    const setVoiceAndSpeak = () => {
-        const voice = getArabicVoice();
+    const doSpeak = () => {
+        const voice = getArabicFemaleVoice();
         if (voice) utter.voice = voice;
         window.speechSynthesis.cancel();
         window.speechSynthesis.speak(utter);
     };
 
-    activeSpeakIndex = index;
-    setSpeakBtnActive(index, true);
+    ttsActive = true;
+    setGlobalSpeakBtnActive(true);
 
-    utter.onend = () => { activeSpeakIndex = null; setSpeakBtnActive(index, false); };
-    utter.onerror = () => { activeSpeakIndex = null; setSpeakBtnActive(index, false); };
+    utter.onend   = () => { ttsActive = false; setGlobalSpeakBtnActive(false); };
+    utter.onerror = () => { ttsActive = false; setGlobalSpeakBtnActive(false); };
 
-    // Voices may not be loaded yet on first call
     if (window.speechSynthesis.getVoices().length === 0) {
-        window.speechSynthesis.onvoiceschanged = setVoiceAndSpeak;
+        window.speechSynthesis.onvoiceschanged = doSpeak;
     } else {
-        setVoiceAndSpeak();
+        doSpeak();
     }
 }
 
 function stopSpeaking() {
     window.speechSynthesis.cancel();
-    if (activeSpeakIndex !== null) {
-        setSpeakBtnActive(activeSpeakIndex, false);
-        activeSpeakIndex = null;
-    }
-}
-
-function setSpeakBtnActive(index, active) {
-    const btn = document.getElementById(`speak-btn-${index}`);
-    if (!btn) return;
-    if (active) {
-        btn.classList.add('stop');
-        btn.innerHTML = `<span class="wave-icon"><span></span><span></span><span></span><span></span><span></span></span> وقف`;
-    } else {
-        btn.classList.remove('stop');
-        btn.innerHTML = '🔊 استمع للخطوة';
-    }
+    ttsActive = false;
+    setGlobalSpeakBtnActive(false);
 }
 
 // Stop speech when changing cases or modes
