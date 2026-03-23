@@ -925,6 +925,83 @@
                 "Does not examine vital signs, cardiovascular, and respiratory systems",
                 "Does not elicit ICE or explain diagnosis and plan to patient"
             ]
+        },
+
+        // ─── HIGH-RISK DM + CHEST PAIN ──────────────────────────────────────────
+        {
+            cat: "Role Player",
+            type: "roleplay",
+            cardNum: "15",
+            q: "High-Risk DM + Chest Pain — Role Player Information",
+            patientName: "Ahmed Samir Al-Rashidi",
+            age: "52 years old",
+            background: "Male, obese (BMI 34), heavy smoker (1 pack/day × 20 years), sedentary, office manager, reports significant psychological stress at work and home. Known hypertension and Type 2 DM — poorly controlled. Irregular diet, skips medications, no regular exercise.",
+            chiefComplaint: "Sharp, severe chest pain for 2 days — described as 'a knife in my chest'",
+            history: [
+                "Sharp, knife-like chest pain starting 2 days ago",
+                "Occurs at rest — not necessarily related to exertion or walking",
+                "Describes tightness and burning sensation in the heart area",
+                "Pain radiates to the left shoulder — confirm if asked directly",
+                "No radiation to jaw, back, or right arm — deny if asked",
+                "Associated: increased thirst (polydipsia) and frequent urination (polyuria) — no UTI symptoms, no dysuria",
+                "Also reports: morning blurred vision (improving through the day), frequent skin/groin fungal infections",
+                "No acute breathlessness, no leg swelling, no syncope",
+                "Known HTN — on medication but 'sometimes forgets'",
+                "Known DM — HbA1c 12% at last check, Random Blood Sugar 300 mg/dL, FBS elevated",
+                "Labs done before visit: FBS (high), HbA1c (12%), lipid profile (abnormal), kidney function (done), ECG (done by referring doctor)",
+                "Lifestyle: irregular diet, no exercise, heavy smoker, ongoing stress",
+                "ICE: thinks the chest pain is 'from stress and the heart'; very worried about having a heart attack; expects to know what is wrong and get treatment today",
+                "If asked about family history: father had a heart attack at age 60"
+            ]
+        },
+
+        {
+            cat: "Internal Med",
+            type: "checklist",
+            cardNum: "16",
+            q: "High-Risk DM + Chest Pain — Assessment & Management",
+            good: [
+                "Establishes rapport quickly and acknowledges patient's distress; uses ICE model",
+                // CHEST PAIN ASSESSMENT
+                "Analyses chest pain using SOCRATES: sharp/knife-like, at rest, 2 days, cardiac area, radiation to left shoulder",
+                "Identifies key risk factors for ACS: male + obesity + heavy smoking + HTN + DM + HbA1c 12% + family history = VERY HIGH cardiovascular risk",
+                "Distinguishes features suggesting ACS: rest pain, radiation to left shoulder, cardiac risk factor burden — treat as ACS until proven otherwise",
+                "Reviews available investigations: acknowledges ECG, FBS, HbA1c, lipid profile, kidney function results already done",
+                "Requests or confirms: serial troponin (if not done), repeat ECG, SpO2, BP and HR",
+                // DM MANAGEMENT — HbA1c 12%
+                "Recognises HbA1c 12% = very poor glycaemic control → requires triple therapy or initiation of insulin",
+                "Addresses polydipsia + polyuria as symptoms of hyperglycaemia (RBS 300) — not UTI",
+                "Identifies DM complications present: blurred vision (diabetic retinopathy risk), frequent fungal infections (hyperglycaemia-related immunosuppression)",
+                "Plans urgent ophthalmology referral for blurred vision assessment",
+                // CVD MANAGEMENT
+                "Manages hypertension with ACE inhibitor (e.g., Captopril) — nephroprotective in DM",
+                "Prescribes Atorvastatin 40 mg once daily after dinner for dyslipidaemia",
+                "Checks for Aspirin allergy; if none, prescribes Aspirin + Clopidogrel (Plavix) 75 mg daily for high CVD risk",
+                "Strongly counsels smoking cessation — smoking with DM+HTN exponentially increases MI risk",
+                // LIFESTYLE & PSYCHOLOGICAL
+                "Addresses psychological stress as a contributor to poor glycaemic control and cardiovascular risk",
+                "Advises on diet (low GI, low salt), regular physical activity, and weight loss",
+                "Advises medication adherence — explains consequences of skipping antihypertensives and DM medications",
+                // REFERRAL & FOLLOW-UP
+                "Refers to cardiology if ACS features confirmed; initiates emergency pathway if STEMI on ECG",
+                "Plans follow-up in 1 month: repeat HbA1c, renal function, lipids, BP review",
+                "Elicits ICE: confirms patient's fear of MI; provides clear, honest, reassuring explanation",
+                "Provides red flag warning: return immediately if pain worsens, breathlessness, sweating, palpitations, or fainting"
+            ],
+            poor: [
+                "Does not identify the very high CVD risk burden (DM+HTN+smoking+obesity+family history)",
+                "Does not treat chest pain at rest with radiation as ACS until proven otherwise",
+                "Does not review available investigations or request troponin",
+                "Does not recognise HbA1c 12% requires triple therapy or insulin — not just Metformin alone",
+                "Attributes polydipsia/polyuria to UTI without properly excluding hyperglycaemia as cause",
+                "Does not identify blurred vision as a potential DM complication requiring ophthalmology referral",
+                "Does not address frequent fungal infections as sign of uncontrolled hyperglycaemia",
+                "Does not prescribe statin or antiplatelet for high CVD risk",
+                "Does not counsel on smoking cessation — the highest modifiable risk factor",
+                "Does not address psychological stress or medication non-adherence",
+                "Does not elicit ICE or address patient's fear of heart attack",
+                "Does not provide clear red flag warning or follow-up plan"
+            ]
         }
     ];
 
