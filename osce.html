@@ -532,23 +532,21 @@
             q: "Sciatica — Role Player Information",
             patientName: "Khalid Mahmoud Hassan",
             age: "42 years old",
-            background: "Office worker / desk job, drives 1 hour daily, married, 3 children, non-smoker, no chronic illnesses",
-            chiefComplaint: "Low back pain shooting down the left leg for 3 weeks",
+            background: "Office worker / desk job, drives 1 hour daily, married, 3 children, obese (BMI 31), non-smoker, no chronic illnesses",
+            chiefComplaint: "Pain, numbness, and pins-and-needles shooting from the buttock down the left leg to the foot — 3 weeks",
             history: [
-                "Sudden onset 3 weeks ago while lifting a heavy box at work",
-                "Sharp, burning, electric-shock-like pain starting in the lower back → left buttock → back of left thigh → outer calf → little toe",
+                "Sudden onset 3 weeks ago after lifting a heavy box at work",
+                "Burning, electric-shock pain travelling: lower back → left buttock → back of left thigh → outer calf → little toe (buttocks → leg → foot)",
+                "Also describes numbness and a 'pins and needles' sensation along the same path",
                 "Severity: 7/10 at rest, 9/10 on movement",
-                "Worse with: sitting for >30 minutes, coughing, sneezing, straining during defecation",
-                "Better with: lying flat on back with knees slightly bent, walking short distances",
-                "Associated numbness and tingling in the outer left calf and little toe",
-                "No weakness in the leg (can walk, no foot drop)",
-                "No bladder or bowel dysfunction (NO incontinence, NO retention) — if asked directly, deny clearly",
-                "No saddle-area (inner thigh/perineum) numbness — deny if asked",
-                "No fever, no unexplained weight loss, no night sweats",
-                "No history of cancer, tuberculosis, or previous spinal surgery",
-                "Tried paracetamol with minimal relief; no physiotherapy yet",
-                "Very worried it might be 'something serious' or that he will need surgery",
-                "Asking: 'Will I need an operation? Can I go back to work?'"
+                "Worse with: sitting >30 minutes, coughing, sneezing, straining",
+                "Better with: lying flat with knees slightly bent, short walks",
+                "No leg weakness, no foot drop",
+                "No bladder or bowel dysfunction — deny clearly if asked directly",
+                "No saddle-area (perineum) numbness — deny if asked",
+                "No fever, no weight loss, no history of cancer or spinal surgery",
+                "Tried paracetamol with minimal relief",
+                "Very worried: 'Is it something serious? Will I need an operation?'"
             ]
         },
 
@@ -559,39 +557,95 @@
             q: "Sciatica — History, Examination & Management",
             good: [
                 "Establishes rapport and uses appropriate communication skills",
-                "Analyses back pain systematically: onset, duration, character (burning/electric), severity, radiation (buttock → thigh → calf → foot/toes)",
-                "Identifies dermatomal distribution: L4 (medial calf/foot), L5 (dorsum of foot/big toe), S1 (lateral foot/little toe)",
-                "Asks about aggravating factors: sitting, coughing, sneezing, straining, forward bending",
-                "Asks about alleviating factors: lying flat, walking, analgesia",
-                "Screens for RED FLAGS (cauda equina syndrome): bladder/bowel dysfunction, urinary retention or incontinence, saddle-area numbness, bilateral leg weakness — URGENT REFERRAL if present",
-                "Screens for other red flags: fever/night sweats (infection/abscess), unexplained weight loss (malignancy), age >50 with new back pain, history of cancer, steroid use, trauma, osteoporosis",
-                "Asks about functional impact: work, driving, sleep, daily activities",
-                "Asks about previous similar episodes, treatments tried, investigations done",
-                "Elicits ICE: patient's ideas about cause, concerns about surgery, expectations for recovery",
-                "Performs examination with permission and infection control: inspection (posture, scoliosis), palpation (paraspinal tenderness, sciatic nerve point), straight leg raise (SLR/Lasègue's test — positive <60°), crossed SLR",
-                "Tests neurology: myotomes (L4: foot inversion; L5: big toe dorsiflexion; S1: plantarflexion/eversion), dermatomes, deep tendon reflexes (knee jerk L4, ankle jerk S1)",
-                "Requests investigations only if red flags present or >6 weeks: X-ray lumbar spine, MRI lumbar spine (gold standard for disc herniation)",
-                "Explains diagnosis clearly: 'Sciatica is caused by pressure on a nerve in the lower spine — usually from a bulging disc'",
-                "Reassures: 90% of cases resolve within 6–12 weeks with conservative management — surgery is rarely needed",
-                "Advises AGAINST bed rest — encourage gentle activity and short walks",
-                "Prescribes analgesia: NSAIDs (Ibuprofen 400mg TID with food) + Paracetamol 1g QID; consider Gabapentin 300mg nocte for neuropathic pain",
-                "Refers for physiotherapy: core strengthening, McKenzie exercises, posture advice",
-                "Advises on posture: ergonomic seating, avoid prolonged sitting, lumbar support when driving",
-                "States red flag symptoms that require immediate return: loss of bladder/bowel control, saddle numbness, sudden worsening weakness in both legs",
-                "States criteria for neurosurgical referral: cauda equina syndrome (emergency), progressive neurological deficit, failure of conservative management after 6–8 weeks",
-                "Asks patient if he has any questions; provides clear follow-up plan (2–4 weeks)"
+                // DEFINITION / EDUCATION
+                "Explains sciatica: compression of the sciatic nerve causing pain, numbness, burning, or pins-and-needles that travel from the buttocks → down the leg → to the foot",
+                // HISTORY
+                "Analyses pain: onset, duration, character (burning/electric/pins-and-needles), radiation path (buttock → leg → foot)",
+                "Asks about aggravating factors: sitting, coughing, sneezing, straining",
+                "Asks about alleviating factors: lying flat, short walks, analgesia",
+                "Identifies common causes: herniated disc, lumbar spinal stenosis, trauma, tumour, infection, obesity, pregnancy — asks about relevant risk factors",
+                "Screens for RED FLAGS (cauda equina): bladder/bowel dysfunction, saddle-area numbness, bilateral leg weakness — URGENT referral if present",
+                "Screens for serious causes: fever (infection), weight loss (tumour/malignancy), history of trauma",
+                "Asks about functional impact: work, driving, sleep",
+                "Elicits ICE: patient's ideas, concerns about surgery, expectations",
+                // EXAMINATION — LOOK / FEEL / MOVE / SPECIAL TESTS
+                "LOOK (front, side, back): posture, scoliosis, muscle wasting, skin changes",
+                "FEEL (back of hand then fingers): skin temperature, paraspinal muscle tenderness, sciatic nerve point tenderness",
+                "MOVE (active then passive): lumbar flexion, extension, lateral flexion; note restricted/painful movements",
+                "SPECIAL TEST — Straight Leg Raise (SLR / Lasègue's test): specific for sciatica — positive if pain reproduced below knee at <60°",
+                "SPECIAL TEST — Knee examination: inspect and palpate under and on the patella; perform Patella Tap Test",
+                "Tests neurological function: myotomes, dermatomes, deep tendon reflexes (knee jerk L3-L4, ankle jerk S1)",
+                // INVESTIGATIONS
+                "Requests investigations only if red flags or >6 weeks: X-ray lumbar spine, MRI lumbar spine (gold standard)",
+                // MANAGEMENT
+                "Explains diagnosis clearly and reassures: most cases resolve without surgery",
+                "Advises AGAINST bed rest — stay active, gentle walks",
+                "Prescribes: NSAIDs (Ibuprofen 400mg TID with food) + Paracetamol 1g QID; Gabapentin for neuropathic pain if needed",
+                "Refers for physiotherapy; advises ergonomic seating and lumbar support",
+                "States red flags for immediate return: loss of bladder/bowel control, saddle numbness, sudden bilateral leg weakness",
+                "States referral criteria: cauda equina (emergency), progressive deficit, failure of conservative treatment after 6–8 weeks",
+                "Asks patient if he has any questions; gives clear follow-up plan (2–4 weeks)"
             ],
             poor: [
-                "Does not screen for cauda equina syndrome red flags (bladder/bowel/saddle numbness)",
-                "Does not perform or mention Straight Leg Raise (Lasègue's) test",
-                "Does not test neurological function (myotomes, dermatomes, reflexes)",
-                "Recommends strict bed rest (incorrect — worsens outcome)",
-                "Immediately refers to neurosurgeon or orders MRI without red flag indication",
-                "Does not explain natural history (most cases resolve without surgery)",
-                "Does not elicit ICE — misses patient's fear about surgery",
-                "Does not prescribe appropriate analgesia or explain dosing",
-                "Does not advise physiotherapy or activity modification",
-                "Does not provide red flag warning signs or follow-up plan"
+                "Does not explain that sciatica = nerve compression causing symptoms from buttock → leg → foot",
+                "Does not identify common causes (disc, stenosis, obesity, tumour, infection)",
+                "Does not screen for cauda equina red flags (bladder/bowel/saddle numbness)",
+                "Does not use Look / Feel / Move / Special Tests examination structure",
+                "Does not perform Straight Leg Raise (SLR) — the specific test for sciatica",
+                "Does not examine the knee (patella, Patella Tap Test)",
+                "Recommends bed rest (incorrect — worsens prognosis)",
+                "Immediately refers to neurosurgery or orders MRI without red flag indication",
+                "Does not elicit ICE or address patient's fear about surgery",
+                "Does not prescribe analgesia or refer for physiotherapy",
+                "Does not provide red flag warning or follow-up plan"
+            ]
+        },
+
+        // ─── DIABETIC FOOT EXAMINATION ──────────────────────────────────────────
+        {
+            cat: "Clinical Skills",
+            type: "checklist",
+            cardNum: "07",
+            q: "Diabetic Foot Examination",
+            good: [
+                // PREPARATION
+                "Washes hands before and after examination (infection control)",
+                "Obtains consent from patient before starting",
+                "Ensures proper equipment is ready: monofilament (10g), tuning fork (128Hz), pin, cotton wool, tendon hammer, Doppler probe or pulse oximeter",
+                "Positions patient comfortably; exposes both feet and lower legs",
+                // GENERAL / LOOK
+                "LOOK — General inspection: skin colour (pallor, rubor, cyanosis), skin integrity (ulcers, fissures, calluses), hair loss, nail changes (thickening, fungal), interdigital spaces (maceration, fungal infection)",
+                "LOOK — checks for sweating (anhidrosis = autonomic neuropathy), oedema, signs of infection (redness, discharge, swelling)",
+                "LOOK — Deformities: Charcot joint, claw toes, hallux valgus, flat arch",
+                // FEEL / VASCULAR
+                "FEEL — Vascular assessment: checks skin temperature with back of hand (cool = poor perfusion)",
+                "Palpates peripheral pulses: dorsalis pedis (top of foot) and posterior tibial (behind medial malleolus) — notes presence, volume, character",
+                "Checks capillary refill time: press nail bed for 5 seconds, refill should be <2 seconds",
+                // FEEL / NEUROLOGICAL
+                "FEEL — Neurological assessment: checks protective sensation using 10g monofilament at 10 standard sites — asks patient 'Do you feel this?' with eyes closed",
+                "Tests vibration sense: tuning fork (128Hz) on bony prominences (big toe, medial malleolus, tibial tuberosity)",
+                "Tests pain/pinprick sensation: sharp end of pin — 'Do you feel this as sharp?'",
+                "Tests light touch: cotton wool",
+                "Tests proprioception (position sense): moves big toe up/down — patient identifies direction with eyes closed",
+                // MOVE / REFLEXES
+                "Tests ankle jerk reflex with tendon hammer (absent = peripheral neuropathy)",
+                "Assesses joint mobility: ankle, subtalar, metatarsophalangeal joints",
+                // SUMMARY
+                "Classifies foot risk: low (normal sensation + pulses), moderate (one abnormality), high (both abnormal or previous ulcer/amputation)",
+                "Documents findings clearly and communicates to patient",
+                "Refers to diabetic foot team, podiatry, or vascular surgery based on risk classification",
+                "Gives patient education: daily foot inspection, moisturise (not between toes), wear well-fitting shoes, never walk barefoot, cut nails straight, report any sore immediately"
+            ],
+            poor: [
+                "Does not wash hands or obtain consent before examination",
+                "Does not prepare equipment (monofilament, tuning fork, tendon hammer)",
+                "Checks only one foot and not both",
+                "Does not perform vascular assessment (temperature, pulses, capillary refill)",
+                "Does not check peripheral sensation using monofilament — the most important test",
+                "Does not test vibration sense, proprioception, or ankle reflex",
+                "Does not check between toes or under foot for hidden ulcers",
+                "Does not classify foot risk or explain findings to patient",
+                "Does not provide foot care education or referral plan"
             ]
         }
     ];
