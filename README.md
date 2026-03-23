@@ -1,8 +1,5 @@
 # Dr. Younis Master Study Portal - Exam Materials
 
-**Suez Canal University · Faculty of Medicine · Family Medicine Department**  
-**Credit-Hour Masters of Family Medicine and Community Health**
-
 ---
 
 ## 📁 Project Structure
@@ -13,7 +10,6 @@
 ├── index.html                   # Main MCQs Practice Page
 ├── osce.html                    # OSCE Flashcards (Good/Poor Performance)
 ├── roleplay_arabic.html         # Arabic Role Play Script (GERD Case)
-├── resources.html               # JVP Examination Resources (Images from Big Book)
 ├── OSCE_content.txt             # Raw OSCE flashcards content (English)
 ├── OSCE_Flashcards (1).docx     # Original OSCE flashcards document
 └── arabic script GERD.jpg       # Original Arabic role play script image
@@ -26,9 +22,8 @@
 | File | Purpose | Key Features |
 |------|---------|--------------|
 | `index.html` | MCQs Board Review | 50+ questions across OB/GYN, Pediatrics, Ethics, Internal Med, etc. |
-| `osce.html` | OSCE Flashcards | Checklists with Good vs Poor performance columns + Procedure Steps |
+| `osce.html` | OSCE Flashcards | Checklists with Good vs Poor performance columns |
 | `roleplay_arabic.html` | Arabic Role Play | GERD case role player instructions (RTL Arabic) |
-| `resources.html` | JVP Resources | Educational images from medical textbooks with interpretation guide |
 
 ---
 
@@ -106,24 +101,8 @@ All pages are interconnected:
 
 | Date | Change | Files Modified |
 |------|--------|----------------|
-| March 20, 2026 | Added JVP Resources page with images | `resources.html` (new), `index.html`, `osce.html`, `README.md` |
-| March 20, 2026 | Added Procedure Steps to OSCE cards | `osce.html` |
-| March 20, 2026 | Added JVP Examination OSCE Card (Card 05) | `osce.html` |
 | March 20, 2026 | Added Arabic Role Play page | `roleplay_arabic.html` (new), `index.html`, `osce.html` |
 | March 20, 2026 | Mobile enhancement for OSCE cards | `osce.html` (responsive CSS) |
-
----
-
-## 📸 OSCE Cards Available
-
-| Card | Topic | Category |
-|------|-------|----------|
-| 00 | GERD Case — Role Player Info | Role Player |
-| 01 | GERD — History Taking & Management | GERD |
-| 02 | Cranial Nerve Examination | Clinical Skills |
-| 03 | Pediatric COVID-19 — History & Management | Pediatrics |
-| 04 | Renal/Ureteric Stone — History & Management | Internal Med |
-| 05 | Jugular Venous Pressure (JVP) — Examination | Internal Med |
 
 ---
 
@@ -140,4 +119,4 @@ Or double-click the file in Finder.
 
 ## 📞 Support
 
-For issues or updates, contact the Family Medicine Department, Suez Canal University.
+For issues or updates, contact Dr. Younis.
