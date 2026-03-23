@@ -175,10 +175,82 @@
 
         @media print {
             #scroll-progress, #scroll-top, .mode-tabs, .top-nav, .case-selector-wrap,
-            .done-btn, .practice-nav, .progress-wrap { display: none !important; }
+            .done-btn, .practice-nav, .progress-wrap, .speak-bar { display: none !important; }
             .step-body { max-height: none !important; }
             .step-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
             body { background: white; }
+        }
+
+        /* ── TTS Speak Bar ───────────────────────────────────── */
+        .speak-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: linear-gradient(90deg, #ede9fe, #eff6ff);
+            border-bottom: 1px solid var(--purple-border);
+            flex-wrap: wrap;
+        }
+        .speak-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 16px;
+            border-radius: 22px;
+            border: 2px solid var(--purple);
+            background: var(--purple);
+            color: white;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 0.88em;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .speak-btn:hover { background: #6d28d9; border-color: #6d28d9; }
+        .speak-btn.stop {
+            background: var(--red);
+            border-color: var(--red);
+        }
+        .speak-btn.stop:hover { background: #b91c1c; }
+
+        .speak-voice-note {
+            font-size: 0.78em;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        /* waveform animation while speaking */
+        .wave-icon {
+            display: inline-flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 14px;
+        }
+        .wave-icon span {
+            display: inline-block;
+            width: 3px;
+            background: white;
+            border-radius: 2px;
+            animation: wave 0.8s ease-in-out infinite;
+        }
+        .wave-icon span:nth-child(1){ height: 6px; animation-delay: 0s; }
+        .wave-icon span:nth-child(2){ height: 12px; animation-delay: 0.15s; }
+        .wave-icon span:nth-child(3){ height: 8px; animation-delay: 0.3s; }
+        .wave-icon span:nth-child(4){ height: 14px; animation-delay: 0.1s; }
+        .wave-icon span:nth-child(5){ height: 5px; animation-delay: 0.25s; }
+        @keyframes wave {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.4); }
+        }
+
+        /* practice speak button */
+        .practice-speak-wrap {
+            margin-top: 16px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
     </style>
 </head>
@@ -931,6 +1003,7 @@ function buildCaseSelector() {
 }
 
 function selectCase(index) {
+    stopOnSwitch();
     currentCase = index;
     practiceIndex = 0;
     document.querySelectorAll('.case-btn').forEach((b, i) => {
@@ -999,6 +1072,12 @@ function renderReference() {
                 <div class="step-toggle" id="toggle-${i}">▼</div>
             </div>
             <div class="step-body" id="body-${i}">
+            <div class="speak-bar">
+                <button class="speak-btn" id="speak-btn-${i}" onclick="toggleSpeak(${i})">
+                    🔊 استمع للخطوة
+                </button>
+                <span class="speak-voice-note">اضغط لسماع الأسئلة بالصوت</span>
+            </div>
             <div class="step-body-inner">
                 <div class="subsection">
                     <div class="subsection-title">الأسئلة والعبارات</div>
@@ -1013,6 +1092,124 @@ function renderReference() {
         </div>`;
     });
 }
+
+// ── Text-to-Speech ──────────────────────────────────────────
+let activeSpeakIndex = null;
+
+function stripHTML(html) {
+    return html
+        .replace(/<br\s*\/?>/gi, '، ')
+        .replace(/<b>/gi, '').replace(/<\/b>/gi, '')
+        .replace(/<[^>]+>/g, '')
+        .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+        .replace(/\s+/g, ' ').trim();
+}
+
+function buildStepText(stepIndex) {
+    const c = cases[currentCase];
+    const step = c.steps[stepIndex];
+    let lines = [];
+    lines.push(step.title + '.');
+    step.phrases.forEach(ph => {
+        if (ph.label) {
+            const cleanLabel = ph.label.replace(/[\u{1F300}-\u{1FFFF}]/gu, '').trim();
+            if (cleanLabel) lines.push(cleanLabel + ':');
+        }
+        lines.push(stripHTML(ph.text));
+    });
+    if (step.clinical) {
+        const cl = step.clinical;
+        if (cl.type === 'two-col') {
+            lines.push(stripHTML(cl.left.title) + ':');
+            cl.left.items.forEach(it => lines.push(stripHTML(it)));
+            lines.push(stripHTML(cl.right.title) + ':');
+            cl.right.items.forEach(it => lines.push(stripHTML(it)));
+        } else {
+            lines.push(stripHTML(cl.title) + ':');
+            cl.items.forEach(it => lines.push(stripHTML(it)));
+        }
+    }
+    return lines.join(' ');
+}
+
+function getArabicVoice() {
+    const voices = window.speechSynthesis.getVoices();
+    return voices.find(v => v.lang.startsWith('ar')) || voices[0] || null;
+}
+
+function toggleSpeak(index) {
+    if (activeSpeakIndex === index && window.speechSynthesis.speaking) {
+        stopSpeaking();
+        return;
+    }
+    stopSpeaking();
+    speakStep(index);
+}
+
+function speakStep(index) {
+    if (!('speechSynthesis' in window)) {
+        alert('المتصفح ده مش بيدعم ميزة الصوت.');
+        return;
+    }
+
+    // Auto-open the step
+    const body = document.getElementById(`body-${index}`);
+    const toggle = document.getElementById(`toggle-${index}`);
+    if (body && !body.classList.contains('open')) {
+        body.classList.add('open');
+        if (toggle) toggle.classList.add('open');
+    }
+
+    const text = buildStepText(index);
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'ar-EG';
+    utter.rate = 0.88;
+    utter.pitch = 1.05;
+
+    // Try to set Arabic voice
+    const setVoiceAndSpeak = () => {
+        const voice = getArabicVoice();
+        if (voice) utter.voice = voice;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utter);
+    };
+
+    activeSpeakIndex = index;
+    setSpeakBtnActive(index, true);
+
+    utter.onend = () => { activeSpeakIndex = null; setSpeakBtnActive(index, false); };
+    utter.onerror = () => { activeSpeakIndex = null; setSpeakBtnActive(index, false); };
+
+    // Voices may not be loaded yet on first call
+    if (window.speechSynthesis.getVoices().length === 0) {
+        window.speechSynthesis.onvoiceschanged = setVoiceAndSpeak;
+    } else {
+        setVoiceAndSpeak();
+    }
+}
+
+function stopSpeaking() {
+    window.speechSynthesis.cancel();
+    if (activeSpeakIndex !== null) {
+        setSpeakBtnActive(activeSpeakIndex, false);
+        activeSpeakIndex = null;
+    }
+}
+
+function setSpeakBtnActive(index, active) {
+    const btn = document.getElementById(`speak-btn-${index}`);
+    if (!btn) return;
+    if (active) {
+        btn.classList.add('stop');
+        btn.innerHTML = `<span class="wave-icon"><span></span><span></span><span></span><span></span><span></span></span> وقف`;
+    } else {
+        btn.classList.remove('stop');
+        btn.innerHTML = '🔊 استمع للخطوة';
+    }
+}
+
+// Stop speech when changing cases or modes
+function stopOnSwitch() { stopSpeaking(); }
 
 function toggleStep(index) {
     const body = document.getElementById(`body-${index}`);
@@ -1090,6 +1287,7 @@ function prevPractice() {
 
 // ── Mode switch ──────────────────────────────────────────────
 function setMode(mode) {
+    stopOnSwitch();
     currentMode = mode;
     const refMode = document.getElementById('reference-mode');
     document.querySelectorAll('.mode-tab').forEach((t, i) => {
