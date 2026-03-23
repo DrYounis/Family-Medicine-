@@ -647,6 +647,191 @@
                 "Does not classify foot risk or explain findings to patient",
                 "Does not provide foot care education or referral plan"
             ]
+        },
+
+        // ─── PEDIATRICS ─────────────────────────────────────────────────────────
+        {
+            cat: "Pediatrics",
+            type: "checklist",
+            cardNum: "08",
+            q: "IMCI — General Pediatric Assessment (Danger Signs & Approach)",
+            good: [
+                "Establishes rapport with parent/caregiver; uses clear, simple language",
+                "Follows IMCI systematic approach: Red Flags → Assessment → Differential Diagnosis → Management",
+                // DANGER SIGNS
+                "Checks DANGER SIGNS first: convulsions (current or recent), loss of consciousness, persistent vomiting (cannot keep anything down), difficulty swallowing",
+                "Assesses level of alertness: is the child lethargic or unconscious?",
+                "Assesses feeding: is the child breastfeeding/eating normally? Is there poor feeding or refusal?",
+                "Asks about current medications: any antibiotics, antipyretics, or traditional remedies",
+                // COMMON PRESENTATIONS TO ASSESS
+                "Screens for common presentations: Upper Respiratory Tract Infection (URTI), Iron Deficiency Anaemia (IDA), Hepatitis A",
+                "Takes full history: onset, duration, fever, cough, runny nose, diarrhoea, vomiting, rash, jaundice",
+                "Assesses vaccination status and growth (weight, height, MUAC)",
+                "Examines child with permission: general appearance, hydration, pallor, jaundice, chest, abdomen, throat, ears",
+                // MANAGEMENT PRINCIPLES
+                "Classifies severity and identifies the correct management level: home, clinic, or hospital referral",
+                "Prescribes treatment based on classification; explains to parent clearly",
+                "Gives pre-referral treatment before sending to hospital if urgent",
+                "Educates parent on danger signs requiring immediate return",
+                "Arranges appropriate follow-up: 1 week for mild cases, sooner if worsening"
+            ],
+            poor: [
+                "Does not check danger signs (convulsions, loss of consciousness, persistent vomiting, difficulty swallowing) at the start",
+                "Does not assess feeding or level of alertness",
+                "Does not ask about current medications",
+                "Does not follow a systematic IMCI approach (jumps to one diagnosis without screening)",
+                "Fails to classify severity correctly or misses referral indication",
+                "Does not educate parent on warning signs for immediate return",
+                "Does not arrange appropriate follow-up"
+            ]
+        },
+
+        {
+            cat: "Pediatrics",
+            type: "checklist",
+            cardNum: "09",
+            q: "Common Cold vs. Acute Rhinosinusitis — Diagnosis & Management",
+            good: [
+                "Establishes rapport with parent/caregiver",
+                "Asks about onset, duration, and progression of symptoms",
+                // DIFFERENTIATING VIRAL vs BACTERIAL
+                "Distinguishes viral from bacterial cause — critical for correct treatment",
+                "VIRAL (Common Cold): clear/watery nasal discharge, mild symptoms, improving within 7–10 days, no fever or low-grade fever",
+                "BACTERIAL (Acute Rhinosinusitis): often a complication of a common cold; characterized by: yellow/green (purulent) nasal discharge, duration >10 days without improvement OR worsening after initial improvement, facial pain/pressure, fever",
+                "Asks about: discharge colour and quantity, duration, facial pain/pressure, dental pain, headache, fever",
+                "Examines: nasal mucosa, throat, ears (to rule out AOM), lymph nodes, transillumination of sinuses if available",
+                "Asks about past episodes, allergy history, and exposure to sick contacts",
+                "Elicits ICE and functional impact (school, sleep)",
+                // MANAGEMENT
+                "For VIRAL (Common Cold): supportive care only — saline nasal drops, paracetamol/ibuprofen for fever/pain, adequate hydration, no antibiotics",
+                "Educates parent: antibiotics do NOT treat viral infections; common cold resolves in 7–10 days",
+                "For BACTERIAL (Acute Rhinosinusitis): prescribes antibiotic — Co-amoxiclav (Augmentin/Curam) 457mg suspension, twice daily (BID), for 7 days",
+                "Advises: nasal decongestants short-term, steam inhalation, adequate fluids",
+                "States criteria for referral: persistent symptoms >4 weeks, suspected complications (orbital/intracranial), recurrent episodes",
+                "Gives follow-up: 48–72 hours if no improvement on antibiotics; 2 weeks otherwise"
+            ],
+            poor: [
+                "Does not distinguish between viral (common cold) and bacterial (rhinosinusitis) causes",
+                "Prescribes antibiotics for a viral common cold",
+                "Does not ask about discharge colour, duration, or facial pain",
+                "Does not educate parent about viral vs bacterial illness and antibiotic stewardship",
+                "Prescribes wrong antibiotic or wrong dose/duration for bacterial rhinosinusitis",
+                "Does not arrange follow-up or state red flags for immediate return"
+            ]
+        },
+
+        {
+            cat: "Pediatrics",
+            type: "checklist",
+            cardNum: "10",
+            q: "Acute Otitis Media (AOM) — Diagnosis & Management",
+            good: [
+                "Establishes rapport with parent; uses age-appropriate communication",
+                "Asks about: ear pain (otalgia), fever, hearing loss, discharge from ear, recent URTI",
+                "Asks about: duration of symptoms, breastfeeding history, daycare attendance, exposure to smoke (risk factors)",
+                "Asks about: previous AOM episodes, antibiotic history, allergy history",
+                "Elicits ICE: parent's concerns and expectations",
+                // EXAMINATION
+                "Performs otoscopy with permission: looks for BULGING tympanic membrane (key diagnostic sign), loss of light reflex, erythema, perforation or discharge",
+                "Documents the affected side clearly: 'Acute Otitis Media — Left' or 'Right' or 'Bilateral'",
+                "Examines throat and nose (associated URTI), checks cervical lymph nodes",
+                // MANAGEMENT
+                "For mild AOM (age ≥2, unilateral, mild symptoms): watchful waiting with analgesia for 48–72 hours before antibiotics",
+                "For moderate-severe AOM, age <2, or bilateral: prescribes antibiotic — Amoxicillin 80–90 mg/kg/day PO in 2 divided doses, for 5 days (10 days if <2 years)",
+                "Prescribes analgesia: Paracetamol 15 mg/kg/dose every 4–6 hours PRN",
+                "Educates parent: AOM can cause temporary hearing loss, most cases resolve with treatment; do not put anything in the ear",
+                "States criteria for referral: mastoiditis, meningitis signs, perforation with discharge, recurrent AOM (>3 episodes/6 months → ENT for grommets)",
+                "Follow-up: 2 days if on watchful waiting; 2 weeks to confirm resolution"
+            ],
+            poor: [
+                "Does not perform otoscopy or does not describe tympanic membrane findings",
+                "Does not identify the key diagnostic sign: bulging tympanic membrane",
+                "Does not document which side is affected (left/right/bilateral)",
+                "Prescribes antibiotics for every case without considering watchful waiting",
+                "Does not prescribe adequate analgesia",
+                "Does not educate parent on expected course and warning signs",
+                "Does not arrange appropriate follow-up"
+            ]
+        },
+
+        {
+            cat: "Pediatrics",
+            type: "checklist",
+            cardNum: "11",
+            q: "Iron Deficiency Anaemia (IDA) — History, Investigation & Management",
+            good: [
+                "Establishes rapport with parent/caregiver",
+                // HISTORY
+                "Recognises common presentation: child looks pale (pallor), parent reports child looks 'weak' or tired, reduced activity",
+                "Asks about dietary history: breastfeeding duration, age of solid food introduction, amount of cow's milk consumed (excess cow's milk displaces iron-rich foods), consumption of iron-rich foods (meat, lentils, leafy greens)",
+                "Asks about family history of anaemia (hereditary causes) and any bleeding history",
+                "Asks about: birth history (prematurity = low iron stores), previous anaemia, infections (malaria in endemic areas), worm infestations",
+                "Asks about symptoms: pallor, fatigue, irritability, reduced appetite, pica (eating non-food items = classic IDA sign), frequent infections, poor concentration/school performance",
+                // EXAMINATION
+                "Examines with permission: conjunctival pallor, nail pallor (spoon-shaped nails = koilonychia), angular stomatitis, glossitis, pallor of palms/soles, tachycardia, flow murmur",
+                "Checks growth parameters: weight, height, MUAC",
+                // INVESTIGATIONS
+                "Orders CBC (Complete Blood Count): Haemoglobin (Hb), RBC (microcytic hypochromic), WBC, platelets",
+                "Interprets CBC: low Hb, low MCV, low MCH, low MCHC, elevated RDW — consistent with IDA",
+                "May order serum ferritin (low = IDA), serum iron, TIBC if diagnosis uncertain",
+                // TREATMENT
+                "Prescribes iron supplementation: 3–6 mg/kg/day of elemental iron, given ONCE daily (morning, on empty stomach if tolerated)",
+                "Advises giving with Vitamin C (orange juice) to enhance absorption; avoid giving with milk or tea",
+                "Plans follow-up: review after 1 week (check tolerance, side effects); full follow-up after 1 month with repeat CBC (Hb should rise by 1–2 g/dL)",
+                "Continue iron supplementation for 3 months after Hb normalises to replenish stores",
+                "Educates parent on iron-rich foods: red meat, chicken, fish, lentils, fortified cereals, dark leafy greens; limit cow's milk to <500ml/day",
+                "States referral criteria: very severe anaemia (Hb <7 g/dL with symptoms), no response to treatment, suspected haemolytic cause"
+            ],
+            poor: [
+                "Does not ask about dietary history (cow's milk excess, iron-rich food intake)",
+                "Does not ask about family history of anaemia",
+                "Does not check for pallor (conjunctival, nail, palmar) on examination",
+                "Does not order CBC as the primary investigation",
+                "Prescribes incorrect iron dose or frequency (should be once daily, 3–6 mg/kg/day)",
+                "Does not advise Vitamin C with iron or explain dietary modifications",
+                "Does not plan follow-up (1 week + 1 month with repeat CBC)",
+                "Does not continue iron for 3 months after Hb normalises"
+            ]
+        },
+
+        {
+            cat: "Internal Med",
+            type: "checklist",
+            cardNum: "12",
+            q: "Thyroid Assessment — History, Investigation & Classification",
+            good: [
+                "Establishes rapport and uses appropriate communication skills",
+                // HISTORY
+                "Asks about symptoms of HYPOTHYROIDISM: fatigue, weight gain, cold intolerance, constipation, dry skin/hair, hair loss, slow heart rate, depression, memory problems, menstrual irregularity",
+                "Asks about symptoms of HYPERTHYROIDISM: weight loss despite good appetite, heat intolerance, palpitations, tremor, anxiety, diarrhoea, sweating, exophthalmos, menstrual irregularity",
+                "Asks about: neck swelling (goitre), difficulty swallowing, voice change (hoarseness)",
+                "Asks about: family history of thyroid disease, autoimmune conditions, neck irradiation, iodine intake",
+                "Asks about: current medications (amiodarone, lithium, thionamides affect thyroid)",
+                // EXAMINATION
+                "Examines thyroid with permission: inspection (neck swelling, moves with swallowing), palpation from behind (size, consistency, tenderness, nodules), auscultation (bruit = hyperthyroidism)",
+                "Examines for signs of hypothyroidism: dry skin, non-pitting oedema, slow reflexes, bradycardia",
+                "Examines for signs of hyperthyroidism: fine tremor, warm moist skin, tachycardia, lid lag, exophthalmos",
+                // INVESTIGATIONS
+                "Orders thyroid function tests: TSH (most sensitive screening test), Free T₃, Free T₄",
+                "Interprets results:",
+                "PRIMARY thyroid disease: problem is in the thyroid gland itself — ↑TSH + ↓T₄ = primary hypothyroidism; ↓TSH + ↑T₄ = primary hyperthyroidism",
+                "SECONDARY thyroid disease: problem is in the pituitary gland — ↓TSH + ↓T₄ = secondary hypothyroidism (pituitary failure)",
+                "May order: thyroid antibodies (anti-TPO = Hashimoto's), thyroid ultrasound, radioiodine scan if nodule",
+                // MANAGEMENT
+                "HYPOTHYROIDISM: Levothyroxine — start low (25–50 mcg/day), titrate every 6–8 weeks based on TSH",
+                "HYPERTHYROIDISM: refer to endocrinologist; options include carbimazole, radioiodine, or surgery",
+                "Educates patient: lifelong medication for hypothyroidism, regular TSH monitoring every 6–12 months",
+                "Arranges appropriate follow-up and refers to endocrinology as needed"
+            ],
+            poor: [
+                "Does not ask about symptoms of both hypothyroidism and hyperthyroidism",
+                "Does not examine the thyroid gland (inspect, palpate from behind, auscultate)",
+                "Orders only T₃ and T₄ without ordering TSH — the most sensitive screening test",
+                "Does not classify as primary (thyroid) vs secondary (pituitary) based on TSH level",
+                "Does not explain the difference between primary and secondary thyroid disease",
+                "Starts Levothyroxine at too high a dose without titrating",
+                "Does not arrange follow-up TSH monitoring"
+            ]
         }
     ];
 
