@@ -415,7 +415,17 @@
                 "No HTN, DM, chest allergy, chest/liver disease, or tumors in PMH/FH",
                 "No long-term medications prior; no previous surgeries",
                 "Condition does not affect sleep, work, or mood — الحمد لله"
-            ]
+            ],
+            rx: {
+                diagnosis: "GERD — Gastro-Oesophageal Reflux Disease",
+                allergyNote: "NKDA — confirmed after asking",
+                drugs: [
+                    { name: "Pantoprazole (Controloc)",      dose: "40 mg",  timing: "Once daily, 30 min before breakfast × 4–8 weeks" },
+                    { name: "Antacid (Gaviscon)",             dose: "10 mL",  timing: "PRN after meals and at bedtime" }
+                ],
+                followUp: "4–6 weeks — review response to PPI and consider endoscopy if red flags develop",
+                returnIf: "Difficulty swallowing (dysphagia), vomiting blood (haematemesis), unexplained weight loss > 3 kg, persistent night symptoms"
+            }
         },
 
         // CHECKLIST CARDS
@@ -460,7 +470,19 @@
                 "Very frightened — thinks she is having a stroke",
                 "ICE: worried it is a stroke; wants to know if it will go away; hoping it is temporary",
                 "Doctor's task: examine the cranial nerves systematically to confirm Bell's Palsy (LMN VII palsy) vs. central (UMN) cause"
-            ]
+            ],
+            rx: {
+                diagnosis: "Bell's Palsy — Acute Idiopathic Facial Nerve Palsy (LMN VII)",
+                allergyNote: "NKDA — no medications currently",
+                drugs: [
+                    { name: "Prednisolone",                   dose: "50 mg",    timing: "Once daily × 5 days, then taper 10 mg/day over 5 days (total 10 days)" },
+                    { name: "Aciclovir",                      dose: "400 mg",   timing: "5 times daily × 7 days (if herpes suspected)" },
+                    { name: "Hylo-Comod Eye Drops (artificial tears)", dose: "1–2 drops", timing: "4–6 times daily — protect right eye" },
+                    { name: "Eye patch (occlusive)",          dose: "—",        timing: "At night to protect exposed cornea" }
+                ],
+                followUp: "1 week — assess facial recovery; refer to neurology if no improvement by 3 weeks",
+                returnIf: "Eye pain or redness (corneal exposure), vision changes, limb weakness or speech difficulty (consider stroke)"
+            }
         },
 
         {
@@ -506,7 +528,20 @@
                 "Vaccinated: 2 doses Pfizer — last dose 6 months ago; no booster",
                 "No known drug allergies",
                 "Mother's ICE: worried it is serious, afraid of hospitalisation, wants to know if it is really COVID and what to do at home"
-            ]
+            ],
+            rx: {
+                diagnosis: "Paediatric COVID-19 — Mild Illness (Home Isolation)",
+                allergyNote: "NKDA — confirmed with mother",
+                drugs: [
+                    { name: "Paracetamol (Panadol) syrup",   dose: "15 mg/kg/dose ≈ 300 mg", timing: "Every 6 hrs PRN fever — do not exceed 4 doses/day" },
+                    { name: "Vitamin C",                      dose: "500 mg",   timing: "Once daily × 10 days" },
+                    { name: "Zinc",                           dose: "20 mg",    timing: "Once daily × 10 days" },
+                    { name: "Acetylcysteine",                 dose: "200 mg",   timing: "Every 8 hrs × 7 days" },
+                    { name: "Lactoferrin sachet",             dose: "1 sachet", timing: "Every 12 hrs × 10 days" }
+                ],
+                followUp: "3–5 days — or sooner if symptoms worsen. Strict home isolation × 10 days from symptom onset. No school.",
+                returnIf: "SpO2 < 94%, fast/difficult breathing, drowsy or unresponsive, refusing fluids for > 8 hrs, blue lips"
+            }
         },
 
         {
@@ -559,7 +594,20 @@
                 "Father had a kidney stone removed surgically 10 years ago",
                 "No known drug allergies",
                 "ICE: terrified by the pain; worried it might be kidney cancer because of the blood in urine; wants pain relief NOW and to know what is wrong"
-            ]
+            ],
+            rx: {
+                diagnosis: "Right Ureteric Colic — Ureteric Stone",
+                allergyNote: "NKDA — no prior medications (check for NSAIDs/peptic ulcer history first)",
+                drugs: [
+                    { name: "Diclofenac (Voltaren) IM",       dose: "75 mg",     timing: "STAT IM injection for acute pain — then switch to oral" },
+                    { name: "Ibuprofen (oral)",                dose: "400 mg",    timing: "Three times daily with food × 5 days" },
+                    { name: "Paracetamol",                     dose: "1 g",       timing: "Four times daily PRN × 5 days (add-on analgesia)" },
+                    { name: "Tamsulosin (Urimax)",             dose: "0.4 mg",    timing: "Once daily at night × 4 weeks (alpha-blocker — aids stone passage)" },
+                    { name: "Potassium Citrate (Urikey)",      dose: "1 sachet",  timing: "Three times daily × 4 weeks (alkalinises urine)" }
+                ],
+                followUp: "7–14 days with KUB ultrasound to confirm stone passage. Advise ≥ 2 L water/day, strain urine to catch stone for analysis.",
+                returnIf: "Fever with rigors (infected obstructed stone = Emergency), inability to pass urine (anuria), pain uncontrolled despite medication"
+            }
         },
 
         {
@@ -619,7 +667,19 @@
                 "No fever, no weight loss, no history of cancer or spinal surgery",
                 "Tried paracetamol with minimal relief",
                 "Very worried: 'Is it something serious? Will I need an operation?'"
-            ]
+            ],
+            rx: {
+                diagnosis: "Sciatica — Lumbar Disc Herniation / Nerve Root Compression",
+                allergyNote: "NKDA — tried paracetamol only",
+                drugs: [
+                    { name: "Ibuprofen",                      dose: "400 mg",   timing: "Three times daily with food × 10 days" },
+                    { name: "Paracetamol",                    dose: "1 g",      timing: "Four times daily PRN × 10 days" },
+                    { name: "Gabapentin",                     dose: "300 mg",   timing: "Once daily at night × 2 weeks (titrate for neuropathic pain)" },
+                    { name: "Tizanidine (muscle relaxant)",   dose: "2 mg",     timing: "Three times daily PRN muscle spasm × 7 days" }
+                ],
+                followUp: "2–4 weeks — with physiotherapy referral. Advise staying active; AVOID bed rest.",
+                returnIf: "Loss of bladder or bowel control, saddle-area numbness, sudden bilateral leg weakness — CAUDA EQUINA EMERGENCY"
+            }
         },
 
         {
@@ -694,7 +754,19 @@
                 "Nails are thickened and yellowish — has not seen a podiatrist",
                 "ICE: worried the numbness means his DM is getting worse; wants to know if he needs insulin; expects the doctor to check his feet properly today",
                 "Doctor's task: perform a complete diabetic foot examination (vascular + neurological + risk classification)"
-            ]
+            ],
+            rx: {
+                diagnosis: "Diabetic Peripheral Neuropathy — High-Risk Diabetic Foot",
+                allergyNote: "NKDA — on Metformin + Glibenclamide",
+                drugs: [
+                    { name: "Metformin + Glibenclamide",      dose: "Continue",  timing: "Continue current regimen — review doses with HbA1c" },
+                    { name: "Gabapentin",                     dose: "300 mg",   timing: "Once daily at night for neuropathic pain — titrate as needed" },
+                    { name: "Vitamin B Complex",              dose: "1 tab",    timing: "Once daily" },
+                    { name: "Antifungal cream (if tinea)",    dose: "Apply thinly", timing: "Twice daily to interdigital spaces × 2 weeks" }
+                ],
+                followUp: "4 weeks — Diabetic Foot Clinic referral. Daily foot self-inspection. Proper footwear. Podiatry referral for nail care.",
+                returnIf: "New wound or ulcer, signs of infection (fever, redness, discharge), sudden increase in numbness or pain, colour change of foot (pale/black)"
+            }
         },
 
         {
@@ -766,7 +838,18 @@
                 "Vaccinated: up to date according to schedule; no recent vaccines",
                 "Mother's ICE: worried it is serious; neighbour's child was hospitalised with something similar last month; expecting medicine and advice on home care",
                 "Doctor's task: follow IMCI approach — check danger signs first, then assess and classify, then manage"
-            ]
+            ],
+            rx: {
+                diagnosis: "Viral Upper Respiratory Tract Infection — No Danger Signs (IMCI Classification)",
+                allergyNote: "NKDA — confirmed with mother",
+                drugs: [
+                    { name: "Paracetamol syrup",              dose: "15 mg/kg ≈ 150 mg", timing: "Every 6 hrs PRN fever — do not exceed 4 doses/day" },
+                    { name: "Saline nasal drops (0.9% NaCl)", dose: "2–3 drops each nostril", timing: "Three times daily before feeds" },
+                    { name: "Oral fluids",                    dose: "Increase intake", timing: "Offer breast milk + water frequently throughout day" }
+                ],
+                followUp: "2 days if not improving; 1 week routine IMCI follow-up. NO ANTIBIOTICS — viral illness.",
+                returnIf: "Fast or difficult breathing, cannot drink or breastfeed, becomes drowsy or unconscious, convulsions, condition worsens"
+            }
         },
 
         {
@@ -825,7 +908,18 @@
                 "No previous episodes of sinusitis",
                 "No known drug allergies — mother specifically asks: 'Can she take antibiotics?'",
                 "Mother's ICE: confused why it got worse after improving; worried it might be something serious; came expecting antibiotics because a friend told her the child has sinusitis"
-            ]
+            ],
+            rx: {
+                diagnosis: "Acute Bacterial Rhinosinusitis — Post-Viral (Double Sickening Pattern)",
+                allergyNote: "NKDA — confirmed with mother (specifically: no penicillin allergy)",
+                drugs: [
+                    { name: "Co-Amoxiclav (Augmentin) suspension", dose: "457 mg (400/57)", timing: "Twice daily (BID) × 7 days — give with food" },
+                    { name: "Paracetamol syrup",              dose: "15 mg/kg ≈ 250 mg", timing: "Every 6 hrs PRN fever/pain" },
+                    { name: "Xylometazoline nasal drops (0.05%)", dose: "2 drops each nostril", timing: "Twice daily × 5 days MAX (nasal decongestant)" }
+                ],
+                followUp: "48–72 hours if no improvement on antibiotics; 2 weeks to confirm resolution",
+                returnIf: "Periorbital (eye) swelling, severe headache, high fever unresponsive to treatment, stiff neck, vision changes"
+            }
         },
 
         {
@@ -884,7 +978,17 @@
                 "Vaccinated: up to date — had pneumococcal (PCV) vaccine",
                 "Father smokes cigarettes in the living room",
                 "Mother's ICE: worried the ear is infected and might affect his hearing; wants the doctor to look in his ear; expecting antibiotics"
-            ]
+            ],
+            rx: {
+                diagnosis: "Acute Otitis Media (AOM) — Right Ear",
+                allergyNote: "NKDA — confirmed with mother (check for penicillin allergy)",
+                drugs: [
+                    { name: "Amoxicillin syrup",              dose: "80–90 mg/kg/day ÷ 2 doses ≈ 375 mg/dose", timing: "Twice daily (BID) × 10 days (age < 2 years)" },
+                    { name: "Paracetamol syrup",              dose: "15 mg/kg/dose ≈ 200 mg", timing: "Every 4–6 hrs PRN pain and fever" }
+                ],
+                followUp: "2 weeks to confirm resolution of AOM. Advise no objects in ear. Discuss parental smoking cessation (passive smoke = major risk factor).",
+                returnIf: "Swelling behind ear (mastoiditis), hearing loss persisting > 2 weeks, no improvement after 48–72 hrs of antibiotics, ear discharge"
+            }
         },
 
         {
@@ -941,7 +1045,18 @@
                 "Born slightly premature (36 weeks) — may have lower iron stores at birth",
                 "No known drug allergies",
                 "Mother's ICE: worried the paleness means serious illness; grandmother told her 'the child needs blood'; mother wants to know if she needs to change the diet or give a supplement"
-            ]
+            ],
+            rx: {
+                diagnosis: "Iron Deficiency Anaemia (IDA) — Nutritional",
+                allergyNote: "NKDA — confirmed with mother",
+                drugs: [
+                    { name: "Iron drops (Ferrous sulphate)",  dose: "3–6 mg/kg/day elemental iron", timing: "Once daily in the morning — give on empty stomach if tolerated, otherwise with food" },
+                    { name: "Vitamin C (orange juice or supplement)", dose: "125 mg", timing: "Given together with iron — enhances absorption. Avoid giving with milk or tea." },
+                    { name: "Vitamin B Complex",              dose: "0.5 mL",   timing: "Once daily" }
+                ],
+                followUp: "1 week (tolerance and side effects check); 1 month (repeat CBC — Hb should rise by 1–2 g/dL). Continue iron 3 months after Hb normalises to replenish stores.",
+                returnIf: "Pallor worsening, refusal of all fluids, unusual breathing, Hb < 7 g/dL with symptoms (urgent transfusion may be needed)"
+            }
         },
 
         {
@@ -1007,7 +1122,16 @@
                 "Mother is on Levothyroxine — hypothyroidism",
                 "No known drug allergies, no current medications",
                 "ICE: thinks it might be thyroid like her mother; worried it needs lifelong medication; expecting a blood test today"
-            ]
+            ],
+            rx: {
+                diagnosis: "Primary Hypothyroidism — likely Hashimoto's Thyroiditis",
+                allergyNote: "NKDA — confirmed; no current medications",
+                drugs: [
+                    { name: "Levothyroxine (Euthyrox)",       dose: "50 mcg",   timing: "Once daily — 30–60 min before breakfast, with plain water only. Separate from calcium, iron, antacids by ≥ 4 hrs." }
+                ],
+                followUp: "6–8 weeks — repeat TSH (target 0.5–2.5 mIU/L). Titrate by 25 mcg if needed. Annual TFTs once stable.",
+                returnIf: "Palpitations, chest pain, or tremor (over-replacement), worsening fatigue or oedema, planning pregnancy (dose adjustment required)"
+            }
         },
 
         {
@@ -1073,7 +1197,20 @@
                 "Smoker: 10 cigarettes/day × 15 years — not interested in quitting: 'it helps me relax'",
                 "No known drug allergies",
                 "ICE: thinks DM is not serious 'because I have no pain'; worried about injections; expects the doctor to just 'adjust his tablets'"
-            ]
+            ],
+            rx: {
+                diagnosis: "Type 2 Diabetes Mellitus — Uncontrolled (HbA1c 9.5%) with Hypertension",
+                allergyNote: "NKDA — confirmed; no Aspirin allergy",
+                drugs: [
+                    { name: "Metformin (Glucophage)",         dose: "1000 mg",  timing: "Twice daily with meals — escalate from 500 mg to reduce GI upset" },
+                    { name: "Gliclazide MR",                  dose: "60 mg",    timing: "Once daily with breakfast (add-on for HbA1c > 9%)" },
+                    { name: "Ramipril (ACE-I)",               dose: "5 mg",     timing: "Once daily — nephroprotective in DM; titrate to 10 mg" },
+                    { name: "Atorvastatin",                   dose: "40 mg",    timing: "Once daily at night — CVD risk reduction" },
+                    { name: "Aspirin",                        dose: "75 mg",    timing: "Once daily with food (high CVD risk — checked allergy)" }
+                ],
+                followUp: "1 month — HbA1c recheck; BP monitoring; Home glucometer prescribed; Dietitian + Smoking cessation referral",
+                returnIf: "Hypoglycaemia (sweating, shaking, confusion), chest pain, foot ulcer, vision changes, or severe nausea/vomiting"
+            }
         },
 
         {
@@ -1144,7 +1281,20 @@
                 "Father died of heart attack at age 58",
                 "No known drug allergies — specifically: no Aspirin allergy",
                 "ICE: knows something is wrong with his heart; very scared of dying; wants to know if he is having a heart attack"
-            ]
+            ],
+            rx: {
+                diagnosis: "Suspected STEMI / Acute Coronary Syndrome (ACS) — EMERGENCY",
+                allergyNote: "NKDA — no Aspirin allergy confirmed before prescribing",
+                drugs: [
+                    { name: "Aspirin (Loading dose)",         dose: "300 mg",   timing: "STAT — chewed immediately (if no allergy)" },
+                    { name: "Clopidogrel (Plavix)",           dose: "300 mg",   timing: "STAT loading dose — dual antiplatelet therapy" },
+                    { name: "GTN spray (Glyceryl Trinitrate)", dose: "0.4 mg",  timing: "Sublingual spray — repeat every 5 min × 3 PRN (if BP > 90 systolic)" },
+                    { name: "Morphine IV (if severe pain)",   dose: "2–4 mg",   timing: "IV titrated — via emergency services; not routinely in GP" },
+                    { name: "Oxygen (O₂)",                    dose: "—",        timing: "Only if SpO2 < 94% (avoid hyperoxia)" }
+                ],
+                followUp: "IMMEDIATE HOSPITAL TRANSFER — call 999/Emergency services NOW. Do not delay for further tests. Target: primary PCI within 90 min.",
+                returnIf: "N/A — patient must be admitted. Inform family. Cardiac rehabilitation referral post-discharge."
+            }
         },
 
         {
@@ -1217,7 +1367,21 @@
                 "Lifestyle: irregular diet, no exercise, heavy smoker, ongoing stress",
                 "ICE: thinks the chest pain is 'from stress and the heart'; very worried about having a heart attack; expects to know what is wrong and get treatment today",
                 "If asked about family history: father had a heart attack at age 60"
-            ]
+            ],
+            rx: {
+                diagnosis: "High-Risk Type 2 DM + Hypertension + Suspected ACS — Comprehensive Management",
+                allergyNote: "NKDA — confirmed; confirm Aspirin allergy specifically",
+                drugs: [
+                    { name: "Aspirin",                        dose: "300 mg STAT then 75 mg", timing: "STAT load if ACS suspected; then once daily maintenance" },
+                    { name: "Clopidogrel (Plavix)",           dose: "75 mg",    timing: "Once daily — dual antiplatelet with Aspirin" },
+                    { name: "Atorvastatin",                   dose: "80 mg",    timing: "Once daily at night — high-intensity statin for ACS" },
+                    { name: "Ramipril (ACE-I)",               dose: "5 mg",     timing: "Once daily — HTN + DM nephroprotection; titrate up" },
+                    { name: "Metformin",                      dose: "1000 mg",  timing: "Twice daily with meals — DM management" },
+                    { name: "Insulin (if HbA1c > 10%)",       dose: "Initiate with endocrinologist", timing: "Basal insulin at bedtime — consider if oral agents insufficient" }
+                ],
+                followUp: "URGENT — refer to Emergency for ACS workup (ECG, troponin, echo). Post-stabilisation: DM clinic, cardiology, smoking cessation programme.",
+                returnIf: "Worsening chest pain, dyspnoea, syncope — CALL EMERGENCY IMMEDIATELY. Hypoglycaemia, foot ulcer, or vision deterioration."
+            }
         },
 
         {
@@ -1291,7 +1455,18 @@
                 "Worried this is harming the baby — wants reassurance",
                 "Husband is supportive; family nearby; no financial stressors",
                 "Feels anxious about pregnancy in general — first baby, not sure what to expect"
-            ]
+            ],
+            rx: {
+                diagnosis: "Emesis Gravidarum — Nausea and Vomiting of Pregnancy (NVP), 8 weeks gestation",
+                allergyNote: "NKDA — confirmed after asking (no penicillin, no antiemetic allergy)",
+                drugs: [
+                    { name: "Doxylamine 10mg + Pyridoxine 10mg (Proxen / Diclegis)", dose: "1 tablet", timing: "At bedtime — may add 1 tab in the morning if needed. Safe in pregnancy." },
+                    { name: "Pyridoxine (Vitamin B6) alone",  dose: "25 mg",    timing: "Three times daily — if Doxylamine combination not available" },
+                    { name: "Ondansetron (only if above fail)", dose: "4 mg",   timing: "Every 8 hrs PRN — use with caution in T1; discuss risks with patient" }
+                ],
+                followUp: "1–2 weeks — reassess severity. Advise small dry meals on waking, avoid triggers, maintain hydration. Continue folic acid.",
+                returnIf: "Unable to keep any fluids down for > 24 hrs, significant weight loss, dark urine (dehydration), blood in vomit — admit for IV fluids (Hyperemesis Gravidarum)"
+            }
         },
 
         {
@@ -1357,7 +1532,18 @@
                 "No previous pregnancies, no previous gynaecological surgeries",
                 "No known drug allergies",
                 "Husband is supportive and present with her today"
-            ]
+            ],
+            rx: {
+                diagnosis: "Threatened Miscarriage (to be confirmed) — Abnormal Uterine Bleeding in Early Pregnancy",
+                allergyNote: "NKDA — confirmed; confirm before any prescription",
+                drugs: [
+                    { name: "Tranexamic acid (Capron / Cyklokapron)", dose: "500 mg", timing: "Three times daily × 5 days — antifibrinolytic; reduces bleeding" },
+                    { name: "Daflon 500 mg",                  dose: "500 mg",   timing: "Twice daily × 5 days — reduces uterine bleeding; safe in pregnancy" },
+                    { name: "Folic acid (continue)",          dose: "5 mg",     timing: "Once daily — continue throughout pregnancy" }
+                ],
+                followUp: "URGENT — repeat serum β-hCG in 48 hrs + pelvic ultrasound. Bed rest. No intercourse. Review results ASAP. If ectopic or incomplete miscarriage — refer to hospital immediately.",
+                returnIf: "Heavy bleeding (soaking > 1 pad/hr), severe one-sided pain (ectopic sign), fainting/dizziness, passage of grey tissue, fever"
+            }
         },
 
         {
@@ -1426,7 +1612,18 @@
                 "If asked, deny any neck pain, numbness, or weakness in the arm.",
                 "Ask: 'Do I need an injection or surgery, doctor?'"
             ],
-            notes: "Candidate should: wash hands → expose both shoulders → look, feel, move → perform Hawkins-Kennedy test → ask allergy before prescribing → arrange follow-up."
+            notes: "Candidate should: wash hands → expose both shoulders → look, feel, move → perform Hawkins-Kennedy test → ask allergy before prescribing → arrange follow-up.",
+            rx: {
+                diagnosis: "Subacromial Impingement Syndrome / Rotator Cuff Tendinopathy — Right Shoulder",
+                allergyNote: "NKDA — confirmed before prescribing",
+                drugs: [
+                    { name: "Ibuprofen",                      dose: "400 mg",   timing: "Three times daily with food × 2 weeks" },
+                    { name: "Paracetamol",                    dose: "1 g",      timing: "Four times daily PRN × 2 weeks" },
+                    { name: "Diclofenac gel (Voltaren)",      dose: "Apply thinly", timing: "Twice daily to right shoulder × 2 weeks (topical option)" }
+                ],
+                followUp: "2–4 weeks — assess response; physiotherapy referral for rotator cuff strengthening. Subacromial corticosteroid injection if no improvement after 4–6 weeks.",
+                returnIf: "Sudden inability to raise arm (rotator cuff tear), fever + joint swelling (septic arthritis), severe wasting of deltoid/shoulder muscles"
+            }
         },
 
         // ─── SHOULDER EXAMINATION — OSCE CHECKLIST ──────────────────────────────
@@ -1495,7 +1692,17 @@
                 "If asked about the neck, say there is no neck pain and no pins and needles.",
                 "Ask: 'Can I keep playing tennis, or do I need to stop completely?'"
             ],
-            notes: "Candidate should: wash hands → expose both elbows → look, feel, move → perform Cozen's Test for lateral epicondylitis → advise activity modification + physiotherapy."
+            notes: "Candidate should: wash hands → expose both elbows → look, feel, move → perform Cozen's Test for lateral epicondylitis → advise activity modification + physiotherapy.",
+            rx: {
+                diagnosis: "Lateral Epicondylitis (Tennis Elbow) — Right Elbow",
+                allergyNote: "NKDA — confirmed before prescribing",
+                drugs: [
+                    { name: "Diclofenac gel (Voltaren)",      dose: "Apply thinly", timing: "Three times daily to lateral elbow × 2 weeks (topical — first-line)" },
+                    { name: "Ibuprofen (oral)",               dose: "400 mg",   timing: "Three times daily with food × 2 weeks (if topical insufficient)" }
+                ],
+                followUp: "4 weeks — physiotherapy referral (eccentric wrist extension exercises + counterforce elbow strap). Advise activity modification: reduce grip force, correct technique.",
+                returnIf: "No improvement after 6 weeks conservative treatment (consider corticosteroid injection); sudden complete loss of elbow extension (tendon rupture)"
+            }
         },
 
         // ─── ELBOW EXAMINATION — OSCE CHECKLIST ─────────────────────────────────
@@ -1567,7 +1774,19 @@
                 "If asked to pick up a small coin from the table, struggle slightly with the right hand.",
                 "Tell the doctor you are a diabetic on Metformin. No known drug allergies."
             ],
-            notes: "Candidate should: wash hands → expose both hands → look (wasting of thenar eminence), feel, move → Phalen's test → Tinel's sign → coin pick-up test → ask allergy before prescribing → explain CTS."
+            notes: "Candidate should: wash hands → expose both hands → look (wasting of thenar eminence), feel, move → Phalen's test → Tinel's sign → coin pick-up test → ask allergy before prescribing → explain CTS.",
+            rx: {
+                diagnosis: "Carpal Tunnel Syndrome (CTS) — Right Hand, Diabetes-Related",
+                allergyNote: "NKDA — confirmed; currently on Metformin only",
+                drugs: [
+                    { name: "Wrist splint (cock-up splint)",  dose: "—",        timing: "Wear at night (keeps wrist neutral, reduces nocturnal compression) × 4–6 weeks" },
+                    { name: "Ibuprofen",                      dose: "400 mg",   timing: "Three times daily with food × 2 weeks (reduce inflammation)" },
+                    { name: "Vitamin B6 (Pyridoxine)",        dose: "50 mg",    timing: "Once daily × 4 weeks (neuropathic support)" },
+                    { name: "Optimise DM control",            dose: "—",        timing: "Ensure HbA1c < 7%; poorly controlled DM worsens CTS" }
+                ],
+                followUp: "4–6 weeks — reassess symptoms. If no improvement: corticosteroid injection into carpal tunnel. If motor wasting or severe symptoms: urgent neurosurgery referral for carpal tunnel decompression.",
+                returnIf: "Worsening weakness of thumb (inability to oppose), complete loss of sensation, rapid thenar wasting (urgent surgical referral)"
+            }
         },
 
         // ─── HAND / CTS EXAMINATION — OSCE CHECKLIST ────────────────────────────
@@ -1674,6 +1893,57 @@
 
             if (item.type === 'roleplay') {
                 const open = vis === 'roleplay';
+                const nameDisplay = item.patientName || '—';
+                const ageDisplay  = item.age || '—';
+
+                const patientBlock = item.history ? `
+                    <p><strong>Patient Name:</strong> ${nameDisplay}</p>
+                    <p><strong>Age:</strong> ${ageDisplay}</p>
+                    <p><strong>Background:</strong> ${item.background || ''}</p>
+                    <p><strong>Chief Complaint:</strong> ${item.chiefComplaint || ''}</p>
+                    <hr>
+                    <p><strong>Key History Points (reveal only if asked):</strong></p>
+                    <ul>${(item.history||[]).map(pt => `<li>${pt}</li>`).join('')}</ul>
+                ` : `
+                    <p><strong>Patient Name:</strong> ${nameDisplay}</p>
+                    <p><strong>Age:</strong> ${ageDisplay}</p>
+                    <hr>
+                    <p><strong>Scenario:</strong> ${item.scenario || ''}</p>
+                    <hr>
+                    <p><strong>🎭 Your Tasks as Role Player:</strong></p>
+                    <ul>${(item.tasks||[]).map(t => `<li>${t}</li>`).join('')}</ul>
+                    ${item.notes ? `<p style="margin-top:8px;font-style:italic;color:#6b7280">📌 Examiner Note: ${item.notes}</p>` : ''}
+                `;
+
+                const rxBlock = item.rx ? `
+                    <div style="margin-top:14px;background:#fff;border:2px solid #1d4ed8;border-radius:10px;overflow:hidden;">
+                        <div style="background:#1d4ed8;color:#fff;padding:7px 14px;font-weight:700;font-size:0.88em;letter-spacing:0.4px;">📋 Expected Prescription Template</div>
+                        <div style="padding:12px 14px;font-size:0.85em;line-height:1.8;">
+                            <p style="margin:0 0 8px;background:#fef9c3;border:1px solid #fde047;border-radius:6px;padding:6px 10px;font-weight:700;color:#854d0e;">
+                                ⚠️ ALLERGY CHECK — Always ask first:<br>
+                                <em>"Do you have any drug allergies? — Even Paracetamol or antibiotics?"</em>
+                            </p>
+                            <p style="margin:3px 0"><strong>Patient Name:</strong> ${nameDisplay}</p>
+                            <p style="margin:3px 0"><strong>Age:</strong> ${ageDisplay} &nbsp;&nbsp; <strong>Date:</strong> ___________</p>
+                            <p style="margin:3px 0"><strong>Diagnosis:</strong> ${item.rx.diagnosis}</p>
+                            <p style="margin:3px 0"><strong>Allergies:</strong> ${item.rx.allergyNote || 'NKDA — confirmed after asking'}</p>
+                            <hr style="border:none;border-top:1px solid #e2e8f0;margin:8px 0">
+                            <p style="margin:4px 0 6px;font-weight:700">Rx:</p>
+                            <table style="width:100%;border-collapse:collapse;font-size:0.92em;">
+                                <tr style="background:#eff6ff;">
+                                    <th style="text-align:left;padding:5px 8px;border:1px solid #bfdbfe;width:38%">Drug</th>
+                                    <th style="text-align:left;padding:5px 8px;border:1px solid #bfdbfe;width:18%">Dose</th>
+                                    <th style="text-align:left;padding:5px 8px;border:1px solid #bfdbfe">Timing / Duration</th>
+                                </tr>
+                                ${item.rx.drugs.map(d=>`<tr><td style="padding:5px 8px;border:1px solid #e2e8f0">${d.name}</td><td style="padding:5px 8px;border:1px solid #e2e8f0">${d.dose}</td><td style="padding:5px 8px;border:1px solid #e2e8f0">${d.timing}</td></tr>`).join('')}
+                            </table>
+                            <hr style="border:none;border-top:1px solid #e2e8f0;margin:8px 0">
+                            <p style="margin:3px 0"><strong>📅 Follow-up:</strong> ${item.rx.followUp}</p>
+                            <p style="margin:3px 0;color:#dc2626"><strong>🔴 Return immediately if:</strong> ${item.rx.returnIf}</p>
+                        </div>
+                    </div>
+                ` : '';
+
                 return `
                     <div class="checklist-card roleplay${isRev ? ' is-reviewed' : ''}" id="card-${index}">
                         <div class="card-top">
@@ -1693,13 +1963,8 @@
                         </div>
                         ${open ? `
                         <div class="roleplay-box">
-                            <p><strong>Patient Name:</strong> ${item.patientName}</p>
-                            <p><strong>Age:</strong> ${item.age}</p>
-                            <p><strong>Background:</strong> ${item.background}</p>
-                            <p><strong>Chief Complaint:</strong> ${item.chiefComplaint}</p>
-                            <hr>
-                            <p><strong>Key History Points (reveal only if asked):</strong></p>
-                            <ul>${item.history.map(pt => `<li>${pt}</li>`).join('')}</ul>
+                            ${patientBlock}
+                            ${rxBlock}
                         </div>` : ''}
                     </div>
                 `;
