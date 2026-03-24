@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نهج كل الحالات — بالعربي</title>
+    <title>Roleplay — بالعامية المصرية</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
 
@@ -175,87 +175,12 @@
 
         @media print {
             #scroll-progress, #scroll-top, .mode-tabs, .top-nav, .case-selector-wrap,
-            .done-btn, .practice-nav, .progress-wrap, .speak-bar { display: none !important; }
+            .done-btn, .practice-nav, .progress-wrap { display: none !important; }
             .step-body { max-height: none !important; }
             .step-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
             body { background: white; }
         }
 
-        /* ── TTS Speak Bar ───────────────────────────────────── */
-        .speak-bar {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 20px;
-            background: linear-gradient(100deg, #ede9fe 0%, #e0e7ff 60%, #dbeafe 100%);
-            border-radius: 16px;
-            border: 1.5px solid var(--purple-border);
-            margin-bottom: 18px;
-            flex-wrap: wrap;
-            box-shadow: 0 2px 10px rgba(124,58,237,0.08);
-        }
-        .speak-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 24px;
-            border-radius: 28px;
-            border: none;
-            background: linear-gradient(135deg, var(--purple), #6d28d9);
-            color: white;
-            font-family: 'Cairo', sans-serif;
-            font-weight: 800;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
-            box-shadow: 0 3px 10px rgba(124,58,237,0.3);
-        }
-        .speak-btn:hover { background: linear-gradient(135deg, #6d28d9, #5b21b6); transform: translateY(-1px); }
-        .speak-btn.stop {
-            background: linear-gradient(135deg, var(--red), #b91c1c);
-            box-shadow: 0 3px 10px rgba(220,38,38,0.3);
-        }
-        .speak-btn.stop:hover { background: linear-gradient(135deg, #b91c1c, #991b1b); }
-
-        .speak-voice-note {
-            font-size: 0.78em;
-            color: var(--muted);
-            font-weight: 600;
-        }
-
-        /* waveform animation while speaking */
-        .wave-icon {
-            display: inline-flex;
-            align-items: flex-end;
-            gap: 2px;
-            height: 14px;
-        }
-        .wave-icon span {
-            display: inline-block;
-            width: 3px;
-            background: white;
-            border-radius: 2px;
-            animation: wave 0.8s ease-in-out infinite;
-        }
-        .wave-icon span:nth-child(1){ height: 6px; animation-delay: 0s; }
-        .wave-icon span:nth-child(2){ height: 12px; animation-delay: 0.15s; }
-        .wave-icon span:nth-child(3){ height: 8px; animation-delay: 0.3s; }
-        .wave-icon span:nth-child(4){ height: 14px; animation-delay: 0.1s; }
-        .wave-icon span:nth-child(5){ height: 5px; animation-delay: 0.25s; }
-        @keyframes wave {
-            0%, 100% { transform: scaleY(1); }
-            50% { transform: scaleY(0.4); }
-        }
-
-        /* practice speak button */
-        .practice-speak-wrap {
-            margin-top: 16px;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
     </style>
 </head>
 <body>
@@ -268,8 +193,8 @@
 </div>
 
 <div class="header">
-    <h1>🩺 نهج كل الحالات — بالعربي</h1>
-    <p>الأسئلة والعبارات بالعامية المصرية لكل OSCE</p>
+    <h1>🎭 Roleplay — بالعامية المصرية</h1>
+    <p>الأسئلة والعبارات لكل حالة من الأول للآخر</p>
     <div class="mode-tabs">
         <button class="mode-tab active" onclick="setMode('reference')">📖 مرجع شامل</button>
         <button class="mode-tab" onclick="setMode('practice')">🎯 وضع التدريب</button>
@@ -292,13 +217,6 @@
 <div id="reference-mode">
 <div class="container">
     <div id="case-banner-wrap"></div>
-    <!-- Global TTS bar — ONE button reads everything -->
-    <div class="speak-bar" id="global-speak-bar">
-        <button class="speak-btn" id="global-speak-btn" onclick="toggleSpeakAll()">
-            🔊 استمع لكل الخطوات
-        </button>
-        <span class="speak-voice-note" id="global-speak-note">اضغط ويسمعلك كل الكلام من الأول للآخر</span>
-    </div>
     <div id="steps-container"></div>
 </div>
 </div>
@@ -986,6 +904,82 @@ const cases = [
         ]
     }
 
+    ,
+    {
+        id: 'gerd',
+        name: 'GERD / ارتجاع المريء',
+        icon: '🔥',
+        color: '#dc2626', colorLight: '#fef2f2',
+        steps: [
+            {
+                tag: 'تحليل الشكوى', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'إزاي تسأل عن الحرقة وتحللها؟',
+                phrases: [
+                    { label: '📍 وصف الحرقة', text: '"الحرقة دي فين بالظبط؟ في المعدة ولا بترتفع لفوق للصدر؟"<br>"الوجع ده حرقة ولا ضغط ولا غاز؟"<br>"هل بيجيلك طعم حمض في بقك أو ارتداد أكل؟"<br>"الحرقة بتتحسن لما تقف أو تاخد مضاد حموضة؟"' },
+                    { label: '📍 مشيِّد ومخفف', text: '"إيه اللي بيزود الحرقة؟ الأكل الدسم؟ القهوة؟ الاستلقاء بعد الأكل؟"<br>"إيه اللي بيريحك؟ الوقوف؟ الأنتاسيد؟"' },
+                    { label: '📍 المدة والتكرار', text: '"الحرقة دي من إمتى؟"<br>"بتيجي كل يوم ولا من وقت لوقت؟"<br>"بتصحيك من النوم؟"' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'green', title: '✅ GERD الكلاسيكي', items: ['حرقة تصعد للصدر أو الحلق', 'ارتداد حمض في الفم', 'تزيد بالاستلقاء والانحناء', 'تتحسن بمضاد الحموضة والوقوف'] },
+                    right: { color: 'orange', title: '⚠️ قرحة المعدة (فرّق)', items: ['ألم في الشرستون تحت القص', 'بيتحسن بعد الأكل (DU)', 'بيتحسن بالصوم (GU)', 'إيقاع دوري وموسمي'] }
+                }
+            },
+            {
+                tag: 'عوامل التفاقم', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'العوامل المُزيِّدة للحرقة',
+                phrases: [
+                    { label: '🍽️ العادات الغذائية', text: '"إيه اللي بيزود الحرقة عندك؟"<br>"هل بتتزيد بعد الأكل الدسم أو الدهني؟"<br>"بتشرب قهوة أو شاي كتير؟ بتاكل شوكولاتة؟ أكل حريف؟ مياه غازية؟"' },
+                    { label: '🛏️ الوضعية والنوم', text: '"بتتزيد لما بتنام على ضهرك أو على جنبك الأيمن؟"<br>"بتنام بعد الأكل بفترة قصيرة؟"<br>"بتتزيد لما بتنحني للأمام؟"' },
+                    { label: '⚖️ عوامل أخرى', text: '"وزنك زاد؟ بتلبس هدوم ضيقة في البطن؟"<br>"بتاخد مسكنات زي البروفين؟ بتدخن؟"' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'red', title: '❌ عوامل تزيد GERD', items: ['الأكل الدهني والمقلي', 'الشوكولاتة والنعناع', 'القهوة والمياه الغازية', 'الكحول والتدخين', 'الاستلقاء مباشرة بعد الأكل', 'NSAIDs'] },
+                    right: { color: 'green', title: '✅ عوامل تحسّن', items: ['الوقوف والمشي بعد الأكل', 'وجبات صغيرة ومتكررة', 'تجنب الأكل قبل النوم بـ ٣ ساعات', 'رفع رأس السرير', 'النوم على الجنب الأيسر', 'إنقاص الوزن'] }
+                }
+            },
+            {
+                tag: 'العلامات الخطرة 🚨', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'أسئلة الـ Red Flags (ALARM) — اسأل كلها',
+                phrases: [
+                    { label: '🚨 أسئلة الـ ALARM', text: '"فيه صعوبة في البلع؟ الأكل بيتعلق في بلعومك؟" — Dysphagia<br>"بيوجعك لما تبلع؟" — Odynophagia<br>"لاحظت نقص في وزنك من غير سبب؟" — Weight loss<br>"شفت دم مع القيء أو البراز أسود؟" — GI Bleeding<br>"بتتعب بسرعة ووشك شاحب؟" — Anaemia<br>"كام عمرك؟ في حد في عيلتك عنده أورام معدة؟" — Age >55 / FH' },
+                    { label: '💬 عروض غير نمطية', text: '"عندك سعال جاف مزمن بدون سبب؟" — Chronic cough<br>"صوتك بيتغير أو أجش خصوصاً الصبح؟" — Laryngitis<br>"عندك تضيق في التنفس؟" — Asthma-like<br>"دكتور الأسنان قالك في تآكل؟" — Dental erosion' }
+                ],
+                clinical: {
+                    type: 'single', color: 'red',
+                    title: '🚨 لو في أي Red Flag → حوّل فوراً للتنظير',
+                    items: ['مفيش Red Flags → علاج دوائي تجريبي أولاً', 'سن > ٥٥ وأعراض جديدة → منظار', 'تاريخ عائلي لأورام GI → منظار', 'فشل PPI ٨ أسابيع → منظار']
+                }
+            },
+            {
+                tag: 'قرار العلاج', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'تحديد خطة العلاج — دواء أم منظار؟',
+                phrases: [
+                    { label: '💬 لو مفيش Red Flags', text: '"بناءً على كلامك وإن مفيش علامات خطيرة، هنكمّل مع العلاج الدوائي دلوقتي."<br>"مش محتاج منظار في الوقت ده، الأعراض ناسبة لـ GERD وردّت على العلاج."<br>"هنراجع مع بعض بعد ٤-٨ أسابيع."' },
+                    { label: '💊 شرح الـ PPI', text: '"الدواء ده بيقلل الحموضة اللي المعدة بتفرزها."<br>"لازم تاخده قبل الأكل بـ ٣٠ دقيقة عشان يشتغل صح."<br>"الكورس من ٤ لـ ٨ أسابيع — ما توقفهوش لوحدك."' },
+                    { label: '🔭 لو في Red Flag', text: '"هنعملك منظار للمعدة — ده إجراء بسيط وبيخدروك خفيف."<br>"المنظار هيخلينا نشوف جدار المريء والمعدة مباشرة."<br>"هتاخد موعد وهتصوم من الليل — بياخد ١٠-١٥ دقيقة بس."' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'red', title: '🔴 محتاج منظار', items: ['أي Red Flag موجود', 'العمر > ٥٥ وجديد', 'فشل PPI ٨ أسابيع', 'تاريخ عائلي سرطان المعدة'] },
+                    right: { color: 'green', title: '🟢 استمر في العلاج', items: ['لا يوجد Red Flags', 'أعراض نمطية GERD', 'استجابة للـ PPI', 'أصغر من ٥٥ سنة'] }
+                }
+            },
+            {
+                tag: 'ICE والختام', tagColor: '#fdf4ff', tagText: '#a21caf',
+                title: 'أسئلة الـ ICE والمتابعة',
+                phrases: [
+                    { label: '💭 Ideas', text: '"إيه رأيك إيه اللي سبّب الحرقة دي؟"<br>"هل اتكلمت مع حد عن الأعراض دي؟ قالوا لك إيه؟"' },
+                    { label: '😟 Concerns', text: '"إيه اللي بيقلقك في الموضوع ده؟"<br>"في حاجة بتخوفك من الأعراض دي — زي سرطان مثلاً؟"' },
+                    { label: '🎯 Expectations', text: '"إيه اللي توقعته من زيارتك النهارده؟"<br>"هل كنت عاوز منظار أو تحاليل؟"' },
+                    { label: '📅 المتابعة والإنذار', text: '"هنشوفك تاني بعد ٤-٨ أسابيع — نتأكد إن العلاج شغّال."<br>"لو في أي وقت: صعوبة في البلع 🔴 | قيء بدم 🔴 | براز أسود 🔴 | نقص وزن مفاجئ 🔴 → تيجي فوراً."<br>"في أي سؤال تاني عندك؟ ربنا يشفيك."' }
+                ],
+                clinical: null
+            }
+        ]
+    }
+
 ]; // end cases
 
 // ═══════════════════════════════════════════════════════════════
@@ -1332,6 +1326,29 @@ const caseDDs = {
     how: ['HbA1c > ١٠٪ → ثلاثي علاج أو إنسولين', 'شاب نحيف + C-peptide منخفض → T1DM', 'خصر كبير + كل العوامل → Metabolic Syndrome', 'ضغط + سكري + كوليسترول معاً → خطر قلبي عالي', 'راجع الأدوية: كابتوبريل + أتورفاستاتين + أسبرين']
 }
 
+,
+'gerd': {
+    complaint: 'مريض بيشتكي من حرقة في المعدة أو الصدر',
+    dds: [
+        { icon:'🥇', name:'GERD / ارتجاع المريء',
+          qs:['الحرقة بتصعد من المعدة للصدر أو الحلق؟','بيجيلك طعم حمض في بقك؟','بتتزيد بالاستلقاء وتتحسن بالوقوف؟'],
+          verdict:'آه → GERD — PPI قبل الأكل + تغيير عادات' },
+        { icon:'🔴', name:'قرحة المعدة / الاثني عشر',
+          qs:['الألم في منتصف البطن فوق السرة (epigastric)؟','بيتحسن بعد الأكل (DU) أو بيتحسن بالصوم (GU)؟','في تاريخ H. pylori أو بياخد NSAIDs؟'],
+          verdict:'آه → قرحة — H. pylori test + PPI' },
+        { icon:'🫀', name:'ألم القلب / الذبحة',
+          qs:['الألم بيضرب في الكتف الأيسر أو الفك؟','بيجيلك مع المجهود؟','تعرق بارد أو ضيق تنفس مع الألم؟'],
+          verdict:'آه → احتمال قلبي — ECG فوراً' },
+        { icon:'🌀', name:'متلازمة القولون العصبي (IBS)',
+          qs:['ألم بطن مع إمساك أو إسهال يتناوبان؟','بيتحسن بعد البراز؟','ما فيش حرقة صاعدة أو ارتداد؟'],
+          verdict:'آه → IBS — نمط حياة + antispasmodic' },
+        { icon:'🦠', name:'التهاب المعدة (Gastritis)',
+          qs:['ألم مستمر في المعدة مع غثيان؟','بياخد NSAIDs أو كحول كتير؟','أعراض أتت فجأة بعد أكل معين؟'],
+          verdict:'آه → Gastritis — وقف المسبب + PPI' }
+    ],
+    how: ['حرقة صاعدة + ارتداد + تتحسن بالوقوف → GERD', 'ألم epigastric يتحسن بالأكل → DU', 'ألم يشع للكتف الأيسر + مجهود → قلب', 'ألم مع اضطراب البراز → IBS', 'Red Flags أي واحد منهم → منظار فوراً']
+}
+
 }; // end caseDDs
 
 // Build DD step from case DD data
@@ -1411,7 +1428,6 @@ function buildCaseSelector() {
 }
 
 function selectCase(index) {
-    stopOnSwitch();
     currentCase = index;
     practiceIndex = 0;
     document.querySelectorAll('.case-btn').forEach((b, i) => {
@@ -1495,148 +1511,6 @@ function renderReference() {
     });
 }
 
-// ── Text-to-Speech ──────────────────────────────────────────
-let ttsActive = false;
-
-function stripHTML(html) {
-    return html
-        .replace(/<br\s*\/?>/gi, '، ')
-        .replace(/<b>/gi, '').replace(/<\/b>/gi, '')
-        .replace(/<[^>]+>/g, '')
-        .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-        .replace(/\s+/g, ' ').trim();
-}
-
-function buildAllStepsText() {
-    const c = cases[currentCase];
-    let parts = [];
-    c.steps.forEach((step, idx) => {
-        parts.push(`خطوة ${idx + 1}: ${step.title}.`);
-        step.phrases.forEach(ph => {
-            if (ph.label) {
-                const cleanLabel = ph.label.replace(/[\u{1F300}-\u{1FFFF}]/gu, '').trim();
-                if (cleanLabel) parts.push(cleanLabel + ':');
-            }
-            parts.push(stripHTML(ph.text));
-        });
-        if (step.clinical) {
-            const cl = step.clinical;
-            if (cl.type === 'two-col') {
-                parts.push(stripHTML(cl.left.title) + ':');
-                cl.left.items.forEach(it => parts.push(stripHTML(it)));
-                parts.push(stripHTML(cl.right.title) + ':');
-                cl.right.items.forEach(it => parts.push(stripHTML(it)));
-            } else {
-                parts.push(stripHTML(cl.title) + ':');
-                cl.items.forEach(it => parts.push(stripHTML(it)));
-            }
-        }
-        parts.push('... ');
-    });
-    return parts.join(' ');
-}
-
-// Prefer Egyptian female voice; fall back to any Arabic voice
-function getArabicFemaleVoice() {
-    const voices = window.speechSynthesis.getVoices();
-    const femaleKeywords = ['female','hoda','zeina','laila','salma','dina','nora','farida',
-                            'rana','ranya','woman','girl','f','ar-eg-standard-a'];
-    // 1. Try explicit female Egyptian Arabic
-    const egFemale = voices.find(v =>
-        v.lang === 'ar-EG' &&
-        femaleKeywords.some(k => v.name.toLowerCase().includes(k))
-    );
-    if (egFemale) return egFemale;
-
-    // 2. Any Egyptian Arabic voice
-    const eg = voices.find(v => v.lang === 'ar-EG');
-    if (eg) return eg;
-
-    // 3. Any Arabic female
-    const arFemale = voices.find(v =>
-        v.lang.startsWith('ar') &&
-        femaleKeywords.some(k => v.name.toLowerCase().includes(k))
-    );
-    if (arFemale) return arFemale;
-
-    // 4. Any Arabic voice
-    return voices.find(v => v.lang.startsWith('ar')) || null;
-}
-
-function setGlobalSpeakBtnActive(active) {
-    const btn = document.getElementById('global-speak-btn');
-    const note = document.getElementById('global-speak-note');
-    if (!btn) return;
-    if (active) {
-        btn.classList.add('stop');
-        btn.innerHTML = `<span class="wave-icon"><span></span><span></span><span></span><span></span><span></span></span> وقف الصوت`;
-        if (note) note.textContent = 'بيقرأ كل الخطوات…';
-    } else {
-        btn.classList.remove('stop');
-        btn.innerHTML = '🔊 استمع لكل الخطوات';
-        if (note) note.textContent = 'اضغط ويسمعلك كل الكلام من الأول للآخر';
-    }
-}
-
-function toggleSpeakAll() {
-    if (ttsActive && window.speechSynthesis.speaking) {
-        stopSpeaking();
-    } else {
-        speakAll();
-    }
-}
-
-function speakAll() {
-    if (!('speechSynthesis' in window)) {
-        alert('المتصفح ده مش بيدعم ميزة الصوت.');
-        return;
-    }
-
-    // Open all steps so the user follows along
-    const c = cases[currentCase];
-    c.steps.forEach((_, i) => {
-        const body = document.getElementById(`body-${i}`);
-        const toggle = document.getElementById(`toggle-${i}`);
-        if (body && !body.classList.contains('open')) {
-            body.classList.add('open');
-            if (toggle) toggle.classList.add('open');
-        }
-    });
-
-    const text = buildAllStepsText();
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = 'ar-EG';
-    utter.rate = 0.85;
-    utter.pitch = 1.35;   // higher pitch → more feminine feel
-
-    const doSpeak = () => {
-        const voice = getArabicFemaleVoice();
-        if (voice) utter.voice = voice;
-        window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(utter);
-    };
-
-    ttsActive = true;
-    setGlobalSpeakBtnActive(true);
-
-    utter.onend   = () => { ttsActive = false; setGlobalSpeakBtnActive(false); };
-    utter.onerror = () => { ttsActive = false; setGlobalSpeakBtnActive(false); };
-
-    if (window.speechSynthesis.getVoices().length === 0) {
-        window.speechSynthesis.onvoiceschanged = doSpeak;
-    } else {
-        doSpeak();
-    }
-}
-
-function stopSpeaking() {
-    window.speechSynthesis.cancel();
-    ttsActive = false;
-    setGlobalSpeakBtnActive(false);
-}
-
-// Stop speech when changing cases or modes
-function stopOnSwitch() { stopSpeaking(); }
 
 function toggleStep(index) {
     const body = document.getElementById(`body-${index}`);
@@ -1714,7 +1588,6 @@ function prevPractice() {
 
 // ── Mode switch ──────────────────────────────────────────────
 function setMode(mode) {
-    stopOnSwitch();
     currentMode = mode;
     const refMode = document.getElementById('reference-mode');
     document.querySelectorAll('.mode-tab').forEach((t, i) => {
