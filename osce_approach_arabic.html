@@ -1244,6 +1244,178 @@ const cases = [
         ]
     }
 
+    ,
+
+    // ── SHOULDER EXAMINATION ──────────────────────────────────────────────
+    {
+        id: 'shoulder-exam',
+        name: 'فحص الكتف (Shoulder Examination)',
+        icon: '🦾',
+        color: '#7c3aed', colorLight: '#faf5ff',
+        steps: [
+            {
+                tag: 'تاريخ موجز', tagColor: '#faf5ff', tagText: '#7c3aed',
+                title: 'قبل ما تبدأ الفحص — ٥ أسئلة سريعة',
+                phrases: [
+                    { label: '🤕 مكان الألم والبداية', text: '"الألم فين بالظبط — في الكتف برة ولا جوا؟"<br>"بدأ إمتى؟ فجأة ولا بالتدريج؟"<br>"في إصابة ولا ضربة قبل كده؟"' },
+                    { label: '📈 الأشياء المحرِّكة للألم', text: '"الألم بيزيد في إيه — رفع الإيد فوق الرأس؟ وضع الإيد ورا الضهر؟ النوم على الجنب؟"<br>"في أي حاجة بتريحه؟"' },
+                    { label: '⚠️ Red Flags', text: '"في وجع في الرقبة أو تنميل في الإيد؟" — لو آه → ابحث عن سبب رقبي<br>"في وجع مستمر في الراحة أو ليل؟" — ورم أو التهاب<br>"في حمى أو نقص وزن؟" — التهاب إنتاني أو ورم' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'blue', title: '🦾 أسباب ألم الكتف الشائعة', items: ['Subacromial Impingement — الأكتر', 'Rotator Cuff Tear — تمزق الكفة', 'AC Joint — مفصل الترقوة', 'Frozen Shoulder (Adhesive Capsulitis)', 'Referred Pain من الرقبة'] },
+                    right: { color: 'red', title: '🚨 أحوّل فوراً لو', items: ['Painful Arc واسعة + Wasting', 'ألم ليلي مستمر + حمى', 'تنميل في الإيد + ضعف عضلة', 'صدمة حادة + عدم قدرة على حركة', 'الكتف بارزة للأمام (Dislocation)'] }
+                }
+            },
+            {
+                tag: 'Look — الفحص البصري', tagColor: '#ecfeff', tagText: '#0891b2',
+                title: 'اكشف الجانبين — وقارن',
+                phrases: [
+                    { label: '👀 LOOK — ابدأ بتعليمات للمريض', text: '"محتاج تكشف الجانبين عشان أقارن — ممكن تخلع قميصك وتقف واجهني؟"<br>"هفحص الأمام وبعدين من الجنب وبعدين من ورا."' },
+                    { label: '🔍 إيه اللي تشوفه؟', text: '① <b>الوضعية</b> — هل الكتف فيه رفع أو هبوط؟<br>② <b>Wasting</b> — تضمر عضلة Supraspinatus ورا الكتف = نهاية الكفة<br>③ <b>الجلد</b> — احمرار؟ ورم؟ جرح؟<br>④ <b>المفصل AC</b> — بروز في مفصل الترقوة مع الكتف؟<br>⑤ <b>Squaring</b> — الكتف بيبان مربع = خلوع قديم أو مزمن' },
+                    { label: '🗣️ قول للمريض وللممتحن', text: '"بشوف الجانبين ومقارنهم — الجانب المريض عنده [اذكر ما تلاحظه]."<br>"فيش wasting أو بروز في مفصل AC أو تغيير في الجلد."' }
+                ],
+                clinical: {
+                    type: 'single', color: 'blue',
+                    title: '📋 Look Checklist — اذكرها بالترتيب',
+                    items: ['Skin — احمرار / ورم / ندب', 'Muscle Bulk — wasting السوبراسبيناتس / دلتا', 'Bony Contour — AC joint / SC joint بروز', 'Posture — رفع الكتف / ميلان للأمام', 'Squaring off — خلوع قديم']
+                }
+            },
+            {
+                tag: 'Feel & Move', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'جس — حرك — شوف الـ Painful Arc',
+                phrases: [
+                    { label: '🤲 FEEL — ابدأ بظهر الإيد', text: '"هلمسك بظهر إيدي الأول عشان أحس بالحرارة."<br>بعدين جَسّ بالترتيب:<br>① Sternoclavicular Joint<br>② Clavicle كاملة<br>③ AC Joint — ألم هنا = AC pathology<br>④ Acromion<br>⑤ Greater Tuberosity — ألم هنا = Rotator Cuff<br>⑥ Bicipital Groove — ألم هنا = Biceps tendinitis<br>⑦ الخط الخلفي للمفصل' },
+                    { label: '🏃 MOVE — اطلب الحركة النشطة', text: '"عمل الحركات دي ومعايا:"<br>① <b>Abduction</b>: ارفع إيدك على الجنب — طبيعي ١٨٠°<br>② <b>Forward Flexion</b>: ارفع إيدك للأمام — طبيعي ١٨٠°<br>③ <b>Internal Rotation</b>: حط إيدك ورا ضهرك — وصل لأنهي مستوى؟<br>④ <b>External Rotation</b>: وكوعك ملاصق لجسمك — دوّر الساعد للخارج — طبيعي ٦٠-٩٠°' },
+                    { label: '📐 Painful Arc', text: '🎯 <b>لو الألم بيجي من 60° لـ 120° بس:</b><br>ده <b>Painful Arc</b> = Subacromial Impingement حتى يثبت العكس<br><br>"قوللي لو حسيت بألم في أي نقطة من الحركة."<br>دوّن زاوية بداية ونهاية الألم.' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'green', title: '✅ Move — طبيعي', items: ['Abduction: 0–180°', 'Forward Flexion: 0–180°', 'Extension: 0–60°', 'Internal Rotation: يوصل للـ T7-T10', 'External Rotation: 60–90°'] },
+                    right: { color: 'orange', title: '⚠️ Move — ماذا يعني التحديد؟', items: ['Painful Arc 60-120° → Impingement', 'Frozen (كل الحركات محدودة) → Capsulitis', 'ألم AC فوق 120° → AC pathology', 'خسارة External Rotation → Capsulitis', 'ألم بالجس + نقص Abduction → Rotator Cuff'] }
+                }
+            },
+            {
+                tag: 'Hawkins-Kennedy Test 🎯', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'الاختبار الخاص — Hawkins-Kennedy Test',
+                phrases: [
+                    { label: '📋 إزاي تعمله بالظبط؟', text: '① ارفع إيد المريض للأمام (Forward Flex) لـ <b>90°</b><br>② اثني الكوع لـ <b>90°</b><br>③ بيدك التانية على المعصم — دوّر الساعد للداخل (<b>Internal Rotation</b>) ببطء<br><br><b>إيجابي = لو المريض حس بألم في الكتف في أثناء التدوير</b><br>ده معناه Subacromial Impingement' },
+                    { label: '🗣️ قول للمريض', text: '"هعمل اختبار خاص للكتف — هرفع إيدك وأدورها — قوللي فوراً لو حسيت بألم."<br><br>بعد الاختبار: <b>"الاختبار إيجابي / سلبي — يعني..."</b>' },
+                    { label: '📚 اذكر الاختبارات التانية', text: '<b>Empty Can Test</b>: إيد ممدودة ٩٠° abduction + ٣٠° horizontal adduction + pronation — اضغط من فوق — إيجابي = ألم → تمزق سوبراسبيناتس<br><b>Neer Test</b>: ارفع الإيد المبسوطة للأمام ببطء — إيجابي = ألم تحت ١٢٠° → Impingement<br><b>Apprehension Test</b>: ٩٠° abduction + External Rotation — المريض بيحس إن الكتف هتطلع → instability' }
+                ],
+                clinical: {
+                    type: 'single', color: 'orange',
+                    title: '🔑 قرار العلاج بعد الفحص',
+                    items: ['Impingement (Painful Arc + Hawkins+) → NSAIDs + Physio + Injection لو مش تحسن', 'Frozen Shoulder (كل حركات محدودة) → Physio + Corticosteroid Injection', 'Suspected Rotator Cuff Tear (wasting + weak abduction) → MRI + متخصص', 'AC Joint Pathology (ألم فوق ١٢٠° + جس AC) → NSAIDs + راحة', 'Red Flags → طوارئ أو متخصص']
+                }
+            }
+        ]
+    },
+
+    // ── ELBOW EXAMINATION ─────────────────────────────────────────────────
+    {
+        id: 'elbow-exam',
+        name: 'فحص الكوع (Elbow Examination)',
+        icon: '💪',
+        color: '#0891b2', colorLight: '#ecfeff',
+        steps: [
+            {
+                tag: 'تاريخ موجز', tagColor: '#ecfeff', tagText: '#0891b2',
+                title: 'قبل ما تبدأ — حدد مكان الألم',
+                phrases: [
+                    { label: '🤕 مكان الألم الدقيق', text: '"الألم فين بالظبط — برة الكوع ولا جوا؟"<br>"برة = Lateral Epicondyle → Tennis Elbow"<br>"جوا = Medial Epicondyle → Golfer\'s Elbow"' },
+                    { label: '🔧 الأسباب الشغلية', text: '"شغلك إيه؟ بتضغط إيدك كتير؟ تايبينج؟ بناء؟"<br>"بتلعب تنس أو رياضة تانية؟"<br>"الألم بيزيد لما بتمسك حاجة أو بتفتح باب؟"' },
+                    { label: '🔗 استبعاد الرقبة', text: '"في وجع في الرقبة أو تنميل في الأصابع؟"<br>"لو آه → احتمال referred pain من C6-C7"' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'blue', title: '💪 أسباب ألم الكوع', items: ['Lateral Epicondylitis (Tennis Elbow)', 'Medial Epicondylitis (Golfer\'s Elbow)', 'Olecranon Bursitis (ورم ورا الكوع)', 'Radial Head Fracture / Arthritis', 'Referred Pain من الرقبة'] },
+                    right: { color: 'orange', title: '📍 التمييز', items: ['ألم خارجي + مسك الأشياء → Tennis Elbow', 'ألم داخلي + قذف / غولف → Golfer\'s Elbow', 'ورم ورا الكوع → Olecranon Bursitis', 'ألم في الدوران (Pronation/Supination) → Radial Head', 'تنميل أصابع → Cervical أو Ulnar Nerve'] }
+                }
+            },
+            {
+                tag: 'Look & Feel', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'فحص الشكل والجس',
+                phrases: [
+                    { label: '👀 LOOK', text: '"اكشف الكوعين عشان أقارن."<br><br>① <b>Carrying Angle</b>: الزاوية الطبيعية ١٠-١٥° للخارج — valgus<br>&nbsp;&nbsp;Increased valgus → Cubitus valgus<br>&nbsp;&nbsp;Decreased / Reversed → Cubitus varus (Gun Stock Deformity)<br>② <b>Olecranon</b>: ورم أو احمرار ورا الكوع = Bursitis<br>③ <b>Rheumatoid Nodules</b>: عقد صغيرة على السطح الظهري<br>④ <b>Psoriatic Plaques</b>: جلد متقشر' },
+                    { label: '🤲 FEEL — ابدأ بظهر الإيد', text: '"هلمسك بظهر إيدي الأول عشان أحس الحرارة."<br>بعدين جَسّ بالترتيب:<br>① <b>Lateral Epicondyle</b>: ألم هنا = Tennis Elbow<br>② <b>Medial Epicondyle</b>: ألم هنا = Golfer\'s Elbow<br>③ <b>Olecranon + Bursa</b>: ورم أو نعومة = Bursitis<br>④ <b>Radial Head</b>: جنب الـ Lateral Epicondyle — ألم في الدوران<br>⑤ <b>Ulnar Nerve</b>: في الخد الداخلي — اقرعه (Tinel\'s Elbow)' },
+                    { label: '🗣️ نموذج الكلام', text: '"جسيت الكوع — في tenderness على الـ Lateral Epicondyle."<br>"مفيش ورم في الـ Olecranon Bursa."<br>"الـ Ulnar Nerve مش مؤلم."' }
+                ],
+                clinical: {
+                    type: 'single', color: 'blue',
+                    title: '📋 Feel Checklist',
+                    items: ['Back of hand → temperature', 'Lateral epicondyle → Tennis Elbow', 'Medial epicondyle → Golfer\'s Elbow', 'Olecranon + Bursa', 'Radial Head (pronation/supination)', 'Ulnar Nerve groove (Tinel\'s Elbow)']
+                }
+            },
+            {
+                tag: 'Move & Cozen\'s Test 🎯', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'الحركة والاختبار الخاص',
+                phrases: [
+                    { label: '🏃 MOVE — اطلب الحركة النشطة', text: '① <b>Flexion</b>: هات إيدك على صدرك — طبيعي ١٥٠°<br>② <b>Extension</b>: مدّها تماماً — طبيعي صفر° (Hyperextension = hypermobility)<br>③ <b>Supination</b>: وكوعك ٩٠° — ارفع راحة إيدك للسما — طبيعي ٩٠°<br>④ <b>Pronation</b>: اقلبها للأرض — طبيعي ٩٠°<br><br><i>تحديد Flexion/Extension = مشكلة مفصل داخلية</i><br><i>ألم في Pronation/Supination = Radial Head</i>' },
+                    { label: '🎯 Cozen\'s Test — الاختبار الخاص', text: '<b>للـ Lateral Epicondylitis (Tennis Elbow):</b><br>① اطلب من المريض يمدّ كوعه بالكامل<br>② يشد إيده (قبضة)<br>③ يرفع رسغه للخلف (Dorsiflexion)<br>④ <b>انت بتقاومه من فوق الرسغ</b><br><br><b>إيجابي = ألم في الـ Lateral Epicondyle</b><br><br><i>ده يعني: Tennis Elbow = Lateral Epicondylitis</i>' },
+                    { label: '📚 اختبار ثاني تذكره', text: '<b>Mill\'s Test (بديل Cozen\'s):</b><br>اثني رسغ المريض للأمام ببطء مع الكوع ممدود — إيجابي = ألم جانبي<br><br><b>Golfer\'s Elbow Test (الداخلي):</b><br>اطلب من المريض يثني رسغه ضد مقاومتك — إيجابي = ألم داخلي' }
+                ],
+                clinical: {
+                    type: 'single', color: 'orange',
+                    title: '🔑 العلاج بعد الفحص',
+                    items: ['Tennis Elbow → NSAIDs موضعية + Physio + تعديل النشاط + Counterforce Brace', 'Golfer\'s Elbow → نفس النهج + ثني الرسغ بالتدريج', 'Olecranon Bursitis → راحة + NSAIDs + aspirate لو كبير', 'Corticosteroid Injection لو مش تحسن بعد 4-6 أسابيع', 'Prognosis: ٨٠٪ بيتحسنوا في سنة بالعلاج التحفظي']
+                }
+            }
+        ]
+    },
+
+    // ── HAND / CTS EXAMINATION ────────────────────────────────────────────
+    {
+        id: 'hand-cts-exam',
+        name: 'فحص اليد ومتلازمة النفق الرسغي (CTS)',
+        icon: '🤚',
+        color: '#059669', colorLight: '#f0fdf4',
+        steps: [
+            {
+                tag: 'تاريخ موجز + CTS', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'ابدأ بالتاريخ — CTS ليها نمط مميز',
+                phrases: [
+                    { label: '🤚 أعراض CTS المميزة', text: '"التنميل والحرقة في الأصابع فين بالظبط؟"<br>✅ الإبهام + السبابة + الوسطى + نص البنصر = Median Nerve → CTS<br>⚠️ الخنصر والبنصر = Ulnar Nerve → مش CTS<br><br>"الأعراض بتيجي إمتى؟ الليل؟ الصبح؟ أثناء الكلام بالتليفون؟"<br>"بتتحسني لما بتهزي إيدك؟" — Flick Sign = CTS مميز جداً' },
+                    { label: '⚠️ عوامل الخطر', text: '"عندك سكري؟" — أكتر سبب في الممارسة العملية<br>"عندك مشاكل في الغدة الدرقية؟" — Hypothyroidism<br>"عندك روماتويد؟"<br>"حامل أو في فترة هرمونية؟"<br>"شغلك فيه ضغط متكرر على الرسغ؟" — Repetitive use' },
+                    { label: '📉 الوظيفة', text: '"بيقع منك حاجات؟" — ضعف الإمساك<br>"صعب تكتبي أو تزرري هدومك؟"<br>"بتقدري تعدي مسمار أو عملة معدنية صغيرة؟"<br><i>الوظيفة هي أهم مؤشر لشدة الحالة</i>' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'green', title: '✅ CTS — خصائصها', items: ['تنميل راحة الإيد الرادي (إبهام → نص بنصر)', 'بيسوء الليل وبيصحي المريض من النوم', 'Flick Sign — هز الإيد يريح', 'بيزيد بحمل التليفون / القيادة', 'عامل الخطر: سكري / حمل / روماتويد'] },
+                    right: { color: 'orange', title: '⚠️ افرق عن', items: ['Ulnar Nerve → خنصر + بنصر', 'Thoracic Outlet → كل الإيد', 'Cervical Radiculopathy → من الرقبة', 'De Quervain → ألم الإبهام جنب الرسغ', 'Raynaud → تغيير اللون مع البرد'] }
+                }
+            },
+            {
+                tag: 'Look & Feel', tagColor: '#ecfeff', tagText: '#0891b2',
+                title: 'حط الإيدين على الوسادة — وافحص',
+                phrases: [
+                    { label: '👀 LOOK — الجانبين', text: '"حط إيديكي على الوسادة دي — هقارن بينهم."<br><br>① <b>الجلد</b>: لون / جفاف / قرح / تغيرات تغذوية<br>② <b>الأظافر</b>: Clubbing / Pitting (صدفية) / Ridging<br>③ <b>التشوهات</b>:<br>&nbsp;&nbsp;• Heberden\'s Nodes على DIP → Osteoarthritis<br>&nbsp;&nbsp;• Bouchard\'s Nodes على PIP → OA<br>&nbsp;&nbsp;• Swan-Neck / Boutonnière → Rheumatoid<br>&nbsp;&nbsp;• <b>Thenar Wasting</b> → CTS متقدم — ضمور عضلات الإبهام<br>④ <b>Hypothenar</b>: ضمور = Ulnar Nerve' },
+                    { label: '🤲 FEEL — ابدأ بظهر الإيد', text: '"هلمسك بظهر إيدي الأول عشان أحس الحرارة."<br><br>بعدين:<br>① جَسّ كل مفصل MCP, PIP, DIP — ورم؟ ألم؟<br>② الـ Thenar eminence — حجمها طبيعي؟<br>③ الـ Hypothenar eminence<br>④ الأوتار في راحة الإيد<br>⑤ الرسغ — ورم؟ حساسية على الـ Carpal Tunnel؟' },
+                    { label: '🗣️ قول للممتحن', text: '"بشوف الجانبين — في Thenar Wasting في الإيد اليمين بيدل على CTS متقدم."<br>"مفيش تشوهات مفصلية أو تغير في الجلد أو الأظافر."' }
+                ],
+                clinical: {
+                    type: 'single', color: 'green',
+                    title: '📋 Look Checklist لليد',
+                    items: ['Skin — لون / جفاف / تغذوي', 'Nails — Clubbing / Pitting / Ridging', 'DIP Nodes (Heberden) → OA', 'PIP Nodes (Bouchard) → OA', 'Swan-Neck / Boutonnière → RA', 'Thenar Wasting → CTS متقدم', 'Hypothenar Wasting → Ulnar N.']
+                }
+            },
+            {
+                tag: 'Phalen & Tinel 🎯', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'الاختبارات الخاصة لـ CTS',
+                phrases: [
+                    { label: '🏃 Move — اطلب الحركة النشطة', text: '"اعمل معايا الحركات دي:"<br>① <b>اقفلي إيدك كلها</b> — Full Fist — الأصابع وصلت للراحة؟<br>② <b>افردي الأصابع وباعديهم</b> — Extension + Abduction<br>③ <b>قابلي كل إصبع على الإبهام</b> — Thumb Opposition<br>④ <b>Power Grip</b>: اضغطي على إيدي — قوي ولا فيه ضعف؟<br>⑤ <b>Key Pinch</b>: مسك مفتاح — ضعف = Median Nerve Motor<br><br><i>تحديد في القفل → OA أو RA في المفاصل</i><br><i>ضعف Opposition → Median Nerve ضعيف (CTS متقدم)</i>' },
+                    { label: '🎯 Phalen\'s Test', text: '<b>للـ Carpal Tunnel Syndrome:</b><br>① اطلب من المريض يثني الرسغين للداخل ٩٠°<br>② يضغط ظهر الإيدين على بعض<br>③ <b>يفضلوا ٦٠ ثانية</b><br><br><b>إيجابي = تنميل أو حرقة في منطقة الـ Median Nerve خلال ٦٠ ثانية</b><br><br><i>ده الاختبار الأحساس للـ CTS</i>' },
+                    { label: '🎯 Tinel\'s Sign + Coin Test', text: '<b>Tinel\'s Sign:</b><br>اقرع فوق الـ Carpal Tunnel (عند ثنية الرسغ بين Palmaris Longus و Flexor Carpi Radialis)<br><b>إيجابي = تنميل كهربائي بيوصل للأصابع</b><br><br><b>Coin Pick-Up (Functional Test):</b><br>حط عملة صغيرة على الطاولة — اطلب يمسكها<br><b>صعوبة = Median Nerve Motor ضعيف</b>' }
+                ],
+                clinical: {
+                    type: 'single', color: 'green',
+                    title: '🔑 قرار العلاج بعد التشخيص',
+                    items: ['Wrist Splint (neutral) ليلاً — أول خطوة', 'NSAIDs للألم — Ibuprofen 400mg TID مع الأكل', 'Nerve Conduction Studies (NCS/EMG) — Gold Standard لتأكيد', 'Corticosteroid Injection لو مش تحسن بعد 4-6 أسابيع', 'Carpal Tunnel Release (جراحة) لو: Thenar Wasting أو فشل التحفظي', 'عالج السبب: سكري / درقية / روماتويد']
+                }
+            }
+        ]
+    }
+
 ]; // end cases
 
 // ═══════════════════════════════════════════════════════════════
@@ -1677,6 +1849,72 @@ const caseDDs = {
           verdict:'آه → Cervical origin — Pap smear + متخصص' }
     ],
     how: ['β-hCG بيتضاعف + كيس في الرحم → Threatened', 'β-hCG وقف + مش في الرحم → Ectopic طوارئ', 'عنق مفتوح + نزيف غزير → Inevitable', 'β-hCG عالي جداً + صورة عنقودية → Molar', 'نزيف بعد علاقة + كيس طبيعي → Cervical']
+}
+
+,'shoulder-exam': {
+    complaint: 'مريض بيشتكي من ألم في الكتف',
+    dds: [
+        { icon:'🥇', name:'Subacromial Impingement (الأكتر شيوعاً)',
+          qs:['الألم بيجي لما يرفع إيده ما بين 60°-120° (Painful Arc)؟','Hawkins-Kennedy Test إيجابي؟','مفيش تاريخ صدمة؟'],
+          verdict:'آه → Impingement — NSAIDs + Physio + Injection لو مش تحسن' },
+        { icon:'💪', name:'Rotator Cuff Tear',
+          qs:['ضعف في رفع الإيد (Abduction) ضد مقاومة؟','في Wasting في Supraspinatus Fossa؟','Empty Can Test إيجابي؟'],
+          verdict:'آه → Rotator Cuff Tear — MRI + متخصص' },
+        { icon:'🧊', name:'Frozen Shoulder (Adhesive Capsulitis)',
+          qs:['كل الحركات محدودة مش بس الرفع؟','بيزيد ببطء على أشهر؟','العمر فوق 40 وعنده سكري؟'],
+          verdict:'آه → Frozen Shoulder — Physio + Injection + وقت' },
+        { icon:'🦴', name:'AC Joint Pathology',
+          qs:['الألم في الجزء الأمامي العلوي من الكتف؟','ألم لما يعدي فوق 120°؟','الجس على مفصل AC مؤلم بالظبط؟'],
+          verdict:'آه → AC Pathology — NSAIDs + راحة ± Injection' },
+        { icon:'🔗', name:'Referred Pain من الرقبة',
+          qs:['في وجع أو تيبس في الرقبة؟','التنميل بينزل في الإيد؟','حركة الكتف نفسها طبيعية بدون ألم؟'],
+          verdict:'آه → Cervical Origin — فحص الرقبة كامل' }
+    ],
+    how: ['Painful Arc 60-120° → Impingement', 'كل الحركات محدودة → Frozen Shoulder', 'ضعف Abduction + Wasting → Rotator Cuff Tear', 'ألم AC فوق 120° → AC Pathology', 'تنميل في الإيد + رقبة مؤلمة → Cervical']
+},
+
+'elbow-exam': {
+    complaint: 'مريض بيشتكي من ألم في الكوع',
+    dds: [
+        { icon:'🥇', name:'Tennis Elbow (Lateral Epicondylitis)',
+          qs:['الألم في الجهة الخارجية من الكوع؟','Cozen\'s Test إيجابي (مقاومة رفع الرسغ)؟','الشغل أو الرياضة فيها ضغط متكرر؟'],
+          verdict:'آه → Tennis Elbow — NSAIDs موضعية + Physio + Brace' },
+        { icon:'🏌️', name:'Golfer\'s Elbow (Medial Epicondylitis)',
+          qs:['الألم في الجهة الداخلية من الكوع؟','بيزيد لما يثني الرسغ ضد مقاومة؟','رياضي جولف أو رامي؟'],
+          verdict:'آه → Golfer\'s Elbow — نفس علاج Tennis Elbow' },
+        { icon:'💧', name:'Olecranon Bursitis',
+          qs:['ورم ورا الكوع بيبان واضح؟','مش مؤلم كتير بالمقارنة بحجمه؟','سبق ضغط على الكوع طول الوقت (عمال / طالب)؟'],
+          verdict:'آه → Olecranon Bursitis — راحة + NSAIDs + aspirate لو كبير' },
+        { icon:'🦴', name:'Radial Head Fracture / Arthritis',
+          qs:['إصابة أو سقطة على الإيد المبسوطة؟','الألم بيزيد في الدوران (Pronation/Supination)؟','الجس على الـ Radial Head مؤلم؟'],
+          verdict:'آه → Radial Head — X-ray + متخصص' },
+        { icon:'🔗', name:'Referred Pain من الرقبة (C6-C7)',
+          qs:['في ألم أو تيبس في الرقبة؟','تنميل في الأصابع؟','حركة الكوع نفسها طبيعية بدون ألم؟'],
+          verdict:'آه → Cervical Referred Pain — فحص الرقبة' }
+    ],
+    how: ['ألم جانب خارجي + Cozen\'s إيجابي → Tennis Elbow', 'ألم جانب داخلي → Golfer\'s Elbow', 'ورم ورا الكوع → Bursitis', 'ألم في الدوران بعد صدمة → Radial Head', 'تنميل + رقبة → Cervical']
+},
+
+'hand-cts-exam': {
+    complaint: 'مريض بيشتكي من تنميل وحرقة في اليد',
+    dds: [
+        { icon:'🥇', name:'Carpal Tunnel Syndrome (CTS)',
+          qs:['التنميل في الإبهام والسبابة والوسطى ونص البنصر (Median Nerve)؟','Phalen\'s Test إيجابي خلال 60 ثانية؟','بيتحسن بهز الإيد (Flick Sign)؟'],
+          verdict:'آه → CTS — Splint ليلي + NCS/EMG للتأكيد' },
+        { icon:'🔌', name:'Ulnar Nerve Compression',
+          qs:['التنميل في الخنصر والبنصر بس؟','ألم أو ضعف في الإمساك؟','Tinel\'s إيجابي على الـ Cubital Tunnel (Medial Elbow)؟'],
+          verdict:'آه → Ulnar Neuropathy — فحص الكوع + NCS' },
+        { icon:'🦋', name:'Carpal Tunnel + Hypothyroidism',
+          qs:['تعب وكسل وبرود وكسب وزن بدون سبب؟','بشرة جافة وشعر بيتكسر؟','TSH عالي؟'],
+          verdict:'آه → Hypothyroidism-induced CTS — عالج الدرقية أولاً' },
+        { icon:'🌡️', name:'Diabetic Peripheral Neuropathy',
+          qs:['سكري من فترة طويلة؟','التنميل في الإيدين والقدمين بالكامل (Glove & Stocking)؟','مش مقتصر على توزيع nerve واحد؟'],
+          verdict:'آه → Diabetic Neuropathy — تحسين التحكم في السكر + Gabapentin' },
+        { icon:'🦴', name:'Cervical Radiculopathy (C6)',
+          qs:['في ألم في الرقبة بينزل في الإيد؟','التنميل مع ألم بيجي من فوق؟','حركة الرقبة بتغير الأعراض؟'],
+          verdict:'آه → Cervical — MRI رقبة + متخصص' }
+    ],
+    how: ['Median Nerve (إبهام-وسطى) + Phalen\'s إيجابي → CTS', 'Ulnar (خنصر-بنصر) → Ulnar Neuropathy', 'كل الإيدين والقدمين → Diabetic Neuropathy', 'من الرقبة + تغير بحركة الرقبة → Cervical', 'TSH عالي + CTS → Hypothyroidism']
 }
 
 }; // end caseDDs
