@@ -350,11 +350,103 @@
             .col-panel { display: block !important; }
             .checklist-card { break-inside: avoid; box-shadow: none; }
         }
+
+        /* ── VOICE NOTE ─────────────────────────────────────────── */
+        .voice-note-area {
+            display: none;
+            margin-top: 14px;
+            border: 2px solid #6366f1;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fafaff;
+        }
+        .voice-note-area.open { display: block; }
+
+        .voice-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 12px;
+            background: #eef2ff;
+            border-bottom: 1px solid #c7d2fe;
+            flex-wrap: wrap;
+        }
+
+        .mic-btn {
+            display: flex; align-items: center; gap: 5px;
+            padding: 6px 14px;
+            border: none; border-radius: 7px; cursor: pointer;
+            font-size: 0.85em; font-weight: 600;
+            background: #6366f1; color: #fff;
+            transition: background 0.2s;
+        }
+        .mic-btn:hover { background: #4f46e5; }
+        .mic-btn.recording {
+            background: #dc2626;
+            animation: pulse-mic 1.2s ease-in-out infinite;
+        }
+        @keyframes pulse-mic {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(220,38,38,0.5); }
+            50%       { box-shadow: 0 0 0 7px rgba(220,38,38,0); }
+        }
+
+        .clear-note-btn {
+            padding: 6px 12px; border: 1px solid #c7d2fe;
+            border-radius: 7px; background: #fff; cursor: pointer;
+            font-size: 0.82em; color: #4338ca;
+            transition: background 0.15s;
+        }
+        .clear-note-btn:hover { background: #e0e7ff; }
+
+        .voice-hint {
+            font-size: 0.78em; color: #6366f1; font-style: italic;
+            margin-left: auto;
+        }
+        .voice-hint.live { color: #dc2626; font-weight: 600; }
+
+        .voice-transcript {
+            width: 100%; min-height: 90px;
+            padding: 10px 14px;
+            border: none; outline: none; resize: vertical;
+            font-size: 0.88em; line-height: 1.6;
+            font-family: 'Inter', sans-serif;
+            background: #fafaff; color: #1e293b;
+        }
+
+        .interim-text {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .btn-voice {
+            background: #eef2ff !important;
+            color: #4338ca !important;
+            border: 1px solid #c7d2fe !important;
+        }
+        .btn-voice:hover, .btn-voice.active {
+            background: #6366f1 !important;
+            color: #fff !important;
+            border-color: #6366f1 !important;
+        }
+
+        /* Global recording badge */
+        #voice-status-badge {
+            display: none;
+            position: fixed; bottom: 70px; right: 18px;
+            background: #dc2626; color: #fff;
+            padding: 6px 14px; border-radius: 20px;
+            font-size: 0.82em; font-weight: 700;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+            z-index: 9000;
+            animation: pulse-mic 1.2s ease-in-out infinite;
+        }
+        #voice-status-badge.active { display: block; }
     </style>
 </head>
 <body>
 
 <div id="scroll-progress"></div>
+<div id="voice-status-badge">🔴 Recording…</div>
 
 <div class="container">
     <header>
@@ -1949,6 +2041,13 @@
     let activeCategory = 'All';
     let filteredIndices = [];
 
+    // ── VOICE NOTE STATE ─────────────────────────────────────────────────────
+    const voiceNotes       = {};   // { cardIndex: "transcript text" }
+    const voiceNoteVisible = {};   // { cardIndex: true/false }
+    let currentRecordingIndex = null;
+    let recognition = null;
+    let interimBuffer = '';
+
     function getCategories() {
         return ['All', ...new Set(questionBank.map(q => q.cat))];
     }
@@ -2051,6 +2150,9 @@
                             <button class="btn-sec btn-roleplay-show" onclick="toggleRoleplay(${index})">
                                 ${open ? 'Hide Patient Info' : 'Show Patient Info'}
                             </button>
+                            <button class="btn-sec btn-voice${voiceNoteVisible[index] ? ' active' : ''}" onclick="toggleVoiceNote(${index})">
+                                🎙 Voice Note
+                            </button>
                             <button class="btn-sec btn-review${isRev ? ' done' : ''}" onclick="toggleReview(${index})">
                                 ${isRev ? '✓ Reviewed' : 'Mark as Reviewed'}
                             </button>
@@ -2060,6 +2162,20 @@
                             ${patientBlock}
                             ${rxBlock}
                         </div>` : ''}
+                        <div class="voice-note-area${voiceNoteVisible[index] ? ' open' : ''}" id="vna-${index}">
+                            <div class="voice-controls">
+                                <button class="mic-btn${currentRecordingIndex === index ? ' recording' : ''}" onclick="toggleVoice(${index})">
+                                    ${currentRecordingIndex === index ? '⏹ Stop' : '🎙 Start Recording'}
+                                </button>
+                                <button class="clear-note-btn" onclick="clearVoiceNote(${index})">🗑 Clear</button>
+                                <span class="voice-hint${currentRecordingIndex === index ? ' live' : ''}">
+                                    ${currentRecordingIndex === index ? '🔴 Recording… speak clearly' : 'Your spoken answer appears here'}
+                                </span>
+                            </div>
+                            <textarea class="voice-transcript" id="vt-${index}"
+                                placeholder="Start recording to see your transcript here…"
+                                oninput="saveVoiceNote(${index}, this.value)">${voiceNotes[index] || ''}</textarea>
+                        </div>
                     </div>
                 `;
             } else {
@@ -2084,6 +2200,9 @@
                             <button class="btn-sec" onclick="toggleBoth(${index})">
                                 Show Both
                             </button>
+                            <button class="btn-sec btn-voice${voiceNoteVisible[index] ? ' active' : ''}" onclick="toggleVoiceNote(${index})">
+                                🎙 Voice Note
+                            </button>
                             <button class="btn-sec btn-review${isRev ? ' done' : ''}" onclick="toggleReview(${index})">
                                 ${isRev ? '✓ Reviewed' : 'Mark as Reviewed'}
                             </button>
@@ -2098,6 +2217,20 @@
                             <h4>❌ POOR PERFORMANCE</h4>
                             <ul>${item.poor.map(pt => `<li>${pt}</li>`).join('')}</ul>
                         </div>` : ''}
+                        <div class="voice-note-area${voiceNoteVisible[index] ? ' open' : ''}" id="vna-${index}">
+                            <div class="voice-controls">
+                                <button class="mic-btn${currentRecordingIndex === index ? ' recording' : ''}" onclick="toggleVoice(${index})">
+                                    ${currentRecordingIndex === index ? '⏹ Stop' : '🎙 Start Recording'}
+                                </button>
+                                <button class="clear-note-btn" onclick="clearVoiceNote(${index})">🗑 Clear</button>
+                                <span class="voice-hint${currentRecordingIndex === index ? ' live' : ''}">
+                                    ${currentRecordingIndex === index ? '🔴 Recording… speak clearly' : 'Your spoken answer appears here'}
+                                </span>
+                            </div>
+                            <textarea class="voice-transcript" id="vt-${index}"
+                                placeholder="Start recording to see your transcript here…"
+                                oninput="saveVoiceNote(${index}, this.value)">${voiceNotes[index] || ''}</textarea>
+                        </div>
                     </div>
                 `;
             }
@@ -2187,6 +2320,130 @@
         document.getElementById('scroll-progress').style.width = scrolled + '%';
         document.getElementById('scroll-top').classList.toggle('visible', doc.scrollTop > 300);
     });
+
+    // ── VOICE NOTE FUNCTIONS ──────────────────────────────────────────────────
+
+    function toggleVoiceNote(index) {
+        // Stop recording if this card was recording and we're hiding it
+        if (currentRecordingIndex === index && voiceNoteVisible[index]) {
+            stopVoice();
+        }
+        voiceNoteVisible[index] = !voiceNoteVisible[index];
+        renderQuiz();
+        if (voiceNoteVisible[index]) {
+            requestAnimationFrame(() => {
+                const area = document.getElementById('vna-' + index);
+                if (area) area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            });
+        }
+    }
+
+    function saveVoiceNote(index, value) {
+        voiceNotes[index] = value;
+    }
+
+    function clearVoiceNote(index) {
+        if (currentRecordingIndex === index) stopVoice();
+        voiceNotes[index] = '';
+        const ta = document.getElementById('vt-' + index);
+        if (ta) ta.value = '';
+    }
+
+    function toggleVoice(index) {
+        if (currentRecordingIndex === index) {
+            stopVoice();
+        } else {
+            startVoice(index);
+        }
+    }
+
+    function startVoice(index) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            alert('Voice recognition is not supported in this browser.\nPlease use Google Chrome or Microsoft Edge.');
+            return;
+        }
+
+        // Stop any existing recording first
+        if (recognition) { try { recognition.stop(); } catch(e) {} recognition = null; }
+
+        recognition = new SpeechRecognition();
+        recognition.continuous      = true;
+        recognition.interimResults  = true;
+        recognition.lang            = 'en-US';
+        recognition.maxAlternatives = 1;
+
+        currentRecordingIndex = index;
+        interimBuffer = '';
+
+        // Show recording state
+        renderQuiz();
+        scrollToCard(index);
+        document.getElementById('voice-status-badge').classList.add('active');
+
+        recognition.onresult = (event) => {
+            let finalSegment   = '';
+            let interimSegment = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const transcript = event.results[i][0].transcript;
+                if (event.results[i].isFinal) {
+                    finalSegment += transcript + ' ';
+                } else {
+                    interimSegment += transcript;
+                }
+            }
+
+            if (finalSegment) {
+                voiceNotes[index] = (voiceNotes[index] || '') + finalSegment;
+                interimBuffer = '';
+            } else {
+                interimBuffer = interimSegment;
+            }
+
+            // Update textarea in-place without full re-render
+            const ta = document.getElementById('vt-' + index);
+            if (ta) {
+                ta.value = (voiceNotes[index] || '') + (interimBuffer ? '…' + interimBuffer : '');
+            }
+        };
+
+        recognition.onerror = (event) => {
+            if (event.error !== 'no-speech') {
+                console.warn('Speech recognition error:', event.error);
+            }
+        };
+
+        recognition.onend = () => {
+            // Auto-restart if we're still supposed to be recording this card
+            if (currentRecordingIndex === index && recognition) {
+                try { recognition.start(); } catch(e) { stopVoice(); }
+            }
+        };
+
+        try {
+            recognition.start();
+        } catch(e) {
+            alert('Could not start recording. Please check microphone permissions.');
+            stopVoice();
+        }
+    }
+
+    function stopVoice() {
+        if (recognition) {
+            try { recognition.stop(); } catch(e) {}
+            recognition = null;
+        }
+        // Commit any remaining interim buffer to the note
+        if (currentRecordingIndex !== null && interimBuffer) {
+            voiceNotes[currentRecordingIndex] = (voiceNotes[currentRecordingIndex] || '') + interimBuffer + ' ';
+            const ta = document.getElementById('vt-' + currentRecordingIndex);
+            if (ta) ta.value = voiceNotes[currentRecordingIndex];
+            interimBuffer = '';
+        }
+        currentRecordingIndex = null;
+        document.getElementById('voice-status-badge').classList.remove('active');
+        renderQuiz();
+    }
 
     buildFilters();
     filteredIndices = questionBank.map((_, i) => i);
