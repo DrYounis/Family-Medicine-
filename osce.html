@@ -2387,6 +2387,249 @@
             ]
         },
 
+        // ─── HEADACHE ────────────────────────────────────────────────────────────
+        {
+            cat: "Role Player",
+            type: "roleplay",
+            cardNum: "RP-25",
+            q: "Headache (Tension-Type vs Migraine) — Role Player Information",
+            patientName: "Layla Kamal Mansour",
+            age: "32 years old",
+            background: "Secondary school teacher, married with 2 children. Non-smoker, no alcohol. Has been having recurrent headaches for the past 6 months. Stressed at work. No significant past medical history. Takes Paracetamol occasionally — helps a little. No known drug allergies.",
+            chiefComplaint: "Recurrent headaches for 6 months — getting more frequent",
+            history: [
+                "Headaches occurring 4–5 times per month over the last 6 months — clearly increasing in frequency",
+                "LOCATION: one-sided (usually left side) — mention this if asked about location",
+                "QUALITY: throbbing, pulsating — not pressure-like (migraine, not tension)",
+                "SEVERITY: 7–8/10 at peak; forces her to stop teaching and go to the staff room to rest",
+                "DURATION: each episode lasts 12–24 hours",
+                "AGGRAVATING: physical activity (climbing stairs, walking fast) worsens the pain — classic migraine feature",
+                "RELIEVING: lying in a dark quiet room; Paracetamol takes the edge off but does not fully relieve it",
+                "ASSOCIATED: nausea (no vomiting), sensitivity to light (photophobia), sensitivity to sound (phonophobia) — mention only if asked",
+                "AURA: before some attacks, she sees 'flashing zigzag lights' for about 20 minutes — migraine with aura (classic migraine); mention only if asked about visual symptoms or warning signs",
+                "NO red flag features: no thunderclap onset, no fever, no neck stiffness, no vomiting, no loss of consciousness, no age >50, no recent head trauma, no high blood pressure",
+                "Family history: her mother has similar headaches — mention if asked",
+                "No neck pain, no nasal congestion, no sinus tenderness",
+                "No oral contraceptive pill (not on any hormonal treatment)",
+                "No known drug allergies",
+                "ICE: worried it might be something serious like a brain tumour or aneurysm; wants to know if she needs a scan; hopeful there is a medication to prevent the attacks from coming so frequently"
+            ],
+            rx: {
+                diagnosis: "Migraine with Aura (Classic Migraine) — 4–5 attacks/month → Prophylaxis indicated",
+                allergyNote: "NKDA — confirmed before prescribing",
+                drugs: [
+                    { name: "Sumatriptan (Triptan)",           dose: "50 mg",   timing: "Take at onset of headache — repeat after 2 hours if needed; max 200 mg/day. Do NOT use more than 10 days/month (medication overuse headache risk)" },
+                    { name: "Ibuprofen (or Paracetamol)",      dose: "400 mg",  timing: "At onset — for mild/moderate attacks as alternative to Triptan" },
+                    { name: "Propranolol (Beta-blocker — Prophylaxis)", dose: "40 mg", timing: "Once daily — start low, titrate. For prophylaxis: ≥3–4 attacks/month. Review at 3 months. Avoid in asthma." },
+                    { name: "Topiramate (alternative prophylaxis)", dose: "25–50 mg", timing: "Once nightly — if beta-blocker contraindicated or ineffective. Warn: may cause word-finding difficulty, weight loss." }
+                ],
+                followUp: "4–6 weeks — review headache diary, assess response to prophylaxis. If no improvement at 3 months, reassess diagnosis and consider neurology referral.",
+                returnIf: "SUDDEN SEVERE 'THUNDERCLAP' headache (worst of life), fever + neck stiffness, vomiting + confusion, new neurological symptoms (weakness, speech, vision loss), headache in pregnancy — Emergency immediately"
+            }
+        },
+
+        {
+            cat: "Neurology",
+            type: "checklist",
+            cardNum: "28",
+            q: "Headache — Assessment, Red Flags, Tension vs Migraine & Management",
+            good: [
+                "Establishes rapport; acknowledges patient's distress and fear about a serious cause",
+                // GENERAL SCHEMA (from session notes)
+                "APPLIES GENERAL ASSESSMENT SCHEMA: 1) Analyse the complaint fully 2) Screen Red Flags 3) Differentiate DD 4) Formulate diagnosis 5) Address ICE 6) Family/social history",
+                // RED FLAGS — SNOOP3 (from session notes)
+                "SCREENS FOR RED FLAGS using SNOOP3 — refer to Emergency if ANY is present:",
+                "  → S: Systemic illness — fever, weight loss, malignancy, HIV",
+                "  → N: Neurological symptoms — weakness, vision loss, speech difficulty, confusion, loss of consciousness",
+                "  → O: Onset sudden ('thunderclap') — worst headache of life = subarachnoid haemorrhage until proven otherwise",
+                "  → O: Older age — new headache in patient > 50 years = Giant Cell Arteritis / malignancy",
+                "  → P: Positional / Progressive — worse lying down (raised ICP), or steadily worsening",
+                "  → 3: Papilloedema, Pregnancy, Post-traumatic — all require urgent assessment",
+                // HEADACHE CHARACTERISATION
+                "Asks about LOCATION: bilateral (band-like) = Tension; unilateral = Migraine; unilateral around eye = Cluster headache",
+                "Asks about QUALITY: pressure/tightening = Tension; throbbing/pulsating = Migraine; severe stabbing = Cluster",
+                "Asks about SEVERITY (0–10) and how it impacts daily activity and work",
+                "Asks about DURATION: tension = 30 min–7 days; migraine = 4–72 hours; cluster = 15–180 min",
+                "Asks about AGGRAVATING factors: physical activity WORSENS migraine (not tension); bright light; noise",
+                "Asks about RELIEVING factors: lying in dark quiet room (migraine); simple analgesia (tension)",
+                "Asks about ASSOCIATED symptoms: nausea/vomiting, photophobia, phonophobia = Migraine",
+                "Asks about AURA: visual disturbances (flashing lights, zigzag lines, scotoma) before headache = Classic Migraine (with Aura)",
+                // DIFFERENTIAL DIAGNOSIS (from session notes)
+                "DIFFERENTIAL DIAGNOSIS — key distinguishing questions:",
+                "  → Both sides? → Tension-Type Headache",
+                "  → One side, throbbing, light sensitivity, nausea? → Migraine",
+                "  → One side, around/behind eye, severe, with red eye/tearing, comes at same time daily? → Cluster Headache",
+                "  → Associated with cold/blocked nose/facial pain? → Sinusitis headache",
+                // TENSION-TYPE HEADACHE (from session notes)
+                "TENSION-TYPE HEADACHE CLASSIFICATION:",
+                "  → EPISODIC: < 15 headache days per month",
+                "  → CHRONIC: ≥ 15 headache days per month for > 3 months",
+                "Manages Tension Headache — Non-pharmacological: sleep hygiene (regular sleep/wake), regular aerobic exercise, stress management, fresh diet",
+                "Manages Tension Headache — Pharmacological: simple analgesics for episodic; AMITRIPTYLINE or SSRIs for chronic tension headache",
+                // MIGRAINE (from session notes)
+                "MIGRAINE DIAGNOSTIC CRITERIA (POUND mnemonic — need ≥4):",
+                "  → P: Pulsating quality",
+                "  → O: Duration 4–72 hOurs",
+                "  → U: Unilateral",
+                "  → N: Nausea or vomiting",
+                "  → D: Disabling (interferes with activity)",
+                "Asks about FREQUENCY to guide treatment: ≥ 3–4 attacks/month = PROPHYLAXIS indicated",
+                "Asks about AURA: Classic (with aura — zigzag lights/visual disturbance) vs Common (without aura)",
+                // MIGRAINE ACUTE TREATMENT (from session notes)
+                "MIGRAINE ACUTE TREATMENT:",
+                "  → Mild: Paracetamol or Ibuprofen (take early at onset)",
+                "  → Moderate–Severe: TRIPTANS — Sumatriptan 50 mg at onset (most effective if taken early)",
+                "  → Anti-emetic: Metoclopramide if vomiting prevents oral medications",
+                "Warns about MEDICATION OVERUSE HEADACHE: using analgesics >10 days/month leads to chronic daily headache",
+                // MIGRAINE PROPHYLAXIS (from session notes)
+                "MIGRAINE PROPHYLAXIS — indicated if ≥ 3–4 attacks/month, attacks disabling, or acute treatment fails:",
+                "  → First-line: PROPRANOLOL (beta-blocker) — avoid in asthma/COPD",
+                "  → Alternative: TOPIRAMATE or GABAPENTIN — review at 3 months",
+                "  → Amitriptyline — if also has depression or chronic tension headache",
+                "Advises patient to keep a HEADACHE DIARY — records triggers, frequency, severity, response to medication",
+                "Advises on TRIGGER AVOIDANCE: stress, irregular sleep, skipped meals, caffeine, alcohol, dehydration, hormonal changes",
+                "Checks allergies before prescribing",
+                "Addresses ICE: reassures patient the symptoms are consistent with migraine — NOT a tumour; explains that a scan is not routinely needed if no red flags; explains treatment plan clearly",
+                "Arranges follow-up at 4–6 weeks with headache diary"
+            ],
+            poor: [
+                "Does not screen for SNOOP3 red flags — misses potentially life-threatening causes",
+                "Does not ask about thunderclap onset — misses subarachnoid haemorrhage",
+                "Does not ask about location — fails to distinguish bilateral (tension) from unilateral (migraine)",
+                "Does not ask about aura — misses Classic Migraine diagnosis",
+                "Does not ask about frequency of attacks — misses indication for prophylaxis",
+                "Does not classify tension headache as episodic vs chronic (< or ≥ 15 days/month)",
+                "Does not know acute migraine treatment (Triptans — Sumatriptan)",
+                "Does not know prophylaxis options (Propranolol, Topiramate, Gabapentin)",
+                "Prescribes analgesics without warning about medication overuse headache",
+                "Does not prescribe Amitriptyline for chronic tension-type headache",
+                "Does not check allergies before prescribing",
+                "Does not address patient's fear of brain tumour — fails ICE",
+                "Does not advise headache diary or trigger avoidance",
+                "Does not arrange follow-up"
+            ]
+        },
+
+        // ─── DIZZINESS & VERTIGO ─────────────────────────────────────────────────
+        {
+            cat: "Role Player",
+            type: "roleplay",
+            cardNum: "RP-26",
+            q: "Dizziness & Vertigo — Role Player Information",
+            patientName: "Khalid Ibrahim Nour",
+            age: "45 years old",
+            background: "Accountant, married, 3 children. Non-smoker, minimal alcohol (social). No diabetes, no hypertension. Has had 4–5 episodes of severe room-spinning dizziness over the past 2 months. Not related to position changes. No recent viral illness. Takes no regular medications. No known drug allergies.",
+            chiefComplaint: "Attacks of severe spinning dizziness for 2 months — left ear ringing and reduced hearing",
+            history: [
+                "VERTIGO: severe spinning sensation — 'the room spins around me' — not light-headedness or fainting",
+                "DURATION: each attack lasts 2–4 HOURS — mention if asked about how long the spinning lasts",
+                "FREQUENCY: 4–5 attacks over 2 months",
+                "TRIGGER: NOT positional — does not come on when turning over in bed or looking up (rules out BPPV)",
+                "TINNITUS: ringing / roaring sound in the LEFT ear — constant during attacks; mention if asked about ear symptoms",
+                "HEARING LOSS: reduced hearing in left ear — worsened during attacks, partially improves between attacks; mention if asked",
+                "ASSOCIATED: nausea and vomiting during attacks; no fever",
+                "No hearing loss in right ear, no bilateral symptoms",
+                "No facial weakness, no diplopia (no brainstem signs)",
+                "No head trauma, no recent viral URTI (rules out labyrinthitis)",
+                "No headache associated with attacks (rules out vestibular migraine if asked)",
+                "No known drug allergies",
+                "ICE: very worried — looked online and is scared it might be a brain tumour or stroke; wants a scan; asks if it can be treated; wondering if diet or salt intake has anything to do with it (it does — Meniere's)"
+            ],
+            rx: {
+                diagnosis: "Ménière's Disease — Left Ear (Triad: episodic vertigo + unilateral tinnitus + unilateral hearing loss)",
+                allergyNote: "NKDA — confirmed before prescribing",
+                drugs: [
+                    { name: "Betahistine (Serc)",               dose: "16 mg",  timing: "Three times daily — reduces inner ear fluid pressure; main maintenance treatment for Meniere's" },
+                    { name: "Prochlorperazine (Stemetil)",       dose: "5 mg",   timing: "Three times daily during acute attacks — vestibular sedative for nausea/vomiting relief" },
+                    { name: "Bendroflumethiazide (Diuretic)",    dose: "2.5 mg", timing: "Once daily — reduces endolymph pressure; used alongside lifestyle modification" }
+                ],
+                followUp: "REFER to ENT (Ear, Nose and Throat) specialist — audiometry (pure tone audiogram) and caloric testing required to confirm diagnosis. Follow-up in 4 weeks.",
+                returnIf: "Sudden permanent hearing loss, facial weakness, severe persistent headache with vomiting, signs of stroke (face drooping, arm weakness, speech difficulty) — Emergency immediately"
+            }
+        },
+
+        {
+            cat: "Neurology",
+            type: "checklist",
+            cardNum: "29",
+            q: "Dizziness & Vertigo — Assessment, Duration Framework, BPPV vs Ménière's vs Labyrinthitis",
+            good: [
+                "Establishes rapport; acknowledges how distressing and disabling the dizziness is",
+                // FIRST DIFFERENTIATION — type of dizziness
+                "FIRST STEP — clarifies the TYPE of dizziness before anything else:",
+                "  → VERTIGO: spinning sensation (room or self spinning) = vestibular cause",
+                "  → PRE-SYNCOPE: light-headedness, feeling faint = cardiovascular or orthostatic cause",
+                "  → DISEQUILIBRIUM: unsteadiness/loss of balance without spinning = cerebellar or proprioceptive",
+                "  → NON-SPECIFIC DIZZINESS: vague, anxious — consider anxiety, hyperventilation, anaemia",
+                // DURATION-BASED FRAMEWORK (from session notes — key teaching point)
+                "APPLIES DURATION-BASED DIAGNOSTIC FRAMEWORK — ask HOW LONG does each attack last?",
+                "  → SECONDS (< 1 minute, triggered by head position): → BPPV (Benign Paroxysmal Positional Vertigo)",
+                "  → HOURS (20 min – 24 hours, spontaneous): → MÉNIÈRE'S DISEASE",
+                "  → DAYS (continuous, follows viral illness): → LABYRINTHITIS / VESTIBULAR NEURITIS",
+                "  → MONTHS (slowly progressive): → Acoustic Neuroma / Central cause — URGENT REFERRAL",
+                // BPPV
+                "BPPV — Benign Paroxysmal Positional Vertigo:",
+                "  → Triggered by turning over in bed, looking up, bending down — positional",
+                "  → Lasts seconds only; no hearing loss; no tinnitus",
+                "  → Diagnosis: Dix-Hallpike manoeuvre (nystagmus elicited)",
+                "  → Treatment: Epley manoeuvre (canalith repositioning) — highly effective",
+                // MÉNIÈRE'S DISEASE (from session notes)
+                "MÉNIÈRE'S DISEASE — asks for the TRIAD:",
+                "  → 1. Episodic VERTIGO lasting HOURS (20 min – several hours)",
+                "  → 2. TINNITUS — unilateral ringing/roaring in the SAME ear",
+                "  → 3. Fluctuating HEARING LOSS — unilateral, worsens during attacks",
+                "Asks about MECHANISM (for explanation to patient): Endolymphatic hydrops — excess fluid pressure in the inner ear (semicircular canals + cochlea)",
+                "Asks about diet — HIGH SALT INTAKE worsens Menière's by increasing endolymph pressure",
+                "Asks about smoking — worsens vascular supply to inner ear",
+                // LABYRINTHITIS / VESTIBULAR NEURITIS
+                "LABYRINTHITIS / VESTIBULAR NEURITIS:",
+                "  → Continuous vertigo lasting DAYS; follows a viral URTI (cold, flu)",
+                "  → Labyrinthitis: vertigo + hearing loss + tinnitus (cochlea affected)",
+                "  → Vestibular Neuritis: vertigo only (cochlea NOT affected — no hearing loss)",
+                "  → Treatment: vestibular sedatives (Prochlorperazine) short-term; vestibular rehabilitation exercises",
+                // ALARM FEATURES — CENTRAL CAUSES
+                "SCREENS FOR CENTRAL RED FLAGS — refer URGENTLY if ANY present:",
+                "  → New severe headache with vertigo (cerebellar bleed/posterior fossa tumour)",
+                "  → Diplopia, facial weakness, dysarthria, ataxia, nystagmus that is purely vertical (brainstem)",
+                "  → Sudden permanent unilateral hearing loss",
+                "  → Age > 50 with new progressive dizziness",
+                // EXAMINATION
+                "Tests for NYSTAGMUS — direction, horizontal vs vertical (vertical = central = urgent)",
+                "Performs DIX-HALLPIKE manoeuvre if BPPV suspected — patient lies back rapidly with head turned 45°; nystagmus after latency = positive",
+                "Checks HEARING: Rinne and Weber tuning fork tests at bedside",
+                "Checks blood pressure lying and standing — orthostatic hypotension as cause",
+                "Checks pulse for arrhythmia (AF can cause pre-syncopal dizziness)",
+                // MANAGEMENT — MÉNIÈRE'S (from session notes)
+                "MÉNIÈRE'S MANAGEMENT:",
+                "  → LIFESTYLE: strict LOW SALT DIET (< 1.5 g sodium/day); smoking cessation; reduce caffeine and alcohol",
+                "  → MEDICATION: Betahistine (Serc) 16 mg TDS — reduces endolymph pressure (main treatment)",
+                "  → ACUTE ATTACK: Prochlorperazine (Stemetil) for nausea/vomiting + vestibular sedation",
+                "  → DIURETICS: Bendroflumethiazide to reduce fluid pressure",
+                "  → REFERRAL: Refer to ENT for audiometry and caloric testing to CONFIRM diagnosis — this is the standard referral from session notes",
+                "Checks allergies before prescribing",
+                "Addresses ICE: reassures patient that vertigo with the pattern described is NOT a stroke or brain tumour — explains the inner ear mechanism simply; explains ENT referral plan",
+                "Advises patient on SAFETY: avoid driving during attacks, be careful on stairs, do not swim alone",
+                "Arranges follow-up after ENT review"
+            ],
+            poor: [
+                "Does not clarify the TYPE of dizziness — treats all dizziness the same",
+                "Does not apply the DURATION-BASED framework — cannot differentiate BPPV / Menière's / Labyrinthitis",
+                "Does not ask how long each attack lasts — the single most important diagnostic question",
+                "Does not ask whether dizziness is triggered by position — misses BPPV",
+                "Does not ask about tinnitus and hearing loss — misses the Menière's triad",
+                "Does not identify that unilateral tinnitus + unilateral hearing loss + episodic vertigo = Menière's triad",
+                "Does not know that Menière's attacks last HOURS (not seconds or days)",
+                "Does not advise low-salt diet — the most important lifestyle modification for Menière's",
+                "Does not refer to ENT — required referral per session notes",
+                "Does not know Betahistine (Serc) as the main maintenance treatment for Menière's",
+                "Does not screen for central red flags (brainstem signs, severe headache, vertical nystagmus)",
+                "Does not check blood pressure lying/standing — misses orthostatic hypotension",
+                "Does not check allergies before prescribing",
+                "Does not address patient's fear of brain tumour or stroke",
+                "Does not warn patient about safety during attacks (no driving)"
+            ]
+        },
+
         // ─── NOCTURNAL ENURESIS ──────────────────────────────────────────────────
         {
             cat: "Role Player",
