@@ -780,7 +780,9 @@
             cardNum: "06",
             q: "Sciatica — History, Examination & Management",
             good: [
-                "Establishes rapport and uses appropriate communication skills",
+                // INITIAL STEPS
+                "Knocks on the door, introduces self by name and role, establishes rapport before jumping into the complaint",
+                "Establishes rapport and uses appropriate communication skills throughout",
                 // DEFINITION / EDUCATION
                 "Explains sciatica: compression of the sciatic nerve causing pain, numbness, burning, or pins-and-needles that travel from the buttocks → down the leg → to the foot",
                 // HISTORY
@@ -788,9 +790,11 @@
                 "Asks about aggravating factors: sitting, coughing, sneezing, straining",
                 "Asks about alleviating factors: lying flat, short walks, analgesia",
                 "Identifies common causes: herniated disc, lumbar spinal stenosis, trauma, tumour, infection, obesity, pregnancy — asks about relevant risk factors",
-                "Screens for RED FLAGS (cauda equina): bladder/bowel dysfunction, saddle-area numbness, bilateral leg weakness — URGENT referral if present",
-                "Screens for serious causes: fever (infection), weight loss (tumour/malignancy), history of trauma",
-                "Asks about functional impact: work, driving, sleep",
+                // RED FLAGS — from the session notes
+                "Screens for RED FLAGS before proceeding: recent trauma or falls, unexplained weight loss, age > 50, history of cancer or malignancy — any present = urgent investigation",
+                "Screens for CAUDA EQUINA red flags: bladder/bowel dysfunction, saddle-area numbness, bilateral leg weakness — EMERGENCY referral if present",
+                "Screens for infectious causes: fever, night sweats (spinal osteomyelitis / epidural abscess)",
+                "Asks about functional impact: work, driving, sleep, daily activities",
                 "Elicits ICE: patient's ideas, concerns about surgery, expectations",
                 // EXAMINATION — LOOK / FEEL / MOVE / SPECIAL TESTS
                 "LOOK (front, side, back): posture, scoliosis, muscle wasting, skin changes",
@@ -801,24 +805,31 @@
                 "Tests neurological function: myotomes, dermatomes, deep tendon reflexes (knee jerk L3-L4, ankle jerk S1)",
                 // INVESTIGATIONS
                 "Requests investigations only if red flags or >6 weeks: X-ray lumbar spine, MRI lumbar spine (gold standard)",
-                // MANAGEMENT
-                "Explains diagnosis clearly and reassures: most cases resolve without surgery",
-                "Advises AGAINST bed rest — stay active, gentle walks",
-                "Prescribes: NSAIDs (Ibuprofen 400mg TID with food) + Paracetamol 1g QID; Gabapentin for neuropathic pain if needed",
+                // MANAGEMENT & COUNSELLING
+                "Explains diagnosis clearly and REASSURES patient: while painful, sciatica is often not life-threatening and most cases resolve without surgery",
+                "Advises AGAINST bed rest — stay active; recommends at least 30 minutes of gentle walking per day",
+                "ERGONOMICS ADVICE: teaches correct lifting technique — bend the knees (squat), keep the back straight, lift using the leg muscles rather than the back; avoid bending from the waist to lift heavy objects",
+                "ERGONOMICS ADVICE: advises lumbar support when sitting for long periods; adjust car/office seat, take regular breaks from driving",
+                "Checks for allergies before prescribing: Ibuprofen 400mg TID with food + Paracetamol 1g QID; Gabapentin for neuropathic pain if needed",
                 "Refers for physiotherapy; advises ergonomic seating and lumbar support",
                 "States red flags for immediate return: loss of bladder/bowel control, saddle numbness, sudden bilateral leg weakness",
-                "States referral criteria: cauda equina (emergency), progressive deficit, failure of conservative treatment after 6–8 weeks",
+                "States referral criteria: cauda equina (emergency), progressive neurological deficit, failure of conservative treatment after 6–8 weeks",
                 "Asks patient if he has any questions; gives clear follow-up plan (2–4 weeks)"
             ],
             poor: [
+                "Does not knock or introduce self properly before beginning the consultation",
                 "Does not explain that sciatica = nerve compression causing symptoms from buttock → leg → foot",
                 "Does not identify common causes (disc, stenosis, obesity, tumour, infection)",
-                "Does not screen for cauda equina red flags (bladder/bowel/saddle numbness)",
+                "Does not screen for RED FLAGS: trauma, weight loss, age > 50, malignancy history — misses serious spinal pathology",
+                "Does not screen for cauda equina red flags (bladder/bowel/saddle numbness) — most dangerous omission",
                 "Does not use Look / Feel / Move / Special Tests examination structure",
                 "Does not perform Straight Leg Raise (SLR) — the specific test for sciatica",
                 "Does not examine the knee (patella, Patella Tap Test)",
                 "Recommends bed rest (incorrect — worsens prognosis)",
+                "Does not give ergonomics advice — no lifting technique, no seating/driving advice",
+                "Does not reassure patient that surgery is rarely needed",
                 "Immediately refers to neurosurgery or orders MRI without red flag indication",
+                "Does not check drug allergies before prescribing",
                 "Does not elicit ICE or address patient's fear about surgery",
                 "Does not prescribe analgesia or refer for physiotherapy",
                 "Does not provide red flag warning or follow-up plan"
@@ -1940,6 +1951,118 @@
             ]
         },
 
+        // ─── HEPATITIS A IN CHILDREN ─────────────────────────────────────────────
+        {
+            cat: "Role Player",
+            type: "roleplay",
+            cardNum: "RP-20",
+            q: "Paediatric Hepatitis A — Role Player Information (Parent)",
+            patientName: "Um Youssef — mother of Youssef Khaled Al-Nasser",
+            age: "8 years old (child)",
+            background: "Mother brings her 8-year-old son. He developed yellow eyes 4 days ago, followed by yellow skin yesterday. He has been tired and refusing food for 1 week. Family lives in a building where several children have had similar symptoms in the past 3 weeks. Drinks tap water; occasionally eats street food near school.",
+            history: [
+                "Jaundice: yellow eyes first (4 days ago) → then yellow skin appeared yesterday",
+                "Urine is dark brown — 'like tea' — since the jaundice started",
+                "Stool has become pale/clay-coloured over the past 3 days",
+                "Vomiting: occasional, 1–2 times per day — not persistent; no blood",
+                "Abdominal pain: dull ache in the upper right side (RUQ) — started before the jaundice appeared",
+                "Fatigue: child is very tired and lethargic — more than usual; wants to lie down all day",
+                "Fever: low-grade (37.8°C) — started 1 week ago before the jaundice",
+                "Poor appetite: refusing most meals for the past week; accepting only liquids",
+                "No diarrhoea, no bleeding, no rash, no joint pain",
+                "Family history: neighbour's child had similar yellow eyes 3 weeks ago",
+                "Water source: mainly tap water; sometimes drinks from a shared water cooler at school",
+                "Food history: occasionally buys food from a street vendor near school",
+                "No known chronic liver disease, no previous jaundice, no medications",
+                "No known drug allergies",
+                "Mother's ICE: very scared — thinks it is something serious affecting the liver; worried about other children in the family catching it; wants to know if it will affect his liver permanently"
+            ],
+            rx: {
+                diagnosis: "Acute Hepatitis A — Paediatric (Self-limiting Viral Hepatitis)",
+                allergyNote: "NKDA — confirmed with mother; avoid ALL potentially hepatotoxic drugs",
+                drugs: [
+                    { name: "Paracetamol (Panadol) syrup",   dose: "15 mg/kg/dose ≈ 250 mg", timing: "Every 6 hrs PRN fever and discomfort — DO NOT exceed 4 doses/day. Use lowest effective dose." },
+                    { name: "Oral Rehydration Solution (ORS)", dose: "As needed",              timing: "Encourage fluids frequently throughout the day to prevent dehydration from vomiting/poor intake" },
+                    { name: "Vitamin K (if prolonged PT)",    dose: "1–2 mg",                 timing: "IM or oral — only if coagulation impaired (prolonged PT) — consult paediatric team" }
+                ],
+                followUp: "48–72 hours — LFTs, bilirubin trend, PT/INR. Advise home isolation for 2 weeks from symptom onset (infectious until 1 week after jaundice onset). Notify school.",
+                returnIf: "Deep jaundice worsening, confusion or drowsiness (encephalopathy), inability to keep any fluids down, bleeding (gums, bruising), INR > 1.5 — these indicate acute liver failure → EMERGENCY admission"
+            }
+        },
+
+        {
+            cat: "Pediatrics",
+            type: "checklist",
+            cardNum: "23",
+            q: "Paediatric Hepatitis A — History, Assessment & Management",
+            good: [
+                "Establishes rapport; greets child and mother; creates a calm, reassuring environment",
+                // HISTORY — SYMPTOM ONSET (from session notes)
+                "Asks: when did the symptoms first appear? — establishes timeline (prodrome before jaundice is typical in Hep A)",
+                "Asks specifically: did the child have fever, fatigue, or abdominal pain BEFORE the jaundice appeared? (prodromal phase = 1–2 weeks)",
+                // JAUNDICE ASSESSMENT (from session notes)
+                "Asks about JAUNDICE localisation: is the yellowing in the eyes only (scleral icterus), or also involving the skin? — quantifies severity",
+                "Asks about URINE colour: is it dark (like tea or Coca-Cola)? — conjugated hyperbilirubinaemia → cholestatic/hepatocellular pathology",
+                "Asks about STOOL colour: is it pale, clay, or normal coloured? — pale stool = obstructed bile flow; confirms hepatobiliary cause",
+                // ASSOCIATED SYMPTOMS (from session notes)
+                "Asks about VOMITING: is it persistent (every day, all day) or occasional? — persistent = more severe illness / risk of dehydration",
+                "Asks about general health and ENERGY: is the child unusually exhausted, lethargic, or weak? — severe fatigue = liver dysfunction",
+                "Asks about ABDOMINAL PAIN: where exactly is the pain? (upper right quadrant / RUQ = liver tenderness = classic Hepatitis A) — ask about radiation",
+                // FAMILY AND SOCIAL HISTORY (from session notes)
+                "Asks about FAMILY HISTORY: are other family members, classmates, or neighbours experiencing similar symptoms? — outbreak detection",
+                // ENVIRONMENTAL / SOURCE INVESTIGATION (from session notes)
+                "Asks about DRINKING WATER SOURCE: tap water, well water, bottled water, or shared water cooler at school? — faecal-oral transmission via contaminated water",
+                "Asks about FOOD HISTORY: does the child eat street food, raw shellfish, unwashed fruit/vegetables? — faecal-oral transmission via contaminated food",
+                "Asks about recent travel to areas with poor sanitation or hepatitis outbreaks",
+                // VACCINATION HISTORY
+                "Asks about Hepatitis A vaccination status — two-dose schedule; if vaccinated, consider other hepatitis serotypes or causes",
+                // DIFFERENTIAL DIAGNOSIS
+                "Considers differential diagnosis of paediatric jaundice: Hepatitis A/B/E (infectious), haemolysis (G6PD, sickle cell), biliary atresia/obstruction, drug-induced hepatitis, Wilson's disease in older children",
+                "Specifically asks about medications taken recently — even herbal remedies — that could be hepatotoxic",
+                // EXAMINATION
+                "Examines for jaundice: sclera, skin (adequate lighting), mucous membranes",
+                "Palpates abdomen gently: hepatomegaly (enlarged, tender liver = key sign of hepatitis), splenomegaly (in 10% of Hep A)",
+                "Checks for signs of severe disease: asterixis (liver flap), confusion, bleeding tendency — if present = fulminant hepatitis",
+                "Assesses hydration status: skin turgor, mucous membranes, capillary refill, urine output",
+                // INVESTIGATIONS
+                "Orders LIVER FUNCTION TESTS (LFTs): ALT/AST (markedly elevated in hepatitis — can be > 1000 IU/L), ALP, GGT, bilirubin (total, direct, indirect)",
+                "Orders HEPATITIS SEROLOGY: Anti-HAV IgM (confirms ACUTE Hepatitis A — positive from symptom onset for 3–6 months)",
+                "Orders FBC: check for anaemia, leucopenia (common in viral hepatitis)",
+                "Orders PT/INR: assesses synthetic liver function — most sensitive indicator of severity; prolonged PT = severe hepatitis",
+                "Orders urine dipstick: bilirubin in urine (bilirubinauria) confirms conjugated hyperbilirubinaemia",
+                // MANAGEMENT
+                "MANAGEMENT is SUPPORTIVE — Hepatitis A is self-limiting (no antiviral treatment)",
+                "Advises adequate oral hydration: clear fluids, ORS if vomiting; IV fluids if unable to maintain oral intake",
+                "Advises REST during the acute phase; light activity as tolerated when improving",
+                "AVOID hepatotoxic drugs: NO NSAIDs (ibuprofen), NO alcohol, MINIMAL Paracetamol (use lowest dose if needed for fever)",
+                "Advises LOW-FAT, easy-to-digest diet during jaundice phase; small frequent meals",
+                "Prescribes only Paracetamol (lowest effective dose) for fever/pain — confirms allergy before prescribing",
+                "INFECTION CONTROL: advise strict handwashing after toilet use, before food; avoid sharing utensils; report to school; avoid food handling",
+                "HOME ISOLATION: child should stay home for at least 1 week after onset of jaundice (infectious period)",
+                "CONTACT PROPHYLAXIS: advise Hepatitis A vaccination for close household contacts within 2 weeks of exposure",
+                "Addresses ICE: reassures mother that Hepatitis A is self-limiting and does NOT cause chronic liver disease in children; full recovery expected in 4–8 weeks",
+                "Explains red flags for urgent admission: encephalopathy, coagulopathy (bruising/bleeding), failure to maintain hydration",
+                "Arranges follow-up with repeat LFTs in 48–72 hours"
+            ],
+            poor: [
+                "Does not establish the timeline of symptoms (fails to identify the prodromal phase before jaundice)",
+                "Does not ask about jaundice localisation (eyes vs skin) to grade severity",
+                "Does not ask about urine colour (dark) or stool colour (pale) — misses cholestatic pattern",
+                "Does not differentiate persistent from occasional vomiting",
+                "Does not ask about family history of similar illness — misses outbreak detection",
+                "Does not ask about water source or food history — misses faecal-oral transmission route",
+                "Does not ask about medications or herbal remedies — misses drug-induced hepatitis",
+                "Does not order Anti-HAV IgM — the confirmatory test for Acute Hepatitis A",
+                "Does not order PT/INR — the most important indicator of liver synthetic function",
+                "Prescribes NSAIDs (Ibuprofen) or high-dose Paracetamol — contraindicated in liver disease",
+                "Does not advise home isolation or infection control measures",
+                "Does not inform about contact prophylaxis (Hepatitis A vaccine for household contacts)",
+                "Does not reassure mother that Hepatitis A does NOT cause chronic liver disease in children",
+                "Does not identify red flags for fulminant hepatitis (encephalopathy, coagulopathy)",
+                "Does not arrange follow-up with repeat LFTs"
+            ]
+        },
+
         // ─── NOCTURNAL ENURESIS ──────────────────────────────────────────────────
         {
             cat: "Role Player",
@@ -2012,12 +2135,13 @@
                 // MANAGEMENT — STEPWISE (from the image)
                 "STEP 1 — REASSURANCE: explains this is very common (1 in 6 children at age 5; resolves spontaneously at 15%/year), is NOT the child's fault, and is NOT a kidney disease",
                 "STEP 2 — DO NOT PUNISH: explicitly advises mother NOT to scold, shame, or punish the child — worsens psychological impact and does NOT help resolution",
-                "STEP 3 — FLUID / BLADDER HABITS: advise adequate fluid intake DURING the day; reduce fluid in the 2 hrs before bedtime; encourage voiding before sleep",
-                "STEP 4 — BED-WETTING ALARM (first-line non-pharmacological): explain mechanism — sensor in underwear; alarm wakes child when wetting begins; conditions bladder response over 3–4 months; most effective long-term treatment",
-                "STEP 5 — DESMOPRESSIN (DDAVP): first-line pharmacological; 0.2 mg tablet at bedtime; reduces urine production overnight; effective for school trips/sleepovers; restrict fluids 1 hr before and 8 hrs after dose",
-                "Rewards positive behaviour: star/sticker chart for dry nights — motivates child without punishment",
+                "STEP 3 — FLUID / BLADDER HABITS: advise adequate fluid intake DURING the day; reduce fluid in the 2 hrs before bedtime; ensure child goes to toilet immediately before sleep",
+                "STEP 4 — LIFTING TECHNIQUE: advise parents to gently wake the child at a regular set time (e.g. 11 PM — just before the typical wetting time) to use the bathroom; this reduces night-time accidents and trains the bladder rhythm WITHOUT waking the child fully",
+                "STEP 5 — BED-WETTING ALARM (first-line non-pharmacological): explain mechanism — sensor in underwear; alarm wakes child when wetting begins; conditions bladder response over 3–4 months; most effective long-term treatment",
+                "STEP 6 — DESMOPRESSIN (DDAVP): first-line pharmacological; 0.2 mg tablet at bedtime; reduces urine production overnight; effective for school trips/sleepovers; restrict fluids 1 hr before and 8 hrs after dose",
+                "POSITIVE REINFORCEMENT — Star Chart: use a reward chart (sticker or star for every dry night); praise and reward successes; NEVER punish or scold for wet nights — punishment worsens psychological impact and does NOT help",
                 "Asks about drug allergies before prescribing Desmopressin",
-                "Arranges follow-up in 4 weeks; advises spontaneous resolution likely by adolescence"
+                "Arranges follow-up in 4 weeks; advises spontaneous resolution likely by adolescence (15% resolve per year)"
             ],
             poor: [
                 "Does not classify as Primary vs Secondary (the most important distinction)",
