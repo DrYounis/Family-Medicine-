@@ -1846,6 +1846,100 @@
                 "Does not advise wrist splinting or refer for surgery when indicated",
                 "Does not elicit ICE or address patient's functional concerns"
             ]
+        },
+
+        // ─── NOCTURNAL ENURESIS ──────────────────────────────────────────────────
+        {
+            cat: "Role Player",
+            type: "roleplay",
+            cardNum: "RP-19",
+            q: "Nocturnal Enuresis — Role Player Information (Parent)",
+            patientName: "Um Khaled — mother of Khaled Nasser Al-Bishri",
+            age: "7 years old (child)",
+            background: "Mother brings her 7-year-old son to the clinic. She is visibly embarrassed and worried. Khaled is in primary school, year 2. He has always wet the bed at night — he has NEVER had a dry period of 6 months or more. No daytime accidents. No burning, no dripping, no excessive thirst. No stressors at home — parents are married, stable household. Father also had enuresis as a child (resolved by age 10).",
+            history: [
+                "Wetting the bed every night since birth — never achieved 6 consecutive dry nights (= Primary Nocturnal Enuresis)",
+                "Wets once per night, usually between 2–4 AM; sleeps very deeply; does not wake up when wet",
+                "No daytime accidents, no urinary urgency, no dribbling, no urge incontinence",
+                "No burning or pain during urination (no dysuria — rules out UTI)",
+                "No excessive thirst or polydipsia, no polyuria during the day (rules out Diabetes Mellitus)",
+                "No constipation, no soiling (rules out associated bowel dysfunction)",
+                "No recent life stressors: parents are together, no new sibling, no school bullying (rules out Secondary Enuresis trigger)",
+                "Child is healthy, growing well, fully vaccinated, hitting developmental milestones",
+                "Father had the same problem until age 10 — resolved on its own (strong family history)",
+                "Mother has tried restricting fluids before bed — helped slightly but not resolved",
+                "Has NOT tried bed-wetting alarm or any medication yet",
+                "No known drug allergies",
+                "Mother's ICE: very embarrassed; worried it means something is wrong with his kidneys or bladder; afraid it will affect his social life (sleepovers, school trips); hopes there is a medicine that will stop it quickly"
+            ],
+            rx: {
+                diagnosis: "Primary Nocturnal Enuresis — Monosymptomatic (No daytime symptoms, no secondary cause)",
+                allergyNote: "NKDA — confirmed with mother before prescribing",
+                drugs: [
+                    { name: "Desmopressin (DDAVP) nasal spray or tablet", dose: "Tablet: 0.2 mg (200 mcg)", timing: "Once at bedtime (30–60 min before sleep) — restrict fluid intake 1 hr before and 8 hrs after. Start with 1 week trial. Only use on school nights initially." },
+                    { name: "Enuresis Alarm",                dose: "—",        timing: "First-line non-drug treatment — attach sensor to underwear; alarm sounds when wet; conditions child to wake before voiding. Requires 3–4 months of consistent use. Best for motivated families." }
+                ],
+                followUp: "4 weeks — assess alarm usage compliance and Desmopressin response. Reassure mother: 15% of children resolve spontaneously each year. Avoid punishment, reward dry nights.",
+                returnIf: "New daytime wetting, burning urination, excessive thirst, blood in urine, or deterioration in school performance (screen for secondary cause)"
+            }
+        },
+
+        {
+            cat: "Pediatrics",
+            type: "checklist",
+            cardNum: "22",
+            q: "Nocturnal Enuresis — Assessment, Classification & Management",
+            good: [
+                "Establishes rapport; greets child and mother; creates non-judgemental, empathetic environment",
+                // HISTORY — CORE QUESTIONS (from the image)
+                "Asks: when did it start? Has the child EVER had 6 consecutive dry nights? (Primary vs Secondary)",
+                "Asks: age of child — NOTE: bedwetting is NORMAL under 5 years; only investigate and treat if ≥ 5 years",
+                "Asks: how often does wetting occur — every night, several nights per week, or occasional?",
+                "Asks: does it happen during the day too? (Daytime wetting = non-monosymptomatic = different management pathway)",
+                // EXCLUDE SECONDARY CAUSES — from the image (dripping, burning, thirsty)
+                "Screens for DAYTIME symptoms: urgency, frequency, dribbling (dripping) → suggests overactive bladder or structural problem",
+                "Screens for DYSURIA (burning on urination) → UTI → send urine dipstick / MSU",
+                "Screens for POLYURIA + POLYDIPSIA (excessive thirst and drinking) → Diabetes Mellitus or Diabetes Insipidus → check fasting glucose / urinalysis",
+                "Asks about CONSTIPATION and soiling — commonly co-exists with enuresis and worsens it",
+                "Asks about STRESS at home: parental separation, new sibling, school bullying, abuse — triggers Secondary Enuresis",
+                "Asks about SLEEP: depth of sleep, snoring, breathing pauses (OSA can cause enuresis)",
+                // CLASSIFICATION
+                "CLASSIFIES as PRIMARY: child has NEVER achieved 6 consecutive dry nights — most common; usually has family history",
+                "CLASSIFIES as SECONDARY: child WAS dry for ≥ 6 months then RELAPSED — suggests new psychological stressor, UTI, DM, constipation",
+                "Notes MONOSYMPTOMATIC (night wetting only) vs NON-MONOSYMPTOMATIC (day + night) — changes management",
+                // FAMILY HISTORY
+                "Asks about family history of enuresis: 75% chance if BOTH parents had it; 44% if ONE parent — strong genetic component",
+                // EXAMINATION
+                "Examines abdomen: palpates for full bladder or faecal mass (constipation)",
+                "Inspects lumbosacral spine: looks for midline dimple, hairy patch, lipoma (spina bifida occulta)",
+                "Checks lower limb reflexes and gait if neurological cause suspected",
+                // INVESTIGATIONS
+                "Orders urine dipstick (first-line): rules out UTI (nitrites, leucocytes), glycosuria (DM)",
+                "Orders urine specific gravity if Diabetes Insipidus suspected",
+                "Only orders ultrasound or further imaging if: daytime symptoms, UTI, abnormal examination, or treatment failure",
+                // MANAGEMENT — STEPWISE (from the image)
+                "STEP 1 — REASSURANCE: explains this is very common (1 in 6 children at age 5; resolves spontaneously at 15%/year), is NOT the child's fault, and is NOT a kidney disease",
+                "STEP 2 — DO NOT PUNISH: explicitly advises mother NOT to scold, shame, or punish the child — worsens psychological impact and does NOT help resolution",
+                "STEP 3 — FLUID / BLADDER HABITS: advise adequate fluid intake DURING the day; reduce fluid in the 2 hrs before bedtime; encourage voiding before sleep",
+                "STEP 4 — BED-WETTING ALARM (first-line non-pharmacological): explain mechanism — sensor in underwear; alarm wakes child when wetting begins; conditions bladder response over 3–4 months; most effective long-term treatment",
+                "STEP 5 — DESMOPRESSIN (DDAVP): first-line pharmacological; 0.2 mg tablet at bedtime; reduces urine production overnight; effective for school trips/sleepovers; restrict fluids 1 hr before and 8 hrs after dose",
+                "Rewards positive behaviour: star/sticker chart for dry nights — motivates child without punishment",
+                "Asks about drug allergies before prescribing Desmopressin",
+                "Arranges follow-up in 4 weeks; advises spontaneous resolution likely by adolescence"
+            ],
+            poor: [
+                "Does not classify as Primary vs Secondary (the most important distinction)",
+                "Does not ask if child has EVER had 6 consecutive dry nights",
+                "Does not screen for daytime symptoms (dribbling, urgency) — misses non-monosymptomatic enuresis",
+                "Does not screen for dysuria (UTI) or polydipsia (DM) — misses secondary organic causes",
+                "Does not ask about constipation, stress, or family history",
+                "Does not reassure mother that this is a normal, common developmental variant — not kidney disease",
+                "Does not explicitly advise AGAINST punishment or shaming the child",
+                "Does not advise fluid restriction in the evening and voiding before sleep",
+                "Does not discuss the bed-wetting alarm as first-line non-drug treatment",
+                "Does not ask about drug allergies before prescribing Desmopressin",
+                "Does not arrange appropriate follow-up"
+            ]
         }
     ];
 
