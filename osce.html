@@ -1655,6 +1655,9 @@
             cardNum: "18",
             q: "Abnormal Uterine Bleeding (AUB) in Early Pregnancy — Assessment & Management",
             good: [
+                // AGE-BASED AUB FRAMEWORK — think first before taking history
+                "APPLIES AGE-BASED FRAMEWORK: in a patient aged 20–30s → first priority is ruling out PREGNANCY-RELATED complications; in a patient aged 40–50+ → first priority is ruling out ENDOMETRIAL CARCINOMA",
+                "Asks patient's age at the start to immediately guide the differential diagnosis",
                 // INITIAL ASSESSMENT
                 "Builds rapport quickly; acknowledges patient's distress and anxiety with empathy",
                 "Confirms pregnancy status: asks about LMP, missed period, positive pregnancy test",
@@ -2060,6 +2063,288 @@
                 "Does not reassure mother that Hepatitis A does NOT cause chronic liver disease in children",
                 "Does not identify red flags for fulminant hepatitis (encephalopathy, coagulopathy)",
                 "Does not arrange follow-up with repeat LFTs"
+            ]
+        },
+
+        // ─── POST-MENOPAUSAL BLEEDING ────────────────────────────────────────────
+        {
+            cat: "Role Player",
+            type: "roleplay",
+            cardNum: "RP-21",
+            q: "Post-Menopausal Bleeding — Role Player Information",
+            patientName: "Samira Adel Farouk",
+            age: "54 years old",
+            background: "Retired teacher, married, 3 children, non-smoker, last menstrual period 3 years ago. BMI 29. No known chronic illness. Has not had any gynaecological check-up in 4 years.",
+            chiefComplaint: "Vaginal bleeding — appeared suddenly 5 days ago; last period was 3 years ago",
+            history: [
+                "Last menstrual period (LMP) was approximately 3 years ago — considered post-menopausal",
+                "Vaginal bleeding started suddenly 5 days ago — fresh red blood, moderate amount, no clots",
+                "Bleeding is continuous, not just spotting — uses 1–2 pads per day",
+                "Associated menopausal symptoms: hot flushes, night sweats, mood swings, occasional depression — started before periods stopped",
+                "Slight lower abdominal discomfort — no severe pain",
+                "Feels more tired than usual — may suggest anaemia",
+                "No weight loss, no change in bowel habits, no urinary symptoms",
+                "No hormone replacement therapy (HRT) currently or previously",
+                "No previous abnormal smear (Pap smear) — last done 5 years ago",
+                "No previous gynaecological surgery",
+                "Family history: mother had 'something in the uterus' — not sure what exactly",
+                "No known drug allergies",
+                "ICE: very frightened — knows post-menopausal bleeding is serious; worried it could be cancer; wants to know what is wrong and what will happen next"
+            ],
+            rx: {
+                diagnosis: "Post-Menopausal Bleeding — Urgent Investigation Required (Rule out Endometrial Carcinoma)",
+                allergyNote: "NKDA — confirmed before prescribing",
+                drugs: [
+                    { name: "Tranexamic acid (Capron)",       dose: "500 mg",    timing: "Three times daily × 5 days — to reduce active bleeding while awaiting investigation" },
+                    { name: "Daflon 500 mg",                  dose: "500 mg",    timing: "Twice daily × 5 days — reduces uterine bleeding" },
+                    { name: "Iron supplement (if anaemic)",   dose: "As per CBC", timing: "Ferrous sulphate once daily — after confirming anaemia on CBC" }
+                ],
+                followUp: "URGENT — Transvaginal Ultrasound (TVS) within 2 weeks. Endometrial biopsy if endometrial thickness > 4 mm on TVS. Gynaecology referral. CBC + Pap smear.",
+                returnIf: "Heavy bleeding (soaking > 2 pads/hr), fainting/dizziness, severe pelvic pain — Emergency admission"
+            }
+        },
+
+        {
+            cat: "Obstetrics",
+            type: "checklist",
+            cardNum: "24",
+            q: "Post-Menopausal Bleeding (PMB) — Assessment, Investigations & Management",
+            good: [
+                // FRAMEWORK
+                "APPLIES AGE-BASED AUB FRAMEWORK: patient aged 40–50+ with post-menopausal bleeding → first priority is ruling out ENDOMETRIAL CARCINOMA — treat as cancer until proven otherwise",
+                "States the rule: ANY vaginal bleeding occurring > 12 months after the last menstrual period = Post-Menopausal Bleeding → requires urgent gynaecological evaluation",
+                // HISTORY — MENOPAUSE (from session notes)
+                "Asks: when did the patient's periods stop (MENOPAUSE ONSET)? — confirms post-menopausal status",
+                "Asks about BLEEDING PATTERN: is it regular/cyclical (like a period = menorrhagia pattern) or irregular/unpredictable (metrorrhagia)? — helps identify the source",
+                "Characterises the bleeding: onset, duration, quantity (pads per day), colour, presence of clots",
+                // MENOPAUSAL SYMPTOMS (from session notes)
+                "Asks about ASSOCIATED MENOPAUSAL SYMPTOMS: hot flushes, night sweats, mood swings, depression, vaginal dryness — assesses oestrogen status",
+                "Asks about current or previous HRT (Hormone Replacement Therapy) — oestrogen-only HRT without progesterone increases endometrial carcinoma risk",
+                // SYSTEMIC / ANAEMIA SYMPTOMS (from session notes)
+                "Asks about SYSTEMIC SYMPTOMS suggesting anaemia: fatigue, pallor, shortness of breath, dizziness — indicates significant blood loss",
+                "Asks about weight loss, appetite change, pelvic pain — red flags for malignancy",
+                "Asks about bowel and urinary symptoms — spread of endometrial cancer to adjacent structures",
+                // RISK FACTORS FOR ENDOMETRIAL CARCINOMA
+                "Screens for ENDOMETRIAL CARCINOMA risk factors: obesity (BMI), nulliparity, late menopause, diabetes, unopposed oestrogen, family history of uterine/ovarian/colorectal cancer (Lynch syndrome)",
+                "Asks about previous Pap smear results and gynaecological history",
+                // EXAMINATION
+                "Checks vital signs: BP, HR — assess haemodynamic stability",
+                "Examines for pallor (anaemia), abdominal distension or masses",
+                "Notes: internal pelvic examination should be performed by gynaecologist if available — refer appropriately",
+                // INVESTIGATIONS (from session notes)
+                "Orders TRANSVAGINAL ULTRASOUND (TVS) — first-line imaging: measures endometrial thickness (normal post-menopausal = ≤ 4 mm; > 4 mm = abnormal → endometrial biopsy required)",
+                "Orders CBC (Full Blood Count) — checks for anaemia from blood loss",
+                "Orders PAP SMEAR (Cervical Smear) — to exclude cervical cause of bleeding",
+                "Refers for ENDOMETRIAL BIOPSY (Pipelle biopsy) if TVS shows endometrial thickness > 4 mm — gold standard for diagnosing endometrial carcinoma",
+                // MANAGEMENT (from session notes)
+                "Prescribes TRANEXAMIC ACID (Capron) or DAFLON to reduce active bleeding — after checking allergies",
+                "URGENT REFERRAL to Gynaecology for further evaluation and possible hysteroscopy + biopsy",
+                "Does NOT reassure patient prematurely — treats as serious until investigations exclude malignancy",
+                "Addresses ICE: acknowledges fear of cancer compassionately; explains the investigation plan clearly; provides honest, empathetic communication",
+                "Provides red flag advice: return immediately if heavy bleeding, fainting, or severe pain",
+                "Arranges urgent follow-up with investigation results"
+            ],
+            poor: [
+                "Does not apply the age-based framework — misses that post-menopausal bleeding = endometrial carcinoma until proven otherwise",
+                "Does not ask when menopause occurred — fails to confirm post-menopausal status",
+                "Does not ask about menopausal symptoms (hot flushes, night sweats, mood swings)",
+                "Does not screen for risk factors for endometrial carcinoma (obesity, HRT, diabetes, family history)",
+                "Does not order Transvaginal Ultrasound (TVS) as first-line investigation",
+                "Does not order CBC to check for anaemia",
+                "Does not order Pap smear to exclude cervical cause",
+                "Does not understand that endometrial thickness > 4 mm requires biopsy",
+                "Reassures patient without investigation — dangerous omission",
+                "Does not refer urgently to gynaecology",
+                "Does not check allergies before prescribing Capron or Daflon",
+                "Does not address patient's fear of cancer with empathy and a clear plan"
+            ]
+        },
+
+        // ─── OSTEOPOROSIS ─────────────────────────────────────────────────────────
+        {
+            cat: "Role Player",
+            type: "roleplay",
+            cardNum: "RP-22",
+            q: "Osteoporosis — Role Player Information",
+            patientName: "Hanan Mahmoud Qasim",
+            age: "57 years old",
+            background: "Housewife, married, 4 children, non-smoker, menopause at age 53. BMI 22 (slim build). Fell while walking last month — fractured her wrist. Has back pain for 6 months. Rarely eats dairy products. Does not exercise regularly. Never had a bone density scan.",
+            chiefComplaint: "Back pain for 6 months + wrist fracture last month after a minor fall",
+            history: [
+                "Back pain for 6 months — dull, constant, lower-mid back; not related to movement; does not radiate",
+                "Wrist fracture last month after falling on an outstretched hand — from standing height (low-energy/fragility fracture)",
+                "Menopause at age 53 — periods stopped completely; no HRT ever used",
+                "No previous fractures before this wrist fracture",
+                "Diet: rarely drinks milk or eats dairy products; limited fruit and vegetable intake; no calcium supplements",
+                "Exercise: minimal — mainly housework; no regular walking or weight-bearing activity",
+                "Non-smoker, no alcohol",
+                "No known history of thyroid disease, steroids, or medications affecting bone",
+                "Family history: mother had a 'hip fracture from a fall' at age 65",
+                "No known drug allergies",
+                "ICE: worried the bones are 'getting soft'; afraid of more fractures; wants to know how to prevent it; asks if there is a scan that checks bone strength"
+            ],
+            rx: {
+                diagnosis: "Osteoporosis — Post-Menopausal (with Fragility Fracture)",
+                allergyNote: "NKDA — confirmed before prescribing",
+                drugs: [
+                    { name: "Calcium Carbonate",              dose: "1200 mg elemental calcium", timing: "Daily in divided doses with meals (e.g., 600 mg twice daily) — take separately from iron/thyroid medication" },
+                    { name: "Vitamin D3 (Cholecalciferol)",   dose: "800–1000 IU",  timing: "Once daily with a fatty meal — enhances calcium absorption" },
+                    { name: "Alendronate (Fosamax)",          dose: "70 mg",        timing: "Once weekly — take on an empty stomach with a full glass of water; remain upright for 30 min after; do NOT take with food or other medications" }
+                ],
+                followUp: "6–12 months — repeat DEXA scan after 1–2 years of treatment to assess response. Review compliance with Alendronate. Monitor calcium and Vitamin D levels.",
+                returnIf: "New fracture after minimal trauma, severe back pain (vertebral compression fracture), difficulty swallowing or heartburn (Alendronate side effect), new jaw pain (osteonecrosis — rare)"
+            }
+        },
+
+        {
+            cat: "Obstetrics",
+            type: "checklist",
+            cardNum: "25",
+            q: "Osteoporosis — Risk Assessment, Investigations & Management",
+            good: [
+                "Establishes rapport; acknowledges patient's fear about bone strength and fractures",
+                // HISTORY — RISK FACTORS (from session notes)
+                "Asks about SMOKING history — smoking reduces bone density",
+                "Asks about CALCIUM INTAKE: does the patient consume dairy products (milk, yoghurt, cheese)? How often? — low calcium intake = major modifiable risk factor",
+                "Asks about FRACTURE HISTORY: has the patient had previous fractures? What was the mechanism? (fragility fracture = fracture from a low-energy fall e.g. standing height)",
+                "Asks about MENOPAUSAL HISTORY: when did periods stop? Has HRT ever been used? — oestrogen loss = primary cause of post-menopausal osteoporosis",
+                "Asks about MEDICATIONS that reduce bone density: corticosteroids (long-term), thyroid hormones (over-replacement), anticonvulsants, PPIs",
+                "Asks about PHYSICAL ACTIVITY: weight-bearing exercise (walking, climbing stairs) protects bone; sedentary lifestyle = risk",
+                "Asks about family history of osteoporosis or hip fractures — genetic component",
+                "Asks about alcohol consumption — excess alcohol impairs calcium absorption",
+                // EXAMINATION
+                "Measures height (loss of height = vertebral compression fractures)",
+                "Assesses BMI — low BMI is a risk factor for osteoporosis",
+                "Examines spine: kyphosis (dowager's hump), localised tenderness (vertebral fracture)",
+                // INVESTIGATIONS (from session notes)
+                "Orders DEXA SCAN (Dual-Energy X-ray Absorptiometry) — GOLD STANDARD for diagnosing osteoporosis; measures T-score",
+                "Interprets DEXA T-score: T-score ≥ −1.0 = Normal; −1.0 to −2.5 = Osteopaenia; ≤ −2.5 = Osteoporosis",
+                "Orders baseline bloods: serum calcium, phosphate, Vitamin D level, ALP, PTH — to exclude secondary causes",
+                "Orders X-ray of spine if vertebral fracture suspected (back pain + height loss)",
+                // MANAGEMENT — LIFESTYLE (from session notes)
+                "LIFESTYLE — WALKING: advises 30–60 minutes of weight-bearing exercise daily (walking, stair climbing) — stimulates bone remodelling",
+                "LIFESTYLE — DIET: advises high intake of fruit, vegetables, and dairy products; dietary calcium target 1200 mg/day",
+                "LIFESTYLE — FALL PREVENTION: advises home safety (remove rugs, improve lighting), physiotherapy for balance and strength",
+                // MANAGEMENT — SUPPLEMENTS (from session notes)
+                "SUPPLEMENTS: prescribes Calcium 1200 mg/day (in divided doses with meals) + Vitamin D 800–1000 IU/day — essential combination",
+                // MANAGEMENT — MEDICATION (from session notes)
+                "MEDICATION: prescribes ALENDRONATE (Fosamax) 70 mg once weekly — bisphosphonate; first-line treatment for osteoporosis",
+                "Explains HOW TO TAKE Alendronate: on empty stomach with full glass of water; remain upright for 30 min; do NOT take with food or other medications (reduces absorption and risk of oesophagitis)",
+                "Asks about drug allergies before prescribing",
+                "Addresses ICE: explains what osteoporosis is; reassures that treatment and lifestyle changes significantly reduce fracture risk",
+                "Arranges follow-up with DEXA scan after 1–2 years of treatment; monitors Vitamin D and calcium levels"
+            ],
+            poor: [
+                "Does not ask about calcium intake (dairy consumption) — the main modifiable dietary risk factor",
+                "Does not ask about smoking — modifiable risk factor for bone loss",
+                "Does not identify the wrist fracture as a FRAGILITY FRACTURE (low-energy = osteoporosis until proven otherwise)",
+                "Does not ask about medications that reduce bone density (steroids, PPIs, anticonvulsants)",
+                "Does not ask about menopausal history or HRT use",
+                "Does not order DEXA scan — the gold standard diagnostic tool",
+                "Does not know the T-score interpretation (Normal / Osteopaenia / Osteoporosis)",
+                "Does not advise walking 30–60 minutes daily as weight-bearing exercise",
+                "Does not prescribe Calcium 1200 mg/day + Vitamin D",
+                "Does not prescribe Alendronate (Fosamax) as first-line bisphosphonate",
+                "Does not explain how to take Alendronate correctly (fasting, upright position, timing)",
+                "Does not check allergies before prescribing",
+                "Does not arrange follow-up DEXA scan to monitor treatment response"
+            ]
+        },
+
+        // ─── INFERTILITY ──────────────────────────────────────────────────────────
+        {
+            cat: "Role Player",
+            type: "roleplay",
+            cardNum: "RP-23",
+            q: "Infertility Assessment — Role Player Information (Couple)",
+            patientName: "Mariam Hassan Al-Zubaidi",
+            age: "29 years old (wife) / Husband: Omar, 33 years old",
+            background: "Married 2 years, no children. Trying to conceive since marriage — unprotected intercourse for 14 months without success. Both are non-smokers. Wife has irregular cycles (every 35–45 days). No known medical conditions. Husband has had no previous children. Both appear anxious.",
+            chiefComplaint: "Unable to conceive after 14 months of trying",
+            history: [
+                "Married 2 years; trying to conceive since marriage — 14 months of regular, unprotected intercourse without pregnancy",
+                "Wife's menstrual cycle: irregular (35–45 days), sometimes skips a month; flow is normal",
+                "Wife denies previous pregnancies, no previous PID, no IUD, no pelvic surgeries",
+                "Wife's general health: BMI 28 (slightly overweight), no known chronic illness",
+                "Wife denies excessive hair growth, acne, or weight gain (screen for PCOS if asked directly — she does have mild acne)",
+                "Husband: no previous children from any relationship; no history of mumps, no scrotal surgery, no varicocele diagnosed",
+                "Husband: occasional alcohol (social), non-smoker, no medications",
+                "Both partners: non-smokers; no recreational drug use",
+                "No known drug allergies (either partner)",
+                "ICE: both very anxious; wife feels 'something is wrong with me'; husband has not sought any testing yet; both hoping for a diagnosis and a treatment plan; wife asks 'will I ever be able to have children?'"
+            ],
+            rx: {
+                diagnosis: "Primary Infertility — Under Investigation (Both Partners)",
+                allergyNote: "NKDA — confirmed for both partners before any prescription",
+                drugs: [
+                    { name: "Folic acid",                     dose: "5 mg",     timing: "Once daily — wife should take before conception and throughout first trimester (neural tube defect prevention)" },
+                    { name: "Clomiphene citrate (Clomid) — only if anovulation confirmed", dose: "50 mg", timing: "Days 2–6 of cycle × 6 cycles — ovulation induction; only after hormonal workup confirms anovulation (e.g., PCOS)" }
+                ],
+                followUp: "After full investigation results: male (semen analysis) + female (hormonal profile, pelvic US). Refer to fertility specialist / reproductive endocrinologist if no cause found or if treatment needed.",
+                returnIf: "Wife: signs of OHSS if on Clomid (severe bloating, pain — Emergency). Husband: any new testicular pain or swelling."
+            }
+        },
+
+        {
+            cat: "Obstetrics",
+            type: "checklist",
+            cardNum: "26",
+            q: "Infertility — Assessment of Both Partners & Initial Investigations",
+            good: [
+                "Establishes rapport with BOTH partners; creates a non-judgemental, private, and supportive environment",
+                // DEFINITION (from session notes)
+                "DEFINES INFERTILITY correctly: failure to conceive after 12 months of regular, unprotected sexual intercourse (investigate earlier if female age > 35, or known risk factors present)",
+                "Confirms duration: couple is investigated after ONE YEAR of trying — this couple qualifies (14 months)",
+                // FEMALE HISTORY (from session notes)
+                "FEMALE — asks about CYCLE REGULARITY: regular cycles suggest ovulation is occurring; irregular cycles (> 35 days or skipped months) suggest anovulation — screen for PCOS, hypothyroidism, hyperprolactinaemia",
+                "FEMALE — asks about history of PELVIC INFLAMMATORY DISEASE (PID), previous STIs, or IUD use — tubal factor infertility",
+                "FEMALE — asks about previous pregnancies (with current or previous partner) and outcomes",
+                "FEMALE — asks about pelvic or abdominal surgeries — adhesions, tubal damage",
+                "FEMALE — screens for PCOS features: irregular cycles, weight gain, acne, hirsutism (excessive hair), polycystic ovaries on ultrasound",
+                "FEMALE — asks GENERAL HEALTH and BMI: obesity and underweight both impair ovulation; advises healthy BMI 18.5–24.9",
+                // MALE HISTORY (from session notes)
+                "MALE — asks about history of VARICOCELE — most common reversible cause of male infertility",
+                "MALE — asks about history of INFECTIONS: orchitis (mumps), epididymo-orchitis, STIs — can damage sperm production",
+                "MALE — asks about previous SURGERIES: vasectomy, hernia repair, scrotal surgery — can obstruct vas deferens",
+                "MALE — asks about erectile function, ejaculation, and libido",
+                // LIFESTYLE — BOTH PARTNERS (from session notes)
+                "Asks BOTH partners about SMOKING — smoking impairs sperm count and quality + reduces ovarian reserve",
+                "Asks BOTH partners about ALCOHOL CONSUMPTION — excess alcohol impairs fertility in both sexes",
+                "Asks about recreational drug use, anabolic steroids (sperm suppression), extreme exercise",
+                // EXAMINATION
+                "Examines female: BMI, hirsutism, acne (PCOS signs), thyroid, abdominal tenderness/masses",
+                "Advises male physical examination by urologist: testicular size, varicocele, epididymis",
+                // INVESTIGATIONS — FEMALE (from session notes)
+                "Orders HORMONAL PROFILE for female: FSH (follicle-stimulating hormone) and LH (luteinising hormone) — assesses ovarian reserve and ovulation; measure on day 2–3 of cycle",
+                "Orders additional hormones: Prolactin (hyperprolactinaemia = anovulation), TSH (thyroid), AMH (ovarian reserve), oestradiol",
+                "Orders PELVIC ULTRASOUND: assesses ovaries (antral follicle count, polycystic appearance), uterus (fibroids, polyps, anomalies), tubes (hydrosalpinx)",
+                "Mentions HYSTEROSALPINGOGRAPHY (HSG) to assess tubal patency — if tubes blocked = tubal factor",
+                // INVESTIGATIONS — MALE (from session notes)
+                "Orders SEMEN ANALYSIS — the ESSENTIAL first-line investigation for the male partner; assesses volume, count, motility, morphology (WHO criteria)",
+                "Interprets semen analysis: oligospermia (low count), asthenospermia (poor motility), teratospermia (abnormal morphology), azoospermia (no sperm)",
+                // MANAGEMENT
+                "Prescribes FOLIC ACID 5 mg daily for the female partner — neural tube defect prevention before conception",
+                "Advises LIFESTYLE MODIFICATIONS for both: stop smoking, reduce alcohol, achieve healthy BMI, moderate exercise, avoid tight underwear (male — scrotal temperature)",
+                "Advises TIMING OF INTERCOURSE: regular intercourse every 2–3 days throughout the cycle maximises conception chances",
+                "Refers to fertility specialist if: no cause found after workup, tubal blockage confirmed, severe male factor (azoospermia), or no pregnancy after 6 cycles of treatment",
+                "Addresses ICE: reassures both partners that infertility is a medical condition affecting both sexes equally; investigation is a shared process; many causes are treatable",
+                "Asks about drug allergies before prescribing",
+                "Arranges follow-up after all investigation results are available"
+            ],
+            poor: [
+                "Does not define infertility correctly (fails to state 12 months of unprotected intercourse)",
+                "Does not assess BOTH partners — focuses only on the female",
+                "Does not ask about cycle regularity — misses anovulation as a cause",
+                "Does not screen for PCOS features (irregular cycles, acne, hirsutism, weight gain)",
+                "Does not ask the male about varicocele, infections, or previous surgeries",
+                "Does not ask both partners about smoking and alcohol — modifiable lifestyle risk factors",
+                "Does not order FSH and LH as part of the female hormonal profile",
+                "Does not order semen analysis as the first-line investigation for the male partner",
+                "Does not prescribe Folic acid for the female partner",
+                "Does not check allergies before prescribing",
+                "Does not address both partners' emotional concerns — fails to create a non-judgemental environment",
+                "Does not refer to a fertility specialist when indicated",
+                "Does not advise on timing of intercourse or lifestyle modifications"
             ]
         },
 
