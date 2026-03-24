@@ -36,6 +36,16 @@
         .mode-tab:hover { background: rgba(255,255,255,0.15); }
         .mode-tab.active { background: white; color: #7c3aed; border-color: white; }
 
+        /* System filter */
+        .system-filter-wrap { background: #f8f7ff; border-bottom: 2px solid var(--border); padding: 10px 16px; overflow-x: auto; }
+        .system-filter { display: flex; gap: 7px; white-space: nowrap; align-items: center; }
+        .system-label { font-family: 'Cairo', sans-serif; font-size: 0.78em; font-weight: 700; color: var(--muted); margin-left: 4px; flex-shrink: 0; }
+        .sys-btn { padding: 5px 13px; border-radius: 18px; border: 2px solid var(--border);
+            background: white; color: var(--muted); font-family: 'Cairo', sans-serif;
+            font-weight: 700; font-size: 0.78em; cursor: pointer; transition: all 0.18s; white-space: nowrap; }
+        .sys-btn:hover { border-color: #6d28d9; color: #6d28d9; background: #ede9fe; }
+        .sys-btn.active { background: #6d28d9; color: white; border-color: #6d28d9; }
+
         /* Case selector */
         .case-selector-wrap { background: white; border-bottom: 2px solid var(--border); padding: 12px 16px; overflow-x: auto; }
         .case-selector { display: flex; gap: 8px; white-space: nowrap; justify-content: flex-start; }
@@ -201,6 +211,19 @@
     </div>
 </div>
 
+<!-- System filter -->
+<div class="system-filter-wrap">
+    <div class="system-filter" id="system-filter">
+        <span class="system-label">🗂️ التخصص:</span>
+        <button class="sys-btn active" data-sys="all" onclick="setSystem('all',this)">الكل</button>
+        <button class="sys-btn" data-sys="باطنة" onclick="setSystem('باطنة',this)">🫀 باطنة</button>
+        <button class="sys-btn" data-sys="أطفال" onclick="setSystem('أطفال',this)">👶 أطفال</button>
+        <button class="sys-btn" data-sys="عضلات وعظام" onclick="setSystem('عضلات وعظام',this)">🦴 عضلات وعظام</button>
+        <button class="sys-btn" data-sys="نساء وتوليد" onclick="setSystem('نساء وتوليد',this)">🤰 نساء وتوليد</button>
+        <button class="sys-btn" data-sys="أعصاب" onclick="setSystem('أعصاب',this)">🧠 أعصاب</button>
+    </div>
+</div>
+
 <!-- Case selector -->
 <div class="case-selector-wrap">
     <div class="case-selector" id="case-selector"></div>
@@ -248,7 +271,7 @@ const cases = [
 
     // ── 1. عرق النسا / Sciatica ──────────────────────────────────
     {
-        id: 'sciatica',
+        id: 'sciatica', system: 'عضلات وعظام',
         name: 'عرق النسا (Sciatica)',
         icon: '🦵',
         color: '#7c3aed', colorLight: '#ede9fe',
@@ -337,7 +360,7 @@ const cases = [
 
     // ── 2. القدم السكرية / Diabetic Foot ─────────────────────────
     {
-        id: 'diabetic-foot',
+        id: 'diabetic-foot', system: 'باطنة',
         name: 'القدم السكرية',
         icon: '🦶',
         color: '#059669', colorLight: '#f0fdf4',
@@ -395,7 +418,7 @@ const cases = [
 
     // ── 3. IMCI — تقييم الطفل ─────────────────────────────────────
     {
-        id: 'imci',
+        id: 'imci', system: 'أطفال',
         name: 'IMCI — تقييم الطفل',
         icon: '👶',
         color: '#db2777', colorLight: '#fdf2f8',
@@ -439,7 +462,7 @@ const cases = [
 
     // ── 4. نزلة البرد vs التهاب الجيوب ─────────────────────────────
     {
-        id: 'cold-sinusitis',
+        id: 'cold-sinusitis', system: 'أطفال',
         name: 'نزلة برد أم جيوب أنفية؟',
         icon: '🤧',
         color: '#2563eb', colorLight: '#eff6ff',
@@ -474,7 +497,7 @@ const cases = [
 
     // ── 5. التهاب الأذن الوسطى (AOM) ─────────────────────────────
     {
-        id: 'aom',
+        id: 'aom', system: 'أطفال',
         name: 'التهاب الأذن الوسطى (AOM)',
         icon: '👂',
         color: '#d97706', colorLight: '#fffbeb',
@@ -518,7 +541,7 @@ const cases = [
 
     // ── 6. فقر الدم بالحديد (IDA) ─────────────────────────────────
     {
-        id: 'ida',
+        id: 'ida', system: 'أطفال',
         name: 'فقر الدم بالحديد (IDA)',
         icon: '🩸',
         color: '#dc2626', colorLight: '#fef2f2',
@@ -570,7 +593,7 @@ const cases = [
 
     // ── 7. الغدة الدرقية / Thyroid ───────────────────────────────
     {
-        id: 'thyroid',
+        id: 'thyroid', system: 'باطنة',
         name: 'الغدة الدرقية',
         icon: '🦋',
         color: '#7c3aed', colorLight: '#ede9fe',
@@ -626,7 +649,7 @@ const cases = [
 
     // ── 8. فحص الأعصاب القحفية / Cranial Nerves ─────────────────
     {
-        id: 'cranial-nerve',
+        id: 'cranial-nerve', system: 'أعصاب',
         name: 'الأعصاب القحفية',
         icon: '🧠',
         color: '#059669', colorLight: '#f0fdf4',
@@ -667,7 +690,7 @@ const cases = [
 
     // ── 9. حصوة الكلى / Renal Stone ──────────────────────────────
     {
-        id: 'renal-stone',
+        id: 'renal-stone', system: 'باطنة',
         name: 'حصوة الكلى',
         icon: '🪨',
         color: '#d97706', colorLight: '#fffbeb',
@@ -719,7 +742,7 @@ const cases = [
 
     // ── 10. السكري / Diabetes Mellitus ───────────────────────────
     {
-        id: 'dm',
+        id: 'dm', system: 'باطنة',
         name: 'السكري (DM) وخطر القلب',
         icon: '🩺',
         color: '#2563eb', colorLight: '#eff6ff',
@@ -790,7 +813,7 @@ const cases = [
 
     // ── 11. ألم الصدر — التفريق ──────────────────────────────────
     {
-        id: 'chest-pain',
+        id: 'chest-pain', system: 'باطنة',
         name: 'ألم الصدر — التفريق',
         icon: '❤️',
         color: '#dc2626', colorLight: '#fef2f2',
@@ -836,7 +859,7 @@ const cases = [
 
     // ── 12. مريض السكري عالي الخطر + ألم الصدر ──────────────────
     {
-        id: 'dm-chest',
+        id: 'dm-chest', system: 'باطنة',
         name: 'سكري عالي الخطر + ألم صدر',
         icon: '🚨',
         color: '#dc2626', colorLight: '#fef2f2',
@@ -906,7 +929,7 @@ const cases = [
 
     ,
     {
-        id: 'gerd',
+        id: 'gerd', system: 'باطنة',
         name: 'GERD / ارتجاع المريء',
         icon: '🔥',
         color: '#dc2626', colorLight: '#fef2f2',
@@ -1064,7 +1087,7 @@ const cases = [
 
     // ── COVID-19 ──────────────────────────────────────────────────────────
     {
-        id: 'covid-pediatric',
+        id: 'covid-pediatric', system: 'أطفال',
         name: 'كوفيد-١٩ (طفل)',
         icon: '🦠',
         color: '#0891b2', colorLight: '#ecfeff',
@@ -1129,7 +1152,7 @@ const cases = [
 
     // ── EMESIS GRAVIDARUM ──────────────────────────────────────────────────
     {
-        id: 'emesis',
+        id: 'emesis', system: 'نساء وتوليد',
         name: 'قيء الحمل (Emesis Gravidarum)',
         icon: '🤰',
         color: '#7c3aed', colorLight: '#faf5ff',
@@ -1194,7 +1217,7 @@ const cases = [
 
     // ── AUB ───────────────────────────────────────────────────────────────
     {
-        id: 'aub',
+        id: 'aub', system: 'نساء وتوليد',
         name: 'نزيف الرحم الشاذ (AUB)',
         icon: '🩸',
         color: '#be185d', colorLight: '#fdf2f8',
@@ -1248,7 +1271,7 @@ const cases = [
 
     // ── SHOULDER EXAMINATION ──────────────────────────────────────────────
     {
-        id: 'shoulder-exam',
+        id: 'shoulder-exam', system: 'عضلات وعظام',
         name: 'فحص الكتف (Shoulder Examination)',
         icon: '🦾',
         color: '#7c3aed', colorLight: '#faf5ff',
@@ -1314,7 +1337,7 @@ const cases = [
 
     // ── ELBOW EXAMINATION ─────────────────────────────────────────────────
     {
-        id: 'elbow-exam',
+        id: 'elbow-exam', system: 'عضلات وعظام',
         name: 'فحص الكوع (Elbow Examination)',
         icon: '💪',
         color: '#0891b2', colorLight: '#ecfeff',
@@ -1366,7 +1389,7 @@ const cases = [
 
     // ── HAND / CTS EXAMINATION ────────────────────────────────────────────
     {
-        id: 'hand-cts-exam',
+        id: 'hand-cts-exam', system: 'عضلات وعظام',
         name: 'فحص اليد ومتلازمة النفق الرسغي (CTS)',
         icon: '🤚',
         color: '#059669', colorLight: '#f0fdf4',
@@ -1977,8 +2000,24 @@ let currentCase = 0;
 let done = {};   // done[caseId][stepIndex] = true
 let practiceIndex = 0;
 let currentMode = 'reference';
+let selectedSystem = 'all';
 
 cases.forEach(c => { done[c.id] = {}; });
+
+// ═══════════════════════════════════════════════════════════════
+//  SYSTEM FILTER
+// ═══════════════════════════════════════════════════════════════
+function setSystem(sys, btn) {
+    selectedSystem = sys;
+    document.querySelectorAll('.sys-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    buildCaseSelector();
+}
+
+function getFilteredCases() {
+    if (selectedSystem === 'all') return cases.map((c, i) => ({ c, i }));
+    return cases.map((c, i) => ({ c, i })).filter(({ c }) => c.system === selectedSystem);
+}
 
 // ═══════════════════════════════════════════════════════════════
 //  RENDER
@@ -1986,7 +2025,17 @@ cases.forEach(c => { done[c.id] = {}; });
 function buildCaseSelector() {
     const sel = document.getElementById('case-selector');
     sel.innerHTML = '';
-    cases.forEach((c, i) => {
+    const filtered = getFilteredCases();
+    // If current case not in filtered set, switch to first in filtered
+    const ids = filtered.map(({ i }) => i);
+    if (!ids.includes(currentCase) && filtered.length > 0) {
+        currentCase = filtered[0].i;
+        practiceIndex = 0;
+        renderReference();
+        if (currentMode === 'practice') renderPractice();
+        renderProgress();
+    }
+    filtered.forEach(({ c, i }) => {
         const btn = document.createElement('button');
         btn.className = 'case-btn' + (i === currentCase ? ' active' : '');
         btn.textContent = c.icon + ' ' + c.name;
@@ -1998,8 +2047,9 @@ function buildCaseSelector() {
 function selectCase(index) {
     currentCase = index;
     practiceIndex = 0;
-    document.querySelectorAll('.case-btn').forEach((b, i) => {
-        b.classList.toggle('active', i === currentCase);
+    const filtered = getFilteredCases();
+    document.querySelectorAll('.case-btn').forEach((btn, pos) => {
+        btn.classList.toggle('active', filtered[pos] && filtered[pos].i === currentCase);
     });
     renderReference();
     if (currentMode === 'practice') renderPractice();
