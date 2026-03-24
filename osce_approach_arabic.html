@@ -999,16 +999,51 @@ const cases = [
             },
             {
                 tag: 'قرار العلاج', tagColor: '#eff6ff', tagText: '#2563eb',
-                title: 'تحديد خطة العلاج — دواء أم منظار؟',
+                title: 'قبل الدواء — اسأل عن الحساسية — اكتب الروشتة صح',
                 phrases: [
-                    { label: '💬 لو مفيش Red Flags', text: '"بناءً على كلامك وإن مفيش علامات خطيرة، هنكمّل مع العلاج الدوائي دلوقتي."<br>"مش محتاج منظار في الوقت ده، الأعراض ناسبة لـ GERD وردّت على العلاج."<br>"هنراجع مع بعض بعد ٤-٨ أسابيع."' },
-                    { label: '💊 شرح الـ PPI', text: '"الدواء ده بيقلل الحموضة اللي المعدة بتفرزها."<br>"لازم تاخده قبل الأكل بـ ٣٠ دقيقة عشان يشتغل صح."<br>"الكورس من ٤ لـ ٨ أسابيع — ما توقفهوش لوحدك."' },
-                    { label: '🔭 لو في Red Flag', text: '"هنعملك منظار للمعدة — ده إجراء بسيط وبيخدروك خفيف."<br>"المنظار هيخلينا نشوف جدار المريء والمعدة مباشرة."<br>"هتاخد موعد وهتصوم من الليل — بياخد ١٠-١٥ دقيقة بس."' }
+                    {
+                        label: '⚠️ الخطوة الأولى — حساسية لاي دواء؟',
+                        text: '<b>"قبل ما أوصفلك أي دواء — لازم أسألك سؤال مهم:"</b><br><b>"عندك حساسية لأي دواء؟ — سواء بانادول، مضادات حيوية، أي حاجة؟"</b><br>"حصلتلك يوم من الأيام طفح جلدي، ضيق تنفس، أو تورم بعد دواء؟"<br><br><i>✅ لو مفيش: "ممتاز، هنكمّل."</i><br><i>🚨 لو في حساسية: اكتبها على الروشتة — واختر دواء بديل.</i>'
+                    },
+                    {
+                        label: '💬 القرار — دواء ولا منظار؟',
+                        text: '"بناءً على كلامك وإن مفيش علامات خطيرة، هنكمّل مع العلاج الدوائي دلوقتي."<br>"مش محتاج منظار في الوقت ده — الأعراض ناسبة لـ GERD."<br><br><b>لو في Red Flag:</b><br>"هنعملك منظار للمعدة — إجراء بسيط وبيخدروك خفيف — بياخد ١٠-١٥ دقيقة بس."'
+                    },
+                    {
+                        label: '📋 الروشتة — اكتبها كده بالظبط',
+                        text: `<div style="font-family:monospace;background:#f8fafc;border:2px solid #cbd5e1;border-radius:10px;padding:14px;font-size:0.82em;line-height:1.9;direction:ltr;text-align:left;">
+<b>Rx</b><br>
+<b>Patient Name:</b> ___________________<br>
+<b>Date:</b> ___________________<br>
+<b>Diagnosis:</b> Gastroesophageal Reflux Disease (GERD) — <i>[Mild / Moderate / Severe]</i><br>
+<b>Allergies:</b> <span style="color:#dc2626">NKDA</span> &nbsp;/&nbsp; <span style="color:#dc2626">Allergic to: ___________</span><br>
+<hr style="border-color:#cbd5e1;margin:6px 0">
+<b>① Omeprazole</b> 20 mg capsule<br>
+&nbsp;&nbsp;— Mild: 1 cap <u>once daily</u> before breakfast × <b>4 weeks</b><br>
+&nbsp;&nbsp;— Moderate: 1 cap <u>once daily</u> before breakfast × <b>8 weeks</b><br>
+&nbsp;&nbsp;— Severe: 1 cap <u>twice daily</u> (before breakfast &amp; dinner) × <b>8 weeks</b><br>
+<br>
+<b>② Lifestyle advice</b> (written on prescription):<br>
+&nbsp;&nbsp;— Avoid fatty/spicy food, caffeine, carbonated drinks<br>
+&nbsp;&nbsp;— No lying down for 3 hrs after meals<br>
+&nbsp;&nbsp;— Elevate head of bed 15–20 cm<br>
+&nbsp;&nbsp;— Lose weight if BMI > 25<br>
+<hr style="border-color:#cbd5e1;margin:6px 0">
+<b>Follow-up:</b> After <i>[4 / 8]</i> weeks<br>
+<b>Return immediately if:</b> Dysphagia 🔴 | Haematemesis 🔴 | Melaena 🔴 | Weight loss 🔴<br>
+<br>
+<b>Dr. ___________________</b>&nbsp;&nbsp;&nbsp;Signature: _______
+</div>`
+                    },
+                    {
+                        label: '💊 اشرح الدواء للمريض بالعامية',
+                        text: '"الكبسولة دي بتقلل الحموضة اللي معدتك بتعملها."<br>"لازم تاخدها <b>قبل الأكل بنص ساعة</b> — على معدة فاضية — الصبح."<br>"الكورس لازم تكمله حتى لو اتحسنت — <b>ما توقفهوش لوحدك.</b>"<br>"لو ما اتحسنتش بعد ٤-٨ أسابيع — رجعلي فوراً."'
+                    }
                 ],
                 clinical: {
                     type: 'two-col',
                     left: { color: 'red', title: '🔴 محتاج منظار', items: ['أي Red Flag موجود', 'العمر > ٥٥ وجديد', 'فشل PPI ٨ أسابيع', 'تاريخ عائلي سرطان المعدة'] },
-                    right: { color: 'green', title: '🟢 استمر في العلاج', items: ['لا يوجد Red Flags', 'أعراض نمطية GERD', 'استجابة للـ PPI', 'أصغر من ٥٥ سنة'] }
+                    right: { color: 'green', title: '🟢 استمر في العلاج', items: ['لا يوجد Red Flags', 'أعراض نمطية GERD', 'مبادئ الروشتة: NKDA + التشخيص + الجرعة + المدة + الفولو أب', 'أصغر من ٥٥ سنة'] }
                 }
             },
             {
