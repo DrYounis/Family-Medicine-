@@ -471,6 +471,14 @@
     <div style="padding-top: 16px;">
         <div class="filter-row" id="filter-row"></div>
 
+        <div style="padding: 6px 0 4px;">
+            <input id="search-box" type="text" placeholder="🔍 Search by topic, e.g. enuresis, peptic, diabetes…"
+                oninput="applyFilters()"
+                style="width:100%;max-width:640px;padding:9px 14px;border:1.5px solid #d1d5db;border-radius:8px;
+                       font-size:0.93em;outline:none;box-shadow:0 1px 3px rgba(0,0,0,0.06);
+                       font-family:inherit;color:#1f2937;background:#fff;display:block;box-sizing:border-box;">
+        </div>
+
         <div class="stats-bar">
             <div class="stat-pill"><span class="dot dot-reviewed"></span> Reviewed: <strong id="stat-reviewed">0</strong></div>
             <div class="stat-pill">Showing: <strong id="stat-showing">0</strong></div>
@@ -2600,9 +2608,26 @@
     }
 
     function applyFilters() {
+        const raw = (document.getElementById('search-box')?.value || '').trim().toLowerCase();
         filteredIndices = questionBank
             .map((item, i) => i)
-            .filter(i => activeCategory === 'All' || questionBank[i].cat === activeCategory);
+            .filter(i => {
+                const item = questionBank[i];
+                const catOk = activeCategory === 'All' || item.cat === activeCategory;
+                if (!raw) return catOk;
+                const haystack = [
+                    item.q || '',
+                    item.cat || '',
+                    item.cardNum || '',
+                    item.patientName || '',
+                    item.chiefComplaint || '',
+                    item.background || '',
+                    (item.good || []).join(' '),
+                    (item.poor || []).join(' '),
+                    (item.history || []).join(' ')
+                ].join(' ').toLowerCase();
+                return catOk && haystack.includes(raw);
+            });
         renderQuiz();
     }
 
