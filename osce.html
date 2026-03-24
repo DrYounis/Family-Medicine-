@@ -2348,6 +2348,128 @@
             ]
         },
 
+        // ─── PEPTIC ULCER DISEASE ────────────────────────────────────────────────
+        {
+            cat: "Role Player",
+            type: "roleplay",
+            cardNum: "RP-24",
+            q: "Peptic Ulcer Disease (PUD) — Role Player Information",
+            patientName: "Ahmad Sami Al-Rashid",
+            age: "42 years old",
+            background: "Accountant, married, 3 children, smoker (1 pack/day × 10 years), occasional alcohol (2–3 drinks/week). Takes ibuprofen 400 mg regularly for chronic lower back pain — at least 3–4 times per week for the past 4 months. No known drug allergies. Denies previous stomach problems.",
+            chiefComplaint: "Burning pain in the upper stomach for 3 months — wakes him up at night",
+            history: [
+                "EPIGASTRIC BURNING PAIN for 3 months — gnawing/burning in nature; located in the upper-middle abdomen",
+                "TIMING: worst at night (2–3 AM) and when fasting — reliably wakes him from sleep (classic DUODENAL ULCER pattern)",
+                "RELIEF: eating food or drinking milk temporarily relieves the pain within 15–20 minutes",
+                "Associated nausea, no vomiting",
+                "ALARM SYMPTOM — MALAENA: one episode of black tarry stool last week — mention only if directly asked about stool colour or blood in stool",
+                "No haematemesis (no vomiting blood)",
+                "No significant unintentional weight loss",
+                "No dysphagia (no difficulty swallowing)",
+                "No jaundice, no change in urine colour",
+                "NSAID USE: ibuprofen 400 mg 3–4 × per week for back pain — mention if asked about medications or pain relief",
+                "Smoker (1 pack/day), occasional alcohol",
+                "Father had 'a stomach problem' treated with antibiotics years ago (hint at H. pylori if asked about family history)",
+                "No previous endoscopy, no previous H. pylori test",
+                "No known drug allergies",
+                "ICE: worried the pain is something serious; scared it might be cancer since his father had 'stomach issues'; asks if he needs a camera test; wants to continue ibuprofen for his back pain and needs an alternative"
+            ],
+            rx: {
+                diagnosis: "Peptic Ulcer Disease — Duodenal Ulcer (H. pylori + NSAID-associated). Alarm feature: Malaena → Urgent Endoscopy required.",
+                allergyNote: "NKDA — confirmed before prescribing. NOTE: NSAIDs are CONTRAINDICATED in this patient — must stop ibuprofen.",
+                drugs: [
+                    { name: "Omeprazole (PPI)",        dose: "20 mg",    timing: "Twice daily × 4–8 weeks (and during H. pylori triple therapy)" },
+                    { name: "Amoxicillin",             dose: "1000 mg",  timing: "Twice daily × 14 days (H. pylori eradication — part of triple therapy)" },
+                    { name: "Clarithromycin",          dose: "500 mg",   timing: "Twice daily × 14 days (H. pylori eradication — part of triple therapy)" },
+                    { name: "Alternative analgesia for back pain: Paracetamol", dose: "500–1000 mg", timing: "Every 6–8 hours as needed — SAFE in PUD; replace ibuprofen immediately" }
+                ],
+                followUp: "4–6 weeks after completing H. pylori eradication therapy: Urea Breath Test (UBT) OR Stool Antigen Test — to confirm successful eradication. URGENT: Endoscopy referral this week (alarm symptom: malaena).",
+                returnIf: "Haematemesis (vomiting blood), large fresh rectal bleeding, sudden severe abdominal pain (perforation), worsening pallor/dizziness/fainting — Emergency admission immediately"
+            }
+        },
+
+        {
+            cat: "Gastroenterology",
+            type: "checklist",
+            cardNum: "27",
+            q: "Peptic Ulcer Disease (PUD) — History, Alarm Features, Investigations & Management",
+            good: [
+                "Builds rapport; acknowledges patient's discomfort and fear about a serious stomach condition",
+                // PAIN CHARACTERISATION
+                "Asks about LOCATION: epigastric (upper-middle abdomen) — the hallmark location for PUD",
+                "Asks about QUALITY: burning, gnawing, or aching — typical descriptors for peptic ulcer pain",
+                "Asks about TIMING: when does the pain occur? — DUODENAL ULCER = fasting/nocturnal pain (relieved by eating); GASTRIC ULCER = pain WORSENED by eating",
+                "Asks about RELIEF: does food, milk, or antacids relieve the pain? — DU typically improved by food; GU may worsen",
+                "Asks about DURATION: how long has this been going on? (chronic course suggests PUD, not acute gastritis)",
+                "Asks about associated NAUSEA, VOMITING, BLOATING, early satiety",
+                // ALARM FEATURES — MUST NOT BE MISSED
+                "SCREENS FOR ALARM/RED FLAG SYMPTOMS — these require URGENT ENDOSCOPY referral:",
+                "  → HAEMATEMESIS: vomiting blood (fresh red or coffee-ground) = upper GI bleed",
+                "  → MALAENA: black tarry stool = digested blood = upper GI bleeding",
+                "  → DYSPHAGIA: difficulty swallowing = possible malignancy",
+                "  → UNINTENTIONAL WEIGHT LOSS = possible gastric carcinoma",
+                "  → ANAEMIA: pallor, fatigue, dizziness — suggests chronic blood loss",
+                "  → AGE > 55 with new onset dyspepsia = refer urgently",
+                // RISK FACTORS
+                "Asks about NSAID/ASPIRIN use: regular ibuprofen, diclofenac, aspirin — NSAIDs are the most important drug cause of PUD; stops NSAIDs immediately if confirmed",
+                "Asks about STEROID use: long-term prednisolone increases ulcer risk",
+                "Asks about H. PYLORI risk factors: family history of H. pylori/peptic ulcers, sharing food/water with infected individuals, previous H. pylori infection",
+                "Asks about SMOKING — smoking delays ulcer healing and increases recurrence risk",
+                "Asks about ALCOHOL — direct gastric mucosal irritant",
+                "Asks about STRESS: acute stress ulcers (Cushing's, Curling's ulcers); psychosocial stress worsens dyspepsia",
+                // MEDICATION HISTORY
+                "Takes a full medication history: asks specifically about NSAIDs, aspirin, steroids, anticoagulants, bisphosphonates (all can damage gastric mucosa)",
+                "Asks about DRUG ALLERGIES before prescribing — especially important before triple therapy",
+                // DIFFERENTIAL DIAGNOSIS
+                "Considers differential diagnosis: GERD (burning rises to chest, worse lying down), gastritis, functional dyspepsia, gastric carcinoma, cholecystitis (right upper quadrant, fatty food trigger)",
+                // EXAMINATION
+                "Checks for EPIGASTRIC TENDERNESS on palpation — the most common examination finding in PUD",
+                "Checks for signs of PERITONISM: board-like rigidity, rebound tenderness — suggests perforation (surgical emergency)",
+                "Checks for PALLOR — anaemia from chronic or acute blood loss",
+                "Checks vital signs: HR, BP — tachycardia + hypotension = haemorrhagic shock from upper GI bleed",
+                // INVESTIGATIONS
+                "Tests for H. PYLORI: preferred non-invasive test = UREA BREATH TEST (UBT) or STOOL ANTIGEN TEST; note: PPIs must be stopped 2 weeks before UBT to avoid false-negative",
+                "Orders CBC: haemoglobin (anaemia from blood loss), WBC (infection), platelets",
+                "Orders URGENT ENDOSCOPY (OGD — Oesophago-Gastro-Duodenoscopy) if any alarm feature present (malaena, haematemesis, weight loss, dysphagia, age > 55)",
+                "Considers SERUM GASTRIN level if Zollinger-Ellison syndrome suspected (multiple/refractory ulcers)",
+                // MANAGEMENT — LIFESTYLE
+                "STOP NSAIDs/ASPIRIN immediately — the single most important step if NSAID-induced PUD; offers safe alternative analgesia (Paracetamol is safe in PUD)",
+                "Advises smoking cessation — impairs ulcer healing",
+                "Advises reducing alcohol — mucosal irritant",
+                "Advises DIETARY MODIFICATION: small frequent meals, avoid spicy food, coffee, carbonated drinks; avoid eating within 2–3 hours of bedtime",
+                // MANAGEMENT — MEDICATION (H. PYLORI ERADICATION TRIPLE THERAPY)
+                "Prescribes H. PYLORI ERADICATION THERAPY (Triple Therapy) if H. pylori positive:",
+                "  → PPI (Omeprazole 20 mg) twice daily",
+                "  → Amoxicillin 1000 mg twice daily",
+                "  → Clarithromycin 500 mg twice daily",
+                "  → Duration: 14 days (preferred) — all three together at the same time",
+                "Explains the importance of completing the full 14-day course — incomplete courses cause antibiotic resistance",
+                "If H. pylori NEGATIVE and NSAID-associated: prescribes PPI alone (Omeprazole 20–40 mg once daily × 4–8 weeks)",
+                "Continues PPI maintenance dose if patient must remain on low-dose aspirin (e.g. cardiac patient)",
+                // FOLLOW-UP — CONFIRM ERADICATION
+                "CONFIRMS H. PYLORI ERADICATION: test 4–6 weeks after finishing triple therapy using Urea Breath Test (UBT) or Stool Antigen Test — NOT serology (remains positive after eradication)",
+                "Explains why re-testing is essential: unconfirmed eradication = high risk of relapse and complications",
+                "Addresses ICE: explains PUD clearly; reassures it is NOT automatically cancer; explains that H. pylori is treatable; refers for endoscopy if alarm features present",
+                "Provides red flag advice: return immediately if vomiting blood, large black stool, sudden severe abdominal pain, or fainting"
+            ],
+            poor: [
+                "Does not ask about TIMING of pain — misses the duodenal (fasting/nocturnal) vs gastric (postprandial) distinction",
+                "Does not screen for ALARM FEATURES: malaena, haematemesis, dysphagia, weight loss, age > 55 — dangerous omission requiring urgent endoscopy",
+                "Does not ask about NSAID or aspirin use — the most common drug cause of PUD",
+                "Does not stop NSAIDs immediately when identified as the cause",
+                "Does not offer a safe alternative analgesia (Paracetamol) for the patient's back pain",
+                "Does not screen for H. pylori risk factors or order H. pylori test",
+                "Does not know triple therapy: PPI + Amoxicillin + Clarithromycin × 14 days",
+                "Does not confirm H. pylori eradication 4–6 weeks after treatment (Urea Breath Test or Stool Antigen)",
+                "Uses serology to check eradication — incorrect (serology remains positive long after eradication)",
+                "Does not ask about drug allergies before prescribing triple therapy",
+                "Does not refer for urgent endoscopy when alarm feature (malaena) is present",
+                "Does not advise lifestyle modifications: smoking cessation, alcohol reduction, dietary changes",
+                "Does not address patient's fear of cancer — fails to explain the difference between PUD and gastric malignancy"
+            ]
+        },
+
         // ─── NOCTURNAL ENURESIS ──────────────────────────────────────────────────
         {
             cat: "Role Player",
