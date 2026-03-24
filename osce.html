@@ -1066,6 +1066,83 @@
                 "Does not address patient's concerns about fetal wellbeing",
                 "Does not advise on follow-up"
             ]
+        },
+
+        // ─── Abnormal Uterine Bleeding (AUB) ────────────────────────────
+        {
+            cat: "Role Player",
+            type: "roleplay",
+            cardNum: "RP3",
+            q: "Abnormal Uterine Bleeding (AUB) — Role Player Information",
+            patientName: "Dina Ramadan Saleh",
+            age: "25 years old",
+            background: "University student, married 8 months, no children, previously regular cycles (28-day cycle), non-smoker, no IUD",
+            chiefComplaint: "Vaginal bleeding for the past 5 days — last period was 7 weeks ago",
+            history: [
+                "Last menstrual period (LMP) 7 weeks ago — cycle has stopped since then",
+                "Bleeding started 5 days ago: moderate in amount, dark red, with small clots; still ongoing",
+                "Lower abdominal cramps — mild to moderate, intermittent",
+                "Breast tenderness noticed over the past 2 weeks",
+                "No nausea or vomiting",
+                "No fever, no dizziness, no fainting",
+                "Home pregnancy test done 3 weeks ago — was POSITIVE",
+                "Has not seen a doctor yet — came today because bleeding is not stopping",
+                "Worried it might be a miscarriage — very anxious and upset",
+                "No previous pregnancies, no previous gynaecological surgeries",
+                "No known drug allergies",
+                "Husband is supportive and present with her today"
+            ]
+        },
+
+        {
+            cat: "Obstetrics",
+            type: "checklist",
+            cardNum: "18",
+            q: "Abnormal Uterine Bleeding (AUB) in Early Pregnancy — Assessment & Management",
+            good: [
+                // INITIAL ASSESSMENT
+                "Builds rapport quickly; acknowledges patient's distress and anxiety with empathy",
+                "Confirms pregnancy status: asks about LMP, missed period, positive pregnancy test",
+                "Assesses haemodynamic stability: dizziness, fainting, pallor, tachycardia — to rule out haemorrhagic shock",
+                // BLEEDING HISTORY
+                "Characterises the bleeding: onset, duration, quantity (number of pads), colour, presence of clots or tissue",
+                "Asks about associated lower abdominal pain: unilateral vs bilateral, severity, radiation to shoulder (diaphragmatic irritation = ectopic sign)",
+                "Asks about breast tenderness, nausea, vomiting as signs of ongoing pregnancy",
+                // DIFFERENTIAL DIAGNOSIS
+                "Considers differential diagnosis for bleeding in early pregnancy: threatened miscarriage, inevitable/incomplete miscarriage, ectopic pregnancy, molar pregnancy",
+                "Specifically screens for ectopic pregnancy: unilateral pain, shoulder tip pain, risk factors (IUD, previous PID, previous ectopic)",
+                "Asks about IUD / Lippes Loop in situ",
+                // EXAMINATION
+                "Performs or requests vital signs: BP, HR, temperature, RR",
+                "Assesses for pallor and signs of dehydration or anaemia",
+                // INVESTIGATIONS
+                "Orders serum β-hCG: explains it should double every 48 hours in a normal viable pregnancy",
+                "Recognises that falling β-hCG (e.g. 2000 → 1800 → 1200) suggests ectopic or failing pregnancy",
+                "Requests urgent pelvic ultrasound: to confirm intrauterine pregnancy, fetal heartbeat, gestational sac",
+                "Requests CBC: to assess haemoglobin and detect significant blood loss",
+                "Mentions Pap smear if cervical cause needs to be excluded",
+                // MANAGEMENT
+                "Advises bed rest and avoidance of sexual intercourse until reviewed",
+                "Asks about drug allergies before prescribing",
+                "Prescribes appropriately if indicated: Tranexamic acid (Capron) for haemostasis OR Daflon (micronised purified flavonoid fraction) to reduce bleeding",
+                "Explains when to seek emergency care: heavy bleeding soaking >1 pad/hour, severe pain, fainting, passage of tissue",
+                // ICE + FOLLOW-UP
+                "Addresses ICE: explores patient's fear of miscarriage; provides honest, compassionate explanation",
+                "Explains findings clearly without causing unnecessary alarm; confirms plan to investigate first",
+                "Arranges urgent follow-up: review with ultrasound report and serial β-hCG within 48 hours",
+                "Provides red flag warning: return immediately if bleeding worsens, severe one-sided pain, or fainting"
+            ],
+            poor: [
+                "Does not confirm pregnancy status or ask about LMP before taking history",
+                "Does not assess haemodynamic stability — misses signs of haemorrhagic shock",
+                "Does not screen for ectopic pregnancy (unilateral pain, shoulder tip pain, IUD, PID history)",
+                "Does not request serial β-hCG or explain the significance of doubling / falling trend",
+                "Does not request pelvic ultrasound as a priority investigation",
+                "Does not ask about drug allergies before prescribing",
+                "Does not address patient's ICE — fails to explore or respond to her fear of miscarriage",
+                "Does not provide red flag warning or clear emergency return criteria",
+                "Does not arrange urgent follow-up within 48 hours"
+            ]
         }
     ];
 
