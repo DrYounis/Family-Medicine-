@@ -2733,6 +2733,108 @@
                 "Does not ask about drug allergies before prescribing Desmopressin",
                 "Does not arrange appropriate follow-up"
             ]
+        },
+
+        // ─── VULVOVAGINAL CANDIDIASIS (VVC) ─────────────────────────────────────
+        {
+            cat: "Gynaecology",
+            type: "roleplay",
+            cardNum: "RP-27",
+            q: "Vulvovaginal Candidiasis (VVC) — Role Player Information",
+            patientName: "Heba Tariq Al-Mansouri",
+            age: "32 years old",
+            background: "Primary school teacher, married 5 years, 1 child (age 3). Was recently treated for a chest infection and received a 7-day course of broad-spectrum antibiotics (Amoxicillin-Clavulanate) 2 weeks ago. Non-smoker. No known chronic illnesses. Not pregnant.",
+            chiefComplaint: "Severe vaginal itching and thick white discharge for the past 5 days",
+            history: [
+                "Vaginal itching — constant, severe, worst at night, not relieved by anything",
+                "Thick white discharge — described as 'like cottage cheese' or 'yoghurt-like', no bad smell",
+                "Burning during urination — mild",
+                "Burning during intercourse — yes, mentioned only if specifically asked",
+                "Redness and swelling around the vaginal area — noticed when bathing",
+                "No fever, no lower abdominal pain, no offensive/fishy odour (helps rule out BV)",
+                "Recent antibiotics: Amoxicillin-Clavulanate for 7 days, finished 2 weeks ago",
+                "No history of diabetes — not diagnosed; no excessive thirst or urination",
+                "Wears tight synthetic leggings daily at work",
+                "No history of similar episodes in the past",
+                "Husband: no symptoms (no penile rash or itch) — mention only if specifically asked",
+                "ICE: thinks it might be from the antibiotics 'killing the good bacteria'. Worried it might be an STI. Expects medication and reassurance."
+            ],
+            rx: {
+                diagnosis: "Vulvovaginal Candidiasis (VVC) — Uncomplicated, First Episode",
+                allergyNote: "NKDA — confirmed before prescribing",
+                drugs: [
+                    { name: "Fluconazole (Diflucan)", dose: "150 mg", timing: "Single oral dose — first-line for uncomplicated VVC" },
+                    { name: "Clotrimazole 1% cream (Canesten)", dose: "Topical — apply to vulva", timing: "Twice daily for 7 days — for external itching and irritation relief" }
+                ],
+                followUp: "Return in 2 weeks if symptoms have not resolved. If recurrent (≥4 episodes/year): investigate for diabetes (FBS/HbA1c), consider suppressive fluconazole therapy (weekly for 6 months).",
+                returnIf: "Fever or lower abdominal pain (suspect PID), symptoms persist after completing treatment, offensive/fishy odour (suggests Bacterial Vaginosis — needs different treatment), or if partner develops symptoms."
+            }
+        },
+
+        {
+            cat: "Gynaecology",
+            type: "checklist",
+            cardNum: "30",
+            q: "Vulvovaginal Candidiasis (VVC) — History, Diagnosis & Management",
+            good: [
+                // INTRODUCTION
+                "Greets patient; ensures privacy; confirms patient identity",
+                "Opens with open question: 'What brings you in today?'",
+                // DISCHARGE HISTORY
+                "Asks about the discharge: colour, consistency, amount, and odour — the hallmark of VVC is thick white 'cottage cheese' discharge with NO odour",
+                "Specifically asks: 'Is there any smell to the discharge?' — absence of smell helps differentiate VVC from Bacterial Vaginosis (fishy) and Trichomoniasis (frothy/foul)",
+                // SYMPTOM DETAILS
+                "Asks about pruritus (itching) — severity, timing, relief factors",
+                "Asks about burning on urination (dysuria)",
+                "Asks about dyspareunia (pain during intercourse) — mention only if asked",
+                "Asks about vulval redness, swelling, or skin changes",
+                // RISK FACTOR HISTORY
+                "Asks about recent antibiotic use — antibiotics disrupt normal vaginal lactobacilli flora → Candida overgrowth",
+                "Asks about diabetes history — poorly controlled blood sugar promotes fungal growth",
+                "Asks about pregnancy — hormonal changes increase risk",
+                "Asks about immunosuppression (HIV, steroids, chemotherapy)",
+                "Asks about lifestyle factors: tight/synthetic underwear, douching, scented products",
+                // DIFFERENTIALS RULED OUT
+                "Screens for fever and lower abdominal pain — if present, consider PID",
+                "Notes absence of fishy odour — rules out Bacterial Vaginosis",
+                "Notes absence of frothy green discharge — rules out Trichomoniasis",
+                // PARTNER
+                "Asks about partner's symptoms — partner treatment only required if symptomatic (balanitis: rash/itch on penis)",
+                // ICE
+                "Explores patient's ICE: ideas (links to antibiotics), concerns (STI worry), expectations (treatment + reassurance)",
+                // EXAMINATION
+                "States would perform external vulval inspection and speculum examination to confirm cottage cheese discharge on vaginal walls",
+                // INVESTIGATIONS
+                "Considers high vaginal swab (HVS) for microscopy/culture — not mandatory for uncomplicated first-episode but good practice",
+                "Considers FBS or HbA1c if recurrent VVC — to screen for undiagnosed diabetes",
+                // MANAGEMENT
+                "Checks drug allergies before prescribing",
+                "Prescribes Fluconazole 150 mg orally — single dose — first-line for uncomplicated VVC",
+                "Offers topical Clotrimazole cream for vulval symptomatic relief",
+                "Explains that oral Fluconazole is contraindicated in pregnancy — use topical imidazole instead",
+                // PATIENT EDUCATION
+                "Advises cotton underwear; avoid tight synthetic clothing",
+                "Advises against vaginal douching and scented feminine products — disrupt protective flora",
+                "Advises partner does NOT require treatment unless symptomatic",
+                "Explains that antibiotics were likely the trigger — reassures this is NOT an STI",
+                // SAFETY NETTING
+                "Advises to return if symptoms persist after treatment — suspect recurrent VVC (≥4 episodes/year needs further workup)",
+                "Advises to return urgently if fever, lower abdominal pain, or offensive discharge develops",
+                "Arranges follow-up in 2 weeks if symptoms do not fully resolve"
+            ],
+            poor: [
+                "Does not ask about the nature of discharge — fails to distinguish VVC from BV or Trichomoniasis",
+                "Does not ask about odour — misses key differential diagnosis clue",
+                "Does not ask about recent antibiotic use — misses the most common trigger",
+                "Does not screen for diabetes — misses a significant predisposing condition",
+                "Does not ask about pregnancy before prescribing Fluconazole — contraindicated in pregnancy",
+                "Does not ask about partner's symptoms — unnecessarily treats an asymptomatic partner",
+                "Does not check drug allergies before prescribing",
+                "Does not address patient's concern about STI — leaves patient anxious and misinformed",
+                "Does not provide hygiene advice (cotton underwear, no douching)",
+                "Does not explain when to return — no safety netting provided",
+                "Does not consider recurrent VVC criteria (≥4 episodes/year) or diabetes screening"
+            ]
         }
     ];
 
