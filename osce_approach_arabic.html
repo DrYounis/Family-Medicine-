@@ -1,0 +1,2609 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roleplay — بالعامية المصرية</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+
+        :root {
+            --purple: #7c3aed; --purple-light: #ede9fe; --purple-border: #ddd6fe;
+            --green: #059669; --green-light: #f0fdf4; --green-border: #bbf7d0;
+            --red: #dc2626; --red-light: #fef2f2; --red-border: #fecaca;
+            --blue: #2563eb; --blue-light: #eff6ff; --blue-border: #bfdbfe;
+            --orange: #d97706; --orange-light: #fffbeb; --orange-border: #fde68a;
+            --pink: #db2777; --pink-light: #fdf2f8; --pink-border: #fbcfe8;
+            --bg: #f1f5f9; --card: #ffffff; --text: #1e293b;
+            --muted: #64748b; --border: #e2e8f0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+        #scroll-progress { position: fixed; top: 0; right: 0; left: 0; height: 4px;
+            background: linear-gradient(90deg, var(--purple), var(--blue)); width: 0%; z-index: 9999; transition: width 0.1s; }
+
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;
+            padding: 22px 20px 14px; text-align: center; position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 4px 20px rgba(102,126,234,0.4); }
+        .header h1 { font-size: 1.5em; font-weight: 900; margin-bottom: 4px; }
+        .header p { font-size: 0.85em; opacity: 0.88; margin-bottom: 12px; }
+
+        .mode-tabs { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+        .mode-tab { padding: 6px 16px; border-radius: 20px; border: 2px solid rgba(255,255,255,0.5);
+            background: transparent; color: white; font-family: 'Cairo', sans-serif;
+            font-weight: 700; font-size: 0.85em; cursor: pointer; transition: all 0.2s; }
+        .mode-tab:hover { background: rgba(255,255,255,0.15); }
+        .mode-tab.active { background: white; color: #7c3aed; border-color: white; }
+
+        /* System filter */
+        .system-filter-wrap { background: #f8f7ff; border-bottom: 2px solid var(--border); padding: 10px 16px; overflow-x: auto; }
+        .system-filter { display: flex; gap: 7px; white-space: nowrap; align-items: center; }
+        .system-label { font-family: 'Cairo', sans-serif; font-size: 0.78em; font-weight: 700; color: var(--muted); margin-left: 4px; flex-shrink: 0; }
+        .sys-btn { padding: 5px 13px; border-radius: 18px; border: 2px solid var(--border);
+            background: white; color: var(--muted); font-family: 'Cairo', sans-serif;
+            font-weight: 700; font-size: 0.78em; cursor: pointer; transition: all 0.18s; white-space: nowrap; }
+        .sys-btn:hover { border-color: #6d28d9; color: #6d28d9; background: #ede9fe; }
+        .sys-btn.active { background: #6d28d9; color: white; border-color: #6d28d9; }
+
+        /* Case selector */
+        .case-selector-wrap { background: white; border-bottom: 2px solid var(--border); padding: 12px 16px; overflow-x: auto; }
+        .case-selector { display: flex; gap: 8px; white-space: nowrap; justify-content: flex-start; }
+        .case-btn { padding: 7px 16px; border-radius: 22px; border: 2px solid var(--border);
+            background: var(--bg); color: var(--muted); font-family: 'Cairo', sans-serif;
+            font-weight: 700; font-size: 0.82em; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+        .case-btn:hover { border-color: var(--purple); color: var(--purple); background: var(--purple-light); }
+        .case-btn.active { background: var(--purple); color: white; border-color: var(--purple); }
+
+        /* Progress */
+        .progress-wrap { background: white; border-bottom: 1px solid var(--border); padding: 9px 20px;
+            display: flex; align-items: center; gap: 12px; }
+        .progress-label { font-size: 0.82em; font-weight: 700; color: var(--muted); white-space: nowrap; }
+        .progress-track { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--green));
+            border-radius: 4px; transition: width 0.5s ease; }
+        .progress-count { font-size: 0.82em; font-weight: 700; color: var(--purple); white-space: nowrap; }
+
+        /* Case title banner */
+        .case-banner { padding: 14px 20px; margin: 16px 0 0; border-radius: 14px; display: flex;
+            align-items: center; gap: 12px; }
+        .case-banner .case-icon { font-size: 2em; }
+        .case-banner .case-name { font-size: 1.2em; font-weight: 900; }
+        .case-banner .case-sub { font-size: 0.82em; font-weight: 600; opacity: 0.8; }
+
+        .container { max-width: 860px; margin: 0 auto; padding: 0 16px 80px; }
+
+        /* Step cards */
+        .step-card { background: var(--card); border-radius: 14px; margin-bottom: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1.5px solid var(--border);
+            overflow: hidden; transition: box-shadow 0.2s, border-color 0.2s; }
+        .step-card.done { border-color: var(--green); }
+        .step-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+
+        .step-header { display: flex; align-items: flex-start; gap: 14px; padding: 18px 20px;
+            cursor: pointer; user-select: none; transition: background 0.15s; }
+        .step-header:hover { background: #fafafa; }
+
+        .step-num { width: 36px; height: 36px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; font-weight: 900;
+            font-size: 0.95em; flex-shrink: 0; margin-top: 2px; }
+
+        .step-title-wrap { flex: 1; }
+        .step-tag { font-size: 0.72em; font-weight: 700; padding: 2px 9px; border-radius: 20px;
+            display: inline-block; margin-bottom: 4px; }
+        .step-title { font-weight: 700; font-size: 1.05em; line-height: 1.4; }
+
+        .step-toggle { font-size: 1em; flex-shrink: 0; transition: transform 0.25s; color: var(--muted); margin-top: 6px; }
+        .step-toggle.open { transform: rotate(180deg); }
+
+        .step-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+        .step-body.open { max-height: 4000px; }
+        .step-body-inner { padding: 0 20px 20px; border-top: 1px solid var(--border); }
+
+        .subsection { margin-top: 18px; }
+        .subsection-title { font-size: 0.82em; font-weight: 700; letter-spacing: 0.04em;
+            color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .subsection-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        .phrase-box { background: var(--purple-light); border: 1.5px solid var(--purple-border);
+            border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+        .phrase-box .phrase-label { font-size: 0.78em; font-weight: 700; color: var(--purple); margin-bottom: 6px; }
+        .phrase-box .phrase-text { font-size: 1.04em; font-weight: 600; color: #3b0764; line-height: 1.9; }
+
+        .info-box { border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+        .info-box.green { background: var(--green-light); border: 1.5px solid var(--green-border); }
+        .info-box.red { background: var(--red-light); border: 1.5px solid var(--red-border); }
+        .info-box.blue { background: var(--blue-light); border: 1.5px solid var(--blue-border); }
+        .info-box.orange { background: var(--orange-light); border: 1.5px solid var(--orange-border); }
+        .info-box.pink { background: var(--pink-light); border: 1.5px solid var(--pink-border); }
+
+        .info-box .box-title { font-size: 0.82em; font-weight: 700; margin-bottom: 8px; }
+        .info-box.green .box-title { color: var(--green); }
+        .info-box.red .box-title { color: var(--red); }
+        .info-box.blue .box-title { color: var(--blue); }
+        .info-box.orange .box-title { color: var(--orange); }
+        .info-box.pink .box-title { color: var(--pink); }
+        .info-box ul { padding-right: 18px; }
+        .info-box ul li { font-size: 0.95em; padding: 3px 0; line-height: 1.6; }
+
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+        .done-btn { display: flex; align-items: center; gap: 8px; margin-top: 18px;
+            padding: 10px 20px; border-radius: 8px; border: 2px solid var(--green);
+            background: var(--green-light); color: var(--green); font-family: 'Cairo', sans-serif;
+            font-weight: 700; font-size: 0.95em; cursor: pointer; transition: all 0.2s;
+            width: 100%; justify-content: center; }
+        .done-btn:hover { background: var(--green); color: white; }
+        .done-btn.active { background: var(--green); color: white; }
+
+        /* Practice mode */
+        #practice-mode { display: none; }
+        #practice-mode.active { display: block; }
+        #reference-mode.hidden { display: none; }
+
+        .practice-card { background: var(--card); border-radius: 16px; padding: 32px 28px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1); text-align: center; }
+        .practice-step-indicator { font-size: 0.85em; color: var(--muted); font-weight: 700; margin-bottom: 20px; }
+        .practice-tag { display: inline-block; padding: 4px 14px; border-radius: 20px;
+            font-size: 0.82em; font-weight: 700; margin-bottom: 16px; }
+        .practice-title { font-size: 1.3em; font-weight: 900; margin-bottom: 24px; line-height: 1.4; }
+        .practice-reveal-btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white;
+            border: none; padding: 14px 32px; border-radius: 10px; font-family: 'Cairo', sans-serif;
+            font-weight: 700; font-size: 1.05em; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 4px 16px rgba(102,126,234,0.4); }
+        .practice-reveal-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(102,126,234,0.5); }
+        .practice-content { display: none; text-align: right; margin-top: 24px; animation: fadeUp 0.3s ease; }
+        .practice-content.visible { display: block; }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+        .practice-nav { display: flex; gap: 10px; margin-top: 24px; justify-content: center; flex-wrap: wrap; }
+        .nav-btn { padding: 10px 24px; border-radius: 8px; font-family: 'Cairo', sans-serif;
+            font-weight: 700; font-size: 0.95em; cursor: pointer; transition: all 0.15s;
+            border: 2px solid var(--purple); }
+        .nav-btn.primary { background: var(--purple); color: white; }
+        .nav-btn.primary:hover { background: #6d28d9; }
+        .nav-btn.secondary { background: transparent; color: var(--purple); }
+        .nav-btn.secondary:hover { background: var(--purple-light); }
+
+        #scroll-top { position: fixed; bottom: 24px; left: 20px; background: var(--purple);
+            color: white; border: none; border-radius: 50%; width: 44px; height: 44px;
+            font-size: 1.2em; cursor: pointer; box-shadow: 0 4px 14px rgba(124,58,237,0.4);
+            opacity: 0; transition: opacity 0.3s; z-index: 200; }
+        #scroll-top.visible { opacity: 1; }
+
+        .top-nav { display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 16px; background: white; border-bottom: 1px solid var(--border);
+            flex-wrap: wrap; gap: 8px; }
+        .back-link { color: var(--purple); text-decoration: none; font-weight: 700;
+            font-size: 0.9em; display: flex; align-items: center; gap: 4px; }
+        .back-link:hover { text-decoration: underline; }
+        .print-btn { background: transparent; border: 1.5px solid var(--border); color: var(--muted);
+            font-family: 'Cairo', sans-serif; font-size: 0.85em; font-weight: 700;
+            padding: 6px 14px; border-radius: 7px; cursor: pointer; transition: all 0.15s; }
+        .print-btn:hover { border-color: var(--purple); color: var(--purple); }
+
+        @media print {
+            #scroll-progress, #scroll-top, .mode-tabs, .top-nav, .case-selector-wrap,
+            .done-btn, .practice-nav, .progress-wrap { display: none !important; }
+            .step-body { max-height: none !important; }
+            .step-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+            body { background: white; }
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+
+<div class="top-nav">
+    <a href="osce.html" class="back-link">← OSCE Flashcards</a>
+    <button class="print-btn" onclick="window.print()">🖨 طباعة</button>
+</div>
+
+<div class="header">
+    <h1>🎭 Roleplay — بالعامية المصرية</h1>
+    <p>الأسئلة والعبارات لكل حالة من الأول للآخر</p>
+    <div class="mode-tabs">
+        <button class="mode-tab active" onclick="setMode('reference')">📖 مرجع شامل</button>
+        <button class="mode-tab" onclick="setMode('practice')">🎯 وضع التدريب</button>
+    </div>
+</div>
+
+<!-- System filter -->
+<div class="system-filter-wrap">
+    <div class="system-filter" id="system-filter">
+        <span class="system-label">🗂️ التخصص:</span>
+        <button class="sys-btn active" data-sys="all" onclick="setSystem('all',this)">الكل</button>
+        <button class="sys-btn" data-sys="باطنة" onclick="setSystem('باطنة',this)">🫀 باطنة</button>
+        <button class="sys-btn" data-sys="أطفال" onclick="setSystem('أطفال',this)">👶 أطفال</button>
+        <button class="sys-btn" data-sys="عضلات وعظام" onclick="setSystem('عضلات وعظام',this)">🦴 عضلات وعظام</button>
+        <button class="sys-btn" data-sys="نساء وتوليد" onclick="setSystem('نساء وتوليد',this)">🤰 نساء وتوليد</button>
+        <button class="sys-btn" data-sys="أعصاب" onclick="setSystem('أعصاب',this)">🧠 أعصاب</button>
+    </div>
+</div>
+
+<!-- Case selector -->
+<div class="case-selector-wrap">
+    <div class="case-selector" id="case-selector"></div>
+</div>
+
+<!-- Progress -->
+<div class="progress-wrap">
+    <span class="progress-label">تقدمك:</span>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <span class="progress-count" id="progress-count">0 / 0</span>
+</div>
+
+<!-- Reference mode -->
+<div id="reference-mode">
+<div class="container">
+    <div id="case-banner-wrap"></div>
+    <div id="steps-container"></div>
+</div>
+</div>
+
+<!-- Practice mode -->
+<div id="practice-mode">
+<div class="container" style="padding-top:20px;">
+    <div class="practice-card" id="practice-card">
+        <div class="practice-step-indicator" id="practice-indicator"></div>
+        <div class="practice-tag" id="practice-tag"></div>
+        <div class="practice-title" id="practice-title"></div>
+        <button class="practice-reveal-btn" onclick="revealPractice()">👁 اضغط لإظهار الأسئلة</button>
+        <div class="practice-content" id="practice-content"></div>
+        <div class="practice-nav">
+            <button class="nav-btn secondary" onclick="prevPractice()" id="prev-btn">→ السابق</button>
+            <button class="nav-btn primary" onclick="nextPractice()" id="next-btn">← التالي</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="للأعلى">↑</button>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  DATA — All cases
+// ═══════════════════════════════════════════════════════════════
+const cases = [
+
+    // ── 1. عرق النسا / Sciatica ──────────────────────────────────
+    {
+        id: 'sciatica', system: 'عضلات وعظام',
+        name: 'عرق النسا (Sciatica)',
+        icon: '🦵',
+        color: '#7c3aed', colorLight: '#ede9fe',
+        steps: [
+            {
+                tag: 'تعريف المرض', tagColor: '#ede9fe', tagText: '#7c3aed',
+                title: 'إيه هو عرق النسا وإزاي تشرحه للمريض؟',
+                phrases: [
+                    { label: '📍 شرح المرض', text: '"عرق النسا ده عصب بيتضغط عليه في أسفل ضهرك — ده بيعمل ألم أو تنميل بييجي من الأرداف لأسفل الرجل لحد القدم."<br>"الألم ده ممكن يبقى حرقة أو وخز أو تنمل، وبييجي في خط واحد من الردف للرجل للقدم."' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'تاريخ الأعراض', tagColor: '#ede9fe', tagText: '#7c3aed',
+                title: 'إزاي تسأل عن الأعراض والمسار؟',
+                phrases: [
+                    { label: '📍 وصف الألم', text: '"الوجع ده فين بالظبط؟ ابدأ وقوللي."<br>"الألم بيحس إيه — حرقة ولا وخز ولا تنميل ولا صدمة كهربا؟"<br>"بيبدأ منين؟ من الضهر ولا من الردف؟"<br>"بيوصل لأسفل الرجل؟ لحد القدم؟"' },
+                    { label: '📍 الشدة والتأثير', text: '"على أد إيه الوجع؟ تدي له كام من عشرة؟"<br>"بيأثر على مشيتك؟ قادر تشتغل؟ بتنام؟"' },
+                    { label: '📍 مشيِّد ومخفف', text: '"إيه اللي بيزود الوجع؟ القعاد فترة طويلة؟ السعال؟ العطسة؟"<br>"إيه اللي بيريحك؟ الاستلقاء على ضهرك بركبك مقوسين؟ المشي الخفيف؟"' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'الأسباب وعوامل الخطر', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'إيه أسباب عرق النسا التي تسأل عنها؟',
+                phrases: [
+                    { label: '📍 أسباب شائعة', text: '"رفعت حاجة تقيلة قريباً؟"<br>"هل عندك مشكلة في الغضاريف من قبل؟"<br>"وزنك زايد؟" (السمنة من أسباب الضغط على العصب)<br>"هل حامل؟" (الحمل يضغط على العصب)<br>"حصلك حادث أو ضربة في الضهر؟"' },
+                    { label: '📍 أسباب خطيرة تستبعد', text: '"عندك أورام أو سرطان بتتعالج منه؟"<br>"كنت عندك حمى مع الوجع؟" (إنتان/خراج)<br>"عندك تاريخ بتب؟"' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'blue', title: '✅ أسباب الضغط على العصب', items: ['هرنية الغضروف (الأكثر شيوعاً)', 'ضيق قناة العمود الفقري', 'تروما أو أورام', 'إنتان (خراج فقري)', 'السمنة والحمل'] },
+                    right: { color: 'orange', title: '⚠️ عوامل الخطر', items: ['مهنة بترفع فيها حاجات تقيلة', 'قعاد طويل وراء المكتب', 'سمنة BMI > 30', 'عمر ٣٠-٥٠', 'سكري (يضعف العصب)'] }
+                }
+            },
+            {
+                tag: 'العلامات الخطرة 🚨', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'أسئلة الـ Red Flags — Cauda Equina',
+                phrases: [
+                    { label: '🚨 أسئلة لازم تسألها', text: '"هل حصل وبلت أو اتبرزت من غير إرادتك؟" — ده علامة خطر جداً<br>"هل حاسس بتنميل في المنطقة بين رجليك (السرج)؟"<br>"عندك ضعف في الرجلين الاتنين مع بعض؟"<br>"مقدرش تمسك البول؟"' },
+                    { label: '⚠️ الأعراض الخطرة الأخرى', text: '"حصلك نقص في وزنك من غير سبب؟"<br>"عندك حمى مع الوجع ده؟"<br>"عندك وجع في الليل حتى لما بتنام؟"' }
+                ],
+                clinical: {
+                    type: 'single',
+                    color: 'red',
+                    title: '🚨 لو إجابته آه على أي سؤال تحويل عاجل!',
+                    items: ['فقدان كنترول المثانة أو الأمعاء → طوارئ فوراً', 'تنميل منطقة السرج → cauda equina', 'ضعف في الرجلين = علامة عصبية خطيرة', 'لا تأخر في التحويل لجراح العمود الفقري']
+                }
+            },
+            {
+                tag: 'ICE', tagColor: '#fdf4ff', tagText: '#a21caf',
+                title: 'أسئلة الـ ICE — فهم المريض وقلقه',
+                phrases: [
+                    { label: '💭 Ideas', text: '"إيه رأيك إيه اللي سبّب الوجع ده؟"<br>"حد قالك إيه عن حالتك؟"' },
+                    { label: '😟 Concerns', text: '"إيه اللي بيقلقك في الموضوع ده أكتر حاجة؟"<br>"خايف يكون محتاج عملية؟"' },
+                    { label: '🎯 Expectations', text: '"إيه اللي توقعته من الزيارة دي؟"<br>"عايز تعرف إيه النهارده بالظبط؟"' },
+                    { label: '💬 الرد على الخوف من العملية', text: '"أنا فاهم قلقك — الحمد لله في الغالب مش محتاج عملية."<br>"٩٠٪ من الحالات بتتحسن لوحدها في ٦ لـ ١٢ أسبوع بعلاج بسيط."' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'الكشف الإكلينيكي', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'الفحص — Look / Feel / Move / Special Tests',
+                phrases: [
+                    { label: '👁️ LOOK (من الأمام والجنب والخلف)', text: '"هخليك تقف لحظة وهشوف وقفتك."<br>الطبيب: لاحظ الوقفة، أي انحراف في العمود، ضمور العضلات، تغير الجلد.' },
+                    { label: '✋ FEEL (بضهر الإيد الأول)', text: '"هلمسك بضهر إيدي لأحس الحرارة." → ثم أطراف الأصابع<br>"فين بالظبط بيوجعك لما بضغط هنا؟"<br>الطبيب: اضغط على العضلات الجانبية للعمود وعلى نقطة عرق النسا.' },
+                    { label: '🔄 MOVE (حركة نشطة وسلبية)', text: '"هخليك تنحني للأمام بالراحة."<br>"انحني للجنبين." — لاحظ أي حركة بتزود الوجع' },
+                    { label: '🦿 SPECIAL TEST — SLR (Straight Leg Raise)', text: '"هترفع رجلك وهي مستقيمة — قولي لما حتحس وجع."<br>SLR موجب: لو الوجع بيضرب تحت الركبة قبل ٦٠ درجة — ده علامة عرق النسا الأساسية' },
+                    { label: '🦵 SPECIAL TEST — فحص الركبة', text: '"هفحص ركبتك كمان."<br>افحص: تحت وفوق الرضفة (الرُكبة) — Patella Tap Test<br>"هضرب تحت ركبتك بالمطرقة لأشوف الانعكاس."' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'العلاج والمتابعة', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تشرح العلاج والنصائح للمريض؟',
+                phrases: [
+                    { label: '💊 الأدوية', text: '"هاكاسبلك مسكنات من نوع الإيبوبروفين مع الأكل ٣ مرات في اليوم."<br>"وكمان باراسيتامول كل ٦ ساعات لو الوجع شديد."<br>"لو في حرقة أو وخز — ممكن أضيف دواء للأعصاب."' },
+                    { label: '🏃 النشاط والحركة', text: '"لا تفضل مستلقي في البيت — ده بيأخر التحسن."<br>"امشي مسافات قصيرة — الحركة الخفيفة أحسن علاج."<br>"لو اشتغلت — استخدم كرسي بظهر مريح وقوم كل ٣٠ دقيقة."' },
+                    { label: '🧘 العلاج الطبيعي', text: '"هحولك على العلاج الطبيعي — فيه تمارين بتقوي ضهرك وبتريح العصب."' },
+                    { label: '📅 المتابعة والخطر', text: '"هنشوفك بعد أسبوعين أو أربعة."<br>"لو حصل فقدان كنترول على البول أو البراز — روح أقرب طوارئ فوراً."' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 2. القدم السكرية / Diabetic Foot ─────────────────────────
+    {
+        id: 'diabetic-foot', system: 'باطنة',
+        name: 'القدم السكرية',
+        icon: '🦶',
+        color: '#059669', colorLight: '#f0fdf4',
+        steps: [
+            {
+                tag: 'التحضير والتجهيز', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تبدأ فحص القدم السكرية؟',
+                phrases: [
+                    { label: '🧼 قبل ما تبدأ', text: '"هغسل إيدي الأول بإذنك."<br>"ممكن تخلع جوربك وتمد رجليك كويس؟"<br>"أي ألم في رجلك وقت ما أفحص — قولي على طول."' },
+                    { label: '🔧 جهاز الفحص جاهز', text: 'خيط المونوفيلامنت ١٠ جرام — الأهم<br>الشوكة الرنانة (١٢٨Hz) لحس الاهتزاز<br>المطرقة للانعكاسات<br>دبوس للألم — كرة قطن للحساسية' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'LOOK — الفحص البصري', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'إيه اللي بتدور عليه لما بتبص على القدم؟',
+                phrases: [
+                    { label: '👁️ اللون والجلد', text: '"ببص على لون القدم — شحوب؟ احمرار؟ زرقة؟"<br>"فيه جروح أو قرح أو مناطق بيضاء؟"<br>"الجلد جاف؟ فيه شقوق؟ فيه نداوة بين الأصابع؟"' },
+                    { label: '👁️ التشوهات والأظافر', text: '"الأظافر طبيعية ولا سميكة ولا فطر؟"<br>"شكل القدم طبيعي؟ فيه أصابع ملتوية أو فقدان قوس القدم؟"<br>"فيه تورم في القدم؟"' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'FEEL — الأوعية الدموية', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'إزاي تفحص الدورة الدموية في القدم؟',
+                phrases: [
+                    { label: '✋ درجة الحرارة', text: '"هلمسك بضهر إيدي لأحس الحرارة." — برود القدم = ضعف دورة دموية<br>قارن القدمين مع بعض' },
+                    { label: '💓 النبضات', text: '"هجس على نبضتين في قدمك."<br>Dorsalis pedis: فوق القدم بين إصبع الكبير والتاني<br>Posterior tibial: ورا عظمة الكاحل الداخلية<br>"الضربان قوي ولا ضعيف؟"' },
+                    { label: '🔴 امتلاء الشعيرات', text: '"هضغط على ظفرك ٥ ثواني." — الأحمر لازم يرجع في أقل من ثانيتين<br>لو بطيء = ضعف دورة دموية' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'FEEL — الجهاز العصبي', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'إزاي تفحص الإحساس في القدم؟',
+                phrases: [
+                    { label: '🧵 خيط المونوفيلامنت (الأهم)', text: '"هلمسك بخيط رفيع — قولي لما حتحس."<br>"غمض عينيك بالراحة."<br>"حسيت بحاجة؟" — الخيط بيلمس ١٠ نقاط مختلفة في القدم' },
+                    { label: '🔔 الشوكة الرنانة', text: '"هضع شوكة على عظم إبهامك." → "حاسس بإيه؟ بتحس برعشة؟"<br>كرر على عظم الكاحل وعلى الركبة لو مش حاسس' },
+                    { label: '📍 الألم والحرارة', text: '"هشوش دبوس خفيف — حريف ولا مش حريف؟"<br>"حاسس بالفرق بين الكوباية الساخنة والبارده؟"' },
+                    { label: '🔨 الانعكاس', text: '"هضرب تحت كاحلك بالمطرقة." — لو مفيش انعكاس = اعتلال عصبي محيطي' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'التصنيف والتعليم', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تصنف المريض وتعلمه على القدم؟',
+                phrases: [
+                    { label: '📊 التصنيف', text: '"القدم سليمة — إحساس ونبضات طبيعيين." → خطر منخفض<br>"في مشكلة واحدة — إحساس أو نبض ضعيف." → خطر متوسط<br>"في مشكلتين أو قرحة قديمة." → خطر عالي → تحويل فوري' },
+                    { label: '📚 تعليم المريض', text: '"بص على قدميك كل يوم — حتى بين الأصابع."<br>"لا تمشي حافياً أبداً."<br>"اللبس المناسب بيحمي قدمك من الجروح."<br>"لقطعت أو جرح صغير — تيجي علينا فوراً — لا تستنى."<br>"بلل رجلك وجففها كويس — وخصوصاً بين الأصابع."' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 3. IMCI — تقييم الطفل ─────────────────────────────────────
+    {
+        id: 'imci', system: 'أطفال',
+        name: 'IMCI — تقييم الطفل',
+        icon: '👶',
+        color: '#db2777', colorLight: '#fdf2f8',
+        steps: [
+            {
+                tag: 'علامات الخطر 🚨', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'أول حاجة — اسأل عن علامات الخطر',
+                phrases: [
+                    { label: '🚨 علامات الخطر الأربعة (اسأل بالترتيب)', text: '"الطفل عنده تشنجات دلوقتي أو من قريب؟"<br>"صحيان وبيفضل صحيان؟ ولا كسلان جداً ومش بيحرك؟"<br>"بيرضع أو بياكل طبيعي؟ ولا رافض أكل؟"<br>"بيقيء كل حاجة بياكلها؟ ولا القيء بس أحياناً؟"' },
+                    { label: '⚠️ الصعوبات', text: '"صعب عليه يبلع؟ بيخنق على نفسه؟"<br>"في أي صعوبة في التنفس؟"' }
+                ],
+                clinical: {
+                    type: 'single',
+                    color: 'red',
+                    title: '🚨 لو في علامة خطر واحدة = تحويل عاجل للمستشفى',
+                    items: ['تشنجات → طوارئ فوراً', 'مش صحيان / كسلان جداً → قبول مستشفى', 'رافض أكل كامل → تحويل', 'بيقيء كل حاجة → خطر جفاف']
+                }
+            },
+            {
+                tag: 'التاريخ والفحص', tagColor: '#fdf2f8', tagText: '#db2777',
+                title: 'إزاي تاخد تاريخ الطفل المريض؟',
+                phrases: [
+                    { label: '📋 الأسئلة الأساسية', text: '"الطفل عنده قد إيه؟ وزنه كام آخر مرة اتقاسه؟"<br>"الشكوى الأساسية إيه؟ من امتى؟"<br>"عنده حمى؟ سعال؟ زكام؟ إسهال؟ قيء؟ طفح؟ إصفرار؟"<br>"أخد أي دواء من البيت؟ أنتيبيوتيك؟"' },
+                    { label: '💉 الحالة التطعيمية', text: '"كرت التطعيمات موجود؟ التطعيمات كلها اخدها؟"' },
+                    { label: '🍼 التغذية', text: '"بيرضع طبيعي؟ ولا على مياه أو لبن بقري؟"<br>"عمره أد إيه ابتدا ياكل أكل صلب؟"' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'التصنيف والعلاج', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تصنف الحالة وتقرر العلاج؟',
+                phrases: [
+                    { label: '🏠 البيت', text: '"الطفل كويس — مفيش علامات خطر."<br>"هاكسبلك علاج بتاخده في البيت."<br>"هتجي تراجعنا بعد أسبوع أو لو اتعب أكتر."' },
+                    { label: '🏥 المستشفى', text: '"عنده علامة خطر — محتاج يتحول على المستشفى دلوقتي."<br>"هاديه جرعة أولى قبل ما تروح."' },
+                    { label: '⚠️ تعليم الأهل', text: '"تيجي فوراً لو: التشنجات رجعت، الطفل وقف عن الأكل خالص، رجع تقيء كتير، الحالة اتعبت."' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 4. نزلة البرد vs التهاب الجيوب ─────────────────────────────
+    {
+        id: 'cold-sinusitis', system: 'أطفال',
+        name: 'نزلة برد أم جيوب أنفية؟',
+        icon: '🤧',
+        color: '#2563eb', colorLight: '#eff6ff',
+        steps: [
+            {
+                tag: 'التمييز الأساسي', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'إزاي تفرق نزلة البرد عن التهاب الجيوب الأنفية؟',
+                phrases: [
+                    { label: '📍 السؤال الأول — المدة', text: '"من امتى بدأ الزكام ده؟"<br>"نزلة البرد عادةً بتتحسن في ٧ لـ ١٠ أيام — لو فاضل من أكتر من كده، ده بقى مش نزلة بس."<br>"بدأ يتحسن وبعدين اتعب تاني؟" — ده علامة مهمة على تحول لبكتيري' },
+                    { label: '📍 السؤال التاني — السيلان', text: '"الإفرازات دي شكلها إيه؟ شفافة ولا صفرا ولا خضرا؟"<br>"الصفرا والخضرا بتيجي مع البكتيريا — مش دايماً بس دي علامة مساعدة."<br>"كمية السيلان كتيرة ولا قليلة؟"' },
+                    { label: '📍 ألم الوجه والضغط', text: '"عندك إحساس ضغط أو ألم في وشك؟ تحت عينيك أو في جبهتك؟"<br>"الألم ده بيتزود لما بتنحني للأمام؟"<br>"عندك ألم في أسنانك العلوية؟"' },
+                    { label: '📍 الحمى والتأثير', text: '"عندك حمى؟ كام الحرارة؟"<br>"حاسس بتعب ووجع في جسمك عموماً؟"' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'blue', title: '🤧 نزلة برد — فيروسي', items: ['سيلان شفاف أو أبيض', 'بتتحسن في ٧-١٠ أيام', 'حمى خفيفة أو مفيش', 'مفيش ألم في الوجه شديد', 'العلاج: دعم فقط — بلا أنتيبيوتيك'] },
+                    right: { color: 'red', title: '😷 جيوب بكتيرية', items: ['سيلان أصفر/أخضر', 'أكتر من ١٠ أيام أو بتتعب بعد تحسن', 'ألم في الوجه أو تحت العين', 'حمى أعلى', 'العلاج: أنتيبيوتيك مطلوب'] }
+                }
+            },
+            {
+                tag: 'العلاج', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'إزاي تشرح العلاج للأهل أو المريض؟',
+                phrases: [
+                    { label: '🤧 لو نزلة برد (فيروسي)', text: '"الأنتيبيوتيك مش هينفع هنا — ده فيروس مش بكتيريا."<br>"بدي مسكن للحرارة والألم وقطرة الأنف للراحة."<br>"شرب سوايل كتيرة — نوم كافي."<br>"بتتحسن لوحدها في أسبوع."' },
+                    { label: '😷 لو جيوب بكتيرية', text: '"محتاج أنتيبيوتيك — هاكسبلك كو-أموكسيكلاف."<br>"للأطفال: أوجمنتين شراب ٤٥٧ ملجم مرتين في اليوم لمدة ٧ أيام."<br>"للكبار: أوجمنتين قرص مرتين في اليوم لمدة ٧ أيام."<br>"لو ما اتحسنتش في يومين تاني — رجعلي."' },
+                    { label: '📅 المتابعة', text: '"لو رفعت حرارة جداً أو بدأت ترى باضعاف أو عندك شديد وجع في الرأس أو الرقبة — ارجع فوراً."' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 5. التهاب الأذن الوسطى (AOM) ─────────────────────────────
+    {
+        id: 'aom', system: 'أطفال',
+        name: 'التهاب الأذن الوسطى (AOM)',
+        icon: '👂',
+        color: '#d97706', colorLight: '#fffbeb',
+        steps: [
+            {
+                tag: 'التاريخ والأعراض', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'إزاي تاخد تاريخ التهاب الأذن؟',
+                phrases: [
+                    { label: '📍 الشكوى الأساسية', text: '"الطفل بيشكي من وجع في الأذن؟ أنهي جهة؟"<br>"صغار: ممكن يمسك أذنه وهو عيان أو يبكي وهو مفيش سبب واضح."<br>"في إفرازات خارجة من الأذن؟"<br>"بيسمع كويس ولا حاسسة إن سمعه اتأثر؟"' },
+                    { label: '📍 الأعراض المصاحبة', text: '"عنده حمى؟ كام الحرارة؟"<br>"عنده زكام أو سعال قبلها؟"<br>"مبقاش بيكل كويس أو بيبكي كتير؟"' },
+                    { label: '📍 تاريخ الأذن', text: '"حصلت عنده التهاب أذن من قبل؟ كام مرة في السنة؟"<br>"عمل عملية أنابيب في الأذن؟"<br>"بياخد أنتيبيوتيك؟ أي نوع؟"' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'الكشف — طبلة الأذن', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'إزاي تفحص الأذن وإيه العلامة المهمة؟',
+                phrases: [
+                    { label: '🔦 الأوتوسكوب', text: '"هفحص أذنك بالأوتوسكوب — مش هيوجع."<br>"العلامة الأساسية لـ AOM: طبلة الأذن منتفخة للخارج (Bulging) — ده التشخيص!"<br>"برضو ابدور: احمرار في الطبلة، ضياع الانعكاس الضوئي، إفرازات لو الطبلة انثقبت."' },
+                    { label: '📝 التوثيق المهم', text: '"لازم أوثق الجهة المصابة: التهاب أذن وسطى حاد — الأذن اليسرى" ولا اليمنى ولا الاتنين.<br>لو ثنائي → يساعد في قرار العلاج' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'قرار العلاج', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'هل تعطي أنتيبيوتيك ولا تنتظر؟',
+                phrases: [
+                    { label: '⏳ المراقبة أولاً (لو خفيف وعمره +٢ سنة)', text: '"الحالة خفيفة — هناخد يومين نشوف."<br>"هاديه مسكن — إيبوبروفين ولا باراسيتامول — وهنراقب."<br>"لو ما اتحسنش في ٤٨ ساعة — ابدأ الأنتيبيوتيك."' },
+                    { label: '💊 الأنتيبيوتيك (لو أقل من سنتين / شديد / الاتنين)', text: '"محتاج أنتيبيوتيك — أموكسيسيلين جرعة عالية."<br>"الجرعة: ٨٠-٩٠ ملجم/كجم/يوم مقسومة مرتين."<br>"الكورس: ٥ أيام للكبار — ١٠ أيام لو أقل من سنتين."<br>"كمان هاكسبلك مسكن للألم."' },
+                    { label: '📚 تعليم الأهل', text: '"ده مش عشان الطفل بياكل قهوة — أي طفل ممكن يجيله التهاب أذن."<br>"ممكن يحس بضعف سمع مؤقت — ده طبيعي وبيتحسن."<br>"متحطش أي حاجة في الأذن."<br>"هتعملوا معايا متابعة بعد أسبوعين."' }
+                ],
+                clinical: {
+                    type: 'single',
+                    color: 'red',
+                    title: '🚨 تحويل فوري لو:',
+                    items: ['احمرار ورم ورا الأذن (التهاب الخشاء — Mastoiditis)', 'صداع شديد أو تيبس رقبة (تهديد سحايا)', 'ضعف في وجهه (شلل العصب السابع)', 'التهاب متكرر +٣ مرات في ٦ أشهر → ENT وأنابيب']
+                }
+            }
+        ]
+    },
+
+    // ── 6. فقر الدم بالحديد (IDA) ─────────────────────────────────
+    {
+        id: 'ida', system: 'أطفال',
+        name: 'فقر الدم بالحديد (IDA)',
+        icon: '🩸',
+        color: '#dc2626', colorLight: '#fef2f2',
+        steps: [
+            {
+                tag: 'التاريخ والأعراض', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'إزاي تبدأ مع طفل شاحب ووالدته خايفة عليه؟',
+                phrases: [
+                    { label: '📍 الشكوى الأولى', text: '"إيه اللي لفت نظرك في الطفل؟"<br>"من امتى لاحظتي إنه شاحب؟"<br>"بيكتشف أو يلعب زي الأول؟ ولا بيتعب بسرعة؟"<br>"بيشيل حاجات غريبة ويبقى يمضغها؟" — ده Pica، علامة مهمة جداً لـ IDA' },
+                    { label: '📍 التغذية', text: '"بياكل لحمة أو فراخ أو سمك؟ ولا رافضهم؟"<br>"بيشرب لبن بقري كتير؟ كام مرة في اليوم؟" — اللبن الكتير بيمنع امتصاص الحديد<br>"رضاعة طبيعية لحد عمر كام؟"<br>"بدأ ياكل أكل صلب من عمر كام؟"' },
+                    { label: '📍 تاريخ العيلة', text: '"في حد في العيلة عنده فقر دم؟"<br>"الطفل اتولد مبتسر؟" — المبتسرون بيتولدوا بمخازن حديد أقل<br>"حصل معاه نزيف أو عمليات؟"' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'الكشف والعلامات', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'إزاي تفحص الطفل وتدور على علامات فقر الدم؟',
+                phrases: [
+                    { label: '👁️ الفحص السريري', text: '"هبص على جفن عينه من الداخل — الغشاء باهت؟"<br>"أظافره شاحبة؟ فيها تجويف من الجوه (كوبونيكيا)؟"<br>"في شقوق في زوايا بقه؟ — Angular stomatitis"<br>"لسانه أملس ومش فيه حبيبات؟ — Glossitis"<br>"جلد راحة إيده وباطن رجله شاحب؟"' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'التحاليل', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'إيه التحاليل المطلوبة وإزاي تفسرها؟',
+                phrases: [
+                    { label: '🔬 الـ CBC', text: '"هطلب تحليل دم شامل — هيبينلك الهيموجلوبين وشكل الكريات."<br>"في IDA: الهيموجلوبين واطي — الكريات صغيرة وباهتة (Microcytic Hypochromic)."<br>Hb طبيعي للأطفال: أكتر من ١١ جم — لو أقل = فقر دم' }
+                ],
+                clinical: {
+                    type: 'single',
+                    color: 'blue',
+                    title: '🔬 نتائج الـ CBC في IDA',
+                    items: ['Hb منخفض (< 11 جم/دل)', 'MCV منخفض (كريات صغيرة)', 'MCH و MCHC منخفضين', 'RDW مرتفع', 'Ferritin منخفض = مخازن الحديد فاضلة']
+                }
+            },
+            {
+                tag: 'العلاج والمتابعة', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تشرح علاج الحديد للأهل بشكل صح؟',
+                phrases: [
+                    { label: '💊 جرعة الحديد', text: '"هاكسبلك شراب حديد."<br>"الجرعة: ٣ لـ ٦ ملجم/كجم/يوم — مرة واحدة في اليوم."<br>"أحسن وقت: الصبح قبل الأكل على معدة فاضية." — لو وجع معدة تعطيه مع الأكل' },
+                    { label: '🍊 عشان يتمص أحسن', text: '"اديه مع عصير برتقال أو ليمون — فيتامين C بيساعد الجسم يمص الحديد."<br>"لا تديه مع اللبن أو الشاي — بيمنعوا الامتصاص."' },
+                    { label: '📅 المتابعة', text: '"هتيجي بعد أسبوع أولاً — نشوف إذا الطفل عامله ألم في البطن من الدواء."<br>"بعد شهر — هنعمل تحليل تاني ونشوف الهيموجلوبين."<br>"الدواء مش بيخلص مع ما يتحسن الهيموجلوبين — لازم يكمل ٣ شهور بعد التحسن عشان يملي المخازن."' },
+                    { label: '🥩 تعديل الغذاء', text: '"كتر اللحمة والفراخ والسمك والعدس."<br>"قلل اللبن البقري — أقل من نص لتر في اليوم."' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 7. الغدة الدرقية / Thyroid ───────────────────────────────
+    {
+        id: 'thyroid', system: 'باطنة',
+        name: 'الغدة الدرقية',
+        icon: '🦋',
+        color: '#7c3aed', colorLight: '#ede9fe',
+        steps: [
+            {
+                tag: 'أعراض القصور والفرط', tagColor: '#ede9fe', tagText: '#7c3aed',
+                title: 'إزاي تسأل عن أعراض الغدة؟',
+                phrases: [
+                    { label: '🥶 أعراض قصور الغدة (Hypothyroid)', text: '"بتحس ببطء وإرهاق من غير سبب؟"<br>"وزنك بيزيد وإنت مش بتاكل أكتر؟"<br>"بتحس ببرد أكتر من الناس؟"<br>"شعرك بيتساقط؟ جلدك بقى جاف؟"<br>"الإمساك أو التعب بيمنعك من أي حاجة؟"<br>"مزاجك بيتغير؟ عندك اكتئاب أو كسل ذهني؟"' },
+                    { label: '🔥 أعراض فرط الغدة (Hyperthyroid)', text: '"وزنك بيقل وإنت مش بتعمل حمية؟"<br>"قلبك بيسرع أو بتحس بخفقان؟"<br>"بتتعرق كتير حتى في الجو البارد؟"<br>"عندك رعشة في إيديك؟"<br>"بتحس بعصبية وقلق من غير سبب؟"<br>"عندك إسهال أو حاجة متكررة للحمام؟"<br>"عيونك بارزين؟ الناس قالتلك عيونك كبرت؟"' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'blue', title: '🥶 قصور الغدة', items: ['تعب وكسل', 'زيادة وزن', 'برودة', 'جلد جاف وشعر متساقط', 'إمساك', 'تباطؤ القلب'] },
+                    right: { color: 'red', title: '🔥 فرط نشاط الغدة', items: ['نقص وزن', 'خفقان وسرعة قلب', 'تعرق وحرارة', 'رعشة وعصبية', 'إسهال', 'بروز العيون'] }
+                }
+            },
+            {
+                tag: 'الفحص', tagColor: '#ede9fe', tagText: '#7c3aed',
+                title: 'إزاي تفحص الغدة الدرقية؟',
+                phrases: [
+                    { label: '👁️ الفحص البصري', text: '"هتبلع ريقك لحظة؟" → ابص على الرقبة — لو في تورم بيتحرك مع البلع = تضخم الغدة' },
+                    { label: '✋ الجس من الخلف', text: '"هقف وراك وأجس رقبتك." — جس من الخلف: الحجم، القوام، نعومة ولا فيها حبوب، ألم؟<br>"هل التضخم ثنائي ولا في ناحية بس؟"' },
+                    { label: '🔊 السماعة', text: '"هحط السماعة على رقبتك." — لو سامع صوت طنين (Bruit) = فرط نشاط الغدة' },
+                    { label: '🔎 علامات إضافية', text: '"امدد إيدك أمامك." — لو فيه رعشة = فرط نشاط<br>"هشوف بياض عينيك." — Exophthalmos = بروز<br>"هقيس نبضك وضغطك."' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'التحاليل والتصنيف', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'إيه التحاليل ومعناها؟',
+                phrases: [
+                    { label: '🔬 التحاليل المطلوبة', text: '"هطلب تحليل وظائف الغدة: TSH — T3 — T4."<br>"الـ TSH هو الأهم والأحساس في الشاشة." — يبدأ به' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'blue', title: '🔵 أولي (Primary) — المشكلة في الغدة نفسها', items: ['TSH ↑ + T4 ↓ = قصور أولي', 'TSH ↓ + T4 ↑ = فرط أولي', 'السبب: في الغدة الدرقية'] },
+                    right: { color: 'orange', title: '🟡 ثانوي (Secondary) — المشكلة في الغدة النخامية', items: ['TSH ↓ + T4 ↓ = قصور ثانوي (النخامة فاشلة)', 'السبب: في المخ — الغدة النخامية', 'محتاج تحويل لمتخصص'] }
+                }
+            },
+            {
+                tag: 'العلاج والمتابعة', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تشرح العلاج للمريض؟',
+                phrases: [
+                    { label: '💊 قصور الغدة — Levothyroxine', text: '"هاكسبلك دواء هرمون الغدة — ليفوثيروكسين."<br>"هتبدأ بجرعة صغيرة ونزود بالتدريج."<br>"الدواء ده لازم تاخده كل يوم الصبح على معدة فاضية نص ساعة قبل الأكل."<br>"هو دواء عمره — مش تقف عنه من غير ما تسألني."' },
+                    { label: '🔥 فرط نشاط الغدة', text: '"ده محتاج متخصص — هحولك على استشاري الغدد."<br>"في خيارات: دواء يقلل الغدة، أو يود مشع، أو عملية."' },
+                    { label: '📅 المتابعة', text: '"هنعمل تحليل TSH بعد ٦ لـ ٨ أسابيع من بداية العلاج."<br>"بعد استقرار الجرعة — تحليل كل ٦ لـ ١٢ شهر."' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 8. فحص الأعصاب القحفية / Cranial Nerves ─────────────────
+    {
+        id: 'cranial-nerve', system: 'أعصاب',
+        name: 'الأعصاب القحفية',
+        icon: '🧠',
+        color: '#059669', colorLight: '#f0fdf4',
+        steps: [
+            {
+                tag: 'التحضير والبداية', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تبدأ فحص الأعصاب القحفية؟',
+                phrases: [
+                    { label: '🚪 الخطوات العامة قبل الفحص', text: '١. اطرق على الباب<br>٢. عرّف نفسك<br>٣. تأكد من بيانات المريض (الاسم، السن)<br>٤. اخذ consent: "ممكن أفحصك؟ مش هيوجعك."<br>٥. اشرح الفحص: "هفحص أعصاب وشك ورأسك — هشرحلك كل خطوة."' },
+                    { label: '🤝 الـ Rapport والتوجه', text: '"اسمك إيه؟ عمرك كام؟ إنت فين دلوقتي؟ النهارده إيه؟"<br><small><i>ده بيختبر Orientation ويبني rapport في نفس الوقت</i></small>' }
+                ],
+                clinical: {
+                    type: 'single',
+                    color: 'green',
+                    title: '⚠️ قاعدة الامتحان',
+                    items: [
+                        'ممكن يجيلك حالة: تنميل في الوجه، ضعف عضلي، أو رؤية مزدوجة',
+                        'مطلوب: تعمل cranial nerve examination كامل',
+                        'الأعصاب الأكثر تركيز في الامتحان: CN V · CN VII · CN III/IV/VI'
+                    ]
+                }
+            },
+            {
+                tag: 'CN II — المجال البصري', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'اختبار المجال البصري — Confrontation Test',
+                phrases: [
+                    { label: '👁️ CN II — Confrontation Test', text: '"هفحص مجال البصر — غطي عينك الشمال."<br>الدكتور يغطي عينه اليمين.<br>الاتنين يبصوا في عين بعض face-to-face.<br>"ركّز معايا — ولما تشوف صباعي بيتحرك قولي."<br>حرّك إصبعك من تحت لفوق — زي شكل رقم ٧ و٨.<br><small><i>الهدف: حركة عين المريض توازي حركة عين الدكتور</i></small>' },
+                    { label: '👁️ CN II — Visual Attention Test', text: '"ابص في عيني مباشرة."<br>ارفع يدك وحرّك إصبعك: يمين — شمال — فوق — تحت.<br>"بتشوف إصبعي في الجهات دي كلها؟"<br><small><i>لو مش شايف في جهة = Visual Field Defect</i></small>' },
+                    { label: '💡 باقي فحص CN II', text: 'افحص حدة الإبصار (Snellen chart أو إصبع)<br>"البصر كويس؟ شايف بالعينين الاتنين؟"<br>افحص انعكاس الضوء على الحدقة (Light Reflex)<br><small><i>الـ Accommodation Reflex مش دايماً مهم في الامتحان</i></small>' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'CN III · IV · VI — حركة العين', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'فحص حركة العين — H Test',
+                phrases: [
+                    { label: '👀 اختبار الـ H في الهواء', text: '"خليك تبص في عيني طول الوقت."<br>"اتبع إصبعي بعينيك بس — من غير ما تحرك رأسك."<br>ارسم حرف H كبير في الهواء ببطء.<br>راقب كل عين في الست اتجاهات.' },
+                    { label: '🔍 إيه اللي بتدور عليه؟', text: '"شايف الصبع مرتين؟" — Double Vision = Diplopia<br>هبوط الجفن العلوي = Ptosis → مشكلة في CN III<br>العين مالتش للخارج = مشكلة في CN VI<br>العين صعبة تنزل للداخل = مشكلة في CN IV' }
+                ],
+                clinical: {
+                    type: 'single',
+                    color: 'blue',
+                    title: '📋 وظائف الأعصاب الثلاثة',
+                    items: [
+                        'CN III (Oculomotor) → رفع الجفن + معظم حركات العين',
+                        'CN IV (Trochlear) → تحريك العين للأسفل والداخل',
+                        'CN VI (Abducent) → تحريك العين للخارج فقط'
+                    ]
+                }
+            },
+            {
+                tag: 'CN V — الثلاثي التوائم', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'فحص العصب الخامس — Trigeminal Nerve',
+                phrases: [
+                    { label: '🪡 الفحص الحسي — Sensory Test', text: '"هلمسك بقطنة ناعمة جداً — غمض عينيك."<br>"قولي: حسيت أو لأ."<br>المس ثلاث مناطق بالترتيب:<br>① <b>فوق الحاجب</b> — Ophthalmic branch<br>② <b>منتصف الخد</b> — Maxillary branch<br>③ <b>عند الفك السفلي</b> — Mandibular branch<br>"حسيت بالثلاثة؟ في فرق في الإحساس بين الجهتين؟"<br><small><i>لو هتختبر ألم: كرر نفس الأماكن بـ sharp object</i></small>' },
+                    { label: '💪 الفحص الحركي — Motor Test', text: '"عض على سنانك جامد."<br>حسّ عضلة الـ Masseter من برّه — هتحس بالشد.<br>"افتح بقك ببطء."<br>لو بيفتح منحرف لجهة = ضعف في الجانب ده.' },
+                    { label: '🔨 Jaw Jerk Reflex', text: 'حط إصبعك على الـ chin (ذقن المريض).<br>اضرب إصبعك بالهامر بخفة.<br>لو فيه protrusion واضح للفك = Hyperreflexia → Upper Motor Neuron<br><small><i>ملاحظة: الـ Jaw Jerk ممكن تسأل عنه في الامتحان بشكل منفصل</i></small>' }
+                ],
+                clinical: {
+                    type: 'single',
+                    color: 'blue',
+                    title: '📋 فروع CN V الثلاثة',
+                    items: [
+                        'Ophthalmic (V1) → إحساس الجبهة وحول العين',
+                        'Maxillary (V2) → إحساس الخد والشفة العليا',
+                        'Mandibular (V3) → إحساس الفك السفلي + حركة عضلات المضغ'
+                    ]
+                }
+            },
+            {
+                tag: 'CN VII — عصب الوجه', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'فحص العصب السابع — Facial Nerve ⭐ مهم للامتحان',
+                phrases: [
+                    { label: '😁 اختبار التعبير الوجهي', text: '"ارفع حاجبيك لفوق."<br>"زعّل وشك — اعمل قطبة."<br>"انفخ خدودك من غير ما تفتح بقك."<br>"قفل عينيك بقوة جداً — هحاول أفتحهم." — راقب لو عارف يقاوم.<br>"فرّج على سنانك — ابتسم."' },
+                    { label: '🔍 التفسير', text: '<b>لو الجبهة متأثرة:</b><br>→ Lower Motor Neuron lesion (زي Bell\'s Palsy) — كل جانب الوجه متأثر<br><b>لو الجبهة سليمة:</b><br>→ Upper Motor Neuron lesion (زي Stroke) — الجبهة متحفظة عشان ليها تعصيب مزدوج' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    color: 'orange',
+                    title: '⭐ UMN vs LMN — فرق مهم جداً في الامتحان',
+                    left:  { title: 'UMN (Stroke)', items: ['الجبهة سليمة', 'الفم والخد متأثرين', 'الجانب المقابل للمخ المصاب'] },
+                    right: { title: 'LMN (Bell\'s Palsy)', items: ['الوجه كله متأثر', 'الجبهة كمان متأثرة', 'نفس جانب الإصابة'] }
+                }
+            },
+            {
+                tag: 'CN VIII — XII (٨ لـ ١٢)', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'فحص الأعصاب من الثامن للثاني عشر',
+                phrases: [
+                    { label: '👂 CN VIII — السمع', text: '"هفرفر بإصبعي جنب أذنك — قولي لما تسمع."<br>Weber test: الشوكة الرنانة في منتصف الجبهة — بيوصل لأنهي أذن؟<br>Rinne test: شوكة على الخشاء — ثم قدام الأذن' },
+                    { label: '🗣️ CN IX, X — بلع وحنك', text: '"قول: آه ——" → ابص على الحنك الطري — هيتحرك في المنتصف؟<br>لو انحرف لجهة = إصابة العصب X للجهة التانية' },
+                    { label: '💪 CN XI — كتف ورقبة', text: '"ارفع كتفيك — هضغط عليهم." — اختبار الترابيزيوس<br>"لف رأسك لليمين ضدي — ولليسار." — اختبار العضلة القرنية-الخشائية' },
+                    { label: '👅 CN XII — اللسان', text: '"أخرج لسانك." → ابص — بينحرف لجهة؟<br>"حركه من جنب لجنب بسرعة."<br>الانحراف للجهة المصابة = إصابة CN XII' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 9. حصوة الكلى / Renal Stone ──────────────────────────────
+    {
+        id: 'renal-stone', system: 'باطنة',
+        name: 'حصوة الكلى',
+        icon: '🪨',
+        color: '#d97706', colorLight: '#fffbeb',
+        steps: [
+            {
+                tag: 'وصف الألم', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'إزاي تسأل عن ألم حصوة الكلى؟',
+                phrases: [
+                    { label: '📍 الألم الكلوي المميز', text: '"الوجع ده فين بالظبط؟"<br>"بيجي على شكل نوبات زي التقلصات ولا مستمر؟"<br>"بيشيل على إيه؟ بيوصل للبطن السفلي أو المنطقة التناسلية؟"<br>"الوجع بيتزود مع المشي ولا مع الاستلقاء؟"<br>"دايماً مش لاقي راحة وعمال تتحرك؟" — ده كلاسيكي في حصوة الكلى' },
+                    { label: '📍 أعراض مصاحبة', text: '"فيه دم في البول؟ لاحظت لون البول أحمر أو بني؟"<br>"عندك حرقة في البول أو كثرة التبول؟"<br>"قيء معاك؟ غثيان؟"<br>"حمى أو قشعريرة؟" — لو في حمى مع حصوة = إنتان خطير' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'عوامل الخطر والتاريخ', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'إزاي تسأل عن عوامل الخطر؟',
+                phrases: [
+                    { label: '📋 الأسئلة المهمة', text: '"عندك تاريخ حصوات كلى من قبل؟"<br>"في العيلة حد عنده حصوات؟"<br>"بتشرب سوايل كافية في اليوم؟ قد إيه؟"<br>"بتاكل ملح كتير؟ لحمة حمرا كتير؟"<br>"عندك نقرس أو ارتفاع حمض اليوريك؟"<br>"بتاخد فيتامين C بجرعات عالية؟"' }
+                ],
+                clinical: {
+                    type: 'single',
+                    color: 'red',
+                    title: '🚨 علامات الخطر — تحويل طوارئ',
+                    items: ['حمى مع حصوة = إنتان في بول محبوس → طوارئ فوراً', 'كلية وحيدة معاها حصوة', 'ألم لا يتحكم فيه بمسكنات', 'قصور كلوي حاد']
+                }
+            },
+            {
+                tag: 'التحاليل والتصوير', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'إيه التحاليل المطلوبة؟',
+                phrases: [
+                    { label: '🔬 التحاليل', text: '"هطلب تحليل بول — CBC — كرياتينين — حمض اليوريك."<br>"هطلب كالسيوم في الدم."' },
+                    { label: '📷 التصوير', text: '"أهم تصوير هو السي تي سكان بطن بدون صبغة — بيحدد مكان الحصوة وحجمها."<br>"الأشعة الصوتية (Ultrasound) كمان ممكن نستخدمها أول حاجة — مش فيها إشعاع."' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'العلاج والوقاية', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تعالج وتنصح المريض؟',
+                phrases: [
+                    { label: '💊 المسكنات', text: '"هاكاسبلك مسكن قوي للتقلبات — إيبوبروفين أو ديكلوفيناك حقنة."<br>"وشراب يريح العضلة الملساء — Alpha blocker."' },
+                    { label: '💧 السوايل', text: '"لازم تشرب ٢.٥ لـ ٣ لتر مية في اليوم."<br>"الهدف إن البول يبقى فاتح اللون — زي الليمون الفاتح."<br>"ده بيساعد الحصوة تنزل لوحدها."' },
+                    { label: '🔍 تصفية البول', text: '"لما تبول — صفي البول في شاش أو قماش ناعم."<br>"لو طلع حجر — احتفظ بيه عشان نحلله ونعرف نوعه."' },
+                    { label: '🥗 الوقاية', text: '"قلل ملح الأكل."<br>"قلل البروتين الحيواني."<br>"لو الحصوة كالسيوم — مش لازم توقف الكالسيوم من الأكل — الحد من الملح مهم أكتر."<br>"هتيجي تراجعنا ونشوف التحاليل ونقرر هل محتاج تدخل ولا لأ."' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 10. السكري / Diabetes Mellitus ───────────────────────────
+    {
+        id: 'dm', system: 'باطنة',
+        name: 'السكري (DM) وخطر القلب',
+        icon: '🩺',
+        color: '#2563eb', colorLight: '#eff6ff',
+        steps: [
+            {
+                tag: 'التاريخ والبداية', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'إزاي تبدأ مع مريض السكري؟',
+                phrases: [
+                    { label: '🤝 أول ما يدخل', text: '"أهلاً! اسمك إيه؟ عمرك كام؟"<br>"بتشتغل؟ عندك تأمين طبي؟"<br>"إيه اللي جبك النهارده؟ الشكوى الأساسية إيه؟"' },
+                    { label: '📋 تاريخ السكري', text: '"السكري عندك من امتى؟ بتتابع فين؟"<br>"HbA1c آخره كان كام؟ متى آخر تحليل؟"<br>"بتاخد دواء للسكري؟ اسمه إيه؟ بتاخده صح؟"<br>"بيجيلك هبوط سكر؟ بيحصل امتى؟"' },
+                    { label: '📍 الشكاوى المصاحبة', text: '"بتحس بتعب وإرهاق؟"<br>"بتشرب مية كتير وبتبول كتير؟"<br>"بصرك تغير؟ خدر في رجليك؟"<br>"عندك جروح مش بتتشفى؟"' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'العلاج — بناءً على HbA1c', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'إزاي تختار العلاج الصح بناءً على HbA1c؟',
+                phrases: [
+                    { label: '📊 السلّم العلاجي', text: '<b>HbA1c 6.5 – 7.5%</b>: دواء واحد بس — الميتفورمين<br><b>HbA1c 7.6 – 9%</b>: دوائين مع بعض<br><b>HbA1c 10 – 12%</b>: ثلاثة أدوية أو إنسولين' },
+                    { label: '💊 قبل ما تكسبلك ميتفورمين', text: '"عندك تاريخ قرحة في المعدة؟"<br>"الكلى عندك شغالة كويس؟ هنعمل تحليل كرياتينين."<br>"هتعمل أشعة بصبغة قريباً؟" — لو آه نوقف الميتفورمين قبلها' },
+                    { label: '📚 شرح الميتفورمين للمريض', text: '"الدواء ده آمن وعنده سنين طويلة في الاستخدام."<br>"ممكن يعمل غثيان أو إسهال خفيف في الأول — بتاخده مع الأكل."<br>"مش بيعمل هبوط سكر لو بتاخده بس."<br>"لازم تكمل عليه حتى لو حسيت بتحسن."' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'blue', title: '✅ علاج مناسب', items: ['HbA1c 6.5–7.5% → ميتفورمين', 'HbA1c 7.6–9% → دوائين', 'HbA1c ≥10% → ثلاثة أو إنسولين', 'شرح الأعراض الجانبية دايماً'] },
+                    right: { color: 'red', title: '❌ أخطاء شائعة', items: ['ميتفورمين مع قصور كلوي شديد', 'عدم فحص HbA1c قبل القرار', 'إيقاف الدواء لو الأعراض اتحسنت', 'إهمال الالتزام بالدواء'] }
+                }
+            },
+            {
+                tag: 'خطر القلب والأوعية', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'إزاي تتحكم في خطر القلب عند مريض السكري؟',
+                phrases: [
+                    { label: '🫀 ارتفاع الضغط', text: '"الضغط عندك بيكون كام عادةً؟"<br>"هاكسبلك كابتوبريل — ده بيحمي الكلى كمان مع السكري."<br>"الهدف: ضغط أقل من ١٣٠/٨٠."' },
+                    { label: '🧪 الكوليسترول', text: '"التحليل الأخير للكوليسترول كان كام؟"<br>"هاكسبلك أتورفاستاتين ٢٠ لـ ٤٠ ملجم — مرة بعد العشا."<br>"الهدف: LDL تحت ٧٠ مع مريض سكري عالي الخطر."' },
+                    { label: '💊 مميعات الدم', text: '"هل عندك أي حساسية من الأسبرين؟"<br>"لو مفيش حساسية — هاكسبلك أسبرين مع بلافيكس ٧٥ ملجم يومياً لو الخطر عالي."' },
+                    { label: '🚭 التدخين', text: '"بتدخن؟ كام سيجارة في اليوم؟"<br>"التدخين مع السكري بيضاعف خطر الجلطة جداً."<br>"أنا مستعد أساعدك تقلع — فيه طرق كتير."' }
+                ],
+                clinical: {
+                    type: 'single',
+                    color: 'orange',
+                    title: '🎯 أهداف العلاج في مريض السكري عالي الخطر',
+                    items: ['HbA1c < 7% (أو < 7.5% لكبار السن)', 'ضغط دم < 130/80 ممهج', 'LDL < 70 ملجم/دل — أتورفاستاتين بعد العشا', 'التوقف عن التدخين تماماً', 'BMI < 25 أو نقص وزن 5–10%']
+                }
+            },
+            {
+                tag: 'التثقيف الصحي', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تعلّم المريض على السكري؟',
+                phrases: [
+                    { label: '🥗 الأكل والرياضة', text: '"حاول تقلل السكريات والنشويات البيضا — أرز، عيش، بطاطس."<br>"الرياضة ٣٠ دقيقة يومياً — المشي مثلاً — بتنزل السكر زي الدواء."<br>"لو وزنك زايد — نقصان ٥ لـ ١٠٪ بيفرق جداً."' },
+                    { label: '🦶 رعاية القدم', text: '"بص على قدمك كل يوم."<br>"لا تمشي حافياً."<br>"أي جرح صغير — تيجي لنا فوراً."' },
+                    { label: '📅 المتابعة الدورية', text: '"هتعمل تحليل عيون مرة في السنة."<br>"تحليل كلى (كرياتينين وبروتين في البول) مرة في السنة."<br>"هنشوفك بعد شهر نراجع التحاليل والدواء."' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'ICE والمتابعة', tagColor: '#fdf4ff', tagText: '#a21caf',
+                title: 'أسئلة ICE وإزاي تختم المقابلة؟',
+                phrases: [
+                    { label: '💭 Ideas', text: '"إيه رأيك إيه اللي سبّب السكري ده؟"' },
+                    { label: '😟 Concerns', text: '"إيه اللي بيقلقك في موضوع السكري أكتر حاجة؟"<br>"خايف من الإنسولين؟ من النظام الغذائي؟"' },
+                    { label: '🎯 Expectations', text: '"إيه اللي توقعته من الزيارة دي؟"' },
+                    { label: '📅 الختام', text: '"هنشوفك بعد شهر — هتاخد معاك تحاليل HbA1c وكلى وكوليسترول."<br>"لو حسيت بهبوط سكر (رعشة، تعرق، دوخة) — اتناول حاجة سكرية فوراً وتيجي لنا."<br>"هل في أي سؤال تاني عندك دلوقتي؟"' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 11. ألم الصدر — التفريق ──────────────────────────────────
+    {
+        id: 'chest-pain', system: 'باطنة',
+        name: 'ألم الصدر — التفريق',
+        icon: '❤️',
+        color: '#dc2626', colorLight: '#fef2f2',
+        steps: [
+            {
+                tag: 'وصف الألم — SOCRATES', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'إزاي تسأل عن ألم الصدر بالطريقة الصح؟',
+                phrases: [
+                    { label: '📍 الوصف الأساسي', text: '"الألم ده فين بالظبط؟ ابدأ وقوللي."<br>"شكله إيه؟ ضغط؟ حرقة؟ طعنة؟ ثقل؟"<br>"من امتى؟ جه فجأة ولا تدريجياً؟"<br>"شدته كام من عشرة؟"<br>"بيشيل على إيه؟ على إيدك؟ الاتنين؟ الكتف؟ الظهر؟ الفك؟"' },
+                    { label: '📍 المشيِّد والمخفِّف', text: '"بيتزود مع المجهود؟ ولا وإنت بتاكل؟ ولا لما بتنحني؟"<br>"بيتحسن بالراحة؟ بالنترو؟ بمضاد الحموضة؟ بالجلوس للأمام؟"<br>"تعرق معاه؟ غثيان؟ ضيق في النفس؟ دوخة؟"' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'التفريق بين الأسباب', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'إزاي تفرق بين الأسباب الستة لألم الصدر؟',
+                phrases: [
+                    { label: '🔴 احتشاء عضلة القلب (MI)', text: '"الألم ضغط أو ثقل في الصدر — بيشيل على الإيدين الاتنين؟"<br>"تعرق وغثيان وإحساس بالخوف؟"<br>"الضغط واطي؟" → ECG فوراً — ده طوارئ' },
+                    { label: '🟠 ذبحة غير مستقرة', text: '"الألم بييجي في الراحة؟ ولا بقى بييجي أكتر من أول؟"<br>"نفس طابع ألم القلب بس تروبونين سالب"' },
+                    { label: '🟡 GERD', text: '"الألم حرقة وراء العظمة؟ بيتزود بعد الأكل؟"<br>"بيتزود لما تستلقي؟ بيتحسن بمضاد الحموضة؟"' },
+                    { label: '🟢 التهاب التأمور (Pericarditis)', text: '"الألم حاد وبيتزود لما بتتنفس عميق أو بتستلقي؟"<br>"بيتحسن لما بتقعد للأمام؟" → كلاسيكي جداً' },
+                    { label: '🔵 التهاب رئة (Pneumonia)', text: '"عندك سعال مع مخاط؟ حمى؟"<br>"ألم في الصدر مع التنفس؟"<br>الكشف: أصوات مخمدة عند القرع على الصدر' },
+                    { label: '🟣 قصور القلب (Heart Failure)', text: '"بتلاقي صعوبة في النوم استلقاء؟ بتصحى على ضيق نفس؟"<br>"قدميك متورمين؟"<br>الكشف: أصوات فرقعة في الرئتين — وذمة رئوية' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'red', title: '🚨 علامات الخطر الفوري', items: ['ألم في الإيدين + تعرق + هبوط ضغط → MI', 'SpO2 < 94% → أكسجين', 'ECG: ارتفاع ST → إسعاف فوراً', 'أسبرين ٣٠٠ ملجم يمضغه (لو مش حساس)'] },
+                    right: { color: 'blue', title: '🔬 التحاليل الأساسية', items: ['ECG — أول خطوة في أي ألم صدر', 'تروبونين I أو T', 'أشعة صدر (CXR)', 'صورة دم — كلى — سكر'] }
+                }
+            },
+            {
+                tag: 'ICE والتواصل', tagColor: '#fdf4ff', tagText: '#a21caf',
+                title: 'إزاي تتعامل مع مخاوف المريض؟',
+                phrases: [
+                    { label: '💭 ICE', text: '"إيه اللي بيخليك تفكر إنه من القلب؟"<br>"إيه اللي بيقلقك في الموضوع ده؟"<br>"إيه اللي توقعته النهارده؟"' },
+                    { label: '💬 لو مش قلب', text: '"الحمد لله — العلامات مش بتدل على قلب."<br>"بيشبه أكتر [السبب] — وده عندنا علاج واضح."<br>"هنعمل تحاليل للتأكيد — بس مفيش داعي للقلق دلوقتي."' },
+                    { label: '🚨 لو محتاج طوارئ', text: '"محتاج تروح المستشفى دلوقتي."<br>"هاكسبلك أسبرين ٣٠٠ ملجم تمضغه دلوقتي." (لو مش حساس)<br>"مش تقود السيارة — اطلب إسعاف."' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 12. مريض السكري عالي الخطر + ألم الصدر ──────────────────
+    {
+        id: 'dm-chest', system: 'باطنة',
+        name: 'سكري عالي الخطر + ألم صدر',
+        icon: '🚨',
+        color: '#dc2626', colorLight: '#fef2f2',
+        steps: [
+            {
+                tag: 'الـ Rapport والبداية', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'إزاي تبدأ مع المريض ده؟ (ضغط + سكري + ألم صدر)',
+                phrases: [
+                    { label: '🤝 الدخول والبناء', text: '"أهلاً — أنا د. [اسمك] — ايه اللي جبك النهارده؟"<br>"شايف إنك في ضيق — خليني أساعدك. قوللي كل حاجة."' },
+                    { label: '📋 الملف السريع', text: '"اسمك إيه؟ عمرك كام؟"<br>"بتشتغل إيه؟ عندك ضغط في الشغل؟"<br>"مريض بإيه؟ بتاخد أدوية؟ بتاخدها بانتظام؟"' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'تحليل ألم الصدر', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'إزاي تسأل عن الألم وتاخد الـ SOCRATES؟',
+                phrases: [
+                    { label: '📍 وصف الألم', text: '"الألم ده فين بالظبط؟ وشكله إيه؟"<br>"شكله زي السكين؟ ولا ضغط ولا حرقة؟"<br>"من امتى؟ مستمر ولا جاي وجاي؟"<br>"شدته كام من عشرة؟"' },
+                    { label: '📍 الإشعاع والمصاحب', text: '"بيشيل على كتفك الشمال؟ على إيدك الشمال؟"<br>"تعرق معاه؟ ضيق نفس؟ غثيان؟ دوخة؟"<br>"بييجي في الراحة ولا بس مع المجهود؟"' },
+                    { label: '📍 المشيِّد والمخفِّف', text: '"إيه اللي بيزوده؟ المجهود؟ الأكل؟ الانحناء؟"<br>"إيه اللي بيريحه؟ الراحة؟ مضاد الحموضة؟ الجلوس للأمام؟"<br>"جربت نترو قبل كده؟ أثر فيك؟"' }
+                ],
+                clinical: {
+                    type: 'single',
+                    color: 'red',
+                    title: '🚨 في الحالة دي — علامات خطر ACS موجودة',
+                    items: ['ألم في الراحة (مش مع المجهود بس) → ACS حتى يثبت العكس', 'إشعاع للكتف الأيسر → كلاسيكي للقلب', 'ذكر + سمين + مدخن + ضغط + سكري = خطر جداً عالي', 'HbA1c 12 + RBS 300 = سيطرة سيئة جداً على السكر']
+                }
+            },
+            {
+                tag: 'عوامل الخطر القلبي', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'إزاي تجمع عوامل الخطر عند المريض ده؟',
+                phrases: [
+                    { label: '⚠️ أسئلة الخطر القلبي', text: '"بتدخن؟ كام سيجارة في اليوم؟ من امتى؟"<br>"الضغط عندك متحكم فيه؟ بتاخد الدواء بانتظام؟"<br>"وزنك زاد من فترة؟ بتعمل رياضة؟"<br>"في تاريخ جلطة في العيلة؟ أبوك أو أخوك عملوا عملية قلب؟"' },
+                    { label: '🍬 السيطرة على السكر', text: '"HbA1c وطلع ١٢ — ده معناه السكر مش متحكم فيه من ٣ شهور على الأقل."<br>"عارف إنك لازم تغير في الدواء؟"<br>"بتاخد ميتفورمين بس؟ ولا في دواء تاني؟"' },
+                    { label: '🫀 أعراض مضاعفات السكري', text: '"بصرك بيتضبب الصبح؟ بيتحسن في النهار؟" — ده ممكن يكون اعتلال شبكية<br>"بتحس بتنميل أو وخز في رجليك؟" — اعتلال عصبي<br>"بتجيلك عدوى فطرية متكررة؟" — ده علامة إن السكر عالي جداً<br>"بتشرب مية كتير وبتبول كتير؟" — أعراض فرط سكر' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'red', title: '🚨 عوامل الخطر في الحالة دي', items: ['ذكر عمر ٥٢', 'سمنة BMI 34', 'مدخن شديد ٢٠ سنة', 'ضغط دم (HTN)', 'سكري (DM) — HbA1c 12%', 'تاريخ عيلي (أبوه جلطة)'] },
+                    right: { color: 'orange', title: '⚠️ مضاعفات السكري الموجودة', items: ['ضبابية البصر الصبح → عين', 'عدوى فطرية متكررة → سكر عالي', 'عطش وكثرة تبول → فرط سكر', 'ضغط نفسي → يزيد السكر والضغط'] }
+                }
+            },
+            {
+                tag: 'خطة العلاج الشاملة', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تشرح الخطة لمريض كل حاجة عنده عالية؟',
+                phrases: [
+                    { label: '🚨 الخطوة الأولى — الصدر', text: '"الأول محتاج نأكد إن القلب كويس — هراجع الـ ECG والتحاليل اللي عندك."<br>"لو في علامات خطر على القلب — هنحولك على المستشفى فوراً."<br>"هاكسبلك أسبرين تمضغه دلوقتي." — لو مش حساس' },
+                    { label: '💊 السكري — HbA1c 12%', text: '"الـ HbA1c ١٢ ده عالي جداً — الميتفورمين لوحده مش كافي دلوقتي."<br>"محتاج نضيف دواء تاني أو نفكر في الإنسولين."<br>"هنراجع مع بعض الكلى الأول قبل ما نزود الأدوية."' },
+                    { label: '🫀 الضغط والكوليسترول', text: '"الضغط لازم يكون أقل من ١٣٠/٨٠ مع السكري."<br>"هاكسبلك كابتوبريل — بيحمي الكلى مع السكري كمان."<br>"هاكسبلك أتورفاستاتين ٤٠ ملجم بعد العشا للكوليسترول."<br>"هاكسبلك أسبرين + بلافيكس ٧٥ ملجم يومياً للخطر القلبي."' },
+                    { label: '🚭 التدخين والنفسي', text: '"التدخين مع السكري والضغط ده اللي ممكن يجيبلك الجلطة."<br>"لازم تقلع — أنا هساعدك."<br>"الضغط النفسي بيرفع السكر والضغط — مهم نتكلم فيه."' },
+                    { label: '🔍 التحويلات المطلوبة', text: '"محتاج تعمل فحص عيون مع طبيب عيون — عشان الضبابية دي."<br>"لو ECG فيه حاجة — تحويل قلب فوراً."<br>"هنشوفك بعد شهر — هتاخد معاك HbA1c وكلى وكوليسترول."' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'ICE والختام', tagColor: '#fdf4ff', tagText: '#a21caf',
+                title: 'إزاي تختم وتعالج قلق المريض؟',
+                phrases: [
+                    { label: '💭 ICE', text: '"إيه اللي رأيك إيه اللي سبّب الألم ده؟"<br>"إيه اللي بيقلقك أكتر — الألم ولا السكري ولا الضغط؟"<br>"إيه اللي توقعته من الزيارة دي؟"' },
+                    { label: '💬 الرد على القلق', text: '"أنا فاهم قلقك — الحالة محتاجة اهتمام كامل وعندنا خطة واضحة."<br>"مش هتسيبك من غير إجابة."<br>"الحمد لله جيت النهارده — نبدأ دلوقتي."' },
+                    { label: '⚠️ الإنذار المبكر', text: '"لو الألم اشتد أو حسيت بضيق نفس أو تعرق شديد أو دوخة — روح أقرب طوارئ فوراً."<br>"هل في أي سؤال تاني عندك؟"<br>"ربنا يشفيك وتبقى بصحة إن شاء الله."' }
+                ],
+                clinical: null
+            }
+        ]
+    }
+
+    ,
+    {
+        id: 'gerd', system: 'باطنة',
+        name: 'GERD / ارتجاع المريء',
+        icon: '🔥',
+        color: '#dc2626', colorLight: '#fef2f2',
+        steps: [
+            {
+                tag: 'تحليل الشكوى', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'إزاي تسأل عن الحرقة وتحللها؟',
+                phrases: [
+                    { label: '📍 وصف الحرقة', text: '"الحرقة دي فين بالظبط؟ في المعدة ولا بترتفع لفوق للصدر؟"<br>"الوجع ده حرقة ولا ضغط ولا غاز؟"<br>"هل بيجيلك طعم حمض في بقك أو ارتداد أكل؟"<br>"الحرقة بتتحسن لما تقف أو تاخد مضاد حموضة؟"' },
+                    { label: '📍 مشيِّد ومخفف', text: '"إيه اللي بيزود الحرقة؟ الأكل الدسم؟ القهوة؟ الاستلقاء بعد الأكل؟"<br>"إيه اللي بيريحك؟ الوقوف؟ الأنتاسيد؟"' },
+                    { label: '📍 المدة والتكرار', text: '"الحرقة دي من إمتى؟"<br>"بتيجي كل يوم ولا من وقت لوقت؟"<br>"بتصحيك من النوم؟"' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'green', title: '✅ GERD الكلاسيكي', items: ['حرقة تصعد للصدر أو الحلق', 'ارتداد حمض في الفم', 'تزيد بالاستلقاء والانحناء', 'تتحسن بمضاد الحموضة والوقوف'] },
+                    right: { color: 'orange', title: '⚠️ قرحة المعدة (فرّق)', items: ['ألم في الشرستون تحت القص', 'بيتحسن بعد الأكل (DU)', 'بيتحسن بالصوم (GU)', 'إيقاع دوري وموسمي'] }
+                }
+            },
+            {
+                tag: 'عوامل التفاقم', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'العوامل المُزيِّدة للحرقة',
+                phrases: [
+                    { label: '🍽️ العادات الغذائية', text: '"إيه اللي بيزود الحرقة عندك؟"<br>"هل بتتزيد بعد الأكل الدسم أو الدهني؟"<br>"بتشرب قهوة أو شاي كتير؟ بتاكل شوكولاتة؟ أكل حريف؟ مياه غازية؟"' },
+                    { label: '🛏️ الوضعية والنوم', text: '"بتتزيد لما بتنام على ضهرك أو على جنبك الأيمن؟"<br>"بتنام بعد الأكل بفترة قصيرة؟"<br>"بتتزيد لما بتنحني للأمام؟"' },
+                    { label: '⚖️ عوامل أخرى', text: '"وزنك زاد؟ بتلبس هدوم ضيقة في البطن؟"<br>"بتاخد مسكنات زي البروفين؟ بتدخن؟"' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'red', title: '❌ عوامل تزيد GERD', items: ['الأكل الدهني والمقلي', 'الشوكولاتة والنعناع', 'القهوة والمياه الغازية', 'الكحول والتدخين', 'الاستلقاء مباشرة بعد الأكل', 'NSAIDs'] },
+                    right: { color: 'green', title: '✅ عوامل تحسّن', items: ['الوقوف والمشي بعد الأكل', 'وجبات صغيرة ومتكررة', 'تجنب الأكل قبل النوم بـ ٣ ساعات', 'رفع رأس السرير', 'النوم على الجنب الأيسر', 'إنقاص الوزن'] }
+                }
+            },
+            {
+                tag: 'تصنيف الشدة', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'خفيف ولا متوسط ولا حاد؟ — صنّف قبل ما تعالج',
+                phrases: [
+                    {
+                        label: '🟡 Mild — خفيف',
+                        text: '<b>اسأل:</b> "الحرقة بتيجي أقل من مرتين في الأسبوع؟"<br>"مش بتصحيك من النوم؟"<br>"بتتحسن بالأنتاسيد أو مضاد الحموضة؟"<br>"ما بتأثرش على شغلك أو حياتك اليومية؟"<br><br><b>لو آه للكل → Mild GERD</b><br>الخطة: تعديل نمط الحياة + أنتاسيد عند الحاجة (PRN) أو PPI دورة قصيرة ٤ أسابيع'
+                    },
+                    {
+                        label: '🟠 Moderate — متوسط',
+                        text: '<b>اسأل:</b> "الحرقة بتيجي أكتر من مرتين في الأسبوع؟"<br>"بتأثر على نومك أو تركيزك في الشغل أحياناً؟"<br>"مش بتتحسن بالأنتاسيد كويس؟"<br><br><b>لو آه → Moderate GERD</b><br>الخطة: PPI يومياً (أومبيرازول أو بانتوبرازول) ٢٠-٤٠ ملجم كل يوم الصبح قبل الفطار — ٤-٨ أسابيع'
+                    },
+                    {
+                        label: '🔴 Severe — حاد',
+                        text: '<b>اسأل:</b> "الحرقة يومية أو شبه يومية؟"<br>"بتصحيك من النوم أكتر من مرة في الأسبوع؟"<br>"أثّرت على جودة حياتك بشكل واضح؟"<br>"جربت PPI وما اتحسنتش؟"<br><br><b>لو آه → Severe GERD</b><br>الخطة: PPI مرتين يومياً (جرعة مضاعفة) ٨ أسابيع كاملة — لو مش رادّ: منظار + تحويل'
+                    },
+                    {
+                        label: '📊 سؤال جودة الحياة (GERD-Q)',
+                        text: '<b>"على مدار الأسبوع الجاي — الحرقة بتأثر على:</b><br>▪ نومك؟ ▪ أكلك ومشربك؟ ▪ شغلك أو دراستك؟ ▪ مزاجك العام؟"<br><br><i>(كل ما زادت الإجابات — كل ما الحالة أشد)</i>'
+                    }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: {
+                        color: 'orange',
+                        title: '📋 تصنيف الشدة — ملخص',
+                        items: [
+                            '🟡 Mild: < مرتين/أسبوع — بدون تأثير — أنتاسيد PRN',
+                            '🟠 Moderate: ≥ مرتين/أسبوع — تأثير بسيط — PPI يومي ٤-٨ أسابيع',
+                            '🔴 Severe: يومي — تأثير واضح — PPI مرتين + منظار لو فشل',
+                            '⚫ Complicated: تليف/Barrett\'s/ضيق — جراحة أو تحويل متخصص'
+                        ]
+                    },
+                    right: {
+                        color: 'blue',
+                        title: '🔬 LA Grade (منظاري)',
+                        items: [
+                            'Grade A: تقرحات صغيرة < 5mm — خفيف',
+                            'Grade B: تقرحات > 5mm بدون امتداد — متوسط',
+                            'Grade C: تقرحات تمتد بين الطيات < 75% — حاد',
+                            'Grade D: تقرحات > 75% من المريء — حاد جداً'
+                        ]
+                    }
+                }
+            },
+            {
+                tag: 'العلامات الخطرة 🚨', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'أسئلة الـ Red Flags (ALARM) — اسأل كلها',
+                phrases: [
+                    { label: '🚨 أسئلة الـ ALARM', text: '"فيه صعوبة في البلع؟ الأكل بيتعلق في بلعومك؟" — Dysphagia<br>"بيوجعك لما تبلع؟" — Odynophagia<br>"لاحظت نقص في وزنك من غير سبب؟" — Weight loss<br>"شفت دم مع القيء أو البراز أسود؟" — GI Bleeding<br>"بتتعب بسرعة ووشك شاحب؟" — Anaemia<br>"كام عمرك؟ في حد في عيلتك عنده أورام معدة؟" — Age >55 / FH' },
+                    { label: '💬 عروض غير نمطية', text: '"عندك سعال جاف مزمن بدون سبب؟" — Chronic cough<br>"صوتك بيتغير أو أجش خصوصاً الصبح؟" — Laryngitis<br>"عندك تضيق في التنفس؟" — Asthma-like<br>"دكتور الأسنان قالك في تآكل؟" — Dental erosion' }
+                ],
+                clinical: {
+                    type: 'single', color: 'red',
+                    title: '🚨 لو في أي Red Flag → حوّل فوراً للتنظير',
+                    items: ['مفيش Red Flags → علاج دوائي تجريبي أولاً', 'سن > ٥٥ وأعراض جديدة → منظار', 'تاريخ عائلي لأورام GI → منظار', 'فشل PPI ٨ أسابيع → منظار']
+                }
+            },
+            {
+                tag: 'قرار العلاج', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'قبل الدواء — اسأل عن الحساسية — اكتب الروشتة صح',
+                phrases: [
+                    {
+                        label: '⚠️ الخطوة الأولى — حساسية لاي دواء؟',
+                        text: '<b>"قبل ما أوصفلك أي دواء — لازم أسألك سؤال مهم:"</b><br><b>"عندك حساسية لأي دواء؟ — سواء بانادول، مضادات حيوية، أي حاجة؟"</b><br>"حصلتلك يوم من الأيام طفح جلدي، ضيق تنفس، أو تورم بعد دواء؟"<br><br><i>✅ لو مفيش: "ممتاز، هنكمّل."</i><br><i>🚨 لو في حساسية: اكتبها على الروشتة — واختر دواء بديل.</i>'
+                    },
+                    {
+                        label: '💬 القرار — دواء ولا منظار؟',
+                        text: '"بناءً على كلامك وإن مفيش علامات خطيرة، هنكمّل مع العلاج الدوائي دلوقتي."<br>"مش محتاج منظار في الوقت ده — الأعراض ناسبة لـ GERD."<br><br><b>لو في Red Flag:</b><br>"هنعملك منظار للمعدة — إجراء بسيط وبيخدروك خفيف — بياخد ١٠-١٥ دقيقة بس."'
+                    },
+                    {
+                        label: '📋 الروشتة — اكتبها كده بالظبط',
+                        text: `<div style="font-family:monospace;background:#f8fafc;border:2px solid #cbd5e1;border-radius:10px;padding:14px;font-size:0.82em;line-height:1.9;direction:ltr;text-align:left;">
+<b>Rx</b><br>
+<b>Patient Name:</b> ___________________<br>
+<b>Date:</b> ___________________<br>
+<b>Diagnosis:</b> Gastroesophageal Reflux Disease (GERD) — <i>[Mild / Moderate / Severe]</i><br>
+<b>Allergies:</b> <span style="color:#dc2626">NKDA</span> &nbsp;/&nbsp; <span style="color:#dc2626">Allergic to: ___________</span><br>
+<hr style="border-color:#cbd5e1;margin:6px 0">
+<b>① Omeprazole</b> 20 mg capsule<br>
+&nbsp;&nbsp;— Mild: 1 cap <u>once daily</u> before breakfast × <b>4 weeks</b><br>
+&nbsp;&nbsp;— Moderate: 1 cap <u>once daily</u> before breakfast × <b>8 weeks</b><br>
+&nbsp;&nbsp;— Severe: 1 cap <u>twice daily</u> (before breakfast &amp; dinner) × <b>8 weeks</b><br>
+<br>
+<b>② Lifestyle advice</b> (written on prescription):<br>
+&nbsp;&nbsp;— Avoid fatty/spicy food, caffeine, carbonated drinks<br>
+&nbsp;&nbsp;— No lying down for 3 hrs after meals<br>
+&nbsp;&nbsp;— Elevate head of bed 15–20 cm<br>
+&nbsp;&nbsp;— Lose weight if BMI > 25<br>
+<hr style="border-color:#cbd5e1;margin:6px 0">
+<b>Follow-up:</b> After <i>[4 / 8]</i> weeks<br>
+<b>Return immediately if:</b> Dysphagia 🔴 | Haematemesis 🔴 | Melaena 🔴 | Weight loss 🔴<br>
+<br>
+<b>Dr. ___________________</b>&nbsp;&nbsp;&nbsp;Signature: _______
+</div>`
+                    },
+                    {
+                        label: '💊 اشرح الدواء للمريض بالعامية',
+                        text: '"الكبسولة دي بتقلل الحموضة اللي معدتك بتعملها."<br>"لازم تاخدها <b>قبل الأكل بنص ساعة</b> — على معدة فاضية — الصبح."<br>"الكورس لازم تكمله حتى لو اتحسنت — <b>ما توقفهوش لوحدك.</b>"<br>"لو ما اتحسنتش بعد ٤-٨ أسابيع — رجعلي فوراً."'
+                    }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'red', title: '🔴 محتاج منظار', items: ['أي Red Flag موجود', 'العمر > ٥٥ وجديد', 'فشل PPI ٨ أسابيع', 'تاريخ عائلي سرطان المعدة'] },
+                    right: { color: 'green', title: '🟢 استمر في العلاج', items: ['لا يوجد Red Flags', 'أعراض نمطية GERD', 'مبادئ الروشتة: NKDA + التشخيص + الجرعة + المدة + الفولو أب', 'أصغر من ٥٥ سنة'] }
+                }
+            },
+            {
+                tag: 'ICE والختام', tagColor: '#fdf4ff', tagText: '#a21caf',
+                title: 'أسئلة الـ ICE والمتابعة',
+                phrases: [
+                    { label: '💭 Ideas', text: '"إيه رأيك إيه اللي سبّب الحرقة دي؟"<br>"هل اتكلمت مع حد عن الأعراض دي؟ قالوا لك إيه؟"' },
+                    { label: '😟 Concerns', text: '"إيه اللي بيقلقك في الموضوع ده؟"<br>"في حاجة بتخوفك من الأعراض دي — زي سرطان مثلاً؟"' },
+                    { label: '🎯 Expectations', text: '"إيه اللي توقعته من زيارتك النهارده؟"<br>"هل كنت عاوز منظار أو تحاليل؟"' },
+                    { label: '📅 المتابعة والإنذار', text: '"هنشوفك تاني بعد ٤-٨ أسابيع — نتأكد إن العلاج شغّال."<br>"لو في أي وقت: صعوبة في البلع 🔴 | قيء بدم 🔴 | براز أسود 🔴 | نقص وزن مفاجئ 🔴 → تيجي فوراً."<br>"في أي سؤال تاني عندك؟ ربنا يشفيك."' }
+                ],
+                clinical: null
+            }
+        ]
+    }
+
+    ,
+
+    // ── COVID-19 ──────────────────────────────────────────────────────────
+    {
+        id: 'covid-pediatric', system: 'أطفال',
+        name: 'كوفيد-١٩ (طفل)',
+        icon: '🦠',
+        color: '#0891b2', colorLight: '#ecfeff',
+        steps: [
+            {
+                tag: 'تحليل الأعراض', tagColor: '#ecfeff', tagText: '#0891b2',
+                title: 'إزاي تسأل عن أعراض الكوفيد؟',
+                phrases: [
+                    { label: '🌡️ الحمى والحالة العامة', text: '"الحمى من إمتى؟ كام درجة بالظبط؟"<br>"الطفل كسلان وتعبان ولا لسه بيلعب؟"<br>"الأكل والشرب كويس ولا رافضهم؟"' },
+                    { label: '😤 الأعراض التنفسية', text: '"عنده سعال؟ جاف ولا فيه بلغم؟"<br>"بيلاقي صعوبة في التنفس أو بتسمعي صوت في صدره؟"<br>"لونه اتغير أو شفاه بنفسجية؟" 🚨' },
+                    { label: '👃 الأعراض المميزة', text: '"فقد الشم أو الذوق — الأكل بقاله ما طعمش؟"<br>"عنده صداع أو وجع في العضلات؟"<br>"معدة: إسهال أو تقيؤ؟"' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'blue', title: '🦠 أعراض كوفيد النمطية', items: ['حمى > 38°C', 'سعال جاف', 'فقدان الشم / الذوق', 'تعب وإرهاق', 'صداع وآلام عضلية'] },
+                    right: { color: 'red', title: '🚨 علامات خطرة — حول فوراً', items: ['SpO2 < 94%', 'سرعة تنفس عالية للعمر', 'Chest indrawing (رسوب الصدر)', 'مش بيصحى أو سردان', 'شفايف زرقة (Cyanosis)'] }
+                }
+            },
+            {
+                tag: 'التاريخ الوبائي', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'التعرض للمرض والتطعيم',
+                phrases: [
+                    { label: '🔗 مصدر العدوى', text: '"في أي حد في البيت عنده كوفيد أو عزل؟"<br>"الطفل اتخالط مع حد مريض في المدرسة أو الحضانة؟"<br>"الأب أو الأم عاملين تحليل؟"' },
+                    { label: '💉 التطعيم', text: '"الطفل أخد تطعيم كوفيد؟ كام جرعة وإمتى آخر جرعة؟"<br>"في أي أمراض مزمنة تزيد خطر الكوفيد؟ — سكري، أزمة، إلخ"' },
+                    { label: '📋 التاريخ المرضي', text: '"عنده أمراض سابقة؟ حساسية صدر أو جهاز مناعة ضعيف؟"<br>"اتعمله أي تحاليل أو أشعة؟ فيه نتيجة تحليل كوفيد معاكم؟"' }
+                ],
+                clinical: {
+                    type: 'single', color: 'blue',
+                    title: '📋 عوامل تزيد الخطر عند الأطفال',
+                    items: ['السمنة الشديدة', 'السكري أو أمراض القلب الخلقية', 'ضعف المناعة (استيرويد — كيماوي)', 'أزمة شعبية (Asthma) غير متحكم فيها', 'عمر أقل من سنة']
+                }
+            },
+            {
+                tag: 'العلامات الخطرة 🚨', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'أسئلة تحدد هل نعالج في البيت ولا نحول؟',
+                phrases: [
+                    { label: '🚨 Red Flags — اسأل كلها', text: '"بيتنفس بسرعة أوي؟" — Tachypnoea<br>"في رسوب في الصدر لما بيتنفس؟" — Chest indrawing<br>"لونه اتغير — شفايف أو ضفاير بنفسجية؟" — Cyanosis<br>"مش بيصحى أو عيون نايمة؟" — Altered consciousness<br>"قياس الأكسجين في البيت — كام؟" — SpO2<br>"بيشرب وبياكل ولا رافض كل حاجة؟" — Dehydration risk' },
+                    { label: '📱 متى تحول فوراً؟', text: '🔴 SpO2 أقل من 94%<br>🔴 تنفس سريع جداً أو رسوب الصدر<br>🔴 غياب الوعي أو تشنج<br>🔴 شفاه زرقة<br>🔴 رفض الشرب أكثر من 8 ساعات' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'green', title: '🟢 علاج في البيت', items: ['SpO2 ≥ 94%', 'واعي ونشيط نسبياً', 'يشرب ويأكل', 'تنفس عادي للعمر', 'مفيش أمراض مزمنة خطرة'] },
+                    right: { color: 'red', title: '🔴 حول للمستشفى', items: ['SpO2 < 94%', 'تنفس سريع + chest indrawing', 'رفض الشرب + علامات جفاف', 'غياب وعي أو تشنج', 'أزرق الشفاه'] }
+                }
+            },
+            {
+                tag: 'خطة العلاج', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'عزل في البيت + دواء + نصايح الأم',
+                phrases: [
+                    { label: '🏠 العزل المنزلي', text: '"الطفل يفضل في أوضته — مفيش اختلاط مع باقي الأسرة قدر الإمكان."<br>"ارتدي كمامة لما تخدميه — واغسلي إيدك قبل وبعد."<br>"غرفته تتهوى — وخدها على الجهة اللي فيها هواء طلعة."' },
+                    { label: '💊 الأدوية الموصوفة', text: '<b>قبل أي دواء: عندك حساسية لأي دواء؟</b><br><br>① بانادول (Paracetamol) 15 ملجم/كجم كل 6 ساعات عند الحاجة — للحمى<br>② فيتامين C: 500 ملجم يومياً<br>③ زنك (Zinc): 20 ملجم يومياً<br>④ Acetylcysteine 200 ملجم كل 8 ساعات<br>⑤ لاكتوفيرين (Lactoferrin) ساشيه كل 12 ساعة<br><br><i>لا مضاد حيوي — كوفيد فيروسي ومش بيرد عليه</i>' },
+                    { label: '📋 الروشتة الصحيحة', text: `<div style="font-family:monospace;background:#f8fafc;border:2px solid #cbd5e1;border-radius:10px;padding:12px;font-size:0.8em;line-height:1.8;direction:ltr;text-align:left;"><b>Rx</b><br><b>Patient Name:</b> _______________ &nbsp;<b>Age:</b> ___<br><b>Date:</b> ___________________<br><b>Diagnosis:</b> Paediatric COVID-19 — Mild (Home Isolation)<br><b>Allergies:</b> NKDA<br><hr style="border-color:#cbd5e1;margin:5px 0"><b>① Paracetamol</b> [15 mg/kg/dose] q6h PRN fever<br><b>② Vitamin C</b> 500 mg once daily<br><b>③ Zinc</b> 20 mg once daily<br><b>④ Acetylcysteine</b> 200 mg every 8 hrs<br><b>⑤ Lactoferrin</b> 1 sachet every 12 hrs<br><hr style="border-color:#cbd5e1;margin:5px 0"><b>Strict home isolation — No school for 10 days</b><br><b>Follow-up:</b> After 3–5 days or sooner if worsening<br><b>Return immediately if:</b> SpO2 &lt;94% 🔴 | Fast breathing 🔴 | Drowsy 🔴</div>` }
+                ],
+                clinical: {
+                    type: 'single', color: 'blue',
+                    title: '⚠️ تعليمات للأم',
+                    items: ['راقبي معدل التنفس — فوق 40 في الدقيقة للأطفال > 1 سنة = حول فوراً', 'قيسي الأكسجين لو عندك جهاز — أقل من 94% = طوارئ', 'وفري سوائل كافية طول اليوم', 'لا مضاد حيوي من غير وصفة', 'العزل ١٠ أيام من ظهور الأعراض']
+                }
+            }
+        ]
+    },
+
+    // ── EMESIS GRAVIDARUM ──────────────────────────────────────────────────
+    {
+        id: 'emesis', system: 'نساء وتوليد',
+        name: 'قيء الحمل (Emesis Gravidarum)',
+        icon: '🤰',
+        color: '#7c3aed', colorLight: '#faf5ff',
+        steps: [
+            {
+                tag: 'تأكيد الحمل وتحليل القيء', tagColor: '#faf5ff', tagText: '#7c3aed',
+                title: 'ابدأ بتأكيد الحمل وتوصيف القيء',
+                phrases: [
+                    { label: '🤰 تأكيد الحمل', text: '"الدورة الأخيرة إمتى كانت؟"<br>"عملتي تحليل حمل؟ نتيجته إيه؟"<br>"المياه وقفت من إمتى؟ في أي أسبوع تقريباً؟"<br>"ده أول حمل ولا كان عندك قيء في حمل قبل؟"' },
+                    { label: '🤢 توصيف القيء', text: '"القيء من إمتى بدأ؟"<br>"كام مرة في اليوم؟"<br>"الصبح بس ولا طول اليوم؟"<br>"بتقدري تأكلي وتشربي بعده؟ ولا قيء على قيء؟"<br>"وزنك نقص؟"' },
+                    { label: '📍 المحفزات', text: '"إيه اللي بيزيد القيء؟ روايح معينة؟ أكل معين؟"<br>"بتتحسني لما تاكلي بسكويت جاف أو توست؟"<br>"بتشربي ميه كفاية طول اليوم؟"' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'green', title: '🟢 Emesis Gravidarum (الطبيعي)', items: ['أقل من ٥ مرات يومياً', 'مفيش نقص وزن ملحوظ', 'بتقدر تاكل وتشرب', 'مفيش جفاف', 'بيتحسن بالإجراءات البسيطة'] },
+                    right: { color: 'red', title: '🔴 Hyperemesis Gravidarum (خطر)', items: ['أكتر من ٥ مرات يومياً', 'نقص وزن > 5% من الوزن الأصلي', 'جفاف شديد', 'اضطراب الأملاح (K+, Na+)', 'محتاجة دخول مستشفى وسوائل وريدية'] }
+                }
+            },
+            {
+                tag: 'تقدير الشدة', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'خفيف ولا شديد؟ — الفرق مهم للعلاج',
+                phrases: [
+                    { label: '🟡 خفيف — Mild Emesis', text: '"القيء أقل من ٣ مرات في اليوم؟"<br>"بتقدري تشربي ميه وتاكلي بعض الحاجات؟"<br>"مفيش دوخة أو إغماء؟"<br><br><b>→ علاج بنصائح غذائية + دعم نفسي بس</b>' },
+                    { label: '🟠 متوسط — Moderate', text: '"القيء ٣-٥ مرات في اليوم؟"<br>"بتتعبي ومش قادرة تكملي شغلك أو أهدافك؟"<br>"جسمك ناقص شوية بس لسه ما فيش جفاف واضح؟"<br><br><b>→ نصائح + Doxylamine + Pyridoxine</b>' },
+                    { label: '🔴 حاد — Hyperemesis', text: '"القيء أكتر من ٥ مرات؟"<br>"وزنك نقص أكتر من 5%؟"<br>"عيونك غايرة وبتحسي بجفاف شديد؟"<br>"مبقدريش تشربي أي حاجة من غير ما ترجعيه؟"<br><br><b>→ إحالة للمستشفى — سوائل وريدية + فحوصات</b>' }
+                ],
+                clinical: {
+                    type: 'single', color: 'orange',
+                    title: '📋 الفحوصات عند الشك في Hyperemesis',
+                    items: ['CBC — هيموجلوبين', 'الكهارل: Na+ و K+', 'وظائف كبد وكلى', 'وظائف درقية (لاستبعاد سبب هرموني)', 'بول (ketones في البول = جفاف)']
+                }
+            },
+            {
+                tag: 'الأسباب العضوية والحساسية', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'استبعد الأسباب التانية قبل ما تحكم',
+                phrases: [
+                    { label: '🔍 استبعاد الأسباب العضوية', text: '"عندك مشاكل في المعدة قبل كده؟ قرحة أو جرثومة؟"<br>"في ألم في البطن ولا تحت الضلوع اليمين؟" — كبد / مرارة<br>"ياض أو عين صفرا؟" — Hepatitis<br>"الغدة الدرقية اتفحصت؟" — سبب هرموني نادر<br>"سكري معاك؟" — Diabetic gastroparesis' },
+                    { label: '⚠️ حساسية لاي دواء؟', text: '<b>"قبل ما أوصفلك أي دواء — لازم أسألك:"</b><br><b>"عندك حساسية لأي دواء؟ — حتى لو بانادول أو مضاد حيوي؟"</b><br>"حصلك طفح جلدي أو ضيق تنفس بعد أي دواء قبل كده؟"<br><br>✅ لو مفيش: "ممتاز — هنكمّل"<br>🚨 لو في: اكتبها على الروشتة' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'orange', title: '⚠️ أسباب قيء غير حملي', items: ['قرحة معدة / جرثومة (H. pylori)', 'التهاب كبد (Hepatitis A/E)', 'حصوة مرارة / Cholestasis', 'فرط نشاط الدرقية', 'سكري غير متحكم فيه'] },
+                    right: { color: 'blue', title: '✅ مميزات قيء الحمل', items: ['بيبدأ أسبوع 4-7', 'بيخف بعد أسبوع 12-14', 'صبحي بشكل رئيسي', 'بيتحسن مع الأكل الجاف', 'مفيش ألم بطني أو يرقان'] }
+                }
+            },
+            {
+                tag: 'قرار العلاج', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'نصائح غذائية أولاً — بعدين دواء لو محتاجة',
+                phrases: [
+                    { label: '🥐 النصائح الغذائية أولاً', text: '"آكلي وجبات صغيرة كتيرة — كل ساعتين بدل ما تاكلي ٣ وجبات كبيرة."<br>"قبل ما تقومي من السرير — آكلي بسكويت جاف أو توست."<br>"ابعدي عن الأكل الدهني والأكل ذو الرائحة القوية."<br>"اشربي ميه بجرعات صغيرة على مدار اليوم — مش كميات كبيرة دفعة واحدة."<br>"الزنجبيل بيساعد — شاي زنجبيل أو كبسولات."' },
+                    { label: '💊 الدواء لو محتاجة', text: '<b>بعد النصائح الغذائية:</b><br>① Proxen (Doxylamine 10mg + Pyridoxine 10mg) — قرص قبل النوم<br>② لو مش كافي: Metoclopramide (Primperan) 10mg ٣ مرات يومياً قبل الأكل<br>③ لو شديد: Ondansetron 4mg كل 8 ساعات<br><br><i>مش لازم الـ Iron tablet يكون على معدة فاضية — ممكن تاخديه مع الأكل لتقليل الغثيان</i>' },
+                    { label: '📋 الروشتة الصحيحة', text: `<div style="font-family:monospace;background:#f8fafc;border:2px solid #cbd5e1;border-radius:10px;padding:12px;font-size:0.8em;line-height:1.8;direction:ltr;text-align:left;"><b>Rx</b><br><b>Patient Name:</b> ___________________<br><b>Date:</b> ___________________<br><b>Diagnosis:</b> Nausea &amp; Vomiting of Pregnancy (Emesis Gravidarum) — [Mild / Moderate]<br><b>Allergies:</b> NKDA / Allergic to: ___<br><hr style="border-color:#cbd5e1;margin:5px 0"><b>① Doxylamine 10mg + Pyridoxine 10mg (Proxen)</b><br>&nbsp;&nbsp;1 tab at bedtime<br><b>② Metoclopramide 10mg</b> (if needed)<br>&nbsp;&nbsp;1 tab TID before meals — max 5 days<br><b>③ Paracetamol 500mg</b> PRN headache<br><hr style="border-color:#cbd5e1;margin:5px 0"><b>Continue:</b> Folic acid + Iron (with food to reduce nausea)<br><b>Follow-up:</b> After 1–2 weeks<br><b>Return immediately if:</b> Unable to keep fluids &gt;8h 🔴 | Weight loss 🔴 | Fainting 🔴</div>` }
+                ],
+                clinical: {
+                    type: 'single', color: 'green',
+                    title: '✅ طمأنة المريضة',
+                    items: ['ده طبيعي وبيحصل في ٧٥٪ من الحوامل', 'مش بيأذي الجنين في حالات الخفيفة', 'بيتحسن تدريجياً بعد الأسبوع ١٢-١٤', 'التعليمات والنصائح أهم من الدواء', 'لو زاد القيء أو ما قدرتيش تشربي — ارجعي فوراً']
+                }
+            }
+        ]
+    },
+
+    // ── AUB ───────────────────────────────────────────────────────────────
+    {
+        id: 'aub', system: 'نساء وتوليد',
+        name: 'نزيف الرحم الشاذ (AUB)',
+        icon: '🩸',
+        color: '#be185d', colorLight: '#fdf2f8',
+        steps: [
+            {
+                tag: 'تأكيد الحمل والاستقرار', tagColor: '#fdf2f8', tagText: '#be185d',
+                title: 'أول ما المريضة تيجي — ثبّت الوضع قبل التاريخ',
+                phrases: [
+                    { label: '🤰 تأكيد الحمل', text: '"الدورة الأخيرة إمتى؟"<br>"عملتي تحليل حمل؟ نتيجته إيه؟"<br>"في أي أسبوع من الحمل؟ عندك أشعة صوتية قبل؟"<br>"ده أول حمل ولا كان عندك حمل قبل؟"' },
+                    { label: '📊 الاستقرار الدوري الحيوي', text: '"بتتدوخي أو حاسة إنك هتوقعي؟" — هبوط ضغط<br>"وشك شحب كتير؟" — فقر دم<br>"القلب بيدق بسرعة؟" — تسارع النبض<br><br><i>⚠️ لو في دوخة شديدة أو إغماء → احتمال صدمة نزيفية — حولي فوراً</i>' },
+                    { label: '🩸 وصف النزيف', text: '"النزيف من إمتى بدأ؟"<br>"كمية الدم كتير — كام فوطة في اليوم؟"<br>"فيه جلطات أو أنسجة بتيجي معاه؟"<br>"لونه إيه — أحمر فاتح ولا داكن؟"<br>"الدورة الأخيرة قبلها كانت طبيعية؟"' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'green', title: '🟢 مستقرة — استمر في التقييم', items: ['لا دوخة', 'لا إغماء', 'ضغط طبيعي', 'نبض < 100', 'نزيف متحكم فيه'] },
+                    right: { color: 'red', title: '🔴 غير مستقرة — حول فوراً', items: ['دوخة شديدة أو إغماء', 'ضغط منخفض (Shock)', 'نبض > 100 + شحوب', 'نزيف يغرق أكتر من فوطة في الساعة', 'احتمال Ectopic مع ألم حاد'] }
+                }
+            },
+            {
+                tag: 'الحمل خارج الرحم 🚨', tagColor: '#fef2f2', tagText: '#dc2626',
+                title: 'الـ Ectopic — الأهم تفوتكش',
+                phrases: [
+                    { label: '🚨 اسأل عن Ectopic بالاسم', text: '"الألم في ناية — يمين ولا شمال بالذات؟" — علامة Ectopic<br>"الألم بيوصل للكتف؟" — نزيف داخلي يضغط على الحجاب الحاجز<br>"عندك IUD (لولب) أو عملية في البوق قبل كده؟" — عوامل خطر<br>"سبق عندك التهاب بوقين (PID) أو عملية في البطن؟"' },
+                    { label: '🧪 β-hCG — الأداة الأهم', text: '"هنعمل تحليل دم β-hCG الأن."<br>"القيمة المتوقعة في الحمل الطبيعي تتضاعف كل 48 ساعة."<br>"لو القيمة وقفت أو بدأت تنزل — 2000 ← 1800 ← 1200 — ده مشكلة."<br>"القيمة فوق 1500-2000 وما فيش كيس في الرحم بالأشعة → Ectopic حتى يثبت العكس."' },
+                    { label: '📡 الأشعة الصوتية العاجلة', text: '"هنعملك أشعة صوتية دلوقتي عشان نشوف الحمل فين."<br>"لو الكيس داخل الرحم وفيه نبض — ده حمل سليم للحظة دي."<br>"لو ما فيش كيس في الرحم مع β-hCG عالي — نتعامل كـ Ectopic."' }
+                ],
+                clinical: {
+                    type: 'single', color: 'red',
+                    title: '🚨 عوامل خطر الحمل خارج الرحم',
+                    items: ['حمل خارج رحم سابق — أكبر عامل خطر', 'التهاب البوقين (PID) سابق', 'IUD (لولب) موجود', 'عمليات في البوق أو البطن', 'تدخين', 'تأخر الإنجاب أو علاج تلقيح']
+                }
+            },
+            {
+                tag: 'التحقيقات والعلاج', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'طلب التحليلات وكتابة الروشتة صح',
+                phrases: [
+                    { label: '🧪 التحليلات المطلوبة', text: '<b>① β-hCG (دم)</b> — الأهم: قيمة + اتجاه كل 48 ساعة<br><b>② CBC</b> — لقياس الهيموجلوبين<br><b>③ أشعة صوتية حوض</b> — أشعة فورية<br><b>④ فصيلة دم + Rh</b> — مهمة لو محتاجة نقل دم<br><b>⑤ Pap Smear</b> — لو محتاج استبعاد سبب عنق رحم' },
+                    { label: '⚠️ حساسية لاي دواء؟', text: '<b>"قبل أي دواء — عندك حساسية لأي دواء؟"</b><br><br>لو مفيش → "ممتاز هنكمّل"<br>لو في → اكتبها على الروشتة' },
+                    { label: '📋 الروشتة الصحيحة', text: `<div style="font-family:monospace;background:#f8fafc;border:2px solid #cbd5e1;border-radius:10px;padding:12px;font-size:0.8em;line-height:1.8;direction:ltr;text-align:left;"><b>Rx</b><br><b>Patient Name:</b> ___________________<br><b>Date:</b> ___________________<br><b>Diagnosis:</b> Abnormal Uterine Bleeding (AUB) in Early Pregnancy — [Threatened Miscarriage / R/O Ectopic]<br><b>Allergies:</b> NKDA<br><hr style="border-color:#cbd5e1;margin:5px 0"><b>① Tranexamic Acid (Capron)</b> 500mg — 1 tab TID × 5 days<br>&nbsp;&nbsp;OR <b>Daflon 500mg</b> — 1 tab TID × 7 days<br><b>② Bed rest</b> — avoid intercourse until reviewed<br><hr style="border-color:#cbd5e1;margin:5px 0"><b>Follow-up:</b> After 48 hours with serial β-hCG result<br><b>Return immediately if:</b> Heavy bleeding 🔴 | Severe one-sided pain 🔴 | Fainting 🔴 | Passage of tissue 🔴</div>` }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'orange', title: '📋 Threatened Miscarriage', items: ['كيس حمل داخل الرحم', 'β-hCG بيتضاعف طبيعي', 'نزيف خفيف + فويحة', 'Fetal heartbeat موجود', 'راحة + متابعة'] },
+                    right: { color: 'red', title: '🚨 Ectopic — حول فوراً', items: ['ألم يمين أو يسار حاد', 'β-hCG وقف أو نزل', 'ما فيش كيس في الرحم بالأشعة', 'علامات صدمة', 'متخصص نسا فوراً'] }
+                }
+            }
+        ]
+    }
+
+    ,
+
+    // ── SHOULDER EXAMINATION ──────────────────────────────────────────────
+    {
+        id: 'shoulder-exam', system: 'عضلات وعظام',
+        name: 'فحص الكتف (Shoulder Examination)',
+        icon: '🦾',
+        color: '#7c3aed', colorLight: '#faf5ff',
+        steps: [
+            {
+                tag: 'تاريخ موجز', tagColor: '#faf5ff', tagText: '#7c3aed',
+                title: 'قبل ما تبدأ الفحص — ٥ أسئلة سريعة',
+                phrases: [
+                    { label: '🤕 مكان الألم والبداية', text: '"الألم فين بالظبط — في الكتف برة ولا جوا؟"<br>"بدأ إمتى؟ فجأة ولا بالتدريج؟"<br>"في إصابة ولا ضربة قبل كده؟"' },
+                    { label: '📈 الأشياء المحرِّكة للألم', text: '"الألم بيزيد في إيه — رفع الإيد فوق الرأس؟ وضع الإيد ورا الضهر؟ النوم على الجنب؟"<br>"في أي حاجة بتريحه؟"' },
+                    { label: '⚠️ Red Flags', text: '"في وجع في الرقبة أو تنميل في الإيد؟" — لو آه → ابحث عن سبب رقبي<br>"في وجع مستمر في الراحة أو ليل؟" — ورم أو التهاب<br>"في حمى أو نقص وزن؟" — التهاب إنتاني أو ورم' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'blue', title: '🦾 أسباب ألم الكتف الشائعة', items: ['Subacromial Impingement — الأكتر', 'Rotator Cuff Tear — تمزق الكفة', 'AC Joint — مفصل الترقوة', 'Frozen Shoulder (Adhesive Capsulitis)', 'Referred Pain من الرقبة'] },
+                    right: { color: 'red', title: '🚨 أحوّل فوراً لو', items: ['Painful Arc واسعة + Wasting', 'ألم ليلي مستمر + حمى', 'تنميل في الإيد + ضعف عضلة', 'صدمة حادة + عدم قدرة على حركة', 'الكتف بارزة للأمام (Dislocation)'] }
+                }
+            },
+            {
+                tag: 'Look — الفحص البصري', tagColor: '#ecfeff', tagText: '#0891b2',
+                title: 'اكشف الجانبين — وقارن',
+                phrases: [
+                    { label: '👀 LOOK — ابدأ بتعليمات للمريض', text: '"محتاج تكشف الجانبين عشان أقارن — ممكن تخلع قميصك وتقف واجهني؟"<br>"هفحص الأمام وبعدين من الجنب وبعدين من ورا."' },
+                    { label: '🔍 إيه اللي تشوفه؟', text: '① <b>الوضعية</b> — هل الكتف فيه رفع أو هبوط؟<br>② <b>Wasting</b> — تضمر عضلة Supraspinatus ورا الكتف = نهاية الكفة<br>③ <b>الجلد</b> — احمرار؟ ورم؟ جرح؟<br>④ <b>المفصل AC</b> — بروز في مفصل الترقوة مع الكتف؟<br>⑤ <b>Squaring</b> — الكتف بيبان مربع = خلوع قديم أو مزمن' },
+                    { label: '🗣️ قول للمريض وللممتحن', text: '"بشوف الجانبين ومقارنهم — الجانب المريض عنده [اذكر ما تلاحظه]."<br>"فيش wasting أو بروز في مفصل AC أو تغيير في الجلد."' }
+                ],
+                clinical: {
+                    type: 'single', color: 'blue',
+                    title: '📋 Look Checklist — اذكرها بالترتيب',
+                    items: ['Skin — احمرار / ورم / ندب', 'Muscle Bulk — wasting السوبراسبيناتس / دلتا', 'Bony Contour — AC joint / SC joint بروز', 'Posture — رفع الكتف / ميلان للأمام', 'Squaring off — خلوع قديم']
+                }
+            },
+            {
+                tag: 'Feel & Move', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'جس — حرك — شوف الـ Painful Arc',
+                phrases: [
+                    { label: '🤲 FEEL — ابدأ بظهر الإيد', text: '"هلمسك بظهر إيدي الأول عشان أحس بالحرارة."<br>بعدين جَسّ بالترتيب:<br>① Sternoclavicular Joint<br>② Clavicle كاملة<br>③ AC Joint — ألم هنا = AC pathology<br>④ Acromion<br>⑤ Greater Tuberosity — ألم هنا = Rotator Cuff<br>⑥ Bicipital Groove — ألم هنا = Biceps tendinitis<br>⑦ الخط الخلفي للمفصل' },
+                    { label: '🏃 MOVE — اطلب الحركة النشطة', text: '"عمل الحركات دي ومعايا:"<br>① <b>Abduction</b>: ارفع إيدك على الجنب — طبيعي ١٨٠°<br>② <b>Forward Flexion</b>: ارفع إيدك للأمام — طبيعي ١٨٠°<br>③ <b>Internal Rotation</b>: حط إيدك ورا ضهرك — وصل لأنهي مستوى؟<br>④ <b>External Rotation</b>: وكوعك ملاصق لجسمك — دوّر الساعد للخارج — طبيعي ٦٠-٩٠°' },
+                    { label: '📐 Painful Arc', text: '🎯 <b>لو الألم بيجي من 60° لـ 120° بس:</b><br>ده <b>Painful Arc</b> = Subacromial Impingement حتى يثبت العكس<br><br>"قوللي لو حسيت بألم في أي نقطة من الحركة."<br>دوّن زاوية بداية ونهاية الألم.' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'green', title: '✅ Move — طبيعي', items: ['Abduction: 0–180°', 'Forward Flexion: 0–180°', 'Extension: 0–60°', 'Internal Rotation: يوصل للـ T7-T10', 'External Rotation: 60–90°'] },
+                    right: { color: 'orange', title: '⚠️ Move — ماذا يعني التحديد؟', items: ['Painful Arc 60-120° → Impingement', 'Frozen (كل الحركات محدودة) → Capsulitis', 'ألم AC فوق 120° → AC pathology', 'خسارة External Rotation → Capsulitis', 'ألم بالجس + نقص Abduction → Rotator Cuff'] }
+                }
+            },
+            {
+                tag: 'Hawkins-Kennedy Test 🎯', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'الاختبار الخاص — Hawkins-Kennedy Test',
+                phrases: [
+                    { label: '📋 إزاي تعمله بالظبط؟', text: '① ارفع إيد المريض للأمام (Forward Flex) لـ <b>90°</b><br>② اثني الكوع لـ <b>90°</b><br>③ بيدك التانية على المعصم — دوّر الساعد للداخل (<b>Internal Rotation</b>) ببطء<br><br><b>إيجابي = لو المريض حس بألم في الكتف في أثناء التدوير</b><br>ده معناه Subacromial Impingement' },
+                    { label: '🗣️ قول للمريض', text: '"هعمل اختبار خاص للكتف — هرفع إيدك وأدورها — قوللي فوراً لو حسيت بألم."<br><br>بعد الاختبار: <b>"الاختبار إيجابي / سلبي — يعني..."</b>' },
+                    { label: '📚 اذكر الاختبارات التانية', text: '<b>Empty Can Test</b>: إيد ممدودة ٩٠° abduction + ٣٠° horizontal adduction + pronation — اضغط من فوق — إيجابي = ألم → تمزق سوبراسبيناتس<br><b>Neer Test</b>: ارفع الإيد المبسوطة للأمام ببطء — إيجابي = ألم تحت ١٢٠° → Impingement<br><b>Apprehension Test</b>: ٩٠° abduction + External Rotation — المريض بيحس إن الكتف هتطلع → instability' }
+                ],
+                clinical: {
+                    type: 'single', color: 'orange',
+                    title: '🔑 قرار العلاج بعد الفحص',
+                    items: ['Impingement (Painful Arc + Hawkins+) → NSAIDs + Physio + Injection لو مش تحسن', 'Frozen Shoulder (كل حركات محدودة) → Physio + Corticosteroid Injection', 'Suspected Rotator Cuff Tear (wasting + weak abduction) → MRI + متخصص', 'AC Joint Pathology (ألم فوق ١٢٠° + جس AC) → NSAIDs + راحة', 'Red Flags → طوارئ أو متخصص']
+                }
+            }
+        ]
+    },
+
+    // ── ELBOW EXAMINATION ─────────────────────────────────────────────────
+    {
+        id: 'elbow-exam', system: 'عضلات وعظام',
+        name: 'فحص الكوع (Elbow Examination)',
+        icon: '💪',
+        color: '#0891b2', colorLight: '#ecfeff',
+        steps: [
+            {
+                tag: 'تاريخ موجز', tagColor: '#ecfeff', tagText: '#0891b2',
+                title: 'قبل ما تبدأ — حدد مكان الألم',
+                phrases: [
+                    { label: '🤕 مكان الألم الدقيق', text: '"الألم فين بالظبط — برة الكوع ولا جوا؟"<br>"برة = Lateral Epicondyle → Tennis Elbow"<br>"جوا = Medial Epicondyle → Golfer\'s Elbow"' },
+                    { label: '🔧 الأسباب الشغلية', text: '"شغلك إيه؟ بتضغط إيدك كتير؟ تايبينج؟ بناء؟"<br>"بتلعب تنس أو رياضة تانية؟"<br>"الألم بيزيد لما بتمسك حاجة أو بتفتح باب؟"' },
+                    { label: '🔗 استبعاد الرقبة', text: '"في وجع في الرقبة أو تنميل في الأصابع؟"<br>"لو آه → احتمال referred pain من C6-C7"' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'blue', title: '💪 أسباب ألم الكوع', items: ['Lateral Epicondylitis (Tennis Elbow)', 'Medial Epicondylitis (Golfer\'s Elbow)', 'Olecranon Bursitis (ورم ورا الكوع)', 'Radial Head Fracture / Arthritis', 'Referred Pain من الرقبة'] },
+                    right: { color: 'orange', title: '📍 التمييز', items: ['ألم خارجي + مسك الأشياء → Tennis Elbow', 'ألم داخلي + قذف / غولف → Golfer\'s Elbow', 'ورم ورا الكوع → Olecranon Bursitis', 'ألم في الدوران (Pronation/Supination) → Radial Head', 'تنميل أصابع → Cervical أو Ulnar Nerve'] }
+                }
+            },
+            {
+                tag: 'Look & Feel', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'فحص الشكل والجس',
+                phrases: [
+                    { label: '👀 LOOK', text: '"اكشف الكوعين عشان أقارن."<br><br>① <b>Carrying Angle</b>: الزاوية الطبيعية ١٠-١٥° للخارج — valgus<br>&nbsp;&nbsp;Increased valgus → Cubitus valgus<br>&nbsp;&nbsp;Decreased / Reversed → Cubitus varus (Gun Stock Deformity)<br>② <b>Olecranon</b>: ورم أو احمرار ورا الكوع = Bursitis<br>③ <b>Rheumatoid Nodules</b>: عقد صغيرة على السطح الظهري<br>④ <b>Psoriatic Plaques</b>: جلد متقشر' },
+                    { label: '🤲 FEEL — ابدأ بظهر الإيد', text: '"هلمسك بظهر إيدي الأول عشان أحس الحرارة."<br>بعدين جَسّ بالترتيب:<br>① <b>Lateral Epicondyle</b>: ألم هنا = Tennis Elbow<br>② <b>Medial Epicondyle</b>: ألم هنا = Golfer\'s Elbow<br>③ <b>Olecranon + Bursa</b>: ورم أو نعومة = Bursitis<br>④ <b>Radial Head</b>: جنب الـ Lateral Epicondyle — ألم في الدوران<br>⑤ <b>Ulnar Nerve</b>: في الخد الداخلي — اقرعه (Tinel\'s Elbow)' },
+                    { label: '🗣️ نموذج الكلام', text: '"جسيت الكوع — في tenderness على الـ Lateral Epicondyle."<br>"مفيش ورم في الـ Olecranon Bursa."<br>"الـ Ulnar Nerve مش مؤلم."' }
+                ],
+                clinical: {
+                    type: 'single', color: 'blue',
+                    title: '📋 Feel Checklist',
+                    items: ['Back of hand → temperature', 'Lateral epicondyle → Tennis Elbow', 'Medial epicondyle → Golfer\'s Elbow', 'Olecranon + Bursa', 'Radial Head (pronation/supination)', 'Ulnar Nerve groove (Tinel\'s Elbow)']
+                }
+            },
+            {
+                tag: 'Move & Cozen\'s Test 🎯', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'الحركة والاختبار الخاص',
+                phrases: [
+                    { label: '🏃 MOVE — اطلب الحركة النشطة', text: '① <b>Flexion</b>: هات إيدك على صدرك — طبيعي ١٥٠°<br>② <b>Extension</b>: مدّها تماماً — طبيعي صفر° (Hyperextension = hypermobility)<br>③ <b>Supination</b>: وكوعك ٩٠° — ارفع راحة إيدك للسما — طبيعي ٩٠°<br>④ <b>Pronation</b>: اقلبها للأرض — طبيعي ٩٠°<br><br><i>تحديد Flexion/Extension = مشكلة مفصل داخلية</i><br><i>ألم في Pronation/Supination = Radial Head</i>' },
+                    { label: '🎯 Cozen\'s Test — الاختبار الخاص', text: '<b>للـ Lateral Epicondylitis (Tennis Elbow):</b><br>① اطلب من المريض يمدّ كوعه بالكامل<br>② يشد إيده (قبضة)<br>③ يرفع رسغه للخلف (Dorsiflexion)<br>④ <b>انت بتقاومه من فوق الرسغ</b><br><br><b>إيجابي = ألم في الـ Lateral Epicondyle</b><br><br><i>ده يعني: Tennis Elbow = Lateral Epicondylitis</i>' },
+                    { label: '📚 اختبار ثاني تذكره', text: '<b>Mill\'s Test (بديل Cozen\'s):</b><br>اثني رسغ المريض للأمام ببطء مع الكوع ممدود — إيجابي = ألم جانبي<br><br><b>Golfer\'s Elbow Test (الداخلي):</b><br>اطلب من المريض يثني رسغه ضد مقاومتك — إيجابي = ألم داخلي' }
+                ],
+                clinical: {
+                    type: 'single', color: 'orange',
+                    title: '🔑 العلاج بعد الفحص',
+                    items: ['Tennis Elbow → NSAIDs موضعية + Physio + تعديل النشاط + Counterforce Brace', 'Golfer\'s Elbow → نفس النهج + ثني الرسغ بالتدريج', 'Olecranon Bursitis → راحة + NSAIDs + aspirate لو كبير', 'Corticosteroid Injection لو مش تحسن بعد 4-6 أسابيع', 'Prognosis: ٨٠٪ بيتحسنوا في سنة بالعلاج التحفظي']
+                }
+            }
+        ]
+    },
+
+    // ── HAND / CTS EXAMINATION ────────────────────────────────────────────
+    {
+        id: 'hand-cts-exam', system: 'عضلات وعظام',
+        name: 'فحص اليد ومتلازمة النفق الرسغي (CTS)',
+        icon: '🤚',
+        color: '#059669', colorLight: '#f0fdf4',
+        steps: [
+            {
+                tag: 'تاريخ موجز + CTS', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'ابدأ بالتاريخ — CTS ليها نمط مميز',
+                phrases: [
+                    { label: '🤚 أعراض CTS المميزة', text: '"التنميل والحرقة في الأصابع فين بالظبط؟"<br>✅ الإبهام + السبابة + الوسطى + نص البنصر = Median Nerve → CTS<br>⚠️ الخنصر والبنصر = Ulnar Nerve → مش CTS<br><br>"الأعراض بتيجي إمتى؟ الليل؟ الصبح؟ أثناء الكلام بالتليفون؟"<br>"بتتحسني لما بتهزي إيدك؟" — Flick Sign = CTS مميز جداً' },
+                    { label: '⚠️ عوامل الخطر', text: '"عندك سكري؟" — أكتر سبب في الممارسة العملية<br>"عندك مشاكل في الغدة الدرقية؟" — Hypothyroidism<br>"عندك روماتويد؟"<br>"حامل أو في فترة هرمونية؟"<br>"شغلك فيه ضغط متكرر على الرسغ؟" — Repetitive use' },
+                    { label: '📉 الوظيفة', text: '"بيقع منك حاجات؟" — ضعف الإمساك<br>"صعب تكتبي أو تزرري هدومك؟"<br>"بتقدري تعدي مسمار أو عملة معدنية صغيرة؟"<br><i>الوظيفة هي أهم مؤشر لشدة الحالة</i>' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'green', title: '✅ CTS — خصائصها', items: ['تنميل راحة الإيد الرادي (إبهام → نص بنصر)', 'بيسوء الليل وبيصحي المريض من النوم', 'Flick Sign — هز الإيد يريح', 'بيزيد بحمل التليفون / القيادة', 'عامل الخطر: سكري / حمل / روماتويد'] },
+                    right: { color: 'orange', title: '⚠️ افرق عن', items: ['Ulnar Nerve → خنصر + بنصر', 'Thoracic Outlet → كل الإيد', 'Cervical Radiculopathy → من الرقبة', 'De Quervain → ألم الإبهام جنب الرسغ', 'Raynaud → تغيير اللون مع البرد'] }
+                }
+            },
+            {
+                tag: 'Look & Feel', tagColor: '#ecfeff', tagText: '#0891b2',
+                title: 'حط الإيدين على الوسادة — وافحص',
+                phrases: [
+                    { label: '👀 LOOK — الجانبين', text: '"حط إيديكي على الوسادة دي — هقارن بينهم."<br><br>① <b>الجلد</b>: لون / جفاف / قرح / تغيرات تغذوية<br>② <b>الأظافر</b>: Clubbing / Pitting (صدفية) / Ridging<br>③ <b>التشوهات</b>:<br>&nbsp;&nbsp;• Heberden\'s Nodes على DIP → Osteoarthritis<br>&nbsp;&nbsp;• Bouchard\'s Nodes على PIP → OA<br>&nbsp;&nbsp;• Swan-Neck / Boutonnière → Rheumatoid<br>&nbsp;&nbsp;• <b>Thenar Wasting</b> → CTS متقدم — ضمور عضلات الإبهام<br>④ <b>Hypothenar</b>: ضمور = Ulnar Nerve' },
+                    { label: '🤲 FEEL — ابدأ بظهر الإيد', text: '"هلمسك بظهر إيدي الأول عشان أحس الحرارة."<br><br>بعدين:<br>① جَسّ كل مفصل MCP, PIP, DIP — ورم؟ ألم؟<br>② الـ Thenar eminence — حجمها طبيعي؟<br>③ الـ Hypothenar eminence<br>④ الأوتار في راحة الإيد<br>⑤ الرسغ — ورم؟ حساسية على الـ Carpal Tunnel؟' },
+                    { label: '🗣️ قول للممتحن', text: '"بشوف الجانبين — في Thenar Wasting في الإيد اليمين بيدل على CTS متقدم."<br>"مفيش تشوهات مفصلية أو تغير في الجلد أو الأظافر."' }
+                ],
+                clinical: {
+                    type: 'single', color: 'green',
+                    title: '📋 Look Checklist لليد',
+                    items: ['Skin — لون / جفاف / تغذوي', 'Nails — Clubbing / Pitting / Ridging', 'DIP Nodes (Heberden) → OA', 'PIP Nodes (Bouchard) → OA', 'Swan-Neck / Boutonnière → RA', 'Thenar Wasting → CTS متقدم', 'Hypothenar Wasting → Ulnar N.']
+                }
+            },
+            {
+                tag: 'Phalen & Tinel 🎯', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'الاختبارات الخاصة لـ CTS',
+                phrases: [
+                    { label: '🏃 Move — اطلب الحركة النشطة', text: '"اعمل معايا الحركات دي:"<br>① <b>اقفلي إيدك كلها</b> — Full Fist — الأصابع وصلت للراحة؟<br>② <b>افردي الأصابع وباعديهم</b> — Extension + Abduction<br>③ <b>قابلي كل إصبع على الإبهام</b> — Thumb Opposition<br>④ <b>Power Grip</b>: اضغطي على إيدي — قوي ولا فيه ضعف؟<br>⑤ <b>Key Pinch</b>: مسك مفتاح — ضعف = Median Nerve Motor<br><br><i>تحديد في القفل → OA أو RA في المفاصل</i><br><i>ضعف Opposition → Median Nerve ضعيف (CTS متقدم)</i>' },
+                    { label: '🎯 Phalen\'s Test', text: '<b>للـ Carpal Tunnel Syndrome:</b><br>① اطلب من المريض يثني الرسغين للداخل ٩٠°<br>② يضغط ظهر الإيدين على بعض<br>③ <b>يفضلوا ٦٠ ثانية</b><br><br><b>إيجابي = تنميل أو حرقة في منطقة الـ Median Nerve خلال ٦٠ ثانية</b><br><br><i>ده الاختبار الأحساس للـ CTS</i>' },
+                    { label: '🎯 Tinel\'s Sign + Coin Test', text: '<b>Tinel\'s Sign:</b><br>اقرع فوق الـ Carpal Tunnel (عند ثنية الرسغ بين Palmaris Longus و Flexor Carpi Radialis)<br><b>إيجابي = تنميل كهربائي بيوصل للأصابع</b><br><br><b>Coin Pick-Up (Functional Test):</b><br>حط عملة صغيرة على الطاولة — اطلب يمسكها<br><b>صعوبة = Median Nerve Motor ضعيف</b>' }
+                ],
+                clinical: {
+                    type: 'single', color: 'green',
+                    title: '🔑 قرار العلاج بعد التشخيص',
+                    items: ['Wrist Splint (neutral) ليلاً — أول خطوة', 'NSAIDs للألم — Ibuprofen 400mg TID مع الأكل', 'Nerve Conduction Studies (NCS/EMG) — Gold Standard لتأكيد', 'Corticosteroid Injection لو مش تحسن بعد 4-6 أسابيع', 'Carpal Tunnel Release (جراحة) لو: Thenar Wasting أو فشل التحفظي', 'عالج السبب: سكري / درقية / روماتويد']
+                }
+            }
+        ]
+    }
+
+    ,
+
+    // ── 20. نزيف ما بعد انقطاع الطمث (PMB) ──────────────────────
+    {
+        id: 'pmb', system: 'نساء وتوليد',
+        name: 'نزيف ما بعد انقطاع الطمث (PMB)',
+        icon: '🩸',
+        color: '#db2777', colorLight: '#fdf2f8',
+        steps: [
+            {
+                tag: 'تعريف المرض', tagColor: '#fdf2f8', tagText: '#db2777',
+                title: 'إيه هو نزيف ما بعد انقطاع الطمث؟',
+                phrases: [
+                    { label: '📍 شرح المرض', text: '"أي نزيف من المهبل بيجي بعد ١٢ شهر من آخر دورة شهرية — ده يُعرّف بنزيف ما بعد انقطاع الطمث."<br>"ده لازم يتقيّم بجدية — السبب الأخطر اللي لازم نستبعده أولاً هو سرطان بطانة الرحم."' },
+                    { label: '⚠️ قاعدة الذهب', text: '"أي نزيف بعد انقطاع الطمث = سرطان الرحم حتى يُثبت العكس."<br>"الخطوة الأولى هي التقييم السريع وإحالة النسائية — مش التهوين."' }
+                ],
+                clinical: {
+                    type: 'single', color: 'red',
+                    title: '🚨 أسباب PMB حسب الشيوع',
+                    items: ['ضمور البطانة أو المهبل (الأكثر شيوعاً — ٦٠٪)', 'سرطان بطانة الرحم (Endometrial Carcinoma)', 'السليلة الرحمية أو عنق الرحم (Polyps)', 'هرمون استبدال أحادي (Oestrogen-only HRT)', 'سرطان عنق الرحم أو المبيض (أقل شيوعاً)']
+                }
+            },
+            {
+                tag: 'تاريخ الأعراض', tagColor: '#fdf2f8', tagText: '#db2777',
+                title: 'إزاي تسأل عن الأعراض؟',
+                phrases: [
+                    { label: '📍 توصيف النزيف', text: '"النزيف بدأ إمتى؟ ومستمر ولا جاي ورايح؟"<br>"الكمية إيه — بقع بس ولا غزيرة؟ بتستخدمي كام فوطة في اليوم؟"<br>"لون الدم إيه؟ فيه جلطات؟"<br>"آخر دورة شهرية كانت إمتى؟ وقفت الدورة من امتى بالظبط؟"' },
+                    { label: '📍 أعراض مصاحبة', text: '"فيه ألم في أسفل البطن أو الحوض؟"<br>"فيه ألم أثناء العلاقة الزوجية (dyspareunia)؟" — ده مهم جداً وبيشير لمرض الحوض<br>"فيه إفرازات مهبلية — ريحة أو لون غير طبيعي؟"' },
+                    { label: '📍 أعراض عامة', text: '"حاسة بتعب أو شحوب؟" — الأنيميا من النزيف<br>"في نقص في وزنك أو قلة الشهية؟" — علامات خطر للسرطان<br>"في مشاكل في التبول أو البراز؟" — انتشار المرض' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'عوامل الخطر', tagColor: '#fff7ed', tagText: '#c2410c',
+                title: 'أسئلة عوامل خطر سرطان بطانة الرحم',
+                phrases: [
+                    { label: '⚠️ عوامل خطر لازم تسأل عنها', text: '"وزنك زايد؟ BMI؟" — السمنة أكتر عامل خطر<br>"عندك سكري؟" — بيزود الخطر<br>"ولدتي قبل كده؟" — عدم الإنجاب (nulliparity) = خطر أعلى<br>"بتاخدي هرمونات استبدال؟ أستروجين بس ولا مع بروجيستيرون؟" — أستروجين بدون بروجيستيرون خطر<br>"الدورة وقفت في أي سن؟" — انقطاع الطمث المتأخر = خطر<br>"في تاريخ عيلي لسرطان الرحم أو المبيض أو القولون؟" — Lynch syndrome' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'red', title: '🚨 عوامل الخطر العالية', items: ['سمنة شديدة BMI > 30', 'سكري النوع الثاني', 'أستروجين بدون بروجيستيرون', 'عدم الإنجاب', 'انقطاع طمث متأخر (> 55)', 'تاريخ عيلي (Lynch syndrome)'] },
+                    right: { color: 'green', title: '✅ عوامل وقاية', items: ['الإنجاب المتعدد', 'حبوب منع الحمل المشتركة', 'التمرين والوزن الطبيعي', 'انقطاع الطمث المبكر'] }
+                }
+            },
+            {
+                tag: 'الكشف الإكلينيكي', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'الفحص الإكلينيكي اللازم',
+                phrases: [
+                    { label: '🩺 الفحص العام', text: '"هقيس ضغط الدم والنبض — لأشوف الاستقرار الديناميكي."<br>"هشوف الجفنين والأغشية للشحوب — علامة الأنيميا."<br>"هجس البطن — لو في تكتل أو أورام." ' },
+                    { label: '📋 الفحص النسائي', text: '"الفحص المهبلي الداخلي يعمله النسائية الأخصائي — أنا هحولك بسرعة."<br>"لو متاح: نحدد مصدر النزيف — هل من الرحم أو العنق أو المهبل؟"' }
+                ],
+                clinical: {
+                    type: 'single', color: 'blue',
+                    title: '📋 التحقيقات الأساسية',
+                    items: ['سونار المهبل (TVS) — أول خطوة: قياس سماكة بطانة الرحم', 'سماكة طبيعية ≤ ٤ مم — فوق ٤ مم = بيوبسي واجبة', 'Pap Smear — لاستبعاد سرطان العنق', 'CBC — لمتابعة الأنيميا', 'بيوبسي بطانة الرحم (Pipelle) — Gold Standard لو TVS غير طبيعي']
+                }
+            },
+            {
+                tag: 'العلاج والإحالة', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تتعامل مع الحالة وتشرحها للمريضة؟',
+                phrases: [
+                    { label: '💊 العلاج الأولي', text: '"هاكاسبلك دواء يساعد في تقليل النزيف مؤقتاً."<br>"Tranexamic Acid (Capron) — ٣ مرات يومياً في أيام النزيف."<br>"Daflon — مرتين يومياً كدعم للأوعية."<br><b>⚠️ سؤال الحساسية لازم قبل أي دواء!</b>' },
+                    { label: '🏥 الإحالة العاجلة', text: '"هحولك على النسائية بشكل عاجل — محتاجين سونار مهبلي وممكن بيوبسي."<br>"ما نقدرش نطمنك من غير فحوصات — خطوة الإحالة دي مهمة جداً لسلامتك."' },
+                    { label: '💬 الـ ICE والتواصل', text: '"أنا فاهم/ة إن الموضوع ده بيخوفك وبيقلقك."<br>"ما عندناش سبب للقلق الزيادة دلوقتي — لكن لازم نتأكد بالفحوصات."<br>"هحولك بسرعة ونعمل الفحوصات اللازمة — وهشرحلك كل حاجة بالنتايج."<br>"لو في نزيف غزير جداً أو إغماء — روحي أقرب طوارئ فوراً."' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 21. هشاشة العظام (Osteoporosis) ──────────────────────────
+    {
+        id: 'osteoporosis', system: 'عضلات وعظام',
+        name: 'هشاشة العظام (Osteoporosis)',
+        icon: '🦴',
+        color: '#d97706', colorLight: '#fffbeb',
+        steps: [
+            {
+                tag: 'تعريف المرض', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'إيه هشاشة العظام وإزاي تشرحها للمريض؟',
+                phrases: [
+                    { label: '📍 شرح المرض', text: '"هشاشة العظام معناها إن كثافة العظم بقت أقل من الطبيعي — يعني العظم بقى خفيف وهش وممكن يتكسر بسهولة جداً من أبسط إجهاد."<br>"الخطر الأكبر هو كسر الورك أو فقرات الظهر — ده بيأثر بشكل كبير على حياة المريض."' },
+                    { label: '⚠️ قاعدة الكسور الهشة', text: '"أي كسر من وقعة خفيفة — من ارتفاع الوقوف أو أقل — يُسمى fragility fracture وده يثبت هشاشة حتى قبل ما نعمل DEXA."' }
+                ],
+                clinical: {
+                    type: 'single', color: 'orange',
+                    title: '📋 تفسير نتيجة DEXA — T-Score',
+                    items: ['T-score ≥ −١.٠ → طبيعي', 'T-score من −١.٠ لـ −٢.٥ → قبل الهشاشة (Osteopaenia)', 'T-score ≤ −٢.٥ → هشاشة عظام (Osteoporosis)']
+                }
+            },
+            {
+                tag: 'تاريخ الأعراض', tagColor: '#fffbeb', tagText: '#d97706',
+                title: 'إزاي تسأل عن الأعراض والشكاوى؟',
+                phrases: [
+                    { label: '📍 الألم', text: '"فيه ألم في الظهر؟ ألم عام في العظام؟"<br>"الألم في الظهر — مستمر ولا بيجي مع الحمل والحركة؟"<br>"حاسة بألم خفيف في الورك أو الرجلين؟ — ده ممكن يكون ألم عظام عام من الهشاشة."<br>"حاسة بوجع في العظام بشكل عام وإن العظام نفسها بتوجع؟"' },
+                    { label: '📍 الكسور', text: '"حصلك كسر قريباً؟ من وقعة إيه — ارتفاع الوقوف ولا أقل؟"<br>"سقطتي من الوقوف وكسرتي رسغك أو وركك؟ — ده fragility fracture."' },
+                    { label: '📍 تغير الطول', text: '"حاسة إن طولك نقص؟" — علامة كسور فقرات<br>"في انحناء في ظهرك؟" — Kyphosis من كسور الفقرات' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'عوامل الخطر', tagColor: '#fff7ed', tagText: '#c2410c',
+                title: 'أسئلة عوامل خطر هشاشة العظام',
+                phrases: [
+                    { label: '⚠️ أسئلة عوامل الخطر', text: '"بتاكلي منتجات الألبان؟ — لبن، جبنة، زبادي؟ كام مرة في الأسبوع؟"<br>"بتمارسي رياضة منتظمة؟ مشي؟ تمارين؟" — العظام محتاجة ضغط ميكانيكي<br>"إيه حياتك اليومية؟ بتقعدي كتير ولا بتتحركي؟" — الحياة الخاملة عامل خطر كبير<br>"الدورة الشهرية وقفت إمتى؟ أخدتي علاج هرمونات بعدين؟"<br>"بتاخدي كورتيزون من فترة طويلة؟" — أكبر دواء بيسبب هشاشة<br>"بتدخني؟ بتشربي كحول؟"<br>"في تاريخ عيلي لهشاشة العظام أو كسور الورك؟"' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'orange', title: '⚠️ عوامل الخطر', items: ['انقطاع الطمث المبكر', 'قلة الكالسيوم في الأكل', 'الحياة الخاملة وقلة الحركة', 'التدخين والكحول', 'كورتيزون لفترة طويلة', 'وزن منخفض BMI < ١٩', 'تاريخ عيلي للكسور'] },
+                    right: { color: 'green', title: '✅ عوامل الوقاية', items: ['رياضة تحمل الوزن يومياً', 'كالسيوم كافي في الأكل', 'فيتامين D كافي', 'إقلاع عن التدخين', 'وزن طبيعي', 'علاج هرمونات بعد انقطاع الطمث (لو مناسب)'] }
+                }
+            },
+            {
+                tag: 'الكشف الإكلينيكي', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'الفحص الإكلينيكي لهشاشة العظام',
+                phrases: [
+                    { label: '📏 قياس الطول والوزن', text: '"هقيس طولك ووزنك — الطول بيتقلل مع كسور الفقرات."<br>"BMI منخفض (< ١٩) = عامل خطر للهشاشة."' },
+                    { label: '🦴 فحص الظهر', text: '"هشوف ظهرك من الوراء والجنب."<br>"في انحناء للأمام (Kyphosis)؟ — دوواجر هامب — علامة كسور فقرات."<br>"هضغط على الفقرات — في ألم موضعي؟ — ممكن كسر فقرة حديث."' }
+                ],
+                clinical: {
+                    type: 'single', color: 'blue',
+                    title: '📋 التحقيقات الأساسية',
+                    items: ['DEXA Scan — Gold Standard لقياس كثافة العظم (T-score)', 'تحاليل: كالسيوم، فوسفور، فيتامين D، ALP، PTH — لاستبعاد أسباب ثانوية', 'أشعة على الظهر لو مشتبه كسر فقرة (ألم + نقص طول)', 'PTH لاستبعاد فرط نشاط الغدة الجار درقية']
+                }
+            },
+            {
+                tag: 'العلاج والمتابعة', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تعالج وتشرح الخطة للمريضة؟',
+                phrases: [
+                    { label: '🥛 نصائح الأكل', text: '"كمية الكالسيوم المطلوبة ١٢٠٠ مجم يومياً — من لبن، جبنة، زبادي، وخضار ورقية."<br>"لو ما بتأكليش منتجات الألبان — مهم نكمل بمكملات الكالسيوم."' },
+                    { label: '🚶 الرياضة', text: '"المشي ٣٠-٦٠ دقيقة يومياً — الرياضة اللي بتحمل الوزن هي اللي بتقوي العظم."<br>"السباحة والدراجة مفيدة للقلب لكن مش بتبني العظم."<br>"تمارين التوازن والقوة تقلل خطر الوقعات."' },
+                    { label: '💊 الأدوية', text: '<b>سؤال الحساسية أول حاجة قبل الوصفة!</b><br>"هاكاسبلك كالسيوم ١٢٠٠ مجم يومياً + فيتامين D ٨٠٠-١٠٠٠ وحدة يومياً."<br>"وكمان Alendronate (فوساماكس) ٧٠ مجم — حبة واحدة كل أسبوع."' },
+                    { label: '💊 إزاي تاخد الـ Alendronate؟', text: '"الحبة دي بتتاخد على معدة فاضية الصبح — مع كوباية مية كاملة."<br>"لازم تفضلي واقفة أو قاعدة ٣٠ دقيقة بعد الحبة — متنامش فوراً."<br>"متاخديهاش مع طعام أو شاي أو أدوية تانية."<br>"ده بيمنع الحرقة في المريء."' },
+                    { label: '📅 المتابعة', text: '"هعمل DEXA تاني بعد سنة أو سنتين من العلاج — نتابع التحسن."<br>"نتابع الكالسيوم وفيتامين D في التحاليل."' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 22. العقم (Infertility) ───────────────────────────────────
+    {
+        id: 'infertility', system: 'نساء وتوليد',
+        name: 'العقم وصعوبة الإنجاب (Infertility)',
+        icon: '👶',
+        color: '#7c3aed', colorLight: '#ede9fe',
+        steps: [
+            {
+                tag: 'تعريف المرض', tagColor: '#ede9fe', tagText: '#7c3aed',
+                title: 'إيه هو العقم وإزاي تعرّفه صح؟',
+                phrases: [
+                    { label: '📍 التعريف الطبي الصحيح', text: '"العقم هو عدم الحمل رغم ممارسة علاقة زوجية منتظمة بدون وسيلة منع لمدة ١٢ شهر."<br>"لو عمر السيدة فوق ٣٥ سنة — هنبدأ الفحوصات بعد ٦ شهور بس."<br>"لو في عوامل خطر معروفة (عدم انتظام الدورة، تاريخ أمراض حوض) — نبدأ فوراً."' },
+                    { label: '⚠️ قاعدة المسؤولية المشتركة', text: '"العقم مشكلة الجوز والمراته بالتساوي — في ٤٠٪ من الحالات المشكلة في الرجل."<br>"لازم الاتنين يتفحصوا مع بعض من الأول."' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    left: { color: 'blue', title: '📋 أسباب العقم عند الست', items: ['اضطراب التبويض (PCOS الأشيع)', 'انسداد قناة فالوب (PID أو التهابات)', 'أسباب رحمية (فيبرويد، سليلة)', 'احتياطي مبيض منخفض (AMH منخفض)', 'اضطرابات هرمونية (درقية، برولاكتين)'] },
+                    right: { color: 'orange', title: '📋 أسباب العقم عند الراجل', items: ['قلة الحيوانات (Oligospermia)', 'دوالي الخصية (Varicocele) — الأشيع القابل للعلاج', 'عدم انتظام شكل الحيوانات (Teratospermia)', 'انعدام الحيوانات (Azoospermia)', 'اضطرابات هرمونية أو عدوى سابقة'] }
+                }
+            },
+            {
+                tag: 'تاريخ الزوجة', tagColor: '#fdf2f8', tagText: '#db2777',
+                title: 'أسئلة التاريخ الطبي للزوجة',
+                phrases: [
+                    { label: '📍 الدورة الشهرية', text: '"الدورة منتظمة؟ كل قد إيه؟"<br>"لو الدورة مش منتظمة — ممكن فيه مشكلة في التبويض."<br>"دورة أطول من ٣٥ يوم أو شهور بتفوت = اشتباه PCOS أو اضطراب هرموني."' },
+                    { label: '📍 الالتهابات والجراحات', text: '"عندك تاريخ التهابات مهبلية أو التهابات حوض؟" — الالتهابات المتكررة بتسبب ندبات في قناة فالوب<br>"استخدمتي اللولب قبل؟"<br>"عملتي أي عملية في البطن أو الحوض؟" — التصاقات وندبات قناة فالوب' },
+                    { label: '📍 حمل سابق', text: '"حملتي قبل؟ مع جوزك الحالي ولا قبله؟ ونتيجته إيه؟"<br>"في إجهاض متكرر؟"' },
+                    { label: '📍 أعراض PCOS', text: '"في زيادة في الشعر في أماكن غير طبيعية؟"<br>"في حبوب أو شحوب زيادة في الوجه؟"<br>"الوزن زاد فجأة؟" — كلها علامات PCOS' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'تاريخ الزوج', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'أسئلة التاريخ الطبي للزوج',
+                phrases: [
+                    { label: '📍 أمراض الخصية', text: '"عندك تاريخ دوالي خصية؟" — الأكثر شيوعاً القابل للعلاج<br>"حصلتلك ورم في الخصية أو أمراض قبل؟"<br>"عندك تاريخ نكاف (أبو كنيزه) مع التهاب الخصية؟"' },
+                    { label: '📍 العمليات والأدوية', text: '"عملت عملية في الحوض أو الخصية قبل؟ — فتق ولا غيره؟"<br>"بتاخد أدوية أو هرمونات؟"' },
+                    { label: '📍 الوظيفة الجنسية', text: '"في مشاكل في العلاقة الزوجية؟" — إذكاء شهوة ولا قذف ولا إنتصاب<br>"في قلة رغبة جنسية؟" — ممكن سبب هرموني' },
+                    { label: '📍 الضغط النفسي وأسلوب الحياة', text: '"شغلك فيه ضغط كتير؟ وقت طويل وإجهاد؟" — الضغط المزمن يرفع الكورتيزول ويأثر على الهرمونات وجودة الحيوانات<br>"بتدخن؟ بتشرب كحول؟"<br>"بتلبس ملابس داخلية ضيقة؟" — حرارة الخصية تأثر على الحيوانات' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'التحقيقات', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'الفحوصات اللازمة للزوجين',
+                phrases: [
+                    { label: '🔬 فحوصات الزوجة الهرمونية', text: '"هطلب تحاليل هرمونية للزوجة:"<br>"FSH وLH — في اليوم ٢-٣ من الدورة — لتقييم التبويض والاحتياطي."<br>"AMH — لقياس احتياطي المبيض."<br>"Prolactin — لو ارتفع بيمنع التبويض."<br>"TSH — الغدة الدرقية أثرها على التبويض."' },
+                    { label: '🔬 سونار الحوض للزوجة', text: '"سونار مهبلي: بيشوف المبيضين والرحم."<br>"عدد الجريبات الأنترالية (Antral Follicle Count) = مؤشر الاحتياطي."<br>"Hysterosalpingography (HSG) — لو مشتبه انسداد قناة فالوب."' },
+                    { label: '🔬 تحليل السيمن للزوج', text: '"أهم تحليل للزوج — Semen Analysis."<br>"بيقيس الحجم، العدد، الحركة، الشكل."<br>"Oligospermia = عدد قليل"<br>"Asthenospermia = حركة ضعيفة"<br>"Azoospermia = مفيش حيوانات خالص"' }
+                ],
+                clinical: {
+                    type: 'single', color: 'blue',
+                    title: '📋 ترتيب الفحوصات',
+                    items: ['Semen Analysis — أول تحليل وأهمه للزوج', 'FSH + LH + AMH + Prolactin + TSH — للزوجة', 'سونار مهبلي — لتقييم المبيضين والرحم', 'HSG — لو مشتبه انسداد قناة فالوب', 'إحالة لأخصائي الخصوبة لو مفيش سبب أو السبب متقدم']
+                }
+            },
+            {
+                tag: 'العلاج والتواصل', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'الخطة العلاجية وإزاي تتكلم مع الجوز والمراته؟',
+                phrases: [
+                    { label: '💊 الوصفة للزوجة', text: '<b>سؤال الحساسية أول حاجة!</b><br>"هاكاسبلك فوليك أسيد ٥ مجم يومياً — للحماية من عيوب الأجنة وتجهيز الرحم."<br>"لو مشتبه PCOS ومفيش تبويض — Clomiphene Citrate ٥٠ مجم من اليوم ٢ للسادس من الدورة — بس بعد تأكيد التشخيص."' },
+                    { label: '🏃 نصائح لأسلوب الحياة', text: '"للاتنين: وقف التدخين والكحول."<br>"الوزن الطبيعي مهم — السمنة والنحافة الزيادة بيأثروا على التبويض والحيوانات."<br>"العلاقة الزوجية كل يومين أو تلاتة طول الوقت — بتزود فرصة الحمل."<br>"للزوج: ملابس داخلية واسعة، تجنب الحمامات الساخنة، تقليل التوتر."' },
+                    { label: '💬 التواصل العاطفي مع الجوز والمراته', text: '"أنا فاهم إن الموضوع ده صعب جداً على الاتنين."<br>"مش غلطة حد — العقم مشكلة طبية زي أي مرض تاني."<br>"في أسباب كتير قابلة للعلاج — وهنبدأ بالفحوصات عشان نعرف بالظبط إيه المشكلة."<br>"هتعملوا الفحوصات مع بعض — وبعدين نشوف الخطة."' }
+                ],
+                clinical: null
+            }
+        ]
+    },
+
+    // ── 23. الفطريات المهبلية / Vulvovaginal Candidiasis ──────────
+    {
+        id: 'vvc', system: 'نساء وتوليد',
+        name: 'الفطريات المهبلية (VVC)',
+        icon: '🍄',
+        color: '#db2777', colorLight: '#fdf2f8',
+        steps: [
+            {
+                tag: 'تعريف المرض', tagColor: '#fdf2f8', tagText: '#db2777',
+                title: 'إيه هي فطريات المهبل وإزاي تعرّفها للمريضة؟',
+                phrases: [
+                    { label: '📍 شرح المرض للمريضة', text: '"في فطر اسمه Candida — بيكون موجود في المهبل بكميات صغيرة طبيعية."<br>"لما الجسم بيتعرض لعوامل معينة زي المضادات الحيوية أو السكري — الفطر ده بيتكاثر بشكل زيادة عن اللازم."<br>"ده بيسبب الحكة الشديدة والإفرازات."' },
+                    { label: '⚠️ قاعدة التفريق الأهم', text: '"الفطريات: إفراز أبيض تقيل زي الجبنة أو اللبن — بدون ريحة."<br>"التهاب الغاردنيريلا (BV): إفراز رمادي مائي — ريحة السمك."<br>"الترايكوموناس: إفراز أخضر أو أصفر ذو فقاعات — ريحة كريهة."' }
+                ],
+                clinical: {
+                    type: 'single',
+                    color: 'red',
+                    title: '📋 الأعراض الكلاسيكية للـ VVC',
+                    items: [
+                        'حكة شديدة جداً في المهبل والفرج — أسوأ بالليل',
+                        'إفراز أبيض تقيل — شبه الجبنة أو الزبادي — بدون ريحة',
+                        'حرقة عند التبول',
+                        'ألم أو حرقة في العلاقة الزوجية',
+                        'احمرار وتورم في منطقة الفرج'
+                    ]
+                }
+            },
+            {
+                tag: 'تاريخ الأعراض', tagColor: '#fdf2f8', tagText: '#db2777',
+                title: 'إزاي تسأل المريضة عن أعراضها؟',
+                phrases: [
+                    { label: '📍 الحكة والإفراز — الأعراض الأساسية', text: '"الحكة شديدة ولا خفيفة؟ بتأثر على نومك؟"<br>"الإفراز ده لونه إيه؟ قوامه عامل إزاي — مائي ولا تقيل؟"<br>"فيه ريحة مزعجة؟" — لو فيه ريحة = مش فطريات على الأرجح<br>"من إمتى الأعراض دي بدأت؟"' },
+                    { label: '📍 أعراض مصاحبة لازم تسأل عنها', text: '"فيه حرقة وأنتي بتبولي؟"<br>"الألم بيزيد وقت العلاقة الزوجية؟" — مش لازم تقول دا إلا لو سُئلتي<br>"فيه ألم في أسفل البطن أو حمى؟" — لو آه ممكن التهاب حوض (PID) وده أخطر' }
+                ],
+                clinical: null
+            },
+            {
+                tag: 'عوامل الخطر', tagColor: '#fdf2f8', tagText: '#db2777',
+                title: 'إزاي تسأل عن عوامل الخطر؟',
+                phrases: [
+                    { label: '💊 أهم سبب — المضادات الحيوية', text: '"اتعملتيلك مضادات حيوية مؤخراً؟ لأي سبب وكان من قديمه؟"<br>"المضادات الحيوية بتقتل البكتيريا المفيدة في المهبل — وده بيديّ الفطر فرصة يتكاثر."<br>"ده أشيع سبب للـ VVC عند النساء في السن الإنجابية."' },
+                    { label: '🩺 السكري والحمل', text: '"عندك سكري؟ بتتابعيه كويس؟"<br>"السكر العالي في الدم بيغذي الفطر ويساعده على التكاثر."<br>"حاملة دلوقتي؟" — التغيرات الهرمونية في الحمل بتزود خطر الـ VVC<br>"لو حاملة — علاجنا هيختلف — مش هنديّكِ قرص Fluconazole خالص."' },
+                    { label: '👗 عوامل أسلوب الحياة', text: '"بتلبسي ملابس ضيقة أو صناعية كتير؟"<br>"المنطقة دي لازم تتنفس — الرطوبة بتساعد الفطر."<br>"بتعملي douching أو بتستخدمي صابون معطر في المنطقة دي؟"<br>"الأغراض المعطرة والغسيل الداخلي بيخل بالتوازن الطبيعي."' },
+                    { label: '🛡️ المناعة والأدوية', text: '"بتاخدي كورتيزون أو أدوية بتأثر على المناعة؟"<br>"عندك أي مرض بيأثر على المناعة؟"<br>"ده مهم لأن المناعة الضعيفة بتديّ الفطر فرصة."' }
+                ],
+                clinical: {
+                    type: 'single',
+                    color: 'orange',
+                    title: '⚠️ عوامل الخطر — ترتيب الأهمية',
+                    items: [
+                        '① مضادات حيوية حديثة — الأشيع',
+                        '② سكري مش متحكم فيه',
+                        '③ حمل — تغيرات هرمونية',
+                        '④ ضعف المناعة (كورتيزون، HIV)',
+                        '⑤ ملابس ضيقة أو صناعية'
+                    ]
+                }
+            },
+            {
+                tag: 'التفريق بين الالتهابات', tagColor: '#eff6ff', tagText: '#2563eb',
+                title: 'إزاي تفرق بين أسباب الالتهاب المهبلي؟',
+                phrases: [
+                    { label: '🔍 الفرق الأساسي بين الأنواع الثلاثة', text: '<b>الفطريات (VVC):</b><br>إفراز أبيض تقيل — "زي الجبنة" — بدون ريحة — حكة شديدة<br><br><b>الغاردنيريلا (BV):</b><br>إفراز رمادي مائي — ريحة السمك تزيد بعد العلاقة — حكة خفيفة أو مفيش<br><br><b>الترايكوموناس (Trichomoniasis):</b><br>إفراز أخضر أصفر ذو فقاعات (frothy) — ريحة كريهة — بتنتقل جنسياً' }
+                ],
+                clinical: {
+                    type: 'two-col',
+                    color: 'blue',
+                    title: '📋 مقارنة سريعة للتشخيص',
+                    left:  { title: 'VVC (فطريات)', items: ['إفراز: أبيض تقيل زي الجبنة', 'ريحة: مفيش ❌', 'حكة: شديدة جداً ✅', 'Ph مهبل: طبيعي (< 4.5)'] },
+                    right: { title: 'BV (غاردنيريلا)', items: ['إفراز: رمادي مائي', 'ريحة السمك: موجودة ✅', 'حكة: خفيفة أو مفيش', 'Ph مهبل: مرتفع (> 4.5)'] }
+                }
+            },
+            {
+                tag: 'العلاج والتثقيف', tagColor: '#f0fdf4', tagText: '#059669',
+                title: 'إزاي تعالجي وتنصحي المريضة؟',
+                phrases: [
+                    { label: '💊 العلاج الدوائي — سؤال الحساسية أول حاجة!', text: '"قبل ما أكسبلك أي دواء — عندك حساسية من أي دواء؟"<br><br><b>الخيار الأول — قرص واحد بس:</b><br>"هاكاسبلك Fluconazole ١٥٠ مجم — قرص واحد بالبلع — وبيكفي لأول مرة."<br><br><b>أو كريم موضعي للحكة الخارجية:</b><br>"Clotrimazole كريم ١٪ — تحطيه على منطقة الفرج مرتين في اليوم لمدة أسبوع."' },
+                    { label: '🤰 قاعدة مهمة جداً لو حاملة', text: '"لو حاملة — الـ Fluconazole ممنوع خالص."<br>"في الحمل بنستخدم الكريم أو التحميلة الموضعية بس — Clotrimazole أو Miconazole."' },
+                    { label: '👔 هل الجوز يحتاج علاج؟', text: '"الجوز في الغالب مش محتاج علاج لو مفيش أعراض عنده."<br>"لو ظهرت عليه أعراض زي حكة أو طفح على العضو — ساعتها بيتعالج."<br>"مش لازم تمتنعوا عن العلاقة الزوجية — بس لو الأعراض تعبه تأجلوا لحين انتهاء العلاج."' },
+                    { label: '🧴 نصائح الوقاية والنظافة', text: '"لبسي قطن طبيعي — مش صناعي أو ضيق."<br>"حاولي تفضلي منطقة الفرج نضيفة وجافة."<br>"متعمليش douching — المهبل بيتنظف لوحده."<br>"متستخدميش صابون معطر أو منتجات ذات عطر في المنطقة دي."' },
+                    { label: '📅 المتابعة وإمتى ترجعي', text: '"لو الأعراض استمرت بعد ٢ أسبوع من العلاج — ارجعي عشان نعمل مسحة مهبل."<br>"لو الـ VVC اتكررت ٤ مرات أو أكثر في السنة — لازم نعمل تحليل سكر وHbA1c."<br>"وممكن نحتاج علاج وقائي أسبوعي لمدة ٦ شهور — Fluconazole أسبوعي."' }
+                ],
+                clinical: {
+                    type: 'single',
+                    color: 'red',
+                    title: '🚨 ارجعي فوراً لو',
+                    items: [
+                        'حمى أو ارتفاع درجة حرارة — ممكن التهاب حوض (PID)',
+                        'ألم شديد في أسفل البطن',
+                        'الإفراز اتغير لون وبقت فيه ريحة كريهة — مشكلة تانية',
+                        'الأعراض ماخفتش بعد انتهاء العلاج'
+                    ]
+                }
+            }
+        ]
+    }
+
+]; // end cases
+
+// ═══════════════════════════════════════════════════════════════
+//  STANDARD STEPS — injected into every case automatically
+// ═══════════════════════════════════════════════════════════════
+const stepKnockIntro = {
+    tag: 'دخول وتعريف', tagColor: '#f0fdf4', tagText: '#059669',
+    title: 'اخبط على الباب — عرّف بنفسك — ابدأ الكلام',
+    phrases: [
+        {
+            label: '🚪 الخبط والدخول',
+            text: 'اخبط على الباب مرتين وانتظر.<br>بعدين: <b>"إذن؟ تفضل أدخل؟"</b>'
+        },
+        {
+            label: '👋 التعريف بنفسك',
+            text: '<b>"أهلاً، أنا الدكتور/ة [اسمك] — هعمل معاك الكشف النهارده."</b><br>"اتفضل قاعد/ة بالراحة."'
+        },
+        {
+            label: '🤝 كسر الجليد (Rapport)',
+            text: '<b>"ازيك/ي النهارده؟ كويس/ة إن شاء الله؟"</b><br>"مستنيتنيش كتير؟ آسف لو في انتظار."'
+        },
+        {
+            label: '🎯 فتح الباب للشكوى',
+            text: '<b>"قوللي — إيه اللي وداك/ي النهارده؟"</b><br>أو: <b>"بتشتكي من إيه بالظبط؟"</b><br><br><i>(استنى يكمل من غير ما تقاطعه — خلي المريض يوضح وحده)</i>'
+        }
+    ],
+    clinical: {
+        type: 'single',
+        color: 'green',
+        title: '✅ نقاط مهمة في الدخول',
+        items: [
+            'الخبط على الباب = احترام الخصوصية — لازم في كل OSCE',
+            'قول اسمك ودورك بوضوح من الأول',
+            'الـ Rapport بيريح المريض ويخليه يتكلم بصراحة',
+            'ما تبدأش بأسئلة طبية قبل ما يقعد ويرتاح',
+            'أسمع من غير مقاطعة في أول ٣٠ ثانية'
+        ]
+    }
+};
+
+const stepFamilySocial = {
+    tag: 'العائلة والاجتماعي', tagColor: '#fff7ed', tagText: '#c2410c',
+    title: 'التاريخ العائلي والاجتماعي قبل الختام',
+    phrases: [
+        {
+            label: '👨‍👩‍👧 التاريخ العائلي (Family History)',
+            text: '<b>"في حد في العيلة — أبوك، أمك، أو إخواتك — عندهم نفس الشكوى دي؟"</b><br>"في أمراض بتتكرر في العيلة — زي السكري، الضغط، أمراض القلب أو السرطان؟"'
+        },
+        {
+            label: '🏠 الوضع الاجتماعي (Social History)',
+            text: '<b>"شغلك إيه؟"</b> (الشغل ممكن يكون سبب أو يأثر على العلاج)<br><b>"متجوز/ة؟ عندك أولاد؟"</b><br>"بتسكن فين؟ لوحدك ولا مع حد؟"'
+        },
+        {
+            label: '🚬 العادات (Lifestyle)',
+            text: '<b>"بتدخن؟ بقالك قد إيه؟ كام سيجارة في اليوم؟"</b><br>"بتشرب كحول؟"<br><b>"بتمارس رياضة؟ أكلك صح؟"</b>'
+        },
+        {
+            label: '💊 الأدوية والحساسية',
+            text: '<b>"بتاخد أدوية دلوقتي؟ إيه هي؟"</b><br>"عملت عمليات أو رقدت في مستشفى من قبل؟"<br><b>"عندك حساسية من أي دواء؟"</b>'
+        }
+    ],
+    clinical: {
+        type: 'two-col',
+        left: {
+            color: 'blue',
+            title: '🧬 ليه مهم؟',
+            items: [
+                'التاريخ العائلي يكشف الأمراض الوراثية',
+                'الشغل يفسر أسباب كتير (ضهر، ضغط، تعرض كيماوي)',
+                'التدخين والكحول بيأثروا على خطة العلاج',
+                'الأدوية الموجودة مهمة قبل ما تكتب علاج جديد'
+            ]
+        },
+        right: {
+            color: 'green',
+            title: '📋 ترتيب الأسئلة',
+            items: [
+                '١. العائلي (FH) أولاً',
+                '٢. الشغل والوضع الاجتماعي (SH)',
+                '٣. العادات — تدخين، كحول، رياضة',
+                '٤. الأدوية والحساسية (DH / Allergies)'
+            ]
+        }
+    }
+};
+
+// ═══════════════════════════════════════════════════════════════
+//  DIFFERENTIAL DIAGNOSIS DATA — per case
+// ═══════════════════════════════════════════════════════════════
+const caseDDs = {
+
+'sciatica': {
+    complaint: 'مريض بيشتكي من ألم في الضهر بينزل في الرجل',
+    dds: [
+        { icon:'🥇', name:'هرنية الغضروف (Sciatica)',
+          qs:['الألم بيزيد لما تسعل أو تعطس؟','الوجع بينزل من الردف على خط محدد للقدم؟','عمرك بين ٣٠-٥٠؟'],
+          verdict:'آه لكل ده → عرق النسا من ضغط الغضروف' },
+        { icon:'🦴', name:'تضيق القناة الشوكية (Spinal Stenosis)',
+          qs:['الوجع بييجي في المشي ويريح لما تنحني للأمام أو تقعد؟','كبير السن > ٦٠؟','الألم في الرجلين مع بعض؟'],
+          verdict:'آه → تضيق القناة | لأ → مش تضيق' },
+        { icon:'🍑', name:'Piriformis Syndrome',
+          qs:['الوجع في الردف بس بدون ألم ضهر؟','بيزيد لما تقعد على كرسي صلب؟','ما فيش ألم ينزل تحت الركبة؟'],
+          verdict:'آه → Piriformis | لو الألم نازل للقدم → مش هي' },
+        { icon:'🩸', name:'إقفار الأرجل (Vascular Claudication)',
+          qs:['الألم بييجي بس في المشي ويريح في الراحة الواقف؟','ما فيش إشعاع من الضهر؟','مريض سكري أو ضغط أو مدخن؟'],
+          verdict:'آه → وعائي مش عصبي — ابحث عن نبض القدم' },
+        { icon:'🦷', name:'DVT جلطة وريدية',
+          qs:['الرجل متورمة وحمرا وسخنة؟','ألم متركز في بطة الرجل بس؟','سافر أو اتعمل جراحة قريباً؟'],
+          verdict:'آه → DVT طوارئ فوراً | لأ → مش جلطة' }
+    ],
+    how: ['SLR test موجب → يرجح عرق النسا بقوة', 'ألم بيزيد بالسعال → ضغط عصبي', 'بيريح بالانحناء للأمام → تضيق قناة', 'ألم في المشي بس → وعائي', 'رجل متورمة سخنة → DVT طوارئ']
+},
+
+'diabetic-foot': {
+    complaint: 'مريض سكري بيشتكي من جرح أو ألم أو تغيير في القدم',
+    dds: [
+        { icon:'🥇', name:'قرحة الاعتلال العصبي (Neuropathic Ulcer)',
+          qs:['تنميل وحرقة في القدمين من قبل؟','الجرح في مكان ضغط (تحت الكعب أو راس الإصبع)؟','محسش بألم في الجرح رغم كبره؟'],
+          verdict:'آه → اعتلال عصبي — check monofilament' },
+        { icon:'🩸', name:'مرض الأوعية المحيطية (PVD)',
+          qs:['القدم باردة ولونها شاحب أو أزرق؟','ألم في التمشي يريح في الراحة؟','جرح في طرف الإصبع أو الكعب بدون ألم ضغط؟'],
+          verdict:'آه → إقفار وعائي — check ABI وdoppler' },
+        { icon:'🔴', name:'Cellulitis التهاب الجلد',
+          qs:['احمرار وتورم ودفا حوالين المنطقة بدون جرح عميق؟','حمى؟','ما فيش قرحة عميقة تحت الجلد؟'],
+          verdict:'آه → Cellulitis — مضاد حيوي فوري' },
+        { icon:'🦴', name:'التهاب العظم (Osteomyelitis)',
+          qs:['الجرح عميق لحد ما تحس بالعظمة (probe to bone test)؟','حمى وبيل أو CRP عالي؟','الجرح مش بيتحسن من أسابيع؟'],
+          verdict:'آه → Osteomyelitis — MRI وجراح عظام' },
+        { icon:'🦶', name:'مفصل شاركو (Charcot Arthropathy)',
+          qs:['القدم متشوهة ومحمرة وساخنة بدون ألم يذكر؟','تاريخ طويل من السكري والاعتلال العصبي؟','مفصل منتفخ جداً بدون إصابة واضحة؟'],
+          verdict:'آه → Charcot — تجبيس وتحميل صفر' }
+    ],
+    how: ['Monofilament سلبي → اعتلال عصبي', 'نبض مش محسوس + ABI منخفض → وعائي', 'Probe to bone إيجابي → Osteomyelitis', 'القدم بدون ألم مع تشوه → Charcot', 'احمرار بدون قرحة عميقة → Cellulitis']
+},
+
+'imci': {
+    complaint: 'طفل صغير معاه أعراض متعددة (حمى، تنفس، إسهال)',
+    dds: [
+        { icon:'🥇', name:'ذات الرئة (Pneumonia)',
+          qs:['فيه سرعة في التنفس فوق الحد المناسب لعمره؟','فيه رسوب في الصدر (chest indrawing)؟','صوت غرغرة أو سُمِع بالسماعة كريبيتات؟'],
+          verdict:'آه → Pneumonia — أموكسيسيلين فوراً' },
+        { icon:'🦟', name:'الملاريا',
+          qs:['في منطقة ملاريا وباردة؟','حمى بتيجي على فترات (تبادلية)؟','بيتعرق وبيرتجف مع الحمى؟'],
+          verdict:'آه → اعمل RDT للملاريا' },
+        { icon:'🧠', name:'التهاب السحايا (Meningitis)',
+          qs:['الطفل مش بيصحى أو مش ممكن توقظه؟','فيه تصلب في رقبته أو تشنجات؟','عمره أقل من سنتين وعنده يافوخ منتبش؟'],
+          verdict:'آه → طوارئ فوراً — حالة خطرة جداً' },
+        { icon:'💧', name:'إسهال وجفاف',
+          qs:['عدد مرات الإسهال في اليوم؟','عيونه غايرة أو بيكي بدون دموع؟','بيشرب بنهم أو بصعوبة؟'],
+          verdict:'قيم الجفاف: خفيف / متوسط / حاد → ORS أو IV' },
+        { icon:'⚖️', name:'سوء التغذية (Malnutrition)',
+          qs:['وزنه ناقص عن المتوقع لعمره؟','عنده وذمة في القدمين (Kwashiorkor)؟','شعره وجلده متغير لون؟'],
+          verdict:'آه → تقييم MUAC وبروتوكول التغذية العلاجية' }
+    ],
+    how: ['سرعة تنفس عالية + chest indrawing → Pneumonia', 'مش بيصحى + تشنجات → Meningitis طوارئ', 'حمى متقطعة في منطقة موبوءة → Tes للملاريا', 'عيون غايرة + ما بيشربش → جفاف متوسط-حاد', 'وذمة القدم + نقص الوزن → Kwashiorkor']
+},
+
+'cold-sinusitis': {
+    complaint: 'مريض بيشتكي من زكمة وألم في الوجه وضغط في الجبهة',
+    dds: [
+        { icon:'🥇', name:'التهاب الجيوب البكتيري (Bacterial Sinusitis)',
+          qs:['الأعراض بدأت تتحسن بعد ٥ أيام وبعدين رجعت أسوأ (double sickening)؟','صرف أصفر أو أخضر كتير من الأنف؟','ألم في الوجه يزيد لما تنحني للأمام؟'],
+          verdict:'آه → Bacterial Sinusitis — أموكسيسيلين ٥-٧ أيام' },
+        { icon:'🤧', name:'فيروسي / رشح عادي (Viral URI)',
+          qs:['بدأت بزكمة وعطس وحلق واجع؟','أقل من ١٠ أيام والأعراض بتتحسن؟','ما فيش ألم في الوجه قوي؟'],
+          verdict:'آه → فيروسي — علاج داعم بس، مش محتاج أنتيبيوتيك' },
+        { icon:'🌸', name:'حساسية الأنف (Allergic Rhinitis)',
+          qs:['صرف الأنف شفاف وكتير؟','حكة في العينين والأنف والحلق؟','بيحصل في مواسم معينة أو مع الغبار والحيوانات؟'],
+          verdict:'آه → حساسية — Antihistamine وnasal steroid' },
+        { icon:'🦷', name:'التهاب أصل الأسنان',
+          qs:['عنده ألم في ضرس فوقاني؟','الألم في خد واحد بس؟','الضرس بيألم عند الضغط عليه؟'],
+          verdict:'آه → مصدر سني — حول لطبيب أسنان' }
+    ],
+    how: ['Double sickening = علامة مرضية البكتيري', 'صرف شفاف + حكة + مواسم → حساسية', 'أقل من ١٠ أيام بيتحسن → فيروسي', 'ألم في خد واحد مع ضرس واجع → سني', 'فوق ١٠ أيام مش بيتحسن → ابدأ أنتيبيوتيك']
+},
+
+'aom': {
+    complaint: 'طفل (أو بالغ) بيشتكي من ألم في الأذن',
+    dds: [
+        { icon:'🥇', name:'التهاب الأذن الوسطى الحاد (AOM)',
+          qs:['طفل عنده حمى وألم شديد في الأذن فجأة؟','الطبلة حمرا ومنتبشة في الأوتوسكوب؟','فيه صرف من الأذن بعد انثقاب الطبلة؟'],
+          verdict:'آه → AOM — أموكسيسيلين لو > ٦ شهور وحمى' },
+        { icon:'🏊', name:'التهاب قناة الأذن (Otitis Externa)',
+          qs:['الألم بيزيد لما تشد الأذن (tragus) أو تمسك الصوان؟','بعد سباحة أو ماء دخل الأذن؟','الأذن الخارجية حمرا وفيه صرف؟'],
+          verdict:'آه → Otitis Externa — قطرة أنتيبيوتيك موضعية' },
+        { icon:'💧', name:'إفرازات الأذن الوسطى (Serous OME)',
+          qs:['سمعه ضعف بدون ألم أو حمى؟','حصله AOM أو رشح قبل كده بأسابيع؟','يسمع صوت زي ما في ماء في أذنه؟'],
+          verdict:'آه → OME — راقب ٣ شهور قبل ما تحول ENT' },
+        { icon:'🦴', name:'التهاب الخشاء (Mastoiditis)',
+          qs:['الورم ورا الأذن (mastoid) أو الأذن بتبان للأمام؟','حمى عالية واستمرار الألم بعد ٢ أسبوع AOM؟','طفل صغير ألمه بيزيد مش بيتحسن؟'],
+          verdict:'آه → Mastoiditis — طوارئ فوراً، CT + أنتيبيوتيك IV' },
+        { icon:'↗️', name:'ألم محول (Referred Pain)',
+          qs:['ما فيش حاجة في الأذن نفسها؟','عنده ألم في الأسنان أو المفصل الفكي الصدغي؟','الألم بيزيد بالمضغ؟'],
+          verdict:'آه → الألم مش من الأذن — ابحث عن المصدر' }
+    ],
+    how: ['Tragus sign موجب → Otitis Externa', 'Bulging red TM → AOM', 'ضعف السمع بدون ألم → OME', 'ورم ورا الأذن → Mastoiditis طوارئ', 'ألم بيزيد بالمضغ → مصدر سني أو TMJ']
+},
+
+'ida': {
+    complaint: 'مريض بيشتكي من تعب وإجهاد وشحوب',
+    dds: [
+        { icon:'🥇', name:'فقر دم نقص الحديد (IDA)',
+          qs:['الدورة الشهرية غزيرة أو في نزيف؟','بيأكل صح؟ ولا أكله فقير بالحديد؟','عنده حرقة معدة أو برازه أسود؟'],
+          verdict:'آه → IDA — CBC: microcytic hypochromic + ferritin منخفض' },
+        { icon:'🧬', name:'نقص B12 / فولات',
+          qs:['نباتي بيأكل سمك ولحم؟','عنده تنميل في الأطراف (peripheral neuropathy)؟','لسانه أملس ونضيف (glossitis)؟'],
+          verdict:'آه → macrocytic anemia — check B12/folate' },
+        { icon:'⚗️', name:'الثلاسيميا (Thalassemia)',
+          qs:['أهله أصلهم من البحر المتوسط أو أفريقيا؟','التعب من الصغر ومعاه تضخم طحال؟','CBC بيجي microcytic مع سيرم حديد طبيعي؟'],
+          verdict:'آه → اعمل Hb electrophoresis' },
+        { icon:'🦠', name:'فقر دم الأمراض المزمنة',
+          qs:['عنده مرض مزمن (سرطان، كلى، RA، كرون)؟','الـ ferritin طبيعي أو عالي مع TIBC منخفض؟','فقر الدم خفيف ومستقر؟'],
+          verdict:'آه → anemia of chronic disease — عالج السبب' },
+        { icon:'🩸', name:'فقر دم انحلالي (Hemolytic)',
+          qs:['اصفرار في الجلد والعينين (jaundice)؟','البول داكن؟','تضخم طحال مع تعب مفاجئ؟'],
+          verdict:'آه → Hemolytic — check bilirubin + retics + Coombs' }
+    ],
+    how: ['Microcytic + ferritin منخفض → IDA', 'Macrocytic + B12 منخفض → B12 deficiency', 'Microcytic + ferritin طبيعي + FH → Thalassemia', 'مرض مزمن + ferritin طبيعي → Chronic disease', 'اصفرار + رتيكس عالية → Hemolytic']
+},
+
+'thyroid': {
+    complaint: 'مريض بيشتكي من تورم في الرقبة أو أعراض تشير للغدة الدرقية',
+    dds: [
+        { icon:'❄️', name:'قصور الغدة (Hypothyroidism)',
+          qs:['تعب وكسل وزيادة وزن وإمساك؟','جلده جاف وشعره بيتساقط وصوته بح؟','حساسية للبرد؟'],
+          verdict:'آه → TSH عالي + T4 منخفض → Hypothyroidism' },
+        { icon:'🔥', name:'فرط الغدة (Hyperthyroidism)',
+          qs:['نقص وزن مع أكل طبيعي وخفقان وتعرق؟','عصبي وما بينامش وإيده بترتجف؟','جحوظ في العينين (Graves)؟'],
+          verdict:'آه → TSH منخفض + T4 عالي → Hyperthyroidism' },
+        { icon:'🔵', name:'عقدة الغدة (Thyroid Nodule)',
+          qs:['تورم في ناحية واحدة من الرقبة؟','صعوبة في البلع أو الكلام؟','نقص وزن سريع مع تضخم الغدة اللمفاوية؟'],
+          verdict:'آه → اعمل Ultrasound ± FNAC للعقدة' },
+        { icon:'⚖️', name:'التهاب هاشيموتو (Hashimoto)',
+          qs:['شباب أو سيدة عندها قصور في الغدة؟','الغدة متضخمة ومتحجرة في الجس؟','Anti-TPO عالي في التحليل؟'],
+          verdict:'آه → Hashimoto — Autoimmune — Thyroxine علاج' },
+        { icon:'🫧', name:'تضخم عادي (Simple Goitre)',
+          qs:['التضخم في الرقبة من غير أعراض عمل الغدة؟','منطقة نقص يود؟','TSH طبيعي؟'],
+          verdict:'آه → Euthyroid goitre — يود أو مراقبة' }
+    ],
+    how: ['TSH عالي + T4 منخفض → Hypo', 'TSH منخفض + T4 عالي → Hyper', 'عقدة صلبة نمت بسرعة → ابعد عن Malignancy بـ FNAC', 'Anti-TPO عالي → Hashimoto', 'TSH طبيعي + تضخم منتظم → Simple Goitre']
+},
+
+'cranial-nerve': {
+    complaint: 'مريض بيشتكي من شلل أو ضعف في وجهه',
+    dds: [
+        { icon:'🥇', name:'شلل Bell (Bell\'s Palsy — LMN)',
+          qs:['الشلل في نص الوجه كله — فوق وتحت مع بعض؟','بدأ فجأة (٢٤-٤٨ ساعة)؟','ما عندوش أعراض تانية (ما فيش ضعف في الأيدي أو الكلام)؟'],
+          verdict:'آه → Bell\'s Palsy — Prednisolone فوري خلال ٧٢ ساعة' },
+        { icon:'🧠', name:'جلطة / سكتة دماغية (Stroke — UMN)',
+          qs:['الشلل في النص التحتاني بس من الوجه (الجبهة محتفظة)؟','عنده ضعف في إيد أو رجل نفس الناحية؟','ضغط دم عالي أو سكري من قبل؟'],
+          verdict:'آه → Stroke — طوارئ فوراً CT والفارق: الجبهة محتفظة' },
+        { icon:'🦹', name:'Ramsay Hunt Syndrome',
+          qs:['عنده حبوب (vesicles) في قناة الأذن أو الحنك؟','ألم شديد في الأذن قبل الشلل؟','ضعف سمع مع الشلل؟'],
+          verdict:'آه → Herpes Zoster في العصب — Acyclovir + Prednisolone' },
+        { icon:'🦠', name:'ورم الغدة النكفية أو الأوروستا',
+          qs:['ورم ملموس تحت الأذن (parotid)؟','الشلل جه ببطء على أسابيع أو شهور؟','ما فيش حمى ولا ألم حاد؟'],
+          verdict:'آه → ورم محتمل — CT/MRI وجراح' }
+    ],
+    how: ['الجبهة متضررة (ما بيقدرش يعوج جبهته) → LMN → Bell\'s', 'الجبهة محتفظة → UMN → Stroke', 'حبوب في الأذن + ألم → Ramsay Hunt', 'ورم بطيء بدون ألم حاد → Parotid tumour', 'FAST score → استبعد stroke أول حاجة']
+},
+
+'renal-stone': {
+    complaint: 'مريض بيشتكي من ألم حاد في الخاصرة أو البطن',
+    dds: [
+        { icon:'🥇', name:'حصاة الكلى (Renal Colic)',
+          qs:['الألم متقطع وبيتحرك من الخاصرة للحوض والفخذ؟','دم في البول (hematuria)؟','مريض بيتقلب من الألم ومش لاقي راحة في أي وضعية؟'],
+          verdict:'آه → Renal colic — KUB أو Ultrasound + مسكن وبوشيبان' },
+        { icon:'🦠', name:'التهاب المجاري البولية / حوض الكلى (UTI/Pyelonephritis)',
+          qs:['حمى + برد + ألم في الخاصرة؟','حرقة وكثرة التبول؟','الألم مستمر مش متقطع؟'],
+          verdict:'آه → Pyelonephritis — كلتشر بول + أنتيبيوتيك' },
+        { icon:'🔴', name:'التهاب الزائدة الدودية (Appendicitis)',
+          qs:['الألم بدأ حوالين السرة وتحرك لليمين السفلي؟','غثيان وقيء وحمى؟','Rebound tenderness في McBurney؟'],
+          verdict:'آه → Appendicitis — جراح فوراً' },
+        { icon:'🫁', name:'الحمل خارج الرحم (Ectopic Pregnancy)',
+          qs:['سيدة في سن الإنجاب وعندها ألم بطن حاد؟','BHCG إيجابي؟','الدورة متأخرة؟'],
+          verdict:'آه → Ectopic — طوارئ نسا فوراً + Ultrasound' },
+        { icon:'🌀', name:'كيس مبيض / التواء (Ovarian Cyst/Torsion)',
+          qs:['سيدة عندها ألم في الحوض مفاجئ مع غثيان؟','الألم في ناحية واحدة بس؟','عندها تاريخ كيسات مبيض قبل كده؟'],
+          verdict:'آه → التواء محتمل — Ultrasound فوراً + جراح نسا' }
+    ],
+    how: ['ألم متحرك + دم في البول → Renal colic', 'حمى + حرقة تبول → Pyelonephritis', 'ألم انتقل لليمين السفلي → Appendicitis', 'B-HCG إيجابي + ألم حوض → Ectopic طوارئ', 'سيدة + ألم ناحية + غثيان → Ovarian Torsion']
+},
+
+'chest-pain': {
+    complaint: 'مريض بيشتكي من ألم في الصدر',
+    dds: [
+        { icon:'🚨', name:'احتشاء عضلة القلب / ذبحة حادة (ACS)',
+          qs:['الألم ضغط وشد في منتصف الصدر يمتد للكتف الأيسر أو الفك؟','تعرق بارد وغثيان مع الألم؟','عوامل خطر: سكري، ضغط، تدخين، عيلة؟'],
+          verdict:'آه → ACS — ECG فوراً + أسبرين + Nitrate + طوارئ' },
+        { icon:'🔥', name:'ارتجاع المريء (GERD)',
+          qs:['الألم حرقة بتبدأ من المعدة فوق للصدر؟','بيزيد بعد الأكل أو لما تنام؟','بيريح بآنتاسيد؟'],
+          verdict:'آه → GERD — PPI + تغيير عادات الأكل' },
+        { icon:'🫀', name:'التهاب التامور (Pericarditis)',
+          qs:['الألم في الصدر بيزيد لما تنام على ضهرك وبيريح لما تنحني للأمام؟','كان عنده عدوى فيروسية قبل كده بأسابيع؟','صوت friction rub بالسماعة؟'],
+          verdict:'آه → Pericarditis — NSAID + راحة' },
+        { icon:'💨', name:'ذات الجنب / التهاب الرئة (Pleuritis/Pneumonia)',
+          qs:['الألم بيزيد بالشهيق العميق؟','حمى وكحة وصرف؟','بيشعر بضيق تنفس؟'],
+          verdict:'آه → Pleuritis/Pneumonia — X-ray صدر + أنتيبيوتيك' },
+        { icon:'🩸', name:'جلطة رئوية (Pulmonary Embolism)',
+          qs:['ضيق تنفس مفاجئ مع ألم الصدر؟','سافر مدة طويلة أو عمل جراحة قريباً؟','رجله متورمة (DVT)؟'],
+          verdict:'آه → PE — D-dimer + CTPA طوارئ' },
+        { icon:'🫁', name:'تقطع الأبهر (Aortic Dissection)',
+          qs:['ألم حاد جداً كالسكين يمتد للضهر فجأة؟','فرق ضغط بين الذراعين؟','مريض ضغط عالي غير منتظم؟'],
+          verdict:'آه → Aortic Dissection — طوارئ قلب فوراً' }
+    ],
+    how: ['أولاً استبعد ACS في أي ألم صدر → ECG + Troponin', 'ألم بيريح بالانحناء للأمام → Pericarditis', 'حرقة بعد الأكل → GERD', 'ضيق تنفس مفاجئ + DVT → PE', 'ألم كالسكين ينتشر للضهر → Aortic Dissection', 'حمى + كحة + ألم بالشهيق → Pneumonia']
+},
+
+'highrisk': {
+    complaint: 'مريض سكري عالي الخطر بيشتكي من ألم في الصدر',
+    dds: [
+        { icon:'🚨', name:'احتشاء صامت (Silent MI في السكري)',
+          qs:['سكري قديم > ١٠ سنين؟','الألم خفيف أو غياب الألم الكلاسيكي (silent ischemia)؟','اعتلال عصبي معروف عنده؟'],
+          verdict:'آه → في السكري MI ممكن يكون silent — ECG وTroponin فوراً' },
+        { icon:'💉', name:'أزمة سكر عالي (Hyperglycemic Crisis)',
+          qs:['RBS > ٣٠٠ مع غثيان وقيء وألم بطن؟','بيتنفس بسرعة وبعمق (Kussmaul)؟','رائحة أسيتون في النفس (DKA)؟'],
+          verdict:'آه → DKA — سوائل IV + إنسولين + طوارئ' },
+        { icon:'🩸', name:'نقص السكر (Hypoglycemia)',
+          qs:['بيتعرق ويرتجف ويحس بدوخة وقلبه بيدق؟','RBS < ٧٠؟','ممكن أكل أقل أو جرعة إنسولين زيادة؟'],
+          verdict:'آه → Hypoglycemia — سكر فوراً أو Glucagon' },
+        { icon:'🫀', name:'مرض قلبي بسبب السكري (Diabetic Cardiomyopathy)',
+          qs:['ضيق تنفس في المجهود أو في الراحة؟','تورم في القدمين؟','X-ray صدر بيظهر قلب متضخم؟'],
+          verdict:'آه → Heart Failure — Echocardiography + علاج' }
+    ],
+    how: ['في السكري → أول حاجة ECG حتى لو الألم خفيف', 'RBS > ٣٠٠ + قيء + تنفس سريع → DKA', 'RBS < ٧٠ + رجفة + تعرق → Hypoglycemia', 'ضيق تنفس + تورم القدم → Heart Failure', 'اعتلال عصبي + Silent MI ممكن يجي بغثيان بس']
+},
+
+'dmcvd': {
+    complaint: 'مريض معاه سكري وعوامل خطر قلبية',
+    dds: [
+        { icon:'🥇', name:'السكري النوع الثاني (T2DM) سيء التحكم',
+          qs:['HbA1c فوق ٨٪؟','بيأخد دواء بانتظام؟','عنده أعراض الثلاثي: عطش + كثرة تبول + خسارة وزن؟'],
+          verdict:'آه → T2DM بسوء تحكم — راجع خطة العلاج' },
+        { icon:'💊', name:'السكري النوع الأول (T1DM)',
+          qs:['شاب نحيف فجأة عنده أعراض حادة؟','C-peptide منخفض؟','يحتاج إنسولين من الأول؟'],
+          verdict:'آه → T1DM — إنسولين هو العلاج الوحيد' },
+        { icon:'❤️', name:'متلازمة الأيض (Metabolic Syndrome)',
+          qs:['سمنة مركزية (خصر > ١٠٢ رجال / > ٨٨ نساء)؟','ضغط دم + سكر + دهون كلهم مرتفعين؟','مقاومة إنسولين واضحة؟'],
+          verdict:'آه → Metabolic Syndrome — نمط حياة + علاج متكامل' },
+        { icon:'🩺', name:'ارتفاع ضغط الدم الجوهري',
+          qs:['ضغط > ١٤٠/٩٠ في أكتر من قياس؟','ما عندوش سبب ثانوي واضح؟','عيلته عندهم ضغط؟'],
+          verdict:'آه → HTN — Captopril/Amlodipine + تغيير نمط الحياة' }
+    ],
+    how: ['HbA1c > ١٠٪ → ثلاثي علاج أو إنسولين', 'شاب نحيف + C-peptide منخفض → T1DM', 'خصر كبير + كل العوامل → Metabolic Syndrome', 'ضغط + سكري + كوليسترول معاً → خطر قلبي عالي', 'راجع الأدوية: كابتوبريل + أتورفاستاتين + أسبرين']
+}
+
+,
+'gerd': {
+    complaint: 'مريض بيشتكي من حرقة في المعدة أو الصدر',
+    dds: [
+        { icon:'🥇', name:'GERD / ارتجاع المريء',
+          qs:['الحرقة بتصعد من المعدة للصدر أو الحلق؟','بيجيلك طعم حمض في بقك؟','بتتزيد بالاستلقاء وتتحسن بالوقوف؟'],
+          verdict:'آه → GERD — PPI قبل الأكل + تغيير عادات' },
+        { icon:'🔴', name:'قرحة المعدة / الاثني عشر',
+          qs:['الألم في منتصف البطن فوق السرة (epigastric)؟','بيتحسن بعد الأكل (DU) أو بيتحسن بالصوم (GU)؟','في تاريخ H. pylori أو بياخد NSAIDs؟'],
+          verdict:'آه → قرحة — H. pylori test + PPI' },
+        { icon:'🫀', name:'ألم القلب / الذبحة',
+          qs:['الألم بيضرب في الكتف الأيسر أو الفك؟','بيجيلك مع المجهود؟','تعرق بارد أو ضيق تنفس مع الألم؟'],
+          verdict:'آه → احتمال قلبي — ECG فوراً' },
+        { icon:'🌀', name:'متلازمة القولون العصبي (IBS)',
+          qs:['ألم بطن مع إمساك أو إسهال يتناوبان؟','بيتحسن بعد البراز؟','ما فيش حرقة صاعدة أو ارتداد؟'],
+          verdict:'آه → IBS — نمط حياة + antispasmodic' },
+        { icon:'🦠', name:'التهاب المعدة (Gastritis)',
+          qs:['ألم مستمر في المعدة مع غثيان؟','بياخد NSAIDs أو كحول كتير؟','أعراض أتت فجأة بعد أكل معين؟'],
+          verdict:'آه → Gastritis — وقف المسبب + PPI' }
+    ],
+    how: ['حرقة صاعدة + ارتداد + تتحسن بالوقوف → GERD', 'ألم epigastric يتحسن بالأكل → DU', 'ألم يشع للكتف الأيسر + مجهود → قلب', 'ألم مع اضطراب البراز → IBS', 'Red Flags أي واحد منهم → منظار فوراً']
+}
+
+,'covid-pediatric': {
+    complaint: 'طفل معاه حمى وسعال وتعب — محتمل كوفيد',
+    dds: [
+        { icon:'🥇', name:'كوفيد-١٩ (COVID-19)',
+          qs:['فيه مخالطة لحالة إيجابية؟','فيه فقدان شم أو ذوق؟','الأعراض: حمى + سعال جاف + إرهاق؟'],
+          verdict:'آه للاتنين → يرجح كوفيد — أعمل تحليل RAT أو PCR' },
+        { icon:'🤧', name:'فيروس إنفلونزا (Influenza)',
+          qs:['بدأت فجأة بحمى عالية جداً > 39.5°C؟','فيه صداع ووجع عضلات شديد؟','الوبائي: في موسم إنفلونزا أو اتخالط مع حالات مماثلة؟'],
+          verdict:'آه → Influenza — Oseltamivir لو < 48 ساعة' },
+        { icon:'😤', name:'عدوى تنفسية فيروسية عادية (Viral URTI)',
+          qs:['الأعراض خفيفة وبدأت بزكمة وعطس؟','مفيش حمى عالية أو فقدان شم؟','مفيش مخالطة كوفيد واضحة؟'],
+          verdict:'آه → فيروسي عادي — علاج داعم بس' },
+        { icon:'🫁', name:'ذات الرئة (Pneumonia)',
+          qs:['سرعة تنفس عالية للعمر؟','رسوب في الصدر (chest indrawing)؟','SpO2 نازل تحت 94%؟'],
+          verdict:'آه → Pneumonia — حول للمستشفى فوراً' },
+        { icon:'🦠', name:'فيروس RSV / برونشيوليت',
+          qs:['عمر أقل من سنتين؟','صوت صفير في الصدر (Wheeze) أو Crackles؟','بدأت بزكمة وبعدين صدر؟'],
+          verdict:'آه → RSV/Bronchiolitis — دعم تنفسي، مش أنتيبيوتيك' }
+    ],
+    how: ['فقدان شم + مخالطة → ابدأ بكوفيد', 'حمى عالية جداً + آلام عضلات → إنفلونزا', 'سرعة تنفس + Indrawing → Pneumonia حول فوراً', 'أصغر من سنتين + صفير → RSV/Bronchiolitis', 'أعراض خفيفة بدون مخالطة → فيروسي عادي']
+},
+
+'emesis': {
+    complaint: 'حامل بتشتكي من غثيان وقيء',
+    dds: [
+        { icon:'🥇', name:'قيء الحمل الطبيعي (Emesis Gravidarum)',
+          qs:['الأعراض في الثلث الأول (أسبوع 4-14)؟','مفيش نقص وزن ملحوظ؟','بتقدر تأكل وتشرب بس بصعوبة؟'],
+          verdict:'آه → Emesis طبيعي — نصايح غذائية + Doxylamine' },
+        { icon:'🔴', name:'قيء الحمل المفرط (Hyperemesis Gravidarum)',
+          qs:['أكتر من 5 مرات قيء يومياً؟','نقص وزن > 5% من وزنها الأصلي؟','جفاف واضح — ketones في البول؟'],
+          verdict:'آه → Hyperemesis — دخول مستشفى + سوائل وريدية' },
+        { icon:'🩺', name:'قرحة معدة أو التهاب (Peptic Ulcer / Gastritis)',
+          qs:['ألم في المعدة مستقل عن الحمل؟','أكلت أدوية مسكنة (NSAIDs) قبل الحمل؟','القيء مش مرتبط بالصبح بس؟'],
+          verdict:'آه → سبب عضوي — فحص H. pylori' },
+        { icon:'💛', name:'مشاكل كبد أو مرارة (Cholestasis / Hepatitis)',
+          qs:['يرقان أو اصفرار في العينين؟','ألم تحت الأضلاع اليمين؟','حمى؟'],
+          verdict:'آه → اعمل LFTs وأشعة مرارة' },
+        { icon:'🦋', name:'فرط نشاط الدرقية (Hyperthyroidism)',
+          qs:['خفقان قلب وأرتعاش وخسارة وزن؟','عينيها بارزة أو تضخم في الرقبة؟','TSH منخفض جداً؟'],
+          verdict:'آه → Hyperthyroid Vomiting — اعمل TSH/FT4' }
+    ],
+    how: ['أسبوع 4-14 + خفيف بدون نقص وزن → Emesis طبيعي', '> 5 مرات + نقص وزن + جفاف → Hyperemesis حول', 'ألم معدة مستقل → استبعد عضوي', 'يرقان + ألم يمين → كبد أو مرارة', 'خفقان + رجفة → درقية']
+},
+
+'aub': {
+    complaint: 'مريضة حامل بتشتكي من نزيف مهبلي',
+    dds: [
+        { icon:'🥇', name:'سقوط مهدَّد (Threatened Miscarriage)',
+          qs:['كيس الحمل داخل الرحم في الأشعة؟','β-hCG بيتضاعف كل 48 ساعة؟','النزيف خفيف وفيه نبض جنيني؟'],
+          verdict:'آه → Threatened — راحة + متابعة β-hCG' },
+        { icon:'🚨', name:'حمل خارج الرحم (Ectopic Pregnancy)',
+          qs:['ألم من ناية واحدة يمين أو شمال؟','β-hCG وقف أو نازل — مش بيتضاعف؟','ما فيش كيس داخل الرحم مع β-hCG > 1500؟'],
+          verdict:'🚨 آه → Ectopic — طوارئ فوراً' },
+        { icon:'🔄', name:'سقوط حتمي (Inevitable Miscarriage)',
+          qs:['عنق الرحم مفتوح بالفحص؟','نزيف غزير مع جلطات؟','ألم تقلصي في البطن؟'],
+          verdict:'آه → Inevitable — حول متخصص فوراً' },
+        { icon:'🌸', name:'حمل عنقودي (Molar Pregnancy)',
+          qs:['β-hCG عالي جداً فوق المتوقع للعمر؟','مش لاقية كيس طبيعي في الأشعة؟','غثيان وقيء شديد؟'],
+          verdict:'آه → Molar — أشعة + متخصص نسا' },
+        { icon:'🩺', name:'نزيف من عنق الرحم (Cervical Cause)',
+          qs:['النزيف بعد العلاقة الزوجية مباشرة؟','كيس الحمل طبيعي وβ-hCG طبيعي؟','فيه بوليبة في عنق الرحم بالفحص؟'],
+          verdict:'آه → Cervical origin — Pap smear + متخصص' }
+    ],
+    how: ['β-hCG بيتضاعف + كيس في الرحم → Threatened', 'β-hCG وقف + مش في الرحم → Ectopic طوارئ', 'عنق مفتوح + نزيف غزير → Inevitable', 'β-hCG عالي جداً + صورة عنقودية → Molar', 'نزيف بعد علاقة + كيس طبيعي → Cervical']
+}
+
+,'shoulder-exam': {
+    complaint: 'مريض بيشتكي من ألم في الكتف',
+    dds: [
+        { icon:'🥇', name:'Subacromial Impingement (الأكتر شيوعاً)',
+          qs:['الألم بيجي لما يرفع إيده ما بين 60°-120° (Painful Arc)؟','Hawkins-Kennedy Test إيجابي؟','مفيش تاريخ صدمة؟'],
+          verdict:'آه → Impingement — NSAIDs + Physio + Injection لو مش تحسن' },
+        { icon:'💪', name:'Rotator Cuff Tear',
+          qs:['ضعف في رفع الإيد (Abduction) ضد مقاومة؟','في Wasting في Supraspinatus Fossa؟','Empty Can Test إيجابي؟'],
+          verdict:'آه → Rotator Cuff Tear — MRI + متخصص' },
+        { icon:'🧊', name:'Frozen Shoulder (Adhesive Capsulitis)',
+          qs:['كل الحركات محدودة مش بس الرفع؟','بيزيد ببطء على أشهر؟','العمر فوق 40 وعنده سكري؟'],
+          verdict:'آه → Frozen Shoulder — Physio + Injection + وقت' },
+        { icon:'🦴', name:'AC Joint Pathology',
+          qs:['الألم في الجزء الأمامي العلوي من الكتف؟','ألم لما يعدي فوق 120°؟','الجس على مفصل AC مؤلم بالظبط؟'],
+          verdict:'آه → AC Pathology — NSAIDs + راحة ± Injection' },
+        { icon:'🔗', name:'Referred Pain من الرقبة',
+          qs:['في وجع أو تيبس في الرقبة؟','التنميل بينزل في الإيد؟','حركة الكتف نفسها طبيعية بدون ألم؟'],
+          verdict:'آه → Cervical Origin — فحص الرقبة كامل' }
+    ],
+    how: ['Painful Arc 60-120° → Impingement', 'كل الحركات محدودة → Frozen Shoulder', 'ضعف Abduction + Wasting → Rotator Cuff Tear', 'ألم AC فوق 120° → AC Pathology', 'تنميل في الإيد + رقبة مؤلمة → Cervical']
+},
+
+'elbow-exam': {
+    complaint: 'مريض بيشتكي من ألم في الكوع',
+    dds: [
+        { icon:'🥇', name:'Tennis Elbow (Lateral Epicondylitis)',
+          qs:['الألم في الجهة الخارجية من الكوع؟','Cozen\'s Test إيجابي (مقاومة رفع الرسغ)؟','الشغل أو الرياضة فيها ضغط متكرر؟'],
+          verdict:'آه → Tennis Elbow — NSAIDs موضعية + Physio + Brace' },
+        { icon:'🏌️', name:'Golfer\'s Elbow (Medial Epicondylitis)',
+          qs:['الألم في الجهة الداخلية من الكوع؟','بيزيد لما يثني الرسغ ضد مقاومة؟','رياضي جولف أو رامي؟'],
+          verdict:'آه → Golfer\'s Elbow — نفس علاج Tennis Elbow' },
+        { icon:'💧', name:'Olecranon Bursitis',
+          qs:['ورم ورا الكوع بيبان واضح؟','مش مؤلم كتير بالمقارنة بحجمه؟','سبق ضغط على الكوع طول الوقت (عمال / طالب)؟'],
+          verdict:'آه → Olecranon Bursitis — راحة + NSAIDs + aspirate لو كبير' },
+        { icon:'🦴', name:'Radial Head Fracture / Arthritis',
+          qs:['إصابة أو سقطة على الإيد المبسوطة؟','الألم بيزيد في الدوران (Pronation/Supination)؟','الجس على الـ Radial Head مؤلم؟'],
+          verdict:'آه → Radial Head — X-ray + متخصص' },
+        { icon:'🔗', name:'Referred Pain من الرقبة (C6-C7)',
+          qs:['في ألم أو تيبس في الرقبة؟','تنميل في الأصابع؟','حركة الكوع نفسها طبيعية بدون ألم؟'],
+          verdict:'آه → Cervical Referred Pain — فحص الرقبة' }
+    ],
+    how: ['ألم جانب خارجي + Cozen\'s إيجابي → Tennis Elbow', 'ألم جانب داخلي → Golfer\'s Elbow', 'ورم ورا الكوع → Bursitis', 'ألم في الدوران بعد صدمة → Radial Head', 'تنميل + رقبة → Cervical']
+},
+
+'hand-cts-exam': {
+    complaint: 'مريض بيشتكي من تنميل وحرقة في اليد',
+    dds: [
+        { icon:'🥇', name:'Carpal Tunnel Syndrome (CTS)',
+          qs:['التنميل في الإبهام والسبابة والوسطى ونص البنصر (Median Nerve)؟','Phalen\'s Test إيجابي خلال 60 ثانية؟','بيتحسن بهز الإيد (Flick Sign)؟'],
+          verdict:'آه → CTS — Splint ليلي + NCS/EMG للتأكيد' },
+        { icon:'🔌', name:'Ulnar Nerve Compression',
+          qs:['التنميل في الخنصر والبنصر بس؟','ألم أو ضعف في الإمساك؟','Tinel\'s إيجابي على الـ Cubital Tunnel (Medial Elbow)؟'],
+          verdict:'آه → Ulnar Neuropathy — فحص الكوع + NCS' },
+        { icon:'🦋', name:'Carpal Tunnel + Hypothyroidism',
+          qs:['تعب وكسل وبرود وكسب وزن بدون سبب؟','بشرة جافة وشعر بيتكسر؟','TSH عالي؟'],
+          verdict:'آه → Hypothyroidism-induced CTS — عالج الدرقية أولاً' },
+        { icon:'🌡️', name:'Diabetic Peripheral Neuropathy',
+          qs:['سكري من فترة طويلة؟','التنميل في الإيدين والقدمين بالكامل (Glove & Stocking)؟','مش مقتصر على توزيع nerve واحد؟'],
+          verdict:'آه → Diabetic Neuropathy — تحسين التحكم في السكر + Gabapentin' },
+        { icon:'🦴', name:'Cervical Radiculopathy (C6)',
+          qs:['في ألم في الرقبة بينزل في الإيد؟','التنميل مع ألم بيجي من فوق؟','حركة الرقبة بتغير الأعراض؟'],
+          verdict:'آه → Cervical — MRI رقبة + متخصص' }
+    ],
+    how: ['Median Nerve (إبهام-وسطى) + Phalen\'s إيجابي → CTS', 'Ulnar (خنصر-بنصر) → Ulnar Neuropathy', 'كل الإيدين والقدمين → Diabetic Neuropathy', 'من الرقبة + تغير بحركة الرقبة → Cervical', 'TSH عالي + CTS → Hypothyroidism']
+}
+
+}; // end caseDDs
+
+// Build DD step from case DD data
+function buildDDStep(ddData) {
+    const phrases = [
+        {
+            label: '🤔 بعد ما سمعت الشكوى — فكر في إيه؟',
+            text: '<b>الشكوى: </b>' + ddData.complaint +
+                  '<br><br><b>الـ DD المحتملة:</b><br>' +
+                  ddData.dds.map((d, i) => `${d.icon} <b>${d.name}</b>`).join('<br>')
+        },
+        ...ddData.dds.map(d => ({
+            label: d.icon + ' ' + d.name,
+            text: '<b>اسأل:</b><br>' +
+                  d.qs.map(q => `◾ ${q}`).join('<br>') +
+                  `<br><br><b>النتيجة: </b>${d.verdict}`
+        }))
+    ];
+    return {
+        tag: 'DD التفريق', tagColor: '#fef3c7', tagText: '#92400e',
+        title: 'فرّق بين الأسباب — اوصل للتشخيص',
+        phrases: phrases,
+        clinical: {
+            type: 'single',
+            color: 'orange',
+            title: '🎯 مفاتيح التشخيص',
+            items: ddData.how
+        }
+    };
+}
+
+// Inject standard steps into every case
+cases.forEach(c => {
+    // 1. Add knock/intro as the very first step
+    c.steps.unshift(stepKnockIntro);
+
+    // 2. Inject DD step after the first original step (index 2 = after knock + first history)
+    const ddData = caseDDs[c.id];
+    if (ddData) {
+        const ddStep = buildDDStep(ddData);
+        c.steps.splice(2, 0, ddStep);
+    }
+
+    // 3. Insert family/social BEFORE the ICE step
+    const iceIdx = c.steps.findIndex(s => s.tag && s.tag.includes('ICE'));
+    if (iceIdx > 0) {
+        c.steps.splice(iceIdx, 0, stepFamilySocial);
+    } else {
+        // No ICE found → add family/social before last step
+        c.steps.splice(c.steps.length - 1, 0, stepFamilySocial);
+    }
+});
+
+// ═══════════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════════
+let currentCase = 0;
+let done = {};   // done[caseId][stepIndex] = true
+let practiceIndex = 0;
+let currentMode = 'reference';
+let selectedSystem = 'all';
+
+cases.forEach(c => { done[c.id] = {}; });
+
+// ═══════════════════════════════════════════════════════════════
+//  SYSTEM FILTER
+// ═══════════════════════════════════════════════════════════════
+function setSystem(sys, btn) {
+    selectedSystem = sys;
+    document.querySelectorAll('.sys-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    buildCaseSelector();
+}
+
+function getFilteredCases() {
+    if (selectedSystem === 'all') return cases.map((c, i) => ({ c, i }));
+    return cases.map((c, i) => ({ c, i })).filter(({ c }) => c.system === selectedSystem);
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════════════════════
+function buildCaseSelector() {
+    const sel = document.getElementById('case-selector');
+    sel.innerHTML = '';
+    const filtered = getFilteredCases();
+    // If current case not in filtered set, switch to first in filtered
+    const ids = filtered.map(({ i }) => i);
+    if (!ids.includes(currentCase) && filtered.length > 0) {
+        currentCase = filtered[0].i;
+        practiceIndex = 0;
+        renderReference();
+        if (currentMode === 'practice') renderPractice();
+        renderProgress();
+    }
+    filtered.forEach(({ c, i }) => {
+        const btn = document.createElement('button');
+        btn.className = 'case-btn' + (i === currentCase ? ' active' : '');
+        btn.textContent = c.icon + ' ' + c.name;
+        btn.onclick = () => selectCase(i);
+        sel.appendChild(btn);
+    });
+}
+
+function selectCase(index) {
+    currentCase = index;
+    practiceIndex = 0;
+    const filtered = getFilteredCases();
+    document.querySelectorAll('.case-btn').forEach((btn, pos) => {
+        btn.classList.toggle('active', filtered[pos] && filtered[pos].i === currentCase);
+    });
+    renderReference();
+    if (currentMode === 'practice') renderPractice();
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderReference() {
+    const c = cases[currentCase];
+
+    // Banner
+    document.getElementById('case-banner-wrap').innerHTML = `
+        <div class="case-banner" style="background:${c.colorLight};margin-top:16px;">
+            <div class="case-icon">${c.icon}</div>
+            <div>
+                <div class="case-name" style="color:${c.color};">${c.name}</div>
+                <div class="case-sub" style="color:${c.color};">${c.steps.length} خطوات — بالعامية المصرية</div>
+            </div>
+        </div>`;
+
+    // Steps
+    const container = document.getElementById('steps-container');
+    container.innerHTML = '';
+    const totalSteps = c.steps.length;
+
+    c.steps.forEach((step, i) => {
+        const isDone = done[c.id][i];
+        const numColors = [
+            ['#ede9fe','#7c3aed'],['#f0fdf4','#059669'],['#fef2f2','#dc2626'],
+            ['#eff6ff','#2563eb'],['#fffbeb','#d97706'],['#fdf2f8','#db2777'],
+            ['#f0fdf4','#059669'],['#fef2f2','#dc2626']
+        ];
+        const [nbg, ntxt] = numColors[i % numColors.length];
+
+        let clinicalHTML = '';
+        if (step.clinical) {
+            const cl = step.clinical;
+            if (cl.type === 'two-col') {
+                clinicalHTML = `<div class="two-col">
+                    <div class="info-box ${cl.left.color}"><div class="box-title">${cl.left.title}</div><ul>${cl.left.items.map(it=>`<li>${it}</li>`).join('')}</ul></div>
+                    <div class="info-box ${cl.right.color}"><div class="box-title">${cl.right.title}</div><ul>${cl.right.items.map(it=>`<li>${it}</li>`).join('')}</ul></div>
+                </div>`;
+            } else {
+                clinicalHTML = `<div class="info-box ${cl.color}"><div class="box-title">${cl.title}</div><ul>${cl.items.map(it=>`<li>${it}</li>`).join('')}</ul></div>`;
+            }
+        }
+
+        const phrasesHTML = step.phrases.map(ph => `
+            <div class="phrase-box">
+                ${ph.label ? `<div class="phrase-label">${ph.label}</div>` : ''}
+                <div class="phrase-text">${ph.text}</div>
+            </div>`).join('');
+
+        container.innerHTML += `
+        <div class="step-card${isDone ? ' done' : ''}" id="step-${i}">
+            <div class="step-header" onclick="toggleStep(${i})">
+                <div class="step-num" style="background:${nbg};color:${ntxt};">${i+1}</div>
+                <div class="step-title-wrap">
+                    <div class="step-tag" style="background:${step.tagColor};color:${step.tagText};">${step.tag}</div>
+                    <div class="step-title">${step.title}</div>
+                </div>
+                <div class="step-toggle" id="toggle-${i}">▼</div>
+            </div>
+            <div class="step-body" id="body-${i}">
+            <div class="step-body-inner">
+                <div class="subsection">
+                    <div class="subsection-title">الأسئلة والعبارات</div>
+                    ${phrasesHTML}
+                </div>
+                ${clinicalHTML ? `<div class="subsection"><div class="subsection-title">المعلومة الإكلينيكية</div>${clinicalHTML}</div>` : ''}
+                <button class="done-btn${isDone ? ' active' : ''}" id="done-${i}" onclick="markDone(${i})">
+                    ${isDone ? '✓ تم' : '✓ انتهيت من الخطوة دي'}
+                </button>
+            </div>
+            </div>
+        </div>`;
+    });
+}
+
+
+function toggleStep(index) {
+    const body = document.getElementById(`body-${index}`);
+    const toggle = document.getElementById(`toggle-${index}`);
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    toggle.classList.toggle('open', !isOpen);
+}
+
+function markDone(index) {
+    const c = cases[currentCase];
+    done[c.id][index] = true;
+    const btn = document.getElementById(`done-${index}`);
+    const card = document.getElementById(`step-${index}`);
+    if (btn) { btn.textContent = '✓ تم'; btn.classList.add('active'); }
+    if (card) card.classList.add('done');
+    updateProgress();
+}
+
+function updateProgress() {
+    const c = cases[currentCase];
+    const total = c.steps.length;
+    const doneCount = Object.keys(done[c.id]).length;
+    const pct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-count').textContent = doneCount + ' / ' + total;
+}
+
+// ── Practice mode ────────────────────────────────────────────
+function renderPractice() {
+    const c = cases[currentCase];
+    const step = c.steps[practiceIndex];
+
+    document.getElementById('practice-indicator').textContent =
+        `${c.icon} ${c.name} — خطوة ${practiceIndex + 1} من ${c.steps.length}`;
+    document.getElementById('practice-tag').textContent = step.tag;
+    document.getElementById('practice-tag').style.background = step.tagColor;
+    document.getElementById('practice-tag').style.color = step.tagText;
+    document.getElementById('practice-title').textContent = step.title;
+    document.getElementById('practice-content').classList.remove('visible');
+
+    const phrases = step.phrases.map(ph =>
+        `<div class="phrase-box" style="margin-bottom:8px;">
+            ${ph.label ? `<div class="phrase-label">${ph.label}</div>` : ''}
+            <div class="phrase-text" style="font-size:0.98em;">${ph.text}</div>
+        </div>`
+    ).join('');
+    document.getElementById('practice-content').innerHTML = phrases;
+
+    document.getElementById('prev-btn').style.opacity = practiceIndex === 0 ? '0.3' : '1';
+    document.getElementById('next-btn').textContent =
+        practiceIndex === c.steps.length - 1 ? '✓ انتهيت' : '← التالي';
+}
+
+function revealPractice() {
+    document.getElementById('practice-content').classList.add('visible');
+}
+
+function nextPractice() {
+    const c = cases[currentCase];
+    if (practiceIndex < c.steps.length - 1) {
+        practiceIndex++;
+        renderPractice();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function prevPractice() {
+    if (practiceIndex > 0) {
+        practiceIndex--;
+        renderPractice();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+// ── Mode switch ──────────────────────────────────────────────
+function setMode(mode) {
+    currentMode = mode;
+    const refMode = document.getElementById('reference-mode');
+    document.querySelectorAll('.mode-tab').forEach((t, i) => {
+        t.classList.toggle('active', (i === 0 && mode === 'reference') || (i === 1 && mode === 'practice'));
+    });
+    const practMode = document.getElementById('practice-mode');
+    if (mode === 'reference') {
+        refMode.classList.remove('hidden');
+        practMode.classList.remove('active');
+    } else {
+        refMode.classList.add('hidden');
+        practMode.classList.add('active');
+        practiceIndex = 0;
+        renderPractice();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Scroll progress
+window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const scrolled = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+    document.getElementById('scroll-progress').style.width = scrolled + '%';
+    document.getElementById('scroll-top').classList.toggle('visible', doc.scrollTop > 300);
+});
+
+// ── Init ─────────────────────────────────────────────────────
+buildCaseSelector();
+renderReference();
+renderPractice();
+updateProgress();
+</script>
+
+</body>
+</html>

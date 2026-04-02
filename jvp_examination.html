@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JVP Examination — OSCE Guide</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+        :root {
+            --blue: #1d4ed8;
+            --blue-light: #eff6ff;
+            --blue-border: #bfdbfe;
+            --teal: #0d9488;
+            --teal-light: #f0fdfa;
+            --teal-border: #99f6e4;
+            --red: #dc2626;
+            --red-light: #fef2f2;
+            --red-border: #fecaca;
+            --amber: #d97706;
+            --amber-light: #fffbeb;
+            --amber-border: #fde68a;
+            --green: #16a34a;
+            --green-light: #f0fdf4;
+            --green-border: #bbf7d0;
+            --purple: #7c3aed;
+            --purple-light: #f5f3ff;
+            --purple-border: #ddd6fe;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.65;
+            font-size: 15px;
+        }
+
+        /* Scroll bar */
+        #scroll-bar {
+            position: fixed; top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #1d4ed8, #0d9488);
+            width: 0%; z-index: 9999;
+        }
+
+        /* Top nav */
+        .top-nav {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .back-link { color: var(--blue); font-weight: 600; text-decoration: none; font-size: 0.9em; }
+        .back-link:hover { text-decoration: underline; }
+        .print-btn {
+            background: transparent; border: 1.5px solid var(--border);
+            color: var(--muted); font-family: 'Inter', sans-serif;
+            font-size: 0.82em; font-weight: 600; padding: 5px 14px;
+            border-radius: 6px; cursor: pointer; transition: all 0.15s;
+        }
+        .print-btn:hover { border-color: var(--blue); color: var(--blue); }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #0f766e 100%);
+            color: white;
+            padding: 24px 20px 18px;
+            text-align: center;
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 4px 20px rgba(30,64,175,0.35);
+        }
+        .header-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 20px;
+            padding: 3px 14px;
+            font-size: 0.78em;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+        .header h1 { font-size: 1.55em; font-weight: 900; margin-bottom: 4px; }
+        .header p { font-size: 0.88em; opacity: 0.85; margin-bottom: 14px; }
+
+        .mode-tabs { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+        .mode-tab {
+            padding: 7px 18px; border-radius: 20px;
+            border: 2px solid rgba(255,255,255,0.5);
+            background: transparent; color: white;
+            font-family: 'Inter', sans-serif; font-weight: 700;
+            font-size: 0.85em; cursor: pointer; transition: all 0.2s;
+        }
+        .mode-tab:hover { background: rgba(255,255,255,0.15); }
+        .mode-tab.active { background: white; color: #1d4ed8; border-color: white; }
+
+        /* OSCE scenario banner */
+        .scenario-banner {
+            background: linear-gradient(135deg, #fef3c7, #fff);
+            border: 2px solid #fbbf24;
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin: 20px 0 0;
+        }
+        .scenario-banner h3 {
+            color: #92400e;
+            font-size: 0.8em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+        .scenario-banner p { font-size: 1em; font-weight: 600; color: #1c1917; line-height: 1.6; }
+        .scenario-banner .key-points {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .kp {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            border-radius: 6px;
+            padding: 5px 12px;
+            font-size: 0.82em;
+            font-weight: 700;
+            color: #78350f;
+        }
+
+        /* Progress bar */
+        .progress-wrap {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 10px 20px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .progress-label { font-size: 0.82em; font-weight: 700; color: var(--muted); white-space: nowrap; }
+        .progress-track { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--blue), var(--teal));
+            border-radius: 4px; transition: width 0.5s ease;
+        }
+        .progress-count { font-size: 0.82em; font-weight: 700; color: var(--blue); white-space: nowrap; }
+
+        /* Container */
+        .container { max-width: 880px; margin: 0 auto; padding: 20px 16px 80px; }
+
+        /* Section title */
+        .section-heading {
+            font-size: 0.75em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--muted);
+            margin: 28px 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-heading::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        /* Step cards */
+        .step-card {
+            background: var(--card);
+            border-radius: 14px;
+            margin-bottom: 12px;
+            border: 1.5px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+        .step-card.done { border-color: var(--teal); }
+        .step-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.09); }
+
+        .step-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .step-header:hover { background: #fafafa; }
+
+        .step-num {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 0.9em;
+            flex-shrink: 0; margin-top: 2px;
+        }
+
+        .step-title-wrap { flex: 1; }
+        .step-phase {
+            font-size: 0.7em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 3px;
+        }
+        .step-title { font-weight: 700; font-size: 1.02em; line-height: 1.4; }
+
+        .step-toggle { font-size: 0.9em; flex-shrink: 0; transition: transform 0.25s; color: var(--muted); margin-top: 8px; }
+        .step-toggle.open { transform: rotate(180deg); }
+
+        .step-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+        .step-body.open { max-height: 3000px; }
+        .step-body-inner { padding: 0 20px 20px; border-top: 1px solid var(--border); }
+
+        /* Subsections */
+        .subsec { margin-top: 16px; }
+        .subsec-title {
+            font-size: 0.75em; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            color: var(--muted); margin-bottom: 10px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .subsec-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        /* Say-to-assessor box */
+        .say-box {
+            background: #eff6ff;
+            border: 1.5px solid #bfdbfe;
+            border-right: 4px solid #1d4ed8;
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+        }
+        .say-box .say-label {
+            font-size: 0.72em; font-weight: 700;
+            color: var(--blue); margin-bottom: 6px;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .say-box .say-text {
+            font-size: 0.97em;
+            font-style: italic;
+            color: #1e3a8a;
+            line-height: 1.7;
+            font-weight: 500;
+        }
+
+        /* Do box */
+        .do-box {
+            background: var(--teal-light);
+            border: 1.5px solid var(--teal-border);
+            border-radius: 10px;
+            padding: 13px 16px;
+            margin-bottom: 10px;
+        }
+        .do-box .do-label {
+            font-size: 0.72em; font-weight: 700;
+            color: var(--teal); margin-bottom: 6px;
+        }
+        .do-box ul { padding-right: 0; padding-left: 18px; }
+        .do-box ul li { font-size: 0.95em; padding: 2px 0; color: var(--text); }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 10px; padding: 13px 16px; margin-bottom: 10px;
+        }
+        .info-box.red { background: var(--red-light); border: 1.5px solid var(--red-border); }
+        .info-box.amber { background: var(--amber-light); border: 1.5px solid var(--amber-border); }
+        .info-box.green { background: var(--green-light); border: 1.5px solid var(--green-border); }
+        .info-box.purple { background: var(--purple-light); border: 1.5px solid var(--purple-border); }
+        .info-box.blue { background: var(--blue-light); border: 1.5px solid var(--blue-border); }
+
+        .info-box .box-title { font-size: 0.8em; font-weight: 700; margin-bottom: 8px; }
+        .info-box.red .box-title { color: var(--red); }
+        .info-box.amber .box-title { color: var(--amber); }
+        .info-box.green .box-title { color: var(--green); }
+        .info-box.purple .box-title { color: var(--purple); }
+        .info-box.blue .box-title { color: var(--blue); }
+
+        .info-box ul { padding-left: 18px; }
+        .info-box ul li { font-size: 0.93em; padding: 3px 0; line-height: 1.6; }
+
+        /* Two col */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        @media (max-width: 580px) { .two-col { grid-template-columns: 1fr; } }
+
+        /* Done btn */
+        .done-btn {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-top: 18px; padding: 10px 20px; border-radius: 8px;
+            border: 2px solid var(--teal); background: var(--teal-light);
+            color: var(--teal); font-family: 'Inter', sans-serif;
+            font-weight: 700; font-size: 0.92em; cursor: pointer;
+            transition: all 0.2s; width: 100%;
+        }
+        .done-btn:hover { background: var(--teal); color: white; }
+        .done-btn.active { background: var(--teal); color: white; }
+
+        /* Waveform visual */
+        .waveform-wrap {
+            background: white;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 14px;
+            overflow-x: auto;
+        }
+        .waveform-svg { width: 100%; min-width: 340px; }
+
+        /* Waveform table */
+        .wave-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+        .wave-table th {
+            background: #f1f5f9;
+            padding: 8px 12px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--muted);
+            border-bottom: 2px solid var(--border);
+        }
+        .wave-table td {
+            padding: 9px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            line-height: 1.5;
+        }
+        .wave-table tr:last-child td { border-bottom: none; }
+        .wave-badge {
+            display: inline-block;
+            font-weight: 800;
+            font-size: 1.05em;
+            width: 26px;
+            text-align: center;
+        }
+
+        /* Reference mode / practice mode */
+        #reference-mode { display: block; }
+        #reference-mode.hidden { display: none; }
+        #practice-mode { display: none; }
+        #practice-mode.active { display: block; }
+
+        /* Practice */
+        .practice-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px 26px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+        .practice-step-ind { font-size: 0.82em; color: var(--muted); font-weight: 700; margin-bottom: 16px; }
+        .practice-phase-tag {
+            display: inline-block;
+            padding: 3px 14px; border-radius: 20px;
+            font-size: 0.78em; font-weight: 700; margin-bottom: 14px;
+        }
+        .practice-title { font-size: 1.35em; font-weight: 900; margin-bottom: 24px; line-height: 1.4; }
+        .practice-reveal-btn {
+            background: linear-gradient(135deg, #1e40af, #0f766e);
+            color: white; border: none;
+            padding: 13px 30px; border-radius: 10px;
+            font-family: 'Inter', sans-serif; font-weight: 700;
+            font-size: 1em; cursor: pointer;
+            box-shadow: 0 4px 16px rgba(30,64,175,0.35);
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .practice-reveal-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(30,64,175,0.4); }
+        .practice-content { display: none; text-align: left; margin-top: 22px; animation: fadeUp 0.3s ease; }
+        .practice-content.visible { display: block; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .practice-nav {
+            display: flex; gap: 10px; margin-top: 22px;
+            justify-content: center; flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 10px 24px; border-radius: 8px;
+            font-family: 'Inter', sans-serif; font-weight: 700;
+            font-size: 0.92em; cursor: pointer; transition: all 0.15s;
+            border: 2px solid var(--blue);
+        }
+        .nav-btn.primary { background: var(--blue); color: white; }
+        .nav-btn.primary:hover { background: #1e3a8a; }
+        .nav-btn.secondary { background: transparent; color: var(--blue); }
+        .nav-btn.secondary:hover { background: var(--blue-light); }
+
+        /* Scroll top */
+        #scroll-top {
+            position: fixed; bottom: 24px; right: 20px;
+            background: var(--blue); color: white; border: none;
+            border-radius: 50%; width: 42px; height: 42px;
+            font-size: 1.1em; cursor: pointer;
+            box-shadow: 0 4px 14px rgba(29,78,216,0.4);
+            opacity: 0; transition: opacity 0.3s; z-index: 200;
+        }
+        #scroll-top.visible { opacity: 1; }
+
+        /* Exam tip box */
+        .exam-tip {
+            background: #fefce8;
+            border: 1.5px solid #fde047;
+            border-left: 4px solid #ca8a04;
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-top: 12px;
+        }
+        .exam-tip .tip-label {
+            font-size: 0.7em; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.06em;
+            color: #92400e; margin-bottom: 5px;
+        }
+        .exam-tip .tip-text { font-size: 0.92em; color: #713f12; line-height: 1.6; }
+        .exam-tip .tip-text strong { color: #78350f; }
+
+        /* High yield badge */
+        .hy-badge {
+            display: inline-block;
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            color: #92400e;
+            font-size: 0.68em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        /* Mnemonic card */
+        .mnemonic-card {
+            background: linear-gradient(135deg, #f5f3ff, #ede9fe);
+            border: 2px solid #c4b5fd;
+            border-radius: 12px;
+            padding: 16px 18px;
+            margin-bottom: 14px;
+        }
+        .mnemonic-card .mn-title {
+            font-size: 0.75em; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.06em;
+            color: #6d28d9; margin-bottom: 10px;
+        }
+        .mnemonic-card .mn-word {
+            display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;
+        }
+        .mn-letter {
+            background: #7c3aed; color: white;
+            border-radius: 8px; padding: 6px 12px;
+            font-size: 1em; font-weight: 900;
+            min-width: 36px; text-align: center;
+        }
+        .mn-item {
+            display: flex; gap: 10px; align-items: flex-start;
+            padding: 5px 0; border-bottom: 1px solid #ddd6fe; font-size: 0.92em;
+        }
+        .mn-item:last-child { border-bottom: none; }
+        .mn-key { color: #7c3aed; font-weight: 800; min-width: 18px; }
+
+        /* Quick reference cheat sheet */
+        .cheatsheet {
+            background: #0f172a;
+            color: white;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .cheatsheet h3 {
+            font-size: 0.75em; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.07em;
+            color: #94a3b8; margin-bottom: 14px;
+        }
+        .cheat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+        .cheat-item {
+            background: #1e293b;
+            border-radius: 10px;
+            padding: 12px 14px;
+            border-left: 3px solid;
+        }
+        .cheat-item .ci-label { font-size: 0.72em; font-weight: 700; color: #94a3b8; margin-bottom: 5px; }
+        .cheat-item .ci-value { font-size: 0.95em; font-weight: 600; color: white; line-height: 1.5; }
+
+        /* Expand/collapse buttons */
+        .expand-controls {
+            display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
+        }
+        .ctrl-btn {
+            padding: 6px 16px; border-radius: 7px;
+            font-family: 'Inter', sans-serif; font-weight: 700;
+            font-size: 0.82em; cursor: pointer; transition: all 0.15s;
+            border: 1.5px solid var(--border);
+            background: white; color: var(--muted);
+        }
+        .ctrl-btn:hover { border-color: var(--blue); color: var(--blue); }
+
+        /* Compact abnormality table */
+        .abnorm-table { width: 100%; border-collapse: collapse; font-size: 0.88em; margin-bottom: 14px; }
+        .abnorm-table th {
+            background: #0f172a; color: white;
+            padding: 9px 12px; text-align: left;
+            font-weight: 700; font-size: 0.8em;
+            text-transform: uppercase; letter-spacing: 0.04em;
+        }
+        .abnorm-table th:first-child { border-radius: 8px 0 0 0; }
+        .abnorm-table th:last-child { border-radius: 0 8px 0 0; }
+        .abnorm-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
+        .abnorm-table tr:last-child td { border-bottom: none; }
+        .abnorm-table tr:hover td { background: #f8fafc; }
+        .abnorm-badge {
+            font-weight: 900; font-size: 1.1em;
+            padding: 2px 8px; border-radius: 5px;
+            display: inline-block;
+        }
+
+        @media print {
+            #scroll-bar, #scroll-top, .mode-tabs, .top-nav,
+            .done-btn, .practice-nav, .progress-wrap, .expand-controls { display: none !important; }
+            .step-body { max-height: none !important; }
+            .step-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+            body { background: white; font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="scroll-bar"></div>
+
+<div class="top-nav">
+    <a href="osce.html" class="back-link">← OSCE Flashcards</a>
+    <a href="cheatsheet.html" class="back-link" style="background:#0f172a;color:white;border-color:#0f172a;">📚 Cheat Sheet</a>
+    <button class="print-btn" onclick="window.print()">🖨 Print</button>
+</div>
+
+<div class="header">
+    <div class="header-badge">OSCE EXAMINATION STATION</div>
+    <h1>Jugular Venous Pressure (JVP)</h1>
+    <p>Step-by-step examination guide — what to do and say to the assessor</p>
+    <div class="mode-tabs">
+        <button class="mode-tab active" onclick="setMode('reference')">📋 Examination Guide</button>
+        <button class="mode-tab" onclick="setMode('waveform')">〰️ Waveform & Causes</button>
+        <button class="mode-tab" onclick="setMode('practice')">🎯 Practice Mode</button>
+    </div>
+</div>
+
+<div class="progress-wrap">
+    <span class="progress-label">Steps done:</span>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <span class="progress-count" id="progress-count">0 / 7</span>
+</div>
+
+<!-- ═══════════════ REFERENCE MODE ═══════════════ -->
+<div id="reference-mode">
+<div class="container">
+
+    <!-- Quick Reference Cheat Sheet -->
+    <div class="cheatsheet" style="margin-top:20px;">
+        <h3>⚡ Quick Reference — Before You Start</h3>
+        <div class="cheat-grid">
+            <div class="cheat-item" style="border-color:#38bdf8;">
+                <div class="ci-label">Patient Position</div>
+                <div class="ci-value">45° reclined<br>Head 10–20° left</div>
+            </div>
+            <div class="cheat-item" style="border-color:#4ade80;">
+                <div class="ci-label">Normal JVP</div>
+                <div class="ci-value">6–8 cm H₂O<br>(1–3 cm above sternal angle)</div>
+            </div>
+            <div class="cheat-item" style="border-color:#f472b6;">
+                <div class="ci-label">Reference Point</div>
+                <div class="ci-value">Sternal angle (Louis)<br>+ 5 cm to RA</div>
+            </div>
+            <div class="cheat-item" style="border-color:#fb923c;">
+                <div class="ci-label">JVP vs Carotid</div>
+                <div class="ci-value">JVP: biphasic, non-palpable,<br>obliterated by pressure</div>
+            </div>
+            <div class="cheat-item" style="border-color:#a78bfa;">
+                <div class="ci-label">Kussmaul's Sign</div>
+                <div class="ci-value">JVP rises on inspiration<br>→ impaired RV filling</div>
+            </div>
+            <div class="cheat-item" style="border-color:#f87171;">
+                <div class="ci-label">Most Common Cause ↑JVP</div>
+                <div class="ci-value">Right heart failure<br>(often 2° to LHF)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OSCE Scenario -->
+    <div class="scenario-banner">
+        <h3>📋 OSCE Station</h3>
+        <p>Your next patient is a <strong>42-year-old male</strong> presenting with chronic cough — follow-up visit. You are requested to <strong>assess Jugular Venous Pressure (JVP).</strong></p>
+        <div class="key-points">
+            <span class="kp">✅ Measure the JVP</span>
+            <span class="kp">✅ Explain steps loudly to assessor</span>
+            <span class="kp">❌ No history required</span>
+        </div>
+    </div>
+
+    <div class="section-heading">EXAMINATION STEPS</div>
+
+    <div class="expand-controls">
+        <button class="ctrl-btn" onclick="expandAll()">⊞ Expand All</button>
+        <button class="ctrl-btn" onclick="collapseAll()">⊟ Collapse All</button>
+    </div>
+
+    <!-- STEP 1 — Preparation -->
+    <div class="step-card" id="step-0">
+        <div class="step-header" onclick="toggleStep(0)">
+            <div class="step-num" style="background:#eff6ff;color:#1d4ed8;">1</div>
+            <div class="step-title-wrap">
+                <div class="step-phase" style="color:#1d4ed8;">Preparation</div>
+                <div class="step-title">Wash hands, introduce yourself, gain consent</div>
+            </div>
+            <div class="step-toggle" id="toggle-0">▼</div>
+        </div>
+        <div class="step-body" id="body-0">
+        <div class="step-body-inner">
+            <div class="subsec">
+                <div class="say-box">
+                    <div class="say-label">🗣 SAY TO ASSESSOR</div>
+                    <div class="say-text">
+                        "I will wash my hands, introduce myself to the patient, and confirm their name and date of birth.<br><br>
+                        I will explain that I need to examine the jugular venous pressure in the neck and obtain verbal consent."
+                    </div>
+                </div>
+                <div class="do-box">
+                    <div class="do-label">✋ DO</div>
+                    <ul>
+                        <li>Wash hands / use gel</li>
+                        <li>Introduce yourself by name and role</li>
+                        <li>Confirm patient identity</li>
+                        <li>Explain the procedure briefly and gain consent</li>
+                        <li>Expose the patient's neck and upper chest</li>
+                        <li>Ensure adequate lighting</li>
+                    </ul>
+                </div>
+                <div class="exam-tip">
+                    <div class="tip-label">⭐ Exam Tip</div>
+                    <div class="tip-text">In the OSCE, <strong>talk through every step out loud</strong> — the examiner marks you on communication, not just technical accuracy. Say "I am washing my hands" as you do it.</div>
+                </div>
+            </div>
+            <button class="done-btn" id="done-0" onclick="markDone(0)">✓ Done</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- STEP 2 — Positioning -->
+    <div class="step-card" id="step-1">
+        <div class="step-header" onclick="toggleStep(1)">
+            <div class="step-num" style="background:#f0fdfa;color:#0d9488;">2</div>
+            <div class="step-title-wrap">
+                <div class="step-phase" style="color:#0d9488;">Positioning</div>
+                <div class="step-title">Position the patient correctly at 45°</div>
+            </div>
+            <div class="step-toggle" id="toggle-1">▼</div>
+        </div>
+        <div class="step-body" id="body-1">
+        <div class="step-body-inner">
+            <div class="subsec">
+                <div class="say-box">
+                    <div class="say-label">🗣 SAY TO ASSESSOR</div>
+                    <div class="say-text">
+                        "I will position the patient at <strong>45 degrees</strong> — this is the optimal angle for visualising the JVP.<br><br>
+                        I will ask the patient to turn their head <strong>10–20 degrees to the left</strong> to relax the sternocleidomastoid muscle and improve visualisation of the internal jugular vein."
+                    </div>
+                </div>
+                <div class="do-box">
+                    <div class="do-label">✋ DO</div>
+                    <ul>
+                        <li>Sit patient at exactly 45° (use backrest or pillows)</li>
+                        <li>Ask patient to turn head gently to the left (10–20°)</li>
+                        <li>Remove pillow from under head — neck must be flat and relaxed</li>
+                        <li>Stand on the patient's right side</li>
+                    </ul>
+                </div>
+                <div class="info-box amber">
+                    <div class="box-title">⚠️ Why 45°?</div>
+                    <ul>
+                        <li>At 0° (flat): JVP may not be visible if normal — vein collapses</li>
+                        <li>At 90° (upright): JVP may be below clavicle — not visible</li>
+                        <li>45° gives the best window to see the meniscus of pulsation</li>
+                    </ul>
+                </div>
+                <div class="exam-tip">
+                    <div class="tip-label">⭐ Exam Tip</div>
+                    <div class="tip-text">If the JVP is very elevated, you may need to sit the patient <strong>more upright</strong> (60–90°) to see the top of the column. Always state: <strong>"I am adjusting the angle to visualise the JVP better."</strong></div>
+                </div>
+            </div>
+            <button class="done-btn" id="done-1" onclick="markDone(1)">✓ Done</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- STEP 3 — Locate IJV -->
+    <div class="step-card" id="step-2">
+        <div class="step-header" onclick="toggleStep(2)">
+            <div class="step-num" style="background:#eff6ff;color:#1d4ed8;">3</div>
+            <div class="step-title-wrap">
+                <div class="step-phase" style="color:#1d4ed8;">Identification</div>
+                <div class="step-title">Locate the internal jugular vein pulsation</div>
+            </div>
+            <div class="step-toggle" id="toggle-2">▼</div>
+        </div>
+        <div class="step-body" id="body-2">
+        <div class="step-body-inner">
+            <div class="subsec">
+                <div class="say-box">
+                    <div class="say-label">🗣 SAY TO ASSESSOR</div>
+                    <div class="say-text">
+                        "I am looking for the <strong>internal jugular vein pulsation</strong>, which lies deep to the sternocleidomastoid muscle, between its two heads.<br><br>
+                        If I cannot identify the internal jugular pulsation, I will use the <strong>external jugular vein</strong> as an alternative — it is visible on the surface of the skin on the lateral neck."
+                    </div>
+                </div>
+                <div class="do-box">
+                    <div class="do-label">✋ DO</div>
+                    <ul>
+                        <li>Look at the right side of the neck (right IJV is preferred — more direct route to RA)</li>
+                        <li>Identify the area between the two heads of the SCM muscle</li>
+                        <li>Look for a <em>double pulsation</em> — JVP has a biphasic waveform (unlike the carotid which has a single beat)</li>
+                        <li>JVP is non-palpable; carotid is palpable — this helps distinguish them</li>
+                        <li>JVP is obliterated by gentle pressure above the clavicle; carotid is not</li>
+                    </ul>
+                </div>
+                <div class="two-col">
+                    <div class="info-box green">
+                        <div class="box-title">✅ JVP characteristics</div>
+                        <ul>
+                            <li>Not palpable</li>
+                            <li>Biphasic waveform (a and v waves)</li>
+                            <li>Fills from above, empties downward</li>
+                            <li>Decreases with inspiration (normally)</li>
+                            <li>Obliterated by pressure above clavicle</li>
+                        </ul>
+                    </div>
+                    <div class="info-box red">
+                        <div class="box-title">❌ Carotid artery — NOT JVP</div>
+                        <ul>
+                            <li>Palpable</li>
+                            <li>Monophasic (single pulse)</li>
+                            <li>Not obliterated by pressure</li>
+                            <li>Not affected by respiration</li>
+                            <li>Not affected by position change</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="exam-tip">
+                    <div class="tip-label">⭐ Exam Tip — <span class="hy-badge">High Yield</span></div>
+                    <div class="tip-text">The <strong>3 key differences</strong> from carotid — memorise these: (1) JVP is <strong>non-palpable</strong>, (2) JVP is <strong>obliterated</strong> by pressure above clavicle, (3) JVP <strong>decreases with inspiration</strong>. Examiners love asking this.</div>
+                </div>
+            </div>
+            <button class="done-btn" id="done-2" onclick="markDone(2)">✓ Done</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- STEP 4 — Measure -->
+    <div class="step-card" id="step-3">
+        <div class="step-header" onclick="toggleStep(3)">
+            <div class="step-num" style="background:#f0fdfa;color:#0d9488;">4</div>
+            <div class="step-title-wrap">
+                <div class="step-phase" style="color:#0d9488;">Measurement</div>
+                <div class="step-title">Measure the vertical height of JVP</div>
+            </div>
+            <div class="step-toggle" id="toggle-3">▼</div>
+        </div>
+        <div class="step-body" id="body-3">
+        <div class="step-body-inner">
+            <div class="subsec">
+                <div class="say-box">
+                    <div class="say-label">🗣 SAY TO ASSESSOR</div>
+                    <div class="say-text">
+                        "I will measure the JVP using the <strong>sternal angle (angle of Louis)</strong> as the fixed reference point — this is the bony ridge at the junction of the manubrium and the body of the sternum.<br><br>
+                        I place a <strong>horizontal ruler</strong> at the top of the visible JVP pulsation, and a <strong>vertical ruler</strong> down to the sternal angle. I measure the vertical distance in centimetres.<br><br>
+                        The sternal angle is approximately <strong>5 cm above the right atrium</strong>, so I add 5 cm to this measurement to get the true CVP.<br><br>
+                        Normal JVP is <strong>6–8 cm of water</strong> (i.e., 1–3 cm above the sternal angle at 45°)."
+                    </div>
+                </div>
+                <div class="do-box">
+                    <div class="do-label">✋ DO</div>
+                    <ul>
+                        <li>Identify the sternal angle (feel for the transverse ridge on the sternum)</li>
+                        <li>Hold a horizontal ruler at the top of JVP pulsation</li>
+                        <li>Hold a vertical ruler from the sternal angle upward to meet the horizontal ruler</li>
+                        <li>Read the vertical distance in cm</li>
+                        <li>Add 5 cm → this gives the CVP (central venous pressure)</li>
+                    </ul>
+                </div>
+                <div class="info-box blue">
+                    <div class="box-title">📐 Normal Values</div>
+                    <ul>
+                        <li><strong>Normal JVP:</strong> 6–8 cm H₂O (1–3 cm above sternal angle)</li>
+                        <li><strong>&lt;5 cm:</strong> Hypovolaemia — low circulating volume</li>
+                        <li><strong>&gt;9 cm:</strong> Elevated — impaired cardiac filling, fluid overload</li>
+                    </ul>
+                </div>
+                <div class="exam-tip">
+                    <div class="tip-label">⭐ Exam Tip — <span class="hy-badge">High Yield</span></div>
+                    <div class="tip-text">Common mistake: forgetting to <strong>add 5 cm</strong>. The sternal angle is 5 cm above the RA, so: <strong>CVP = measured height + 5 cm</strong>. If you see 3 cm above sternal angle → CVP = 8 cm (upper limit of normal).</div>
+                </div>
+            </div>
+            <button class="done-btn" id="done-3" onclick="markDone(3)">✓ Done</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- STEP 5 — Hepatojugular Reflux -->
+    <div class="step-card" id="step-4">
+        <div class="step-header" onclick="toggleStep(4)">
+            <div class="step-num" style="background:#eff6ff;color:#1d4ed8;">5</div>
+            <div class="step-title-wrap">
+                <div class="step-phase" style="color:#1d4ed8;">Hepatojugular Reflux</div>
+                <div class="step-title">Assess hepatojugular reflux (HJR)</div>
+            </div>
+            <div class="step-toggle" id="toggle-4">▼</div>
+        </div>
+        <div class="step-body" id="body-4">
+        <div class="step-body-inner">
+            <div class="subsec">
+                <div class="say-box">
+                    <div class="say-label">🗣 SAY TO ASSESSOR</div>
+                    <div class="say-text">
+                        "I will now perform the <strong>hepatojugular reflux test</strong>.<br><br>
+                        I will apply firm, sustained pressure over the <strong>right upper quadrant (liver)</strong> for 10–15 seconds while watching the JVP.<br><br>
+                        Normally, the JVP may rise transiently then return to baseline — this is a <strong>negative test</strong>.<br><br>
+                        If the JVP remains elevated throughout compression — more than <strong>3 cm above baseline</strong> — this is a <strong>positive hepatojugular reflux</strong>, indicating right heart failure or fluid overload."
+                    </div>
+                </div>
+                <div class="two-col">
+                    <div class="info-box green">
+                        <div class="box-title">✅ Negative HJR (Normal)</div>
+                        <ul>
+                            <li>Transient rise then returns to baseline</li>
+                            <li>Right heart can accommodate increased venous return</li>
+                        </ul>
+                    </div>
+                    <div class="info-box red">
+                        <div class="box-title">🔴 Positive HJR (Abnormal)</div>
+                        <ul>
+                            <li>JVP stays elevated &gt;3 cm throughout</li>
+                            <li>Suggests right heart failure, biventricular failure, or fluid overload</li>
+                            <li>Also negative in SVC obstruction (hepatojugular reflex negative)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="exam-tip">
+                    <div class="tip-label">⭐ Exam Tip</div>
+                    <div class="tip-text">HJR is <strong>negative in SVC obstruction</strong> — the vein is already fixed and distended with no pulsation, so applying pressure won't change anything. This is a key distinguishing feature.</div>
+                </div>
+            </div>
+            <button class="done-btn" id="done-4" onclick="markDone(4)">✓ Done</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- STEP 6 — Kussmaul -->
+    <div class="step-card" id="step-5">
+        <div class="step-header" onclick="toggleStep(5)">
+            <div class="step-num" style="background:#fdf4ff;color:#7c3aed;">6</div>
+            <div class="step-title-wrap">
+                <div class="step-phase" style="color:#7c3aed;">Kussmaul's Sign</div>
+                <div class="step-title">Check for Kussmaul's sign</div>
+            </div>
+            <div class="step-toggle" id="toggle-5">▼</div>
+        </div>
+        <div class="step-body" id="body-5">
+        <div class="step-body-inner">
+            <div class="subsec">
+                <div class="say-box">
+                    <div class="say-label">🗣 SAY TO ASSESSOR</div>
+                    <div class="say-text">
+                        "I will now check for <strong>Kussmaul's sign</strong> — I will ask the patient to take a slow deep breath in and observe the JVP.<br><br>
+                        <strong>Normally</strong>, the JVP decreases with inspiration — because negative intrathoracic pressure increases venous return and the right heart accommodates it.<br><br>
+                        <strong>Kussmaul's sign is positive</strong> if the JVP paradoxically <em>rises</em> with inspiration — this indicates impaired filling of the right ventricle."
+                    </div>
+                </div>
+                <div class="info-box purple">
+                    <div class="box-title">💜 Kussmaul's Sign — Causes (Mnemonic: CROP)</div>
+                    <ul>
+                        <li><strong>C</strong>onstrictive pericarditis</li>
+                        <li><strong>R</strong>estrictive cardiomyopathy</li>
+                        <li><strong>O</strong>bstruction — right heart failure (severe)</li>
+                        <li><strong>P</strong>ericardial effusion / tamponade</li>
+                    </ul>
+                </div>
+                <div class="exam-tip">
+                    <div class="tip-label">⭐ Exam Tip — <span class="hy-badge">High Yield</span></div>
+                    <div class="tip-text"><strong>Kussmaul's vs. Pulsus Paradoxus:</strong> Both happen with inspiration and tamponade. Kussmaul's = JVP rises with inspiration. Pulsus paradoxus = BP drops &gt;10 mmHg with inspiration. <strong>Tamponade can have both.</strong></div>
+                </div>
+            </div>
+            <button class="done-btn" id="done-5" onclick="markDone(5)">✓ Done</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- STEP 7 — Report findings -->
+    <div class="step-card" id="step-6">
+        <div class="step-header" onclick="toggleStep(6)">
+            <div class="step-num" style="background:#f0fdfa;color:#0d9488;">7</div>
+            <div class="step-title-wrap">
+                <div class="step-phase" style="color:#0d9488;">Conclusion</div>
+                <div class="step-title">Report your findings to the assessor</div>
+            </div>
+            <div class="step-toggle" id="toggle-6">▼</div>
+        </div>
+        <div class="step-body" id="body-6">
+        <div class="step-body-inner">
+            <div class="subsec">
+                <div class="say-box">
+                    <div class="say-label">🗣 SAY TO ASSESSOR — Normal finding example</div>
+                    <div class="say-text">
+                        "On examination, the JVP is visible at <strong>[X] cm above the sternal angle</strong> with the patient at 45 degrees.<br><br>
+                        The waveform appears <strong>normal / biphasic</strong> with no cannon a waves, no prominent v waves, and no absent a waves observed.<br><br>
+                        The hepatojugular reflux is <strong>negative</strong>.<br><br>
+                        Kussmaul's sign is <strong>absent</strong>.<br><br>
+                        Overall, the JVP is within normal limits — approximately <strong>[total] cm of water</strong>, and I do not identify any features of right heart failure or SVC obstruction."
+                    </div>
+                </div>
+                <div class="say-box">
+                    <div class="say-label">🗣 SAY TO ASSESSOR — Elevated JVP example</div>
+                    <div class="say-text">
+                        "On examination, the JVP is elevated at <strong>[X] cm above the sternal angle</strong>, giving a total CVP of approximately <strong>[X+5] cm H₂O</strong>.<br><br>
+                        [Describe any waveform abnormalities seen — cannon waves / absent a wave / prominent v wave]<br><br>
+                        The hepatojugular reflux is <strong>positive</strong>.<br><br>
+                        These findings are consistent with <strong>right heart failure / fluid overload</strong> and I would proceed to examine for other signs of cardiac failure."
+                    </div>
+                </div>
+            </div>
+            <button class="done-btn" id="done-6" onclick="markDone(6)">✓ Done</button>
+        </div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<!-- ═══════════════ WAVEFORM & CAUSES MODE ═══════════════ -->
+<div id="waveform-mode" style="display:none;">
+<div class="container">
+
+    <div class="section-heading">JVP WAVEFORM</div>
+
+    <div class="waveform-wrap">
+        <svg class="waveform-svg" viewBox="0 0 600 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Baseline -->
+            <line x1="30" y1="120" x2="570" y2="120" stroke="#e2e8f0" stroke-width="1.5"/>
+            <!-- JVP waveform path -->
+            <path d="M30,100 
+                     C50,100 55,65 75,65 C90,65 95,100 100,100 
+                     C110,100 115,88 125,88 C130,88 133,100 136,100
+                     C145,100 148,85 158,85 C167,85 170,100 175,100
+                     C188,100 195,108 200,108 C210,108 215,100 220,100
+                     C235,100 240,65 260,65 C275,65 280,100 285,100
+                     C295,100 300,88 310,88 C315,88 318,100 321,100
+                     C330,100 333,85 343,85 C352,85 355,100 360,100
+                     C373,100 380,108 385,108 C395,108 400,100 405,100
+                     C420,100 425,65 445,65 C460,65 465,100 470,100"
+                  stroke="#1d4ed8" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+            <!-- Labels -->
+            <text x="72" y="58" font-family="Inter,sans-serif" font-size="13" font-weight="800" fill="#dc2626">a</text>
+            <text x="122" y="82" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#0d9488">c</text>
+            <text x="153" y="78" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#7c3aed">x</text>
+            <text x="195" y="115" font-family="Inter,sans-serif" font-size="13" font-weight="800" fill="#d97706">v</text>
+            <text x="213" y="94" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#16a34a">y</text>
+            <!-- Second cycle labels -->
+            <text x="257" y="58" font-family="Inter,sans-serif" font-size="13" font-weight="800" fill="#dc2626">a</text>
+            <text x="307" y="82" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#0d9488">c</text>
+            <text x="338" y="78" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#7c3aed">x</text>
+            <text x="380" y="115" font-family="Inter,sans-serif" font-size="13" font-weight="800" fill="#d97706">v</text>
+            <text x="398" y="94" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#16a34a">y</text>
+        </svg>
+    </div>
+
+    <table class="wave-table">
+        <thead>
+            <tr>
+                <th>Wave</th>
+                <th>What it represents</th>
+                <th>Memory tip</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="wave-badge" style="color:#dc2626;">a</span></td>
+                <td>Right <strong>A</strong>trial contraction — ends synchronously with carotid pulse</td>
+                <td><strong>A</strong>trial contraction</td>
+            </tr>
+            <tr>
+                <td><span class="wave-badge" style="color:#0d9488;">c</span></td>
+                <td>Right ventricular <strong>C</strong>ontraction — tri<strong>C</strong>uspid valve bulges toward right atrium</td>
+                <td>tri<strong>C</strong>uspid <strong>C</strong>loses</td>
+            </tr>
+            <tr>
+                <td><span class="wave-badge" style="color:#7c3aed;">x</span></td>
+                <td>Atrial rela<strong>X</strong>ation + descent of tricuspid toward ventricle during systole (x' = measure of RV contractility)</td>
+                <td>rela<strong>X</strong>ation</td>
+            </tr>
+            <tr>
+                <td><span class="wave-badge" style="color:#d97706;">v</span></td>
+                <td><strong>V</strong>enous filling — tricuspid valve is closed, venous return builds up pressure</td>
+                <td><strong>V</strong>enous filling</td>
+            </tr>
+            <tr>
+                <td><span class="wave-badge" style="color:#16a34a;">y</span></td>
+                <td>Rapid empt<strong>Y</strong>ing of atrium when tricuspid valve opens</td>
+                <td>empt<strong>Y</strong>ing</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="section-heading" style="margin-top:28px;">WAVEFORM ABNORMALITIES</div>
+
+    <div class="two-col">
+        <div class="info-box red">
+            <div class="box-title">🔴 Absent 'a' wave</div>
+            <ul><li>Atrial fibrillation (no organised atrial systole)</li></ul>
+        </div>
+        <div class="info-box amber">
+            <div class="box-title">🟡 Large 'a' wave</div>
+            <ul>
+                <li>Tricuspid stenosis</li>
+                <li>Right heart failure</li>
+                <li>Pulmonary hypertension</li>
+            </ul>
+        </div>
+        <div class="info-box red">
+            <div class="box-title">🔴 Cannon 'a' wave</div>
+            <ul>
+                <li>Atrium contracting against <em>closed</em> tricuspid valve</li>
+                <li>3rd degree (complete) heart block</li>
+                <li>Ventricular tachycardia / ectopics</li>
+                <li>Atrial flutter</li>
+            </ul>
+        </div>
+        <div class="info-box amber">
+            <div class="box-title">🟡 Large 'v' wave (c-v wave)</div>
+            <ul><li>Tricuspid regurgitation — blood regurgitates back into atrium during systole</li></ul>
+        </div>
+        <div class="info-box green">
+            <div class="box-title">🟢 Absent 'x' descent</div>
+            <ul><li>Tricuspid regurgitation (x wave replaced by positive wave)</li></ul>
+        </div>
+        <div class="info-box blue">
+            <div class="box-title">🔵 Prominent 'x' descent (Friedreich's sign)</div>
+            <ul><li>Constrictive pericarditis</li></ul>
+        </div>
+        <div class="info-box purple">
+            <div class="box-title">💜 Slow 'y' descent</div>
+            <ul>
+                <li>Tricuspid stenosis</li>
+                <li>Cardiac tamponade</li>
+            </ul>
+        </div>
+        <div class="info-box blue">
+            <div class="box-title">🔵 Raised JVP, no pulsation</div>
+            <ul><li>Superior vena cava (SVC) obstruction</li><li>HJR will be negative</li></ul>
+        </div>
+    </div>
+
+    <div class="section-heading" style="margin-top:28px;">6 MAIN CAUSES OF ELEVATED JVP</div>
+
+    <!-- Mnemonic -->
+    <div class="mnemonic-card">
+        <div class="mn-title">🧠 Mnemonic — "RF TC SA"</div>
+        <div class="mn-word">
+            <span class="mn-letter">R</span>
+            <span class="mn-letter">F</span>
+            <span class="mn-letter">T</span>
+            <span class="mn-letter">C</span>
+            <span class="mn-letter">S</span>
+            <span class="mn-letter">A</span>
+        </div>
+        <div class="mn-item"><span class="mn-key">R</span><span><strong>Right heart failure</strong> — most common (often 2° to LHF)</span></div>
+        <div class="mn-item"><span class="mn-key">F</span><span><strong>Fluid overload</strong> — excess intake or renal failure</span></div>
+        <div class="mn-item"><span class="mn-key">T</span><span><strong>Tricuspid regurgitation</strong> — massive v wave; JVP reflects RV pressure</span></div>
+        <div class="mn-item"><span class="mn-key">C</span><span><strong>Complete heart block</strong> — AV dissociation → cannon a waves</span></div>
+        <div class="mn-item"><span class="mn-key">S</span><span><strong>SVC obstruction</strong> — elevated JVP without pulsation; HJR negative</span></div>
+        <div class="mn-item"><span class="mn-key">A</span><span><strong>Atrial fibrillation</strong> — no atrial systole → absent a wave</span></div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:10px;">
+        <div class="info-box red">
+            <div class="box-title">1. Right Heart Failure (most common)</div>
+            <ul>
+                <li>Most common cause — often secondary to left heart failure</li>
+                <li>Secondary to ischaemic disease or mitral valve defects</li>
+            </ul>
+        </div>
+        <div class="info-box amber">
+            <div class="box-title">2. Fluid Overload</div>
+            <ul><li>Excess fluid intake or kidney failure (reduced excretion)</li></ul>
+        </div>
+        <div class="info-box amber">
+            <div class="box-title">3. Tricuspid Regurgitation</div>
+            <ul>
+                <li>Tricuspid valve does not close properly</li>
+                <li>JVP reflects right ventricular pressure — massive <strong>v wave</strong> on waveform</li>
+            </ul>
+        </div>
+        <div class="info-box purple">
+            <div class="box-title">4. Complete Heart Block (3rd degree)</div>
+            <ul>
+                <li>AV dissociation — atrial and ventricular contractions uncoupled</li>
+                <li>Atrium may contract against closed tricuspid → <strong>cannon a waves</strong> (irregular)</li>
+            </ul>
+        </div>
+        <div class="info-box blue">
+            <div class="box-title">5. Superior Vena Cava (SVC) Obstruction</div>
+            <ul>
+                <li>JVP elevated <strong>without pulsation</strong></li>
+                <li>Hepatojugular reflex is <strong>negative</strong></li>
+                <li>Usually caused by mediastinal lymphadenopathy / lung cancer</li>
+            </ul>
+        </div>
+        <div class="info-box green">
+            <div class="box-title">6. Atrial Fibrillation</div>
+            <ul>
+                <li>No atrial systole → <strong>no 'a' wave</strong></li>
+                <li>Irregular ventricular response</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<!-- ═══════════════ PRACTICE MODE ═══════════════ -->
+<div id="practice-mode">
+<div class="container">
+    <div class="practice-card">
+        <div class="practice-step-ind" id="p-indicator">Step 1 of 7</div>
+        <div class="practice-phase-tag" id="p-tag"></div>
+        <div class="practice-title" id="p-title"></div>
+        <button class="practice-reveal-btn" onclick="revealPractice()">👁 Reveal what to do &amp; say</button>
+        <div class="practice-content" id="p-content"></div>
+        <div class="practice-nav">
+            <button class="nav-btn secondary" onclick="prevPractice()" id="prev-btn">← Previous</button>
+            <button class="nav-btn primary" onclick="nextPractice()" id="next-btn">Next →</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const practiceSteps = [
+    {
+        num: 1, tag: "Preparation", tagBg: "#eff6ff", tagColor: "#1d4ed8",
+        title: "What are your first steps before examining the JVP?",
+        content: `
+            <div class="say-box"><div class="say-label">🗣 SAY</div><div class="say-text">
+            "I will wash my hands, introduce myself, confirm patient identity, explain the procedure, and obtain consent. I will expose the neck and upper chest and ensure good lighting."
+            </div></div>
+        `
+    },
+    {
+        num: 2, tag: "Positioning", tagBg: "#f0fdfa", tagColor: "#0d9488",
+        title: "How do you position the patient to assess JVP?",
+        content: `
+            <div class="say-box"><div class="say-label">🗣 SAY</div><div class="say-text">
+            "I position the patient at <strong>45 degrees</strong> and ask them to turn their head <strong>10–20 degrees to the left</strong> to relax the SCM. I stand on the patient's right side and remove the pillow from under the head."
+            </div></div>
+        `
+    },
+    {
+        num: 3, tag: "Identification", tagBg: "#eff6ff", tagColor: "#1d4ed8",
+        title: "How do you identify the JVP and distinguish it from the carotid?",
+        content: `
+            <div class="say-box"><div class="say-label">🗣 SAY</div><div class="say-text">
+            "I look for pulsation between the two heads of the SCM. JVP is <strong>biphasic, non-palpable</strong>, obliterated by pressure above the clavicle, and decreases with inspiration. The carotid is palpable, monophasic, and not affected by these manoeuvres."
+            </div></div>
+        `
+    },
+    {
+        num: 4, tag: "Measurement", tagBg: "#f0fdfa", tagColor: "#0d9488",
+        title: "How do you measure the JVP and what is normal?",
+        content: `
+            <div class="say-box"><div class="say-label">🗣 SAY</div><div class="say-text">
+            "I use the <strong>sternal angle (angle of Louis)</strong> as reference. I hold a horizontal ruler at the top of the JVP pulsation and a vertical ruler at the sternal angle. I measure the vertical height, then add 5 cm to get the CVP.<br><br>
+            Normal JVP: <strong>6–8 cm H₂O</strong> (1–3 cm above sternal angle at 45°)."
+            </div></div>
+        `
+    },
+    {
+        num: 5, tag: "Hepatojugular Reflux", tagBg: "#fdf4ff", tagColor: "#7c3aed",
+        title: "How do you perform and interpret the hepatojugular reflux test?",
+        content: `
+            <div class="say-box"><div class="say-label">🗣 SAY</div><div class="say-text">
+            "I apply sustained pressure over the <strong>right upper quadrant</strong> for 10–15 seconds and observe the JVP.<br><br>
+            Positive HJR (JVP rises &gt;3 cm and stays elevated) → right heart failure or fluid overload.<br>
+            Negative in SVC obstruction (no pulsation to begin with)."
+            </div></div>
+        `
+    },
+    {
+        num: 6, tag: "Kussmaul's Sign", tagBg: "#fdf4ff", tagColor: "#7c3aed",
+        title: "What is Kussmaul's sign and what does it mean?",
+        content: `
+            <div class="say-box"><div class="say-label">🗣 SAY</div><div class="say-text">
+            "I ask the patient to take a slow deep breath and watch the JVP.<br><br>
+            Normally it decreases. <strong>Kussmaul's sign = paradoxical rise with inspiration.</strong><br><br>
+            Causes: Constrictive pericarditis, Restrictive cardiomyopathy, severe Right heart failure, Pericardial effusion/tamponade."
+            </div></div>
+        `
+    },
+    {
+        num: 7, tag: "Conclusion", tagBg: "#f0fdfa", tagColor: "#0d9488",
+        title: "How do you present your JVP findings to the assessor?",
+        content: `
+            <div class="say-box"><div class="say-label">🗣 SAY</div><div class="say-text">
+            "On examination, the JVP is [elevated/normal] at [X] cm above the sternal angle, giving a CVP of approximately [X+5] cm H₂O.<br><br>
+            The waveform is [normal / shows cannon a waves / shows absent a waves / shows large v waves].<br><br>
+            Hepatojugular reflux is [positive/negative]. Kussmaul's sign is [present/absent].<br><br>
+            These findings are consistent with [diagnosis]."
+            </div></div>
+        `
+    }
+];
+
+let practiceIndex = 0;
+const done = new Set();
+
+function toggleStep(i) {
+    const body = document.getElementById(`body-${i}`);
+    const toggle = document.getElementById(`toggle-${i}`);
+    const open = body.classList.contains('open');
+    body.classList.toggle('open', !open);
+    toggle.classList.toggle('open', !open);
+}
+
+function expandAll() {
+    for (let i = 0; i < 7; i++) {
+        document.getElementById(`body-${i}`).classList.add('open');
+        document.getElementById(`toggle-${i}`).classList.add('open');
+    }
+}
+
+function collapseAll() {
+    for (let i = 0; i < 7; i++) {
+        document.getElementById(`body-${i}`).classList.remove('open');
+        document.getElementById(`toggle-${i}`).classList.remove('open');
+    }
+}
+
+function markDone(i) {
+    done.add(i);
+    const btn = document.getElementById(`done-${i}`);
+    const card = document.getElementById(`step-${i}`);
+    btn.textContent = '✓ Done';
+    btn.classList.add('active');
+    card.classList.add('done');
+    updateProgress();
+}
+
+function updateProgress() {
+    const pct = Math.round((done.size / 7) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-count').textContent = done.size + ' / 7';
+}
+
+function setMode(mode) {
+    ['reference-mode', 'waveform-mode', 'practice-mode'].forEach(id => {
+        const el = document.getElementById(id);
+        if (id === 'reference-mode') { el.classList.toggle('hidden', mode !== 'reference'); }
+        else if (id === 'waveform-mode') { el.style.display = mode === 'waveform' ? 'block' : 'none'; }
+        else { el.classList.toggle('active', mode === 'practice'); }
+    });
+    document.querySelectorAll('.mode-tab').forEach((t, i) => {
+        t.classList.toggle('active', (i === 0 && mode === 'reference') || (i === 1 && mode === 'waveform') || (i === 2 && mode === 'practice'));
+    });
+    if (mode === 'practice') { practiceIndex = 0; renderPractice(); }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderPractice() {
+    const s = practiceSteps[practiceIndex];
+    document.getElementById('p-indicator').textContent = `Step ${s.num} of ${practiceSteps.length}`;
+    document.getElementById('p-tag').textContent = s.tag;
+    document.getElementById('p-tag').style.background = s.tagBg;
+    document.getElementById('p-tag').style.color = s.tagColor;
+    document.getElementById('p-title').textContent = s.title;
+    document.getElementById('p-content').innerHTML = s.content;
+    document.getElementById('p-content').classList.remove('visible');
+    document.getElementById('prev-btn').style.opacity = practiceIndex === 0 ? '0.3' : '1';
+    document.getElementById('next-btn').textContent = practiceIndex === practiceSteps.length - 1 ? '✓ Finish' : 'Next →';
+}
+
+function revealPractice() { document.getElementById('p-content').classList.add('visible'); }
+function nextPractice() { if (practiceIndex < practiceSteps.length - 1) { practiceIndex++; renderPractice(); window.scrollTo({top:0,behavior:'smooth'}); } }
+function prevPractice() { if (practiceIndex > 0) { practiceIndex--; renderPractice(); window.scrollTo({top:0,behavior:'smooth'}); } }
+
+window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const pct = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+    document.getElementById('scroll-bar').style.width = pct + '%';
+    document.getElementById('scroll-top').classList.toggle('visible', doc.scrollTop > 300);
+});
+
+updateProgress();
+renderPractice();
+</script>
+</body>
+</html>
