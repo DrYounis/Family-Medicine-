@@ -3,217 +3,736 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exam Locked - See You Next Year</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>Family Medicine Master Study Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --accent: #059669;
+            --accent-bg: #f0fdf4;
+            --accent-border: #bbf7d0;
+            --border: #e2e8f0;
+            --reviewed: #7c3aed;
         }
+
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            cursor: not-allowed;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
         }
 
-        /* Blurry background effect */
-        .blur-bg {
+        /* Scroll progress bar */
+        #scroll-progress {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%232563eb" opacity="0.1"/></svg>');
-            background-size: 200px 200px;
-            filter: blur(20px);
-            z-index: 0;
-            pointer-events: none;
+            top: 0; left: 0;
+            height: 3px;
+            width: 0%;
+            background: var(--primary);
+            z-index: 9999;
+            transition: width 0.1s linear;
         }
 
-        .container {
-            position: relative;
-            z-index: 10;
+        .container { max-width: 900px; margin: 0 auto; padding: 20px 20px 60px; }
+
+        header {
             text-align: center;
-            padding: 40px 20px;
-        }
-
-        .locked-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
-        }
-
-        h1 {
-            font-size: 3.5em;
-            font-weight: 900;
-            color: #ffffff;
-            text-transform: uppercase;
-            letter-spacing: 8px;
-            margin-bottom: 10px;
-            text-shadow: 0 0 30px rgba(255, 255, 255, 0.5),
-                         0 0 60px rgba(37, 99, 235, 0.5),
-                         0 0 90px rgba(37, 99, 235, 0.3);
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 20px rgba(255, 255, 255, 0.5),
-                             0 0 40px rgba(37, 99, 235, 0.5),
-                             0 0 60px rgba(37, 99, 235, 0.3);
-            }
-            to {
-                text-shadow: 0 0 30px rgba(255, 255, 255, 0.8),
-                             0 0 60px rgba(37, 99, 235, 0.8),
-                             0 0 90px rgba(37, 99, 235, 0.5);
-            }
-        }
-
-        .subtitle {
-            font-size: 1.8em;
-            font-weight: 700;
-            color: #60a5fa;
-            margin-bottom: 30px;
-            letter-spacing: 3px;
-        }
-
-        .year-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #2563eb, #7c3aed);
-            color: white;
-            padding: 15px 40px;
-            border-radius: 50px;
-            font-size: 1.5em;
-            font-weight: 700;
-            margin: 20px 0;
-            box-shadow: 0 10px 40px rgba(37, 99, 235, 0.4);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .good-luck {
-            font-size: 4em;
-            font-weight: 900;
-            background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin: 30px 0;
-            letter-spacing: 10px;
-            text-transform: uppercase;
-            animation: shine 3s linear infinite;
-        }
-
-        @keyframes shine {
-            0% { filter: brightness(1); }
-            50% { filter: brightness(1.3); }
-            100% { filter: brightness(1); }
-        }
-
-        .message {
-            color: #94a3b8;
-            font-size: 1.1em;
-            margin-top: 40px;
-            max-width: 500px;
-            line-height: 1.8;
-        }
-
-        .lock-overlay {
-            position: fixed;
+            margin-bottom: 0;
+            border-bottom: 2px solid var(--primary);
+            padding: 20px 20px 16px;
+            position: sticky;
             top: 0;
-            left: 0;
-            width: 100%;
+            background: var(--bg);
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        header h1 { margin: 0 0 4px; font-size: 1.5em; }
+        header p { margin: 0 0 12px; color: var(--text-muted); font-size: 0.9em; }
+
+        .nav-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .nav-row a {
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: opacity 0.15s;
+        }
+        .nav-row a:hover { opacity: 0.85; }
+
+        .controls-row {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            cursor: pointer;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.88em;
+            transition: background 0.15s, transform 0.1s;
+            font-family: inherit;
+        }
+        .btn:hover { background: var(--primary-dark); }
+        .btn:active { transform: scale(0.97); }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+        }
+        .btn-outline:hover { background: var(--primary); color: white; }
+
+        /* Search */
+        .search-wrap {
+            margin: 16px 0 8px;
+            display: flex;
+            gap: 8px;
+        }
+
+        #search-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95em;
+            outline: none;
+            transition: border-color 0.15s;
+            background: var(--card);
+        }
+        #search-input:focus { border-color: var(--primary); }
+
+        /* Category filters */
+        .filter-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .filter-btn {
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1.5px solid var(--border);
+            background: var(--card);
+            color: var(--text-muted);
+            font-size: 0.82em;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+        .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Stats bar */
+        .stats-bar {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 0.88em;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+
+        .stat-pill {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .stat-pill .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+        }
+        .dot-revealed { background: var(--accent); }
+        .dot-reviewed { background: var(--reviewed); }
+
+        /* Progress bar under stats */
+        .progress-track {
+            height: 5px;
+            background: var(--border);
+            border-radius: 3px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 5;
-            pointer-events: none;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 3px;
+            transition: width 0.4s ease;
         }
 
-        /* Disable all interactions */
-        body, body * {
-            pointer-events: none !important;
+        /* Question cards */
+        .question-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 22px 24px;
+            margin-bottom: 14px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+            border-left: 4px solid var(--primary);
+            transition: box-shadow 0.2s, border-color 0.2s;
+            cursor: pointer;
+        }
+        .question-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .question-card.is-reviewed { border-left-color: var(--reviewed); }
+        .question-card.is-revealed { border-left-color: var(--accent); }
+
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
         }
 
-        @media (max-width: 768px) {
-            h1 { font-size: 2em; letter-spacing: 4px; }
-            .subtitle { font-size: 1.2em; }
-            .good-luck { font-size: 2.5em; letter-spacing: 5px; }
-            .year-badge { font-size: 1.1em; padding: 12px 30px; }
+        .card-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+        .category-tab {
+            display: inline-block;
+            padding: 3px 10px;
+            background: #e2e8f0;
+            color: #475569;
+            border-radius: 6px;
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .q-number {
+            font-size: 0.78em;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .reviewed-badge {
+            font-size: 0.75em;
+            color: var(--reviewed);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .question-text {
+            font-weight: 600;
+            font-size: 1.05em;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .card-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+        .btn-sec {
+            background: #f1f5f9;
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.82em;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s;
+        }
+        .btn-sec:hover { background: var(--border); }
+
+        .btn-review {
+            background: #f5f3ff;
+            color: var(--reviewed);
+            border: 1px solid #ddd6fe;
+        }
+        .btn-review:hover { background: #ede9fe; }
+        .btn-review.done { background: var(--reviewed); color: white; border-color: var(--reviewed); }
+
+        .answer-box {
+            background: var(--accent-bg);
+            color: #166534;
+            padding: 14px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 12px;
+            border: 1px solid var(--accent-border);
+            display: none;
+            animation: fadeSlideIn 0.2s ease;
+        }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        .no-results p { font-size: 1.1em; }
+
+        /* Scroll to top */
+        #scroll-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 200;
+        }
+        #scroll-top.visible { opacity: 1; }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.2em; }
+            .question-card { padding: 16px 16px; }
+        }
+
+        @media print {
+            #scroll-progress, #scroll-top, .controls-row, .filter-row,
+            .search-wrap, .stats-bar, .progress-track { display: none; }
+            .btn, .btn-sec { display: none; }
+            .answer-box { display: block !important; }
+            .question-card { break-inside: avoid; box-shadow: none; border-left: 3px solid #ccc; }
         }
     </style>
 </head>
 <body>
-    <div class="blur-bg"></div>
-    <div class="lock-overlay"></div>
 
-    <div class="container">
-        <div class="locked-icon">🔒</div>
-        <h1>Exam Locked</h1>
-        <p class="subtitle">This content is secured for next year</p>
+<div id="scroll-progress"></div>
 
-        <div class="year-badge">📅 2027</div>
+<div class="container">
+    <header>
+        <h1>Family Medicine Board Review 2026</h1>
+        <p>Total Questions: <span id="qcount"></span> | Updated: March 19, 2026</p>
+        <div class="nav-row">
+            <a href="osce.html" style="background:#059669;color:white;">🏥 OSCE Flashcards</a>
+            <a href="roleplay_arabic.html" style="background:#7c3aed;color:white;">📜 Arabic Role Play</a>
+            <a href="osce_approach_arabic.html" style="background:#059669;color:white;">🎭 Roleplay</a>
+            <a href="cheatsheet.html" style="background:#0f172a;color:white;">📚 Cheat Sheet</a>
+            <a href="medications.html" style="background:#0d9488;color:white;">💊 Medications</a>
+        </div>
+        <div class="controls-row">
+            <button onclick="toggleAllAnswers()" class="btn" id="toggle-all-btn">Show All Answers</button>
+            <button onclick="resetSession()" class="btn btn-outline">Reset Session</button>
+        </div>
+    </header>
 
-        <div class="good-luck">⭐ GOOD LUCK ⭐</div>
+    <div style="padding-top: 16px;">
+        <div class="search-wrap">
+            <input type="text" id="search-input" placeholder="Search questions…" oninput="applyFilters()" />
+        </div>
 
-        <p class="message">
-            All study materials have been locked.<br>
-            Come back prepared for the next exam cycle.<br>
-            <strong>Wishing you the best of luck!</strong>
-        </p>
+        <div class="filter-row" id="filter-row"></div>
+
+        <div class="stats-bar">
+            <div class="stat-pill"><span class="dot dot-revealed"></span> Revealed: <strong id="stat-revealed">0</strong></div>
+            <div class="stat-pill"><span class="dot dot-reviewed"></span> Reviewed: <strong id="stat-reviewed">0</strong></div>
+            <div class="stat-pill">Showing: <strong id="stat-showing">0</strong></div>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+
+        <div id="quiz-container"></div>
+        <div id="no-results" class="no-results" style="display:none;">
+            <p>No questions match your search.</p>
+        </div>
     </div>
+</div>
 
-    <script>
-        // Disable all keyboard shortcuts and interactions
-        document.addEventListener('keydown', function(e) {
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+
+<script>
+    const questionBank = [
+        // OB/GYN
+        { cat: "OB/GYN", q: "Initial management for 44yo with irregular vaginal bleeding?", a: "Endometrial biopsy" },
+        { cat: "OB/GYN", q: "Best contraceptive for 29yo female with PCOS/Acne wanting pregnancy in 12 months?", a: "Combined Oral Contraceptive Pill (COCP)" },
+        { cat: "OB/GYN", q: "True statement regarding PCOS?", a: "Associated with acanthosis nigricans" },
+        { cat: "OB/GYN", q: "Next investigation for 47yo with HMB (Heavy Menstrual Bleeding) and clots?", a: "Outpatient hysteroscopy" },
+        { cat: "OB/GYN", q: "Unsuitable contraceptive for overweight woman with family history of DVT?", a: "Combined hormonal contraception patch" },
+        { cat: "OB/GYN", q: "First-line for stress and urge incontinence in 45yo woman?", a: "Supervised pelvic floor exercises and bladder retraining (6-8 weeks)" },
+        { cat: "OB/GYN", q: "Additional calories required daily during pregnancy?", a: "300 calories" },
+        { cat: "OB/GYN", q: "First-line therapy for primary dysmenorrhea?", a: "NSAIDs (Nonsteroidal anti-inflammatory drugs)" },
+        { cat: "OB/GYN", q: "Sports contraindicated in pregnancy?", a: "Contact or high-risk sports" },
+        { cat: "OB/GYN", q: "OTC medication generally avoided in pregnancy?", a: "Aspirin" },
+        { cat: "OB/GYN", q: "Antibiotic protocol for C-section?", a: "Preoperative antibiotic within 1 hour of start of surgery" },
+        { cat: "OB/GYN", q: "True statement about infertility evaluation?", a: "First step is evaluation of male factor with sperm analysis" },
+        { cat: "OB/GYN", q: "38yo woman, 8 months amenorrhea, high FSH/LH, bleeding only after Estrogen+Progestin?", a: "Premature ovarian failure" },
+        { cat: "OB/GYN", q: "Post-mastectomy 50yo with fractures and osteoporosis?", a: "Alendronate 10 mg daily (morning)" },
+
+        // PEDIATRICS
+        { cat: "Pediatrics", q: "Milestone requiring referral to a pediatrician?", a: "Child does not walk by 18 months" },
+        { cat: "Pediatrics", q: "Growth red flag for 18-month-old male?", a: "Mid upper arm circumference (MUAC) below 115 mm" },
+        { cat: "Pediatrics", q: "Hypoglycemia (54 mg/dl) in 10yo T1DM, sugar is 60 after 15g glucose. Next?", a: "Give another 15g carbohydrate and recheck in 15 mins" },
+        { cat: "Pediatrics", q: "12yo obese boy, leg pain at night only, no limp.", a: "Growing pains" },
+        { cat: "Pediatrics", q: "5yo boy shorter than peers, bone age = chronological age.", a: "Genetic short stature" },
+        { cat: "Pediatrics", q: "20-month-old, barky cough, fever 38.2, occasional stridor.", a: "Oral dexamethasone" },
+        { cat: "Pediatrics", q: "18-month-old, agonizing ear pain, Temp 40C, history of cold.", a: "Paracetamol and Amoxicillin for 5 days (follow up 2 days)" },
+        { cat: "Pediatrics", q: "Asthma in 13yo not controlled on low-dose ICS and SABA.", a: "Add Salmeterol (LABA)" },
+        { cat: "Pediatrics", q: "4yo girl with nighttime anal itching (Pinworms).", a: "Albendazole 400 mg once, repeat in 2 weeks" },
+        { cat: "Pediatrics", q: "7yo girl, nocturnal enuresis not improved with alarm.", a: "Desmopressin" },
+        { cat: "Pediatrics", q: "7yo boy, school difficulty, inattention, fidgeting (ADHD).", a: "Stimulant medication" },
+        { cat: "Pediatrics", q: "Heinz bodies and anemia after co-trimoxazole in 4yo.", a: "G6PD assay" },
+        { cat: "Pediatrics", q: "16yo girl, lip-smacking, hand movements, no memory of actions.", a: "Complex partial seizures" },
+
+        // ETHICS
+        { cat: "Ethics", q: "Patient requests inappropriate amphetamines for weight loss.", a: "Patient must respect physician autonomy/decision" },
+        { cat: "Ethics", q: "Patient wants to quit smoking 'sometime in the future'. Stage?", a: "Contemplation" },
+        { cat: "Ethics", q: "Ignoring a colleague's prescription error violates:", a: "Commitment to improving quality of care" },
+        { cat: "Ethics", q: "Primary purpose of referral to a specialist?", a: "To improve the quality of health care provided" },
+        { cat: "Ethics", q: "Pregnant woman refuses life-saving treatment while competent.", a: "She has the right to refuse if competent" },
+        { cat: "Ethics", q: "Delivering bad news to patient with a companion.", a: "Honor patient preference relating to privacy" },
+        { cat: "Ethics", q: "Patient wants to see a specific specialist heard on radio.", a: "Empathize and refer to requested specialist" },
+        { cat: "Ethics", q: "Important step before patient leaves after serious diagnosis?", a: "Follow-up plan and provide hope" },
+
+        // INTERNAL MEDICINE / ER / PSYCH
+        { cat: "Internal Med", q: "Likely cause of pancreatitis (pain radiating to back)?", a: "Biliary tract disease" },
+        { cat: "Internal Med", q: "Decreases likelihood that chest pain is cardiac?", a: "Pain is worse with inspiration" },
+        { cat: "Internal Med", q: "80yo, crampy LLQ pain, low-grade fever.", a: "Constipation" },
+        { cat: "Internal Med", q: "Expected result for chronic dyspepsia workup?", a: "No cause is likely to be identified" },
+        { cat: "Internal Med", q: "Cause of death from broken gas line.", a: "Carbon monoxide" },
+        { cat: "Internal Med", q: "Treatment for sea sting with punctuate lesions?", a: "Vinegar" },
+        { cat: "Internal Med", q: "Pruritic papules in clusters after hotel stay.", a: "Bedbugs" },
+        { cat: "Internal Med", q: "Initial investigation for fainting spells (arrhythmia)?", a: "ECG" },
+        { cat: "Internal Med", q: "Dizziness, hearing loss, ringing, and facial numbness.", a: "Acoustic neuroma" },
+        { cat: "Internal Med", q: "Sign of Peripheral (labyrinth) origin vertigo?", a: "Violent symptoms after a latent period (Hallpike maneuver)" },
+        { cat: "Psychiatry", q: "Therapy for Panic attacks with fear of being 'locked in'?", a: "Cognitive-behavioral therapy (CBT)" },
+        { cat: "Psychiatry", q: "Long history of multiple pains/GI distress + conviction of parasites.", a: "Somatization disorder" },
+        { cat: "Psychiatry", q: "Depressed mood/low energy for 3 years, still functioning.", a: "Dysthymia" },
+        { cat: "Psychiatry", q: "Fear of elevators since childhood.", a: "Specific phobia" },
+        { cat: "MSK", q: "Lateral hip pain not responding to meds/PT.", a: "Gluteus medius tendon tear" },
+        { cat: "MSK", q: "Foot pain, normal X-ray, tender midfoot after fall.", a: "Non-weight bearing status + CT/MRI" },
+        { cat: "MSK", q: "Shortened, externally rotated leg after fall in elderly.", a: "Radiography of hip and pelvis" },
+        { cat: "Respiratory", q: "Former smoker, dyspnea, FEV1/FVC = 0.6.", a: "COPD" },
+        { cat: "Internal Med", q: "Most effective smoking cessation method?", a: "Varenicline plus nicotine gum" },
+        { cat: "Internal Med", q: "Bloody diarrhea and severe lower abdominal pain in elderly.", a: "Ischemic colitis" },
+        { cat: "Internal Med", q: "Shingles vaccine for 65yo (live vaccine 8yrs ago)?", a: "Two doses of recombinant zoster vaccine (Shingrix)" },
+
+        // NEW QUESTIONS - March 19, 2026 (Exam Session)
+        { cat: "Ethics", q: "Oldest son brought pathology report showing father has Bladder Cancer. You are treating physician. Best first step?", a: "Advance Preparation" },
+        { cat: "Ethics", q: "Team members can operate without supervision, everyone is on the same page. What stage of team development?", a: "Performing" },
+        { cat: "Ethics", q: "During clinical interview, physician uses different communication expressions. Which is best description of these techniques?", a: "Active listening" },
+        { cat: "Internal Med", q: "36-year-old woman with constant discomfort in both breasts, worse immediately before period. Firm 5cm lump. Next step?", a: "Request an urgent outpatient referral" },
+        { cat: "Ethics", q: "Dealing with patient reaction is important step in breaking bad news. How to handle patient anger?", a: "Encourage the expression of anger" },
+        { cat: "Ethics", q: "Members of newly developed team, everyone contributing and working as cohesive unit. What stage?", a: "Performing" },
+        { cat: "Ethics", q: "Medical record filing by patient's last name, first name, middle name. What system?", a: "Alphabetical filing system" },
+        { cat: "Ethics", q: "Systematic documentation of single patient's medical history and care across time. Definition?", a: "Medical record" },
+        { cat: "Ethics", q: "Communication can be stopped before it starts due to several barriers. Which is the main barrier?", a: "Presence of Distractions" },
+        { cat: "Ethics", q: "Effective auditor should possess combination of skills. Most important?", a: "Communicate clearly" },
+
+        // NEW QUESTIONS — March 20, 2026 (Prof Mohammed Diab Session)
+        { cat: "Communication", q: "Consultation is described as a meeting between 2 experts. Which consultation model best reflects this?", a: "Pendleton's model" },
+        { cat: "Primary Care", q: "Starting as FM resident in a PHC center — which is an essential element of primary health care?", a: "Appropriate technology that people can use and afford" },
+        { cat: "Preventive Med", q: "Patient had MI 2 weeks ago and is now in daily cardiac rehabilitation at the local fitness center. What level of prevention?", a: "Tertiary prevention" },
+        { cat: "Ethics", q: "Primary care manager: patient satisfaction is 60%. Best action to address this?", a: "Develop a strategic action plan to deal with these concerns" },
+        { cat: "Internal Med", q: "45yo male: fatigue, anorexia, nausea. Morning cortisol is low. Best confirmatory test for adrenal insufficiency?", a: "ACTH stimulation test" },
+        { cat: "Respiratory", q: "65yo heavy smoker: foot swelling, SOB, ECG shows right axis deviation + RBBB, echo shows normal LV but hypertrophied right heart. Diagnosis?", a: "Cor pulmonale" },
+        { cat: "Internal Med", q: "42yo male: BP 162/95, all labs normal (Na, K, glucose, BUN, creatinine, microalbumin). Best medication per ACC/AHA?", a: "Lisinopril/HCTZ 10/12.5 mg daily" },
+        { cat: "Respiratory", q: "60yo with COPD exacerbation admitted to hospital. Most appropriate prednisone dosage?", a: "40 mg daily for 5 days" },
+        { cat: "Respiratory", q: "56yo woman with progressive SOB. Post-bronchodilator FEV1/FVC < 0.70, FEV1 50–80% predicted. Interpretation?", a: "COPD (stage 2 – moderate)" },
+        { cat: "Respiratory", q: "20yo woman: 2-month episodic SOB, wheezing, improved with friend's albuterol. Best next diagnostic test?", a: "Spirometry" },
+        { cat: "MSK", q: "15yo football player: wrist pain after fall on outstretched hand. Anatomical snuffbox tenderness. X-ray shows no fracture. Best management?", a: "Thumb Spica cast and repeat X-ray in 2–3 weeks (scaphoid fracture until proven otherwise)" },
+        { cat: "Communication", q: "Most common clinical reasoning style used by doctors in hospitals?", a: "Hypothetico-Deductive style" },
+        { cat: "Internal Med", q: "69yo woman: 2-month shoulder and hip achiness, morning stiffness >30 mins, 4.5 kg weight loss, elevated ESR 120, normal CK. Responds to prednisone. Diagnosis?", a: "Polymyalgia rheumatica" },
+        { cat: "Internal Med", q: "55yo man with poorly controlled DM: necrotizing fasciitis of right thigh. Most likely preceding cause?", a: "Penetrating trauma" },
+        { cat: "Pediatrics", q: "7yo girl: 3 days low-grade fever and runny nose. Woke up with erythematous rash on both cheeks (slapped cheek appearance). Cause?", a: "Parvovirus (B19) — Fifth disease" },
+        { cat: "Internal Med", q: "44yo woman: 6-month fatigue, RUQ pain, liver 3 cm below costal border, elevated ALP, normal ALT/AST, positive ANA. Diagnosis?", a: "Primary biliary cholangitis" },
+        { cat: "Internal Med", q: "24yo man: sister has adult polycystic kidney disease. Best screening test for him?", a: "Ultrasound abdomen" },
+        { cat: "Hematology", q: "34yo man with Type 1 von Willebrand's disease due for a tooth extraction. Best management to reduce bleeding risk?", a: "Desmopressin (DDAVP)" },
+
+        // NEW QUESTIONS — March 20, 2026 (Prof Mohammed Diab — Afternoon Session)
+        { cat: "MSK", q: "60yo obese male: knee pain after fall on ice 2 days ago. Can walk with limp, can flex past 90°, no point tenderness. Best next step?", a: "A radiograph" },
+        { cat: "Internal Med", q: "29yo male bodybuilder: eGFR calculated as 54 ml/min, unexpectedly low. Most likely explanation?", a: "Large muscle mass secondary to bodybuilding (creatinine overproduction raises serum creatinine, falsely lowers eGFR)" },
+        { cat: "Pediatrics", q: "8yo child in ED with confirmed intussusception. Most likely precipitating cause?", a: "Meckel's diverticulum" },
+        { cat: "Dermatology", q: "4yo child: hair falling out, hair shafts broken above scalp, scaly pruritic gray patches, hyphae on scraping (Tinea capitis). Best treatment?", a: "Oral antifungals (topical cannot penetrate hair shaft)" },
+        { cat: "Dermatology", q: "14yo boy: pruritic rash on chest and back, started as single lesion then spread, secondary lesions follow cleavage lines. Diagnosis?", a: "Pityriasis rosea" },
+        { cat: "Emergency", q: "Family of 3 with CO poisoning: father has headache (carboxyhemoglobin 12%), pregnant mother asymptomatic, 6yo child level 18% but asymptomatic at scene. First step in treatment?", a: "Administer 100% oxygen" },
+        { cat: "Internal Med", q: "85yo male nursing home resident with limited mobility: urinary incontinence, UA shows bacteriuria + 2–4 WBC/hpf, negative glucose and nitrites, post-void residual 80cc. Most likely cause and management?", a: "Most likely cause is immobility — scheduled voiding is indicated (not antibiotics; asymptomatic bacteriuria in elderly is not treated)" },
+
+        // NEW QUESTIONS — Dr Moh Final Exam Sheet
+        // COMMUNICATION
+        { cat: "Communication", q: "You were involved in a minor motor vehicle accident and your patient becomes visibly angry. Best response?", a: "Acknowledge his anger with a statement like: 'You seem very angry.'" },
+        { cat: "Communication", q: "Which best describes the principle of continuity of care in family medicine?", a: "Seeing the individual in health and disease" },
+        { cat: "Communication", q: "65yo woman who has smoked for 50 years. Best strategy to encourage smoking cessation?", a: "Point out the positive results expected if she complies: 'By quitting, you'll significantly reduce your chances of developing lung cancer'" },
+        { cat: "Communication", q: "Which activity represents an essential tool that a family physician must use fluently?", a: "Performing Continuous Medical Education" },
+        { cat: "Communication", q: "23yo man following up for HIV test results. Best approach before delivering the result?", a: "Help him prepare for the information using an appropriate statement" },
+        { cat: "Communication", q: "When performing a medical interview, which technique is most important for gathering patient information?", a: "Using open-ended questions" },
+        { cat: "Communication", q: "58yo woman with uncontrolled diabetes you are having trouble managing. Best approach to assess medication compliance?", a: "Ask her specific questions about medication names, dosages, and administration times" },
+
+        // EPIDEMIOLOGY / RESEARCH / PREVENTIVE MED
+        { cat: "Preventive Med", q: "Most common illness to counsel patients about when planning an overseas trip?", a: "Diarrhea" },
+        { cat: "Epidemiology", q: "Which statement is true regarding cervical cancer epidemiology in the US?", a: "Cervical cancer strikes 11.6 per 100,000 US females per year" },
+        { cat: "Preventive Med", q: "Which is an example of secondary prevention?", a: "Pap smears to prevent carcinoma of the cervix" },
+        { cat: "Epidemiology", q: "Pap smear study (4000 women): 190 TP, 10 FN, 210 FP, 3590 TN. What is the sensitivity?", a: "95%" },
+        { cat: "Epidemiology", q: "Pap smear study (4000 women): 190 TP, 10 FN, 210 FP, 3590 TN. What is the specificity?", a: "94%" },
+        { cat: "Epidemiology", q: "Study of 10,000 patients over 3 years. At start, 2000 had diabetes. At end, 1000 additional people developed diabetes. What was the incidence?", a: "12.5%" },
+        { cat: "Epidemiology", q: "Study design that selects two groups (with and without disease) and compares past exposures?", a: "Case-control study" },
+        { cat: "Epidemiology", q: "Study design where interventions are assigned to participants who are then followed prospectively?", a: "Prospective interventional study" },
+        { cat: "Epidemiology", q: "Which statement is true about sensitivity and specificity of a screening test?", a: "As sensitivity increases, specificity decreases" },
+        { cat: "Pediatrics", q: "Newborn whose mother is hepatitis B surface antigen positive. Recommended protocol?", a: "HB vaccination and HB immune globulin within 12 hours of birth; second dose at 1–2 months; third dose at 6 months" },
+        { cat: "Epidemiology", q: "What is an advantage of a cross-sectional study design?", a: "Associations of possible risk factors and disease can be postulated" },
+
+        // PEDIATRICS
+        { cat: "Pediatrics", q: "3yo with constitutional growth delay, all investigations unremarkable. Most appropriate management?", a: "Reassurance to parents" },
+        { cat: "Pediatrics", q: "5yo girl, dry at night since 3.5 years, started bed-wetting again 4 months after new sibling born. Correct term for this condition?", a: "Secondary nocturnal enuresis" },
+        { cat: "Pediatrics", q: "2yo child says only 10–15 words and does not yet form sentences. What is the expected language development for this age?", a: "50-word vocabulary and 2-word combinations to make a sentence" },
+        { cat: "Pediatrics", q: "First 24 hours of life: newborn with papules and pustules with surrounding erythema on face, trunk, and proximal extremities — breastfeeding well. Most likely diagnosis?", a: "Erythema toxicum neonatorum" },
+        { cat: "Pediatrics", q: "8yo with asthma: wheezing and coughing once per month, no nocturnal symptoms, on no medications. Most appropriate treatment?", a: "Short-acting Beta-2 agonist MDI" },
+        { cat: "Pediatrics", q: "2yo child who has had 3 episodes of wheezing. Most likely diagnosis?", a: "Asthma" },
+        { cat: "Pediatrics", q: "17yo morbidly obese patient with diabetes. Most likely lab finding?", a: "Low levels of C-peptide" },
+        { cat: "Pediatrics", q: "Young infant with history of fever, skin rash, and diarrhea. Most likely diagnosis?", a: "Measles" },
+        { cat: "Pediatrics", q: "Mother of 6yo girl with recurring soiling episodes. Most likely underlying cause?", a: "Chronic constipation" },
+        { cat: "Pediatrics", q: "Exclusively breastfed infant with poor routine care is switched to formula. What should be initiated?", a: "Iron supplementation" },
+        { cat: "Pediatrics", q: "Regarding kernicterus prevention in premature infants, which statement is true?", a: "Early feedings increase bowel motility and promote bilirubin excretion" },
+        { cat: "Pediatrics", q: "Counseling parent of 7yo who wets the bed. Most effective first-line non-pharmacological treatment?", a: "Use of an alarm that wakes the child when he wets at night" },
+        { cat: "Pediatrics", q: "2-day-old infant with significant nasal and rectal bleeding. Most likely deficiency?", a: "Vitamin K" },
+        { cat: "Pediatrics", q: "Which statement is true about Kawasaki disease?", a: "Coronary artery abnormalities occur in up to 25% of untreated children" },
+        { cat: "Pediatrics", q: "1-day-old born by difficult forceps delivery with arm held adducted, internally rotated, and elbow extended. Diagnosis?", a: "Left-sided Erb-Duchenne paralysis" },
+        { cat: "Pediatrics", q: "Infant in neonatal nursery with cataracts, cardiac defects, and sensorineural deafness. Most likely cause?", a: "Rubella" },
+        { cat: "Pediatrics", q: "8yo child with asthma presenting with acute exacerbation. Most appropriate addition to treatment?", a: "Add an oral short steroid course" },
+        { cat: "Pediatrics", q: "4yo boy with fever, vesicular lesions on palms, soles, and inside mouth. Causative organism?", a: "Coxsackievirus" },
+        { cat: "Pediatrics", q: "4yo child during well-child visit with speech not progressing normally. Next step?", a: "Referral for hearing evaluation" },
+
+        // MSK / INTERNAL MED
+        { cat: "MSK", q: "55yo male with heel pain worse on first steps in the morning. Best initial treatment?", a: "Stretching exercises for the Achilles tendon" },
+        { cat: "MSK", q: "43yo obese man with a painful, inflamed, swollen elbow joint. Most likely diagnosis?", a: "Gout" },
+        { cat: "MSK", q: "70yo diabetic man with long-term osteoarthritis of both knees not responding to medical therapy. Best next step?", a: "Refer for knee replacements" },
+        { cat: "MSK", q: "35yo white female with recurrent unilateral fronto-temporal headaches. Most likely diagnosis?", a: "Migraine headache" },
+        { cat: "MSK", q: "45yo woman with widespread musculoskeletal pain, difficulty sleeping, fatigue, and tender trigger points. Diagnosis?", a: "Fibromyalgia" },
+        { cat: "Internal Med", q: "At what age should routine colorectal cancer screening begin in average-risk individuals?", a: "50 years" },
+        { cat: "Internal Med", q: "35yo male with recurrent kidney stones. Most important investigation to identify underlying cause?", a: "Serum parathyroid hormone" },
+        { cat: "Internal Med", q: "42yo woman with episodic RUQ abdominal pain after fatty meals. Most likely diagnosis?", a: "Gallbladder disease" },
+        { cat: "Internal Med", q: "40yo businessman with irritable bowel syndrome and bloating/abdominal cramping. Effective pharmacological option?", a: "Peppermint oil" },
+        { cat: "Internal Med", q: "20yo male with IBS symptoms (abdominal pain, diarrhea) and comorbid anxiety. Medication that may help both?", a: "Citalopram" },
+        { cat: "Internal Med", q: "Which radiological finding is sufficient to make a diagnosis of osteoarthritis?", a: "The presence of osteophytes is sufficient to make the diagnosis" },
+        { cat: "Preventive Med", q: "Which tests are recommended for hepatitis B screening according to national guidelines?", a: "HBsAg and anti-HBc" },
+        { cat: "Internal Med", q: "55yo woman with stable angina on long-term nitrates. Most likely complication of continuous nitrate therapy?", a: "Development of tolerance" },
+        { cat: "Internal Med", q: "44yo woman with known asthma presenting with chest tightness. Best characterization of this symptom?", a: "Non-anginal pain" },
+        { cat: "Internal Med", q: "36yo man with breathlessness on exertion but no typical chest pain. This coronary artery disease presentation is called?", a: "Anginal equivalent" },
+        { cat: "Internal Med", q: "49yo man with hypercholesterolaemia and chest pain that doesn't fully meet classic angina criteria. Classification?", a: "Atypical angina" },
+        { cat: "Internal Med", q: "48yo obese male on routine health maintenance. Most commonly found undiagnosed chronic condition?", a: "Type 2 diabetes mellitus" },
+        { cat: "Internal Med", q: "35yo female with 3-month heartburn, regurgitation, belching, and dry cough. Best management?", a: "Treat with a proton pump inhibitor and evaluate the response" },
+        { cat: "Internal Med", q: "33yo woman with 3-month indigestion. When should H. pylori urea breath test be performed?", a: "After stopping at least 2 weeks of PPI or 4 weeks of antibiotics" },
+        { cat: "Internal Med", q: "31yo woman with joint pain, crepitus, and bony joint enlargement. Most likely diagnosis?", a: "Osteoarthritis" },
+        { cat: "Internal Med", q: "45yo man, not seen physician in 10 years. Brother died of MI at 49. TC 240, HDL 37, LDL 155, TG 300 mg/dL. Best therapeutic plan?", a: "Start a lipid-lowering agent and repeat the lipid screen after 1 month" },
+
+        // EMERGENCY / TOXICOLOGY
+        { cat: "Emergency", q: "Which toxin does NOT cause mydriasis (pupil dilation)?", a: "Organophosphates" },
+        { cat: "Emergency", q: "At what serum concentration does minor toxicity usually manifest in acute theophylline poisoning?", a: "220–440 umol/L" },
+        { cat: "Emergency", q: "Patient taking a MAO inhibitor requires analgesia. Which drug is absolutely contraindicated?", a: "Pethidine" },
+        { cat: "Emergency", q: "Best single predictor of severity in acute poisoning?", a: "GCS less than 8" },
+        { cat: "Emergency", q: "In paracetamol poisoning, which statement is true regarding patient age?", a: "Toxicity is less likely in children than adults" },
+        { cat: "Emergency", q: "All of the following potentiate digoxin toxicity EXCEPT:", a: "Hypocalcemia" },
+        { cat: "Emergency", q: "Which statement about paracetamol overdose is FALSE?", a: "Acute alcohol ingestion in a person that does not usually drink is reason to lower the treatment threshold for paracetamol OD" },
+        { cat: "Emergency", q: "22yo female unconscious with combined benzodiazepine and tricyclic antidepressant overdose, unable to protect her airway. Best next step?", a: "Intubate the patient" },
+        { cat: "Emergency", q: "Best drug for cardiac arrhythmia caused by tricyclic antidepressant (TCA) overdose?", a: "Sodium bicarbonate" },
+        { cat: "Emergency", q: "Best treatment for seizures secondary to isoniazid (INH) ingestion?", a: "Pyridoxine" },
+        { cat: "Emergency", q: "Whole-bowel irrigation is most appropriate for which type of overdose?", a: "Sustained-release verapamil" }
+    ];
+
+    // Session state
+    const revealed = new Set();
+    const reviewed = new Set();
+    let activeCategory = 'All';
+    let allAnswersShown = false;
+    let filteredIndices = [];
+
+    function getCategories() {
+        const cats = ['All', ...new Set(questionBank.map(q => q.cat))];
+        return cats;
+    }
+
+    function buildFilters() {
+        const row = document.getElementById('filter-row');
+        getCategories().forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = 'filter-btn' + (cat === 'All' ? ' active' : '');
+            btn.textContent = cat;
+            btn.onclick = () => {
+                activeCategory = cat;
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                applyFilters();
+            };
+            row.appendChild(btn);
+        });
+    }
+
+    function applyFilters() {
+        const query = document.getElementById('search-input').value.toLowerCase().trim();
+        filteredIndices = questionBank
+            .map((item, i) => ({ item, i }))
+            .filter(({ item }) => {
+                const catMatch = activeCategory === 'All' || item.cat === activeCategory;
+                const searchMatch = !query || item.q.toLowerCase().includes(query) || item.a.toLowerCase().includes(query);
+                return catMatch && searchMatch;
+            })
+            .map(({ i }) => i);
+
+        renderQuiz();
+    }
+
+    function renderQuiz() {
+        document.getElementById('qcount').innerText = questionBank.length;
+        const container = document.getElementById('quiz-container');
+        const noResults = document.getElementById('no-results');
+
+        if (filteredIndices.length === 0) {
+            container.innerHTML = '';
+            noResults.style.display = 'block';
+            updateStats();
+            return;
+        }
+
+        noResults.style.display = 'none';
+        container.innerHTML = filteredIndices.map(index => {
+            const item = questionBank[index];
+            const isRev = reviewed.has(index);
+            const isRevd = revealed.has(index);
+            return `
+                <div class="question-card${isRev ? ' is-reviewed' : (isRevd ? ' is-revealed' : '')}"
+                     id="card-${index}" onclick="handleCardClick(event, ${index})">
+                    <div class="card-top">
+                        <div class="card-meta">
+                            <span class="category-tab">${item.cat}</span>
+                            <span class="q-number">Q${index + 1}</span>
+                        </div>
+                        ${isRev ? '<span class="reviewed-badge">✓ Reviewed</span>' : ''}
+                    </div>
+                    <div class="question-text">${item.q}</div>
+                    <div class="card-actions" onclick="event.stopPropagation()">
+                        <button class="btn-sec" onclick="toggleAnswer(${index})">Show / Hide Answer</button>
+                        <button class="btn-sec btn-review${isRev ? ' done' : ''}" onclick="toggleReview(${index})">
+                            ${isRev ? '✓ Reviewed' : 'Mark as Reviewed'}
+                        </button>
+                    </div>
+                    <div id="ans-${index}" class="answer-box" style="display:${isRevd ? 'block' : 'none'}">
+                        <strong>Answer:</strong> ${item.a}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        updateStats();
+    }
+
+    function handleCardClick(e, index) {
+        if (e.target.tagName === 'BUTTON') return;
+        toggleAnswer(index);
+    }
+
+    function toggleAnswer(id) {
+        const ans = document.getElementById(`ans-${id}`);
+        const isVisible = ans.style.display === 'block';
+        ans.style.display = isVisible ? 'none' : 'block';
+        if (!isVisible) revealed.add(id); else revealed.delete(id);
+        updateCardClass(id);
+        updateStats();
+    }
+
+    function toggleReview(id) {
+        if (reviewed.has(id)) reviewed.delete(id);
+        else reviewed.add(id);
+        applyFilters();
+    }
+
+    function updateCardClass(id) {
+        const card = document.getElementById(`card-${id}`);
+        if (!card) return;
+        card.classList.toggle('is-revealed', revealed.has(id) && !reviewed.has(id));
+        card.classList.toggle('is-reviewed', reviewed.has(id));
+    }
+
+    function toggleAllAnswers() {
+        allAnswersShown = !allAnswersShown;
+        filteredIndices.forEach(id => {
+            const ans = document.getElementById(`ans-${id}`);
+            if (ans) {
+                ans.style.display = allAnswersShown ? 'block' : 'none';
+                if (allAnswersShown) revealed.add(id); else revealed.delete(id);
+            }
+        });
+        document.getElementById('toggle-all-btn').textContent = allAnswersShown ? 'Hide All Answers' : 'Show All Answers';
+        updateStats();
+    }
+
+    function resetSession() {
+        revealed.clear();
+        reviewed.clear();
+        allAnswersShown = false;
+        document.getElementById('toggle-all-btn').textContent = 'Show All Answers';
+        document.getElementById('search-input').value = '';
+        activeCategory = 'All';
+        document.querySelectorAll('.filter-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
+        filteredIndices = questionBank.map((_, i) => i);
+        renderQuiz();
+    }
+
+    function updateStats() {
+        const revealedCount = filteredIndices.filter(i => revealed.has(i)).length;
+        const reviewedCount = filteredIndices.filter(i => reviewed.has(i)).length;
+        document.getElementById('stat-revealed').textContent = revealedCount;
+        document.getElementById('stat-reviewed').textContent = reviewedCount;
+        document.getElementById('stat-showing').textContent = filteredIndices.length;
+
+        const pct = filteredIndices.length > 0 ? Math.round((reviewedCount / filteredIndices.length) * 100) : 0;
+        document.getElementById('progress-fill').style.width = pct + '%';
+    }
+
+    // Scroll progress bar
+    window.addEventListener('scroll', () => {
+        const doc = document.documentElement;
+        const scrolled = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+        document.getElementById('scroll-progress').style.width = scrolled + '%';
+        document.getElementById('scroll-top').classList.toggle('visible', doc.scrollTop > 300);
+    });
+
+    // Keyboard shortcut: Space to toggle focused card (accessibility)
+    document.addEventListener('keydown', e => {
+        if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
             e.preventDefault();
-            e.stopPropagation();
-        }, true);
+        }
+    });
 
-        document.addEventListener('keyup', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }, true);
+    // Init
+    buildFilters();
+    filteredIndices = questionBank.map((_, i) => i);
+    renderQuiz();
+</script>
 
-        document.addEventListener('mousedown', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }, true);
-
-        document.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }, true);
-
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }, true);
-
-        // Disable selection
-        document.addEventListener('selectstart', function(e) {
-            e.preventDefault();
-        }, true);
-
-        console.log('%c🔒 EXAM LOCKED - See you in 2027!', 'font-size: 20px; color: #ef4444; font-weight: bold;');
-        console.log('%c⭐ GOOD LUCK! ⭐', 'font-size: 16px; color: #fbbf24; font-weight: bold;');
-    </script>
 </body>
 </html>

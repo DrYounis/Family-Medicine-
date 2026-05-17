@@ -1,4 +1,4 @@
-# Dr. Younis — Family Medicine Masters Study Portal
+# Family Medicine Masters Study Portal
 
 > **GitHub:** `DrYounis/Family-Medicine-`
 > **Last updated:** March 2026
